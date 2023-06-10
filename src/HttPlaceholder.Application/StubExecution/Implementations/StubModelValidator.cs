@@ -37,16 +37,17 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
     {
         var validationResults = _modelValidator.ValidateModel(stub);
         var result = new List<string>();
-        HandleValidationResult(result, validationResults);
-        ValidateExtraDuration(stub, result);
-        ValidateScenarioVariables(stub, result);
-        ValidateResponseBody(stub, result);
-        ValidateResponseHeaders(stub, result);
+        result.AddRange(HandleValidationResult(validationResults));
+        result.AddRange(ValidateExtraDuration(stub));
+        result.AddRange(ValidateScenarioVariables(stub));
+        result.AddRange(ValidateResponseBody(stub));
+        result.AddRange(ValidateResponseHeaders(stub));
         return result;
     }
 
-    private void ValidateExtraDuration(StubModel stub, List<string> result)
+    private IEnumerable<string> ValidateExtraDuration(StubModel stub)
     {
+        var result = new List<string>();
         const string errorTemplate = "Value for '{0}' cannot be higher than '{1}'.";
         var extraDuration = stub?.Response?.ExtraDuration;
         var allowedMillis = _options.CurrentValue.Stub?.MaximumExtraDurationMillis;
@@ -77,26 +78,31 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
                 result.Add("ExtraDuration.Min should be lower than or equal to ExtraDuration.Max.");
             }
         }
+
+        return result;
     }
 
-    private static void HandleValidationResult(ICollection<string> result,
-        IEnumerable<ValidationResult> validationResults)
+    private static IEnumerable<string> HandleValidationResult(IEnumerable<ValidationResult> validationResults)
     {
+        var result = new List<string>();
         foreach (var validationResult in validationResults)
         {
             if (validationResult is CompositeValidationResult compositeValidationResult)
             {
-                HandleValidationResult(result, compositeValidationResult.Results);
+                result.AddRange(HandleValidationResult(compositeValidationResult.Results));
             }
             else
             {
                 result.Add(validationResult.ErrorMessage);
             }
         }
+
+        return result;
     }
 
-    private static void ValidateScenarioVariables(StubModel stub, ICollection<string> validationErrors)
+    private static IEnumerable<string> ValidateScenarioVariables(StubModel stub)
     {
+        var result = new List<string>();
         var scenarioConditions = stub?.Conditions?.Scenario ?? new StubConditionScenarioModel();
         var minHits = scenarioConditions.MinHits;
         var maxHits = scenarioConditions.MaxHits;
@@ -104,17 +110,17 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
         var scenarioState = scenarioConditions.ScenarioState;
         if (minHits.HasValue && minHits == maxHits)
         {
-            validationErrors.Add("minHits and maxHits can not be equal.");
+            result.Add("minHits and maxHits can not be equal.");
         }
 
         if (maxHits < minHits)
         {
-            validationErrors.Add("maxHits can not be lower than minHits.");
+            result.Add("maxHits can not be lower than minHits.");
         }
 
         if (exactHits.HasValue && (minHits.HasValue || maxHits.HasValue))
         {
-            validationErrors.Add("exactHits can not be set if minHits and maxHits are set.");
+            result.Add("exactHits can not be set if minHits and maxHits are set.");
         }
 
         var scenarioResponse = stub?.Response?.Scenario ?? new StubResponseScenarioModel();
@@ -122,7 +128,7 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
         var clearState = scenarioResponse.ClearState;
         if (!string.IsNullOrWhiteSpace(setScenarioState) && clearState == true)
         {
-            validationErrors.Add("setScenarioState and clearState can not both be set at the same time.");
+            result.Add("setScenarioState and clearState can not both be set at the same time.");
         }
 
         var scenario = stub?.Scenario ?? string.Empty;
@@ -130,17 +136,20 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
                                                     !string.IsNullOrWhiteSpace(scenarioState) ||
                                                     !string.IsNullOrWhiteSpace(setScenarioState)))
         {
-            validationErrors.Add(
+            result.Add(
                 "Scenario condition checkers and response writers can not be set if no 'scenario' is provided.");
         }
+
+        return result;
     }
 
-    private static void ValidateResponseBody(StubModel stub, ICollection<string> validationErrors)
+    private static IEnumerable<string> ValidateResponseBody(StubModel stub)
     {
+        var result = new List<string>();
         var response = stub?.Response;
         if (response == null)
         {
-            return;
+            return result;
         }
 
         var count = StringHelper.CountNumberOfNonWhitespaceStrings(response.Text, response.Json, response.Xml,
@@ -148,25 +157,34 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
         switch (count)
         {
             case 1 when response.StatusCode == (int)HttpStatusCode.NoContent:
-                validationErrors.Add("When HTTP status code is 204, no response body can be set.");
+                result.Add("When HTTP status code is 204, no response body can be set.");
                 break;
             case > 1:
-                validationErrors.Add(
+                result.Add(
                     "Only one of the response body fields (text, json, xml, html, base64, file) can be set");
                 break;
         }
+
+        return result;
     }
 
-    private static void ValidateResponseHeaders(StubModel stub, List<string> validationErrors)
+    private static IEnumerable<string> ValidateResponseHeaders(StubModel stub)
     {
+        var result = new List<string>();
         var headers = stub?.Response?.Headers;
         if (headers == null || !headers.Any())
         {
-            return;
+            return result;
         }
 
-        validationErrors.AddRange(headers
+        result.AddRange(headers
             .Where(h => _illegalHeaders.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
             .Select(h => $"Header '${h.Key}' can't be used as response header."));
+        return result;
+    }
+
+    private static void ValidateStringRegexReplace(StubModel stub, List<string> validationErrors)
+    {
+
     }
 }
