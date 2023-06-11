@@ -32,5 +32,5 @@ public class StubNotify : IStubNotify
 
     /// <inheritdoc />
     public async Task StubDeletedAsync(string stubId, CancellationToken cancellationToken) =>
-        await _hubContext.Clients.All.SendAsync("StubUpdated", stubId, cancellationToken);
+        await _hubContext.Clients.All.SendAsync("StubDeleted", stubId, cancellationToken);
 }
