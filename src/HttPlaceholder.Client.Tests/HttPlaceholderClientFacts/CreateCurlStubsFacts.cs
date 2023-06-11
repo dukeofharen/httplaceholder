@@ -74,7 +74,10 @@ public class CreateCurlStubsFacts : BaseClientTest
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                client.CreateCurlStubsAsync(new ImportStubsModel(commands){DoNotCreateStub = false, Tenant = "tenant1", StubIdPrefix = "prefix-"}));
+                client.CreateCurlStubsAsync(new ImportStubsModel(commands)
+                {
+                    DoNotCreateStub = false, Tenant = "tenant1", StubIdPrefix = "prefix-"
+                }));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -97,7 +100,10 @@ public class CreateCurlStubsFacts : BaseClientTest
             .Respond("application/json", CreateCurlStubsResult)));
 
         // Act
-        var result = (await client.CreateCurlStubsAsync(new ImportStubsModel(commands){DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"})).ToArray();
+        var result = (await client.CreateCurlStubsAsync(new ImportStubsModel(commands)
+        {
+            DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"
+        })).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);

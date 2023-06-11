@@ -42,8 +42,7 @@ public class RequestParametersDto : IHaveCustomMapping
     public string ClientIp { get; set; }
 
     /// <inheritdoc />
-    public void CreateMappings(Profile configuration)
-    {
+    public void CreateMappings(Profile configuration) =>
         // configuration.CreateMap<RequestParametersDto, RequestParametersModel>(); // TODO nodig? Weet ik zo niet
         configuration.CreateMap<RequestParametersModel, RequestParametersDto>()
             .ForMember(dest => dest.Body, opt => opt.Ignore())
@@ -61,5 +60,4 @@ public class RequestParametersDto : IHaveCustomMapping
                 dest.BodyIsBinary = isBinary;
                 dest.Body = isBinary ? Convert.ToBase64String(src.BinaryBody) : Encoding.UTF8.GetString(src.BinaryBody);
             });
-    }
 }

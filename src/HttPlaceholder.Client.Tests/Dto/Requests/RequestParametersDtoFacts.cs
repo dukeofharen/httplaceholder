@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Text;
 using HttPlaceholder.Client.Dto.Requests;
 
 namespace HttPlaceholder.Client.Tests.Dto.Requests;
@@ -17,7 +16,7 @@ public class RequestParametersDtoFacts
         var result = dto.GetBodyAsBytes();
 
         // Assert
-        Assert.IsTrue(result.SequenceEqual(new byte[]{254, 255}));
+        Assert.IsTrue(result.SequenceEqual(new byte[] {254, 255}));
     }
 
     [TestMethod]

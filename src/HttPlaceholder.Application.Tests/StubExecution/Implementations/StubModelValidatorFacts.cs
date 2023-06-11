@@ -405,4 +405,37 @@ public class StubModelValidatorFacts
             Assert.IsFalse(result.Any(r => r.Contains(errorToCheck)));
         }
     }
+
+    [DataTestMethod]
+    [DataRow("text", "regex", null, "replace", "Replace [0]: 'text' and 'regex' can't both be set.")]
+    [DataRow(null, null, null, "replace", "Replace [0]: either 'text' or 'regex' neets to be set.")]
+    [DataRow(null, "regex", true, "replace",
+        "Replace [0]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.")]
+    [DataRow(null, "regex", null, null, "Replace [0]: 'replaceWith' should be set.")]
+    [DataRow(null, "regex", null, "replace", null)]
+    [DataRow("text", null, true, "replace", null)]
+    [DataRow(null, "regex", null, "replace", null)]
+    public void ValidateStringRegexReplace(string text, string regex, bool? ignoreCase, string replaceWith,
+        string expectedError)
+    {
+        // Arrange
+        var dto = new StubResponseReplaceModel
+        {
+            Text = text, Regex = regex, IgnoreCase = ignoreCase, ReplaceWith = replaceWith
+        };
+        var model = new StubModel {Id = "stub", Response = new StubResponseModel {Replace = new[] {dto}}};
+
+        // Act
+        var result = _validator.ValidateStubModel(model).ToArray();
+
+        // Assert
+        if (expectedError == null)
+        {
+            Assert.IsFalse(result.Any(r => r.Contains("Replace")));
+        }
+        else
+        {
+            Assert.AreEqual(1, result.Count(r => r.Equals(expectedError)));
+        }
+    }
 }

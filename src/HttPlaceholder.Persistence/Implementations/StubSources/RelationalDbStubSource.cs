@@ -101,7 +101,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override async Task<RequestResultModel> GetRequestAsync(string correlationId,
+        CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(
@@ -112,7 +113,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken)
+    public override async Task<ResponseModel> GetResponseAsync(string correlationId,
+        CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var result = await ctx.QueryFirstOrDefaultAsync<DbResponseModel>(
@@ -150,7 +152,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken)
+    public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery, cancellationToken);
@@ -166,7 +169,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken) =>
+    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(
+        CancellationToken cancellationToken) =>
         (await GetStubsAsync(cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled});
 

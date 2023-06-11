@@ -77,4 +77,8 @@ export const elementDescriptions = {
     "Specifies that when the stub is hit, the scenario (both the state and hit counter) should be reset to its original values.",
   newScenarioState:
     "Specifies the new scenario state the scenario should be in when the stub is hit.",
+  stringReplace:
+    "A response writer for replacing a string in the response body. Can be used with the dynamic mode.",
+  regexReplace:
+    "A response writer for replacing a string in the response body based on a regular expression. Can be used with the dynamic mode.",
 };

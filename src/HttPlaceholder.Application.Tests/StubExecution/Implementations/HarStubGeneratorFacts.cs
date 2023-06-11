@@ -100,7 +100,8 @@ public class HarStubGeneratorFacts
             .ReturnsAsync(new StubResponseModel());
 
         // Act
-        var result = (await generator.GenerateStubsAsync(input, false, null, "prefix", CancellationToken.None)).ToArray();
+        var result =
+            (await generator.GenerateStubsAsync(input, false, null, "prefix", CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(3, result.Length);
@@ -183,7 +184,8 @@ public class HarStubGeneratorFacts
         const string tenant = "tenant1";
 
         // Act
-        var result = (await generator.GenerateStubsAsync(input, true, tenant, "prefix", CancellationToken.None)).ToArray();
+        var result =
+            (await generator.GenerateStubsAsync(input, true, tenant, "prefix", CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(3, result.Length);
@@ -193,8 +195,8 @@ public class HarStubGeneratorFacts
         stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()), Times.Never);
 
-        Assert.AreEqual("prefixgenerated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[0].Stub.Id);
-        Assert.AreEqual("prefixgenerated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[1].Stub.Id);
-        Assert.AreEqual("prefixgenerated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[2].Stub.Id);
+        Assert.AreEqual("prefixgenerated-e3d8cf9a6a2921845d6720cdcfdb677e", result[0].Stub.Id);
+        Assert.AreEqual("prefixgenerated-e3d8cf9a6a2921845d6720cdcfdb677e", result[1].Stub.Id);
+        Assert.AreEqual("prefixgenerated-e3d8cf9a6a2921845d6720cdcfdb677e", result[2].Stub.Id);
     }
 }

@@ -1,0 +1,54 @@
+# Use the "replace" response writer to either perform a string or regular expression replacement in the response body.
+- id: string-replace
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /string-replace
+  response:
+    enableDynamicMode: true
+    text: REPLACE THIS
+    replace:
+      - text: REPLACE
+        ignoreCase: false
+        replaceWith: OK
+      - text: THIS
+        ignoreCase: false
+        replaceWith: ((uuid))
+        
+- id: regex-replace
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /regex-replace
+  response:
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    enableDynamicMode: true
+    replace:
+      - regex: (ipsum|consectetur)
+        replaceWith: ((query:queryString))
+      - regex: (amet|elit)
+        replaceWith: some text
+  priority: 0
+  tenant: integration
+  enabled: true
+
+- id: string-and-regex-replace
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /string-and-regex-replace
+  response:
+    enableDynamicMode: true
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    abortConnection: false
+    replace:
+      - text: ipsum
+        replaceWith: Bassie
+      - regex: (amet|elit)
+        replaceWith: Adriaan
+  priority: 0
+  tenant: integration
+  enabled: true

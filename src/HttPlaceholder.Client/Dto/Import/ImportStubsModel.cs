@@ -6,14 +6,14 @@
 public class ImportStubsModel
 {
     /// <summary>
-    /// Constructs an <see cref="ImportStubsModel"/>.
+    ///     Constructs an <see cref="ImportStubsModel" />.
     /// </summary>
     public ImportStubsModel()
     {
     }
 
     /// <summary>
-    /// Constructs an <see cref="ImportStubsModel"/>.
+    ///     Constructs an <see cref="ImportStubsModel" />.
     /// </summary>
     public ImportStubsModel(string input)
     {

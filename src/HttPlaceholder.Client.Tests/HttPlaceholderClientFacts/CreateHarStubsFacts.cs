@@ -100,7 +100,10 @@ public class CreateHarStubsFacts : BaseClientTest
             .Respond("application/json", CreateHarStubsResult)));
 
         // Act
-        var result = (await client.CreateHarStubsAsync(new ImportStubsModel(har){DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"})).ToArray();
+        var result = (await client.CreateHarStubsAsync(new ImportStubsModel(har)
+        {
+            DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"
+        })).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);

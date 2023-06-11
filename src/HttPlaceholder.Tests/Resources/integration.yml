@@ -961,3 +961,65 @@
         intVal: 55
   response:
     text: OK JSON ARRAY!
+
+- id: string-replace
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /string-replace
+  response:
+    text: REPLACE THIS
+    replace:
+      - text: REPLACE
+        ignoreCase: false
+        replaceWith: OK
+      - text: THIS
+        ignoreCase: false
+        replaceWith: STRING REPLACE
+
+- id: string-replace-dynamic
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /string-replace-dynamic
+  response:
+    enableDynamicMode: true
+    text: REPLACE THIS
+    replace:
+      - text: REPLACE
+        replaceWith: ((query:q1))
+      - text: THIS
+        replaceWith: ((query:q2))
+
+- id: regex-replace
+  tenant: integration
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /regex-replace
+  response:
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    replace:
+      - regex: '(ipsum|consectetur)'
+        replaceWith: Bassie
+      - regex: '(amet|elit)'
+        replaceWith: Adriaan
+
+- id: regex-replace-dynamic
+  tenant: integration
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /regex-replace-dynamic
+  response:
+    enableDynamicMode: true
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    replace:
+      - regex: '(ipsum|consectetur)'
+        replaceWith: ((query:q1))
+      - regex: '(amet|elit)'
+        replaceWith: ((query:q2))

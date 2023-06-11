@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
@@ -380,5 +382,40 @@ public class StubResponseBuilderFacts
 
         // Assert
         Assert.IsTrue(response.AbortConnection);
+    }
+
+    [TestMethod]
+    public void StringReplace()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .StringReplace("look for", "replace with", false)
+            .Build();
+
+        // Assert
+        var replace = (List<StubResponseReplaceDto>)response.Replace;
+        Assert.AreEqual(1, replace.Count);
+
+        var dto = replace.Single();
+        Assert.AreEqual("look for", dto.Text);
+        Assert.AreEqual("replace with", dto.ReplaceWith);
+        Assert.IsFalse(dto.IgnoreCase);
+    }
+
+    [TestMethod]
+    public void RegexReplace()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .RegexReplace("(.*)", "replace with")
+            .Build();
+
+        // Assert
+        var replace = (List<StubResponseReplaceDto>)response.Replace;
+        Assert.AreEqual(1, replace.Count);
+
+        var dto = replace.Single();
+        Assert.AreEqual("(.*)", dto.Regex);
+        Assert.AreEqual("replace with", dto.ReplaceWith);
     }
 }

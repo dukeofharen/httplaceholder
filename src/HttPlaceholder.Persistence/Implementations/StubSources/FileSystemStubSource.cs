@@ -56,7 +56,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override async Task<RequestResultModel> GetRequestAsync(string correlationId,
+        CancellationToken cancellationToken)
     {
         var path = GetRequestsFolder();
         var filePath = Path.Combine(path, ConstructRequestFilename(correlationId));
@@ -70,7 +71,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken)
+    public override async Task<ResponseModel> GetResponseAsync(string correlationId,
+        CancellationToken cancellationToken)
     {
         var path = GetResponsesFolder();
         var filePath = Path.Combine(path, ConstructResponseFilename(correlationId));
@@ -126,7 +128,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken)
+    public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        CancellationToken cancellationToken)
     {
         var path = GetRequestsFolder();
         var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
@@ -150,7 +153,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken) =>
+    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(
+        CancellationToken cancellationToken) =>
         (await GetStubsAsync(cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();

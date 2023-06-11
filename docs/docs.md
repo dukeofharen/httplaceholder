@@ -69,6 +69,7 @@
     - [Fake data](#fake-data)
   - [Reverse proxy](#reverse-proxy)
   - [Abort connection](#abort-connection)
+  - [String / regex replace](#string--regex-replace)
 - **[REST API](#rest-api)**
 - **[Configuration](#configuration)**
   - [Configuration properties](#configuration-properties)
@@ -2180,6 +2181,82 @@ There might be situations where you want to check how your application reacts wh
 
 When you call the url `http://localhost:5000/response-abort-connection`, the connection will immediately be aborted.
 
+## String / regex replace
+
+In some cases (e.g. when you're using the [reverse proxy](#reverse-proxy)), it might be nice if you can do a find and replace on the response body of the stub. You can, with the string replace and regex replace response writers. When using the string replace or regex response writer, all matches that are found in the response body are replaced with the provided value. The response writer can be used in combination with the [dynamic mode](#dynamic-mode).
+
+### String response writer
+
+```yml
+- id: string-replace
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /string-replace
+  response:
+    enableDynamicMode: true
+    text: REPLACE THIS
+    replace:
+      - text: REPLACE
+        ignoreCase: false
+        replaceWith: OK
+      - text: THIS
+        ignoreCase: false
+        replaceWith: ((uuid))
+```
+
+In the example above, two different string replacements are configured. When the stub is executed, the string `OK c7753738-e047-4ca3-b530-6c530f5ac2c6` (or any other UUID) is returned when the URI path is `/stringr-replace`. The `ignoreCase` is set to `false`, which means that the string casing is respected when looking for the string `text` in the response. If this is set to `true`, the casing will be ignored.
+
+### Regex response writer
+
+```yml
+- id: regex-replace
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /regex-replace
+  response:
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    enableDynamicMode: true
+    replace:
+      - regex: (ipsum|consectetur)
+        replaceWith: ((query:queryString))
+      - regex: (amet|elit)
+        replaceWith: some text
+  priority: 0
+  tenant: integration
+  enabled: true
+```
+
+In the example above, two different regex replacements are configured. When the stub is executed, the string `Lorem value dolor sit some text, value adipiscing some text.` is returned when the URI path is `/regex-replace?queryString=value`.
+
+### Combining string and regex replace
+
+```yml
+- id: string-and-regex-replace
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /string-and-regex-replace
+  response:
+    enableDynamicMode: true
+    text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    abortConnection: false
+    replace:
+      - text: ipsum
+        replaceWith: Bassie
+      - regex: (amet|elit)
+        replaceWith: Adriaan
+  priority: 0
+  tenant: integration
+  enabled: true
+```
+
+It is possible to combine the string and regex replace, as you can see in the example above. When you call URI path `/string-and-regex-replace`
+
 # REST API
 
 Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, scheduled job collection, import collection, configuration collection and users collection.
@@ -2561,6 +2638,7 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Set response content type: [.yml](samples/18-content-type.yml)
 * Stub images: [.yml](samples/19-stub-image.yml)
 * Abort connection: [.yml](samples/21-abort-connection.yml)
+* String / regex replace: [.yml](samples/22-string-regex-replace.yml)
 * Dynamic mode:
     * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
     * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)

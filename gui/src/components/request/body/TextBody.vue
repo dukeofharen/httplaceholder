@@ -89,12 +89,12 @@ export default defineComponent({
     const showMoreClicked = ref(false);
 
     // Computed
-    const body = computed(() => {
+    const body = computed<string>(() => {
       return props.renderModel.base64DecodeNotBinary
-        ? fromBase64(props.renderModel.body)
+        ? fromBase64(props.renderModel.body) || ""
         : props.renderModel.body;
     });
-    const contentType = computed(() => {
+    const contentType = computed<string>(() => {
       const headers = props.renderModel.headers;
       const contentTypeHeaderKey = Object.keys(headers).find(
         (k) => k.toLowerCase() === "content-type"

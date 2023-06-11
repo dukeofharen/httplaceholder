@@ -303,7 +303,8 @@ public interface IHttPlaceholderClient
     /// <param name="model">The model that contains the parameters for importing the stubs.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The created stubs.</returns>
-    Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(ImportStubsModel model, CancellationToken cancellationToken = default);
+    Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(ImportStubsModel model,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Creates stubs based on an HTTP archive (HAR)
@@ -311,7 +312,8 @@ public interface IHttPlaceholderClient
     /// <param name="model">The model that contains the parameters for importing the stubs.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The created stubs.</returns>
-    Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(ImportStubsModel model, CancellationToken cancellationToken = default);
+    Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(ImportStubsModel model,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Creates stubs based on an OpenAPI definition (both JSON and YAML supported).
@@ -319,7 +321,8 @@ public interface IHttPlaceholderClient
     /// <param name="model">The model that contains the parameters for importing the stubs.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The created stubs.</returns>
-    Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(ImportStubsModel model, CancellationToken cancellationToken = default);
+    Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(ImportStubsModel model,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Executes a given scheduled job.

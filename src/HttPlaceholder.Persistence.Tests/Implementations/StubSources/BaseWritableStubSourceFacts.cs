@@ -22,7 +22,7 @@ public class BaseWritableStubSourceFacts
             HasResponse = true
         };
         var source = new TestStubSource();
-        source.SetRequests(new[]{request});
+        source.SetRequests(new[] {request});
 
         // Act
         var result = (await source.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
@@ -47,11 +47,7 @@ public class BaseWritableStubSourceFacts
         // Arrange
         var request = new RequestResultModel
         {
-            RequestParameters = new RequestParametersModel
-            {
-                Method = "GET",
-                Url = "/url"
-            },
+            RequestParameters = new RequestParametersModel {Method = "GET", Url = "/url"},
             CorrelationId = Guid.NewGuid().ToString(),
             StubTenant = "tenant1",
             ExecutingStubId = "stub1",
@@ -60,7 +56,7 @@ public class BaseWritableStubSourceFacts
             HasResponse = true
         };
         var source = new TestStubSource();
-        source.SetRequests(new[]{request});
+        source.SetRequests(new[] {request});
 
         // Act
         var result = (await source.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
@@ -83,10 +79,7 @@ public class BaseWritableStubSourceFacts
     {
         private IEnumerable<RequestResultModel> _requests;
 
-        public void SetRequests(IEnumerable<RequestResultModel> requests)
-        {
-            _requests = requests;
-        }
+        public void SetRequests(IEnumerable<RequestResultModel> requests) => _requests = requests;
 
         public override Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken) =>
             throw new NotImplementedException();

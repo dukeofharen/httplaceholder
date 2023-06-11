@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Text;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;

@@ -32,7 +32,8 @@ internal class HarStubGenerator : IHarStubGenerator, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant, string stubIdPrefix,
+    public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant,
+        string stubIdPrefix,
         CancellationToken cancellationToken)
     {
         try
@@ -89,7 +90,8 @@ internal class HarStubGenerator : IHarStubGenerator, ISingletonService
             .ToDictionary(h => h.Name, h => h.Value)
     };
 
-    private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res, string tenant, string stubIdPrefix,
+    private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res, string tenant,
+        string stubIdPrefix,
         CancellationToken cancellationToken)
     {
         var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(req, cancellationToken);

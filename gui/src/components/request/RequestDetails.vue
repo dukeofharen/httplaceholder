@@ -124,6 +124,7 @@ export default defineComponent({
         body: props.request.requestParameters.body,
         bodyIsBinary: props.request.requestParameters.bodyIsBinary,
         headers: props.request.requestParameters.headers,
+        base64DecodeNotBinary: false,
       };
     });
 

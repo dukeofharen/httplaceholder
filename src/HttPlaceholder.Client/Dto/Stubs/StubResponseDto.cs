@@ -102,4 +102,10 @@ public class StubResponseDto
     ///     Gets or sets whether the connection should be aborted.
     /// </summary>
     public bool AbortConnection { get; set; }
+
+    /// <summary>
+    ///     Gets or sets a list of text or regexes with a corresponding value that should be used to do a replace in the stub
+    ///     response.
+    /// </summary>
+    public IEnumerable<StubResponseReplaceDto> Replace { get; set; }
 }

@@ -126,4 +126,11 @@ public class StubResponseModel
     /// </summary>
     [YamlMember(Alias = "abortConnection")]
     public bool AbortConnection { get; set; }
+
+    /// <summary>
+    ///     Gets or sets a list of text or regexes with a corresponding value that should be used to do a replace in the stub
+    ///     response.
+    /// </summary>
+    [YamlMember(Alias = "replace")]
+    public IEnumerable<StubResponseReplaceModel> Replace { get; set; }
 }

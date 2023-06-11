@@ -1,5 +1,4 @@
-﻿using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using HttPlaceholder.Web.Shared.Dto.v1.Requests;
 
 namespace HttPlaceholder.Web.Shared.Tests.Dto.v1.Requests;
@@ -41,7 +40,7 @@ public class RequestParametersDtoFacts
     public void Map_BodyIsNotSet_BinaryBodyIsSet_BinaryBodyIsBinary_ShouldUseBodyInMapping()
     {
         // Arrange
-        var model = new RequestParametersModel {BinaryBody = new byte[]{255}};
+        var model = new RequestParametersModel {BinaryBody = new byte[] {255}};
 
         // Act
         var result = _mapper.Map<RequestParametersDto>(model);

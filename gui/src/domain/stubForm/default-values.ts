@@ -1,6 +1,7 @@
 import type { StubXpathModel } from "@/domain/stub/stub-xpath-model";
 import type { StubResponseImageModel } from "@/domain/stub/stub-response-image-model";
 import { ResponseImageType } from "@/domain/stub/enums/response-image-type";
+import type { StubResponseReplaceModel } from "@/domain/stub/stub-response-replace-model";
 
 export const defaultValues = {
   description: "A description for the stub.",
@@ -85,4 +86,17 @@ export const defaultValues = {
   exactHits: 3,
   scenarioState: "new-state",
   newScenarioState: "new-state",
+  stringReplace: [
+    {
+      text: "old value",
+      ignoreCase: true,
+      replaceWith: "New value",
+    } as StubResponseReplaceModel,
+  ],
+  regexReplace: [
+    {
+      regex: "(ipsum|consectetur)",
+      replaceWith: "New value",
+    } as StubResponseReplaceModel,
+  ],
 };
