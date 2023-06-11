@@ -88,12 +88,12 @@ public class RequestVerificationTest
         await client.VerifyStubCalledAsync("some-stub-id", Never(), DateTime.UtcNow.AddSeconds(-10));
     }
 
-    private static TestcontainersContainer BuildTestContainer()
+    private static IContainer BuildTestContainer()
     {
         // Start a HttPlaceholder Docker container.
         // Make sure you can execute Docker on your system without sudo, or else the container can't start.
-        return new TestcontainersBuilder<TestcontainersContainer>()
-            .WithImage("dukeofharen/httplaceholder:2022.11.20.108")
+        return new ContainerBuilder()
+            .WithImage("dukeofharen/httplaceholder:2023.4.25.131")
             .WithName("httplaceholder")
             .WithPortBinding(1337, 5000)
             .WithExposedPort(5000)
