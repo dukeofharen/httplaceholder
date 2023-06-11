@@ -163,7 +163,7 @@
 
 <script lang="ts">
 import { useRoute } from "vue-router";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch, onUnmounted } from "vue";
 import Stub from "@/components/stub/Stub.vue";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
@@ -179,6 +179,8 @@ import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-mod
 import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 import dayjs from "dayjs";
 import { vsprintf } from "sprintf-js";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import type { StubModel } from "@/domain/stub/stub-model";
 
 export default defineComponent({
   name: "Stubs",
@@ -196,6 +198,7 @@ export default defineComponent({
     const showDisableStubsModal = ref(false);
     const showEnableStubsModal = ref(false);
     const showDeleteStubsModal = ref(false);
+    let signalrConnection: HubConnection;
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter: StubSavedFilterModel = {
@@ -237,6 +240,24 @@ export default defineComponent({
 
       stubsResult.sort(compare);
       return stubsResult;
+    };
+
+    const initializeSignalR = async () => {
+      signalrConnection = new HubConnectionBuilder()
+        .withUrl("/stubHub")
+        .build();
+      signalrConnection.on("StubAdded", (stub: StubModel) => {
+        // TODO FullStubOverviewModel
+        console.log("Stub added", stub);
+      });
+      signalrConnection.on("StubDeleted", (stubId: string) => {
+        console.log("Stub deleted", stubId);
+      });
+      try {
+        await signalrConnection.start();
+      } catch (err: any) {
+        console.log(err.toString());
+      }
     };
 
     // Computed
@@ -356,7 +377,14 @@ export default defineComponent({
     watch(filter, () => filterChanged(), { deep: true });
 
     // Lifecycle
-    onMounted(async () => await loadData());
+    onMounted(async () => {
+      await Promise.all([loadData(), initializeSignalR()]);
+    });
+    onUnmounted(() => {
+      if (signalrConnection) {
+        signalrConnection.stop();
+      }
+    });
 
     return {
       stubs,
