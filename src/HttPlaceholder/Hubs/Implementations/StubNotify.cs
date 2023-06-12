@@ -24,9 +24,9 @@ public class StubNotify : IStubNotify
     }
 
     /// <inheritdoc />
-    public async Task StubAddedAsync(StubModel stub, CancellationToken cancellationToken)
+    public async Task StubAddedAsync(FullStubOverviewModel stub, CancellationToken cancellationToken)
     {
-        var input = _mapper.Map<StubDto>(stub);
+        var input = _mapper.Map<FullStubOverviewDto>(stub);
         await _hubContext.Clients.All.SendAsync("StubAdded", input, cancellationToken);
     }
 

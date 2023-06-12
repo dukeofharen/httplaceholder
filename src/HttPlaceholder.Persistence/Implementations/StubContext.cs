@@ -77,8 +77,14 @@ internal class StubContext : IStubContext, ISingletonService
 
         var source = GetWritableStubSource();
         await source.AddStubAsync(stub, cancellationToken);
-        await _stubNotify.StubAddedAsync(stub, cancellationToken);
-        return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
+        var result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
+        var overviewModel = new FullStubOverviewModel
+        {
+            Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
+            Metadata = result.Metadata
+        };
+        await _stubNotify.StubAddedAsync(overviewModel, cancellationToken);
+        return result;
     }
 
     /// <inheritdoc />
@@ -138,7 +144,12 @@ internal class StubContext : IStubContext, ISingletonService
         {
             stub.Tenant = tenant;
             await source.AddStubAsync(stub, cancellationToken);
-            await _stubNotify.StubAddedAsync(stub, cancellationToken);
+            var overviewModel = new FullStubOverviewModel
+            {
+                Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
+                Metadata = new StubMetadataModel {ReadOnly = false}
+            };
+            await _stubNotify.StubAddedAsync(overviewModel, cancellationToken);
         }
     }
 

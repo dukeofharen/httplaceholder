@@ -30,10 +30,10 @@ public class StubNotifyFacts
         var mapperMock = _mocker.GetMock<IMapper>();
         var notify = _mocker.CreateInstance<StubNotify>();
 
-        var input = new StubModel();
-        var mappedDto = new StubDto();
+        var input = new FullStubOverviewModel();
+        var mappedDto = new FullStubOverviewDto();
         mapperMock
-            .Setup(m => m.Map<StubDto>(input))
+            .Setup(m => m.Map<FullStubOverviewDto>(input))
             .Returns(mappedDto);
 
         // Act

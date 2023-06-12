@@ -176,7 +176,7 @@ public class StubContextFacts
 
         // assert
         stubSource.Verify(m => m.AddStubAsync(stubToBeAdded, It.IsAny<CancellationToken>()), Times.Once);
-        stubNotifyMock.Verify(m => m.StubAddedAsync(stubToBeAdded, It.IsAny<CancellationToken>()));
+        stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stubToBeAdded.Id), It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -614,11 +614,11 @@ public class StubContextFacts
             Times.Once);
         stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub3.Id), It.IsAny<CancellationToken>()),
             Times.Once);
-        stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<StubModel>(s => s.Id == stub1.Id), It.IsAny<CancellationToken>()),
+        stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stub1.Id), It.IsAny<CancellationToken>()),
             Times.Never);
-        stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<StubModel>(s => s.Id == stub2.Id), It.IsAny<CancellationToken>()),
+        stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stub2.Id), It.IsAny<CancellationToken>()),
             Times.Once);
-        stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<StubModel>(s => s.Id == stub3.Id), It.IsAny<CancellationToken>()),
+        stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stub3.Id), It.IsAny<CancellationToken>()),
             Times.Once);
 
         Assert.IsTrue(newStubs.All(s => s.Tenant == tenant1));
