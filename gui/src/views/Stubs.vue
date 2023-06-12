@@ -163,7 +163,14 @@
 
 <script lang="ts">
 import { useRoute } from "vue-router";
-import { computed, onMounted, ref, watch, onUnmounted } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from "vue";
 import Stub from "@/components/stub/Stub.vue";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
@@ -174,13 +181,11 @@ import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useStubsStore } from "@/store/stubs";
 import { useSettingsStore } from "@/store/settings";
-import { defineComponent } from "vue";
 import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
 import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 import dayjs from "dayjs";
 import { vsprintf } from "sprintf-js";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
-import type { StubModel } from "@/domain/stub/stub-model";
 
 export default defineComponent({
   name: "Stubs",
@@ -246,12 +251,16 @@ export default defineComponent({
       signalrConnection = new HubConnectionBuilder()
         .withUrl("/stubHub")
         .build();
-      signalrConnection.on("StubAdded", (stub: StubModel) => {
-        // TODO FullStubOverviewModel
-        console.log("Stub added", stub);
+      signalrConnection.on("StubAdded", (stub: FullStubOverviewModel) => {
+        if (!stubs.value.find((s) => s.stub.id === stub.stub.id)) {
+          stubs.value.push(stub);
+        }
       });
       signalrConnection.on("StubDeleted", (stubId: string) => {
-        console.log("Stub deleted", stubId);
+        const stub = stubs.value.find((s) => s.stub.id === stubId);
+        if (stub) {
+          stubs.value.splice(stubs.value.indexOf(stub, 1));
+        }
       });
       try {
         await signalrConnection.start();
