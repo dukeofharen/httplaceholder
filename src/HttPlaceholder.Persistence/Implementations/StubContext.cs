@@ -18,13 +18,18 @@ internal class StubContext : IStubContext, ISingletonService
 {
     private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IRequestNotify _requestNotify;
+    private readonly IStubNotify _stubNotify;
     private readonly IEnumerable<IStubSource> _stubSources;
 
-    public StubContext(IEnumerable<IStubSource> stubSources, IOptionsMonitor<SettingsModel> options,
-        IRequestNotify requestNotify)
+    public StubContext(
+        IEnumerable<IStubSource> stubSources,
+        IOptionsMonitor<SettingsModel> options,
+        IRequestNotify requestNotify,
+        IStubNotify stubNotify)
     {
         _stubSources = stubSources;
         _requestNotify = requestNotify;
+        _stubNotify = stubNotify;
         _options = options;
     }
 
@@ -72,12 +77,23 @@ internal class StubContext : IStubContext, ISingletonService
 
         var source = GetWritableStubSource();
         await source.AddStubAsync(stub, cancellationToken);
-        return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
+        var result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
+        var overviewModel = new FullStubOverviewModel
+        {
+            Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
+            Metadata = result.Metadata
+        };
+        await _stubNotify.StubAddedAsync(overviewModel, cancellationToken);
+        return result;
     }
 
     /// <inheritdoc />
-    public async Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken) =>
-        await GetWritableStubSource().DeleteStubAsync(stubId, cancellationToken);
+    public async Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
+    {
+        var result = await GetWritableStubSource().DeleteStubAsync(stubId, cancellationToken);
+        await _stubNotify.StubDeletedAsync(stubId, cancellationToken);
+        return result;
+    }
 
     /// <inheritdoc />
     public async Task DeleteAllStubsAsync(string tenant, CancellationToken cancellationToken)
@@ -88,6 +104,7 @@ internal class StubContext : IStubContext, ISingletonService
         foreach (var stub in stubs)
         {
             await source.DeleteStubAsync(stub.Id, cancellationToken);
+            await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
         }
     }
 
@@ -99,6 +116,7 @@ internal class StubContext : IStubContext, ISingletonService
         foreach (var stub in stubs)
         {
             await source.DeleteStubAsync(stub.Id, cancellationToken);
+            await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
         }
     }
 
@@ -118,6 +136,7 @@ internal class StubContext : IStubContext, ISingletonService
         foreach (var stub in existingStubs)
         {
             await source.DeleteStubAsync(stub.Id, cancellationToken);
+            await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
         }
 
         // Make sure the new selection of stubs all have the new tenant and add them to the stub source.
@@ -125,6 +144,12 @@ internal class StubContext : IStubContext, ISingletonService
         {
             stub.Tenant = tenant;
             await source.AddStubAsync(stub, cancellationToken);
+            var overviewModel = new FullStubOverviewModel
+            {
+                Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
+                Metadata = new StubMetadataModel {ReadOnly = false}
+            };
+            await _stubNotify.StubAddedAsync(overviewModel, cancellationToken);
         }
     }
 

@@ -24,6 +24,7 @@ public static class SignalRModule
                 options.PayloadSerializerSettings.ContractResolver = new CamelCaseExceptDictionaryKeysResolver());
         services.AddTransient<IRequestNotify, RequestNotify>();
         services.AddTransient<IScenarioNotify, ScenarioNotify>();
+        services.AddTransient<IStubNotify, StubNotify>();
         return services;
     }
 
@@ -35,6 +36,7 @@ public static class SignalRModule
     {
         options.MapHub<RequestHub>("/requestHub");
         options.MapHub<ScenarioHub>("/scenarioHub");
+        options.MapHub<StubHub>("/stubHub");
         return options;
     }
 }

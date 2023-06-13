@@ -28,6 +28,10 @@ export default defineConfig({
         target: "http://localhost:5000",
         ws: true,
       },
+      "/stubHub": {
+        target: "http://localhost:5000",
+        ws: true,
+      },
     },
   },
   base: "",

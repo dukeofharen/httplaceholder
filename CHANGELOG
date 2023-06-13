@@ -11,6 +11,7 @@
 - If a PDF is sent as request or returned as response, the PDF will be rendered in the UI (https://github.com/dukeofharen/httplaceholder/pull/307).
 - Fixed requests bug: whenever the request parameters were not saved (may happen in some rare cases when HttPlaceholder is DDOS'ed), the API returned an HTTP 500 (https://github.com/dukeofharen/httplaceholder/pull/308).
 - Added string / regex replacement response writer (https://github.com/dukeofharen/httplaceholder/pull/309).
+- Added SignalR connection for stubs (https://github.com/dukeofharen/httplaceholder/pull/310).
 
 [2023.4.25]
 - Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).

@@ -163,7 +163,14 @@
 
 <script lang="ts">
 import { useRoute } from "vue-router";
-import { computed, onMounted, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from "vue";
 import Stub from "@/components/stub/Stub.vue";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
@@ -174,11 +181,11 @@ import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useStubsStore } from "@/store/stubs";
 import { useSettingsStore } from "@/store/settings";
-import { defineComponent } from "vue";
 import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
 import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 import dayjs from "dayjs";
 import { vsprintf } from "sprintf-js";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 
 export default defineComponent({
   name: "Stubs",
@@ -196,6 +203,7 @@ export default defineComponent({
     const showDisableStubsModal = ref(false);
     const showEnableStubsModal = ref(false);
     const showDeleteStubsModal = ref(false);
+    let signalrConnection: HubConnection;
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter: StubSavedFilterModel = {
@@ -237,6 +245,28 @@ export default defineComponent({
 
       stubsResult.sort(compare);
       return stubsResult;
+    };
+
+    const initializeSignalR = async () => {
+      signalrConnection = new HubConnectionBuilder()
+        .withUrl("/stubHub")
+        .build();
+      signalrConnection.on("StubAdded", (stub: FullStubOverviewModel) => {
+        if (!stubs.value.find((s) => s.stub.id === stub.stub.id)) {
+          stubs.value.push(stub);
+        }
+      });
+      signalrConnection.on("StubDeleted", (stubId: string) => {
+        const stub = stubs.value.find((s) => s.stub.id === stubId);
+        if (stub) {
+          stubs.value.splice(stubs.value.indexOf(stub, 1));
+        }
+      });
+      try {
+        await signalrConnection.start();
+      } catch (err: any) {
+        console.log(err.toString());
+      }
     };
 
     // Computed
@@ -356,7 +386,14 @@ export default defineComponent({
     watch(filter, () => filterChanged(), { deep: true });
 
     // Lifecycle
-    onMounted(async () => await loadData());
+    onMounted(async () => {
+      await Promise.all([loadData(), initializeSignalR()]);
+    });
+    onUnmounted(() => {
+      if (signalrConnection) {
+        signalrConnection.stop();
+      }
+    });
 
     return {
       stubs,
