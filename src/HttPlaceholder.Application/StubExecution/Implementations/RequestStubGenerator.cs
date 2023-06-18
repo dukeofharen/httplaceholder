@@ -45,7 +45,7 @@ internal class RequestStubGenerator : IRequestStubGenerator, ISingletonService
         var request = _mapper.Map<HttpRequestModel>(requestResult.RequestParameters);
         var response = await _stubContext.GetResponseAsync(requestCorrelationId, cancellationToken);
         var httpResponseModel = _mapper.Map<HttpResponseModel>(response);
-        var stubResponse = response != null
+        var stubResponse = httpResponseModel != null
             ? await _httpResponseToStubResponseService.ConvertToResponseAsync(httpResponseModel, cancellationToken)
             : new StubResponseModel {Text = "OK!"};
         var stub = new StubModel

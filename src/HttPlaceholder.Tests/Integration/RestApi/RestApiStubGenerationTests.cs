@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using HttPlaceholder.Web.Shared.Dto.v1.Requests;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;
 
@@ -106,6 +107,50 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
 
         // Check that the stub is not added to the stub source.
         Assert.AreEqual(0, StubSource.StubModels.Count);
+    }
+
+    [TestMethod]
+    public async Task RestApiIntegration_StubGeneration_GenerateRequestAndResponse()
+    {
+        // Arrange
+        ClientDataResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns("127.0.0.1");
+
+        ClientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns("localhost");
+
+        var correlationId = Guid.NewGuid().ToString();
+        var requestResult = new RequestResultModel
+        {
+            CorrelationId = correlationId,
+            RequestParameters =
+                new RequestParametersModel {Url = "/the-url", Headers = new Dictionary<string, string>(), Method = "GET"},
+            HasResponse = true,
+            ExecutingStubId = "x"
+        };
+        StubSource.RequestResultModels.Add(requestResult);
+        StubSource.RequestResponseMap.Add(requestResult, new ResponseModel {Body = "the content"u8.ToArray()});
+
+        // Register a new stub for the request
+        var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
+        var apiRequest = new HttpRequestMessage
+        {
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new StringContent(
+                JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}),
+                Encoding.UTF8, MimeTypes.JsonMime)
+        };
+        var response = await Client.SendAsync(apiRequest);
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+
+        // Check the response.
+        var stub = JsonConvert.DeserializeObject<FullStubModel>(content);
+        Assert.AreEqual("/the-url", ((JObject)stub.Stub.Conditions.Url.Path).ToObject<StubConditionStringCheckingModel>().StringEquals);
+        Assert.AreEqual("the content", stub.Stub.Response.Text);
     }
 
     private HttpRequestMessage CreateTestStubRequest()
