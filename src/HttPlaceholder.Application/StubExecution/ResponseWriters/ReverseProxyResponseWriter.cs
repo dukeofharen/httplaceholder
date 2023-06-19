@@ -90,20 +90,20 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         try
         {
             using var responseMessage = await httpClient.SendAsync(request, cancellationToken);
-            var content = responseMessage.Content != null
-                ? await responseMessage.Content.ReadAsByteArrayAsync()
-                : Array.Empty<byte>();
+            var content = await responseMessage.Content.ReadAsByteArrayAsync(cancellationToken);
             var rawResponseHeaders = responseMessage.Headers
                 .ToDictionary(h => h.Key, h => h.Value.First());
+            var isBinary = !content.IsValidAscii();
             if (stub.Response.ReverseProxy.ReplaceRootUrl == true)
             {
-                var replacedContent = Content(stub, content, proxyUrl, appendPath, rawResponseHeaders);
+                var replacedContent =
+                    ReplaceUrlInContent(stub, content, isBinary, proxyUrl, appendPath, rawResponseHeaders);
                 content = replacedContent.Content;
                 rawResponseHeaders = replacedContent.RawResponseHeaders;
             }
 
             response.Body = content;
-            response.BodyIsBinary = !content.IsValidAscii();
+            response.BodyIsBinary = isBinary;
             var responseHeaders = GetResponseHeaders(responseMessage, rawResponseHeaders);
             foreach (var header in responseHeaders)
             {
@@ -137,11 +137,14 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
             .ToDictionary(h => h.Key, h => h.Value);
     }
 
-    private (byte[] Content, Dictionary<string, string> RawResponseHeaders) Content(StubModel stub, byte[] content,
-        string proxyUrl, bool appendPath,
+    private (byte[] Content, Dictionary<string, string> RawResponseHeaders) ReplaceUrlInContent(
+        StubModel stub,
+        byte[] content,
+        bool isBinary,
+        string proxyUrl,
+        bool appendPath,
         Dictionary<string, string> rawResponseHeaders)
     {
-        var contentAsString = Encoding.UTF8.GetString(content);
         var rootUrlParts = proxyUrl.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
         var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
         var httPlaceholderRootUrl = _httpContextService.RootUrl;
@@ -151,8 +154,12 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
             httPlaceholderRootUrl += path.EnsureStartsWith("/");
         }
 
-        contentAsString = contentAsString.Replace(rootUrl, httPlaceholderRootUrl);
-        content = Encoding.UTF8.GetBytes(contentAsString);
+        if (!isBinary)
+        {
+            var contentAsString = Encoding.UTF8.GetString(content).Replace(rootUrl, httPlaceholderRootUrl);
+            content = Encoding.UTF8.GetBytes(contentAsString);
+        }
+
         return (content, rawResponseHeaders
             .ToDictionary(h => h.Key, h => h.Value.Replace(rootUrl, httPlaceholderRootUrl)));
     }

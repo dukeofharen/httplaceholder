@@ -259,7 +259,7 @@ export default defineComponent({
       signalrConnection.on("StubDeleted", (stubId: string) => {
         const stub = stubs.value.find((s) => s.stub.id === stubId);
         if (stub) {
-          stubs.value.splice(stubs.value.indexOf(stub, 1));
+          stubs.value.splice(stubs.value.indexOf(stub), 1);
         }
       });
       try {

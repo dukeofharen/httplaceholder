@@ -17,17 +17,20 @@ internal class RequestStubGenerator : IRequestStubGenerator, ISingletonService
     private readonly ILogger<RequestStubGenerator> _logger;
     private readonly IMapper _mapper;
     private readonly IStubContext _stubContext;
+    private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;
 
     public RequestStubGenerator(
         IStubContext stubContext,
         ILogger<RequestStubGenerator> logger,
         IMapper mapper,
-        IHttpRequestToConditionsService httpRequestToConditionsService)
+        IHttpRequestToConditionsService httpRequestToConditionsService,
+        IHttpResponseToStubResponseService httpResponseToStubResponseService)
     {
         _stubContext = stubContext;
         _logger = logger;
         _mapper = mapper;
         _httpRequestToConditionsService = httpRequestToConditionsService;
+        _httpResponseToStubResponseService = httpResponseToStubResponseService;
     }
 
     /// <inheritdoc />
@@ -40,10 +43,15 @@ internal class RequestStubGenerator : IRequestStubGenerator, ISingletonService
         var requestResult = await _stubContext.GetRequestResultAsync(requestCorrelationId, cancellationToken)
             .IfNull(() => throw new NotFoundException(nameof(RequestResultModel), requestCorrelationId));
         var request = _mapper.Map<HttpRequestModel>(requestResult.RequestParameters);
+        var response = await _stubContext.GetResponseAsync(requestCorrelationId, cancellationToken);
+        var httpResponseModel = _mapper.Map<HttpResponseModel>(response);
+        var stubResponse = httpResponseModel != null
+            ? await _httpResponseToStubResponseService.ConvertToResponseAsync(httpResponseModel, cancellationToken)
+            : new StubResponseModel {Text = "OK!"};
         var stub = new StubModel
         {
             Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken),
-            Response = {Text = "OK!"}
+            Response = stubResponse
         };
 
         // Generate an ID based on the created stub.

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7152af4c-ab96-43bf-a8b0-66dd4a00b300",
+		"_postman_id": "950b32ea-a46e-400d-875e-87b87f20b0a7",
 		"name": "HttPlaceholder Integration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -6553,7 +6553,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.environment.set(\"corrId\", pm.response.headers.get('x-httplaceholder-correlation'));"
+													"pm.globals.set(\"corrId\", pm.response.headers.get('x-httplaceholder-correlation'));"
 												],
 												"type": "text/javascript"
 											}
@@ -6981,7 +6981,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -7121,7 +7121,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -7279,7 +7279,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -7441,7 +7441,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -7562,7 +7562,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -7672,7 +7672,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -7781,7 +7781,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -7903,7 +7903,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -8049,7 +8049,7 @@
 																	"});",
 																	"",
 																	"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-																	"pm.environment.set(\"corrId\", corrId);"
+																	"pm.globals.set(\"corrId\", corrId);"
 																],
 																"type": "text/javascript"
 															}
@@ -8185,7 +8185,7 @@
 																	"});",
 																	"",
 																	"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-																	"pm.environment.set(\"corrId\", corrId);"
+																	"pm.globals.set(\"corrId\", corrId);"
 																],
 																"type": "text/javascript"
 															}
@@ -8324,7 +8324,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -8433,7 +8433,7 @@
 															"});",
 															"",
 															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-															"pm.environment.set(\"corrId\", corrId);"
+															"pm.globals.set(\"corrId\", corrId);"
 														],
 														"type": "text/javascript"
 													}
@@ -8542,6 +8542,110 @@
 															"key": "key2",
 															"value": "val2"
 														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Stub generation with response",
+									"item": [
+										{
+											"name": "[Create stub] Create basic stub",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "text/yaml",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "id: stub-generation-with-response\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /stub-generation-with-response\nresponse:\n  text: OK STUB GENERATION WITH RESPONSE"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/stubs",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"stubs"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Do request",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 501\", function () {",
+															"    pm.response.to.have.status(200);",
+															"});",
+															"",
+															"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
+															"pm.globals.set(\"corrId\", corrId);"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{rootUrl}}stub-generation-with-response",
+													"host": [
+														"{{rootUrl}}stub-generation-with-response"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Create stub based on request",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check generated stub\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    pm.expect(jsonData.stub.response.text).to.eql(\"OK STUB GENERATION WITH RESPONSE\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"doNotCreateStub\": false\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/requests/{{corrId}}/stubs",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"requests",
+														"{{corrId}}",
+														"stubs"
 													]
 												}
 											},
@@ -9735,7 +9839,7 @@
 											"script": {
 												"exec": [
 													"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
-													"pm.environment.set(\"corrId\", corrId);"
+													"pm.globals.set(\"corrId\", corrId);"
 												],
 												"type": "text/javascript"
 											}
