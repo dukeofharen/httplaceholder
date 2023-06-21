@@ -14,6 +14,7 @@ public class MimeServiceFacts
     [DataRow("file.bin", "application/octet-stream")]
     [DataRow("jpeg", "application/octet-stream")]
     [DataRow("file.json", "application/json")]
+    [DataRow("FILE.JSON", "application/json")]
     public void GetMimeType_HappyFlow(string input, string expectedOutput)
     {
         // Act
