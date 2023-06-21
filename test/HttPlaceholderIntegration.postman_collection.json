@@ -3559,6 +3559,9 @@
 							"item": [
 								{
 									"name": "[Create stub] Temporary redirect",
+									"protocolProfileBehavior": {
+										"followRedirects": false
+									},
 									"request": {
 										"method": "POST",
 										"header": [
@@ -3585,34 +3588,10 @@
 									"response": []
 								},
 								{
-									"name": "[Create stub] Temporary redirect location",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "text/yaml"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "id: temporary-redirect-location\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /temp-redirect-location\nresponse:\n  text: OK TEMP REDIRECT"
-										},
-										"url": {
-											"raw": "{{rootUrl}}ph-api/stubs",
-											"host": [
-												"{{rootUrl}}ph-api"
-											],
-											"path": [
-												"stubs"
-											]
-										}
-									},
-									"response": []
-								},
-								{
 									"name": "[Create stub] Permanent redirect",
+									"protocolProfileBehavior": {
+										"followRedirects": false
+									},
 									"request": {
 										"method": "POST",
 										"header": [
@@ -3639,7 +3618,10 @@
 									"response": []
 								},
 								{
-									"name": "[Create stub] Permanent redirect location",
+									"name": "[Create stub] Moved permanently",
+									"protocolProfileBehavior": {
+										"followRedirects": false
+									},
 									"request": {
 										"method": "POST",
 										"header": [
@@ -3651,7 +3633,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: permanent-redirect-location\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /permanent-redirect-location\nresponse:\n  text: OK PERMANENT REDIRECT"
+											"raw": "id: moved-permanently\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /moved-permanently\nresponse:\n  movedPermanently: {{rootUrl}}permanent-redirect-location"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -3672,14 +3654,17 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Body is correct\", function () {",
-													"    pm.response.to.have.body(\"OK TEMP REDIRECT\");",
+													"pm.test(\"Status code is 307\", function () {",
+													"    pm.response.to.have.status(307);",
 													"});"
 												],
 												"type": "text/javascript"
 											}
 										}
 									],
+									"protocolProfileBehavior": {
+										"followRedirects": false
+									},
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -3699,14 +3684,17 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Body is correct\", function () {",
-													"    pm.response.to.have.body(\"OK PERMANENT REDIRECT\");",
+													"pm.test(\"Status code is 308\", function () {",
+													"    pm.response.to.have.status(308);",
 													"});"
 												],
 												"type": "text/javascript"
 											}
 										}
 									],
+									"protocolProfileBehavior": {
+										"followRedirects": false
+									},
 									"request": {
 										"method": "GET",
 										"header": [],
@@ -3714,6 +3702,36 @@
 											"raw": "{{rootUrl}}permanent-redirect",
 											"host": [
 												"{{rootUrl}}permanent-redirect"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test moved permanently redirect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 301\", function () {",
+													"    pm.response.to.have.status(301);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"followRedirects": false
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}moved-permanently",
+											"host": [
+												"{{rootUrl}}moved-permanently"
 											]
 										}
 									},
@@ -9401,7 +9419,7 @@
 													"",
 													"pm.test(\"Check stub 1\", function () {",
 													"    const stub = jsonData[0].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-b9615b8d3b66b9def9afcfc8a1d9898b\");",
+													"    pm.expect(stub.id).to.eql(\"generated-cc584a2391a95c12edd0933256e5a958\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"GET\");",
@@ -9421,7 +9439,7 @@
 													"",
 													"pm.test(\"Check stub 2\", function () {",
 													"    const stub = jsonData[1].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-c1263ccf21a252100d9a8e2f7d2b7259\");",
+													"    pm.expect(stub.id).to.eql(\"generated-cb4317312ab16d1c6653739481304b5b\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"GET\");",
@@ -9441,7 +9459,7 @@
 													"",
 													"pm.test(\"Check stub 3\", function () {",
 													"    const stub = jsonData[2].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-cf97df0e67c9cb02e28da59ee5e885f7\");",
+													"    pm.expect(stub.id).to.eql(\"generated-de2a96f849d00a771d4efe31034050f3\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"GET\");",
@@ -9461,7 +9479,7 @@
 													"",
 													"pm.test(\"Check stub 4\", function () {",
 													"    const stub = jsonData[3].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-6333673fddbfe47ff2d1240b541c44d5\");",
+													"    pm.expect(stub.id).to.eql(\"generated-fa66da97d01dcd014fe58ce984c7dde5\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"GET\");",
@@ -9481,7 +9499,7 @@
 													"",
 													"pm.test(\"Check stub 5\", function () {",
 													"    const stub = jsonData[4].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-f358e4c60ebd1a3fba8b795f718b1192\");",
+													"    pm.expect(stub.id).to.eql(\"generated-6e7725d7c4c38aee5aa6a29bc7492915\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"PUT\");",

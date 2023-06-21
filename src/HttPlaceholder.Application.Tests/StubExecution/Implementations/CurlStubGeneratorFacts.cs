@@ -24,8 +24,8 @@ public class CurlStubGeneratorFacts
 
         const string input = "curl commands";
         const string prefix = "prefix";
-        const string expectedStubId1 = "prefixgenerated-819b15bb074e8525c3f5a92637ed5450";
-        const string expectedStubId2 = "prefixgenerated-4b2683c2e53ed8d0a5829887373ce578";
+        const string expectedStubId1 = "prefixgenerated-ddacdb627d5c61dd80b527cc5eb0eea3";
+        const string expectedStubId2 = "prefixgenerated-d8973391971f15c1c5de87bd3026aeb3";
 
         var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
@@ -77,8 +77,8 @@ public class CurlStubGeneratorFacts
         const string input = "curl commands";
         const string tenant = "tenant1";
         const string prefix = "prefix";
-        const string expectedStubId1 = "prefixgenerated-f75323d717c88403012eb92133d7cab4";
-        const string expectedStubId2 = "prefixgenerated-e78f1fa3ca61910d7bcea4ea35e8184f";
+        const string expectedStubId1 = "prefixgenerated-f029695b0912f4d28b69d6d37406b53a";
+        const string expectedStubId2 = "prefixgenerated-d4720af666f43bf7ee2c5be9d5ce094a";
 
         var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
