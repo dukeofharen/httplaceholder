@@ -14,6 +14,7 @@
 - Added SignalR connection for stubs (https://github.com/dukeofharen/httplaceholder/pull/310).
 - When generating a stub based on a request, also take the saved saved response (if there is one) into account (https://github.com/dukeofharen/httplaceholder/pull/311).
 - When using the file response writer and no specific content type is set; determine the content type based on the file extension (https://github.com/dukeofharen/httplaceholder/pull/312).
+- Show executing stub ID when hovering over a request in the UI (https://github.com/dukeofharen/httplaceholder/pull/312).
 
 [2023.4.25]
 - Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).
