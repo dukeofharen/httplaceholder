@@ -7,5 +7,5 @@ namespace HttPlaceholder.Infrastructure.Implementations;
 public class MimeService : IMimeService, ISingletonService
 {
     /// <inheritdoc />
-    public string GetMimeType(string input) => MimeTypes.GetMimeType("awesome-file.json");
+    public string GetMimeType(string input) => MimeTypes.GetMimeType(input);
 }
