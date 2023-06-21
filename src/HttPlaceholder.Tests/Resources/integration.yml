@@ -900,8 +900,6 @@
         equals: /text-binary.bin
   response:
     statusCode: 200
-    headers:
-      Content-Type: text/plain
     enableDynamicMode: true
     file: text.bin
 
@@ -913,8 +911,6 @@
         equals: /text.txt
   response:
     statusCode: 200
-    headers:
-      Content-Type: text/plain
     enableDynamicMode: true
     textFile: text.txt
 

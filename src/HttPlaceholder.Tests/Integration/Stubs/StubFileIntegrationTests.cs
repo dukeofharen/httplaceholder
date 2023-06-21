@@ -1,8 +1,10 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
+[TestClass]
 public class StubFileIntegrationTests : StubIntegrationTestBase
 {
     [TestInitialize]
@@ -32,6 +34,7 @@ public class StubFileIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(fileContents, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("application/octet-stream", response.Content.Headers.Single(h => h.Key == "Content-Type").Value.Single());
     }
 
     [TestMethod]
@@ -55,5 +58,6 @@ public class StubFileIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("File contents yo! value123", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("text/plain", response.Content.Headers.Single(h => h.Key == "Content-Type").Value.Single());
     }
 }
