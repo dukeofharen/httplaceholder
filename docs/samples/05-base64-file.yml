@@ -10,8 +10,6 @@
   response:
     statusCode: 200
     file: cat_file.jpg
-    headers:
-      Content-Type: image/jpeg
 
 # A simple GET request script that contains a base64 encoded string (this can for example be a binary). In this case, just go to http://localhost:{port}/cat.jpg
 - id: image-base64
