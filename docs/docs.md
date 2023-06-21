@@ -1403,7 +1403,7 @@ If you don't specify the full path, HttPlaceholder will look in the same folder 
 
 #### Scenario 2
 
-You can also use the full path to a file.
+You can also use the full path to a file. NOTE! This only works if you enable the setting [allow global file search](#allow-global-file-search-optional). This setting is added as a security measure.
 
 ```yml
 - id: image-file
