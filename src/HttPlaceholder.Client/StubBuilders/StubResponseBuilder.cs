@@ -216,7 +216,7 @@ public sealed class StubResponseBuilder
     }
 
     /// <summary>
-    ///     Adds a temporary redirect to the response definition.
+    ///     Adds a temporary redirect (HTTP 307) to the response definition.
     /// </summary>
     /// <param name="url">The URL to redirect to.</param>
     /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
@@ -227,13 +227,24 @@ public sealed class StubResponseBuilder
     }
 
     /// <summary>
-    ///     Adds a permanent redirect to the response definition.
+    ///     Adds a permanent redirect (HTTP 308) to the response definition.
     /// </summary>
     /// <param name="url">The URL to redirect to.</param>
     /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
     public StubResponseBuilder WithPermanentRedirect(string url)
     {
         _response.PermanentRedirect = url;
+        return this;
+    }
+
+    /// <summary>
+    ///     Adds a moved permanently (HTTP 301) redirect to the response definition.
+    /// </summary>
+    /// <param name="url">The URL to redirect to.</param>
+    /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
+    public StubResponseBuilder WithMovedPermanentlyRedirect(string url)
+    {
+        _response.MovedPermanently = url;
         return this;
     }
 

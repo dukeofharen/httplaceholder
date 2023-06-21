@@ -261,6 +261,15 @@
   response:
     permanentRedirect: https://reddit.com
 
+- id: moved-permanently
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /moved-permanently
+  response:
+    permanentRedirect: https://ducode.org
+
 - id: client-ip-1
   conditions:
     method: GET

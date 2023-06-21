@@ -44,6 +44,23 @@ public class RedirectResponseWriterFacts
     }
 
     [TestMethod]
+    public async Task RedirectResponseWriter_WriteToResponseAsync_MovedPermanently()
+    {
+        // arrange
+        var stub = new StubModel {Response = new StubResponseModel {MovedPermanently = "https://google.com"}};
+
+        var response = new ResponseModel();
+
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
+
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.AreEqual(301, response.StatusCode);
+        Assert.AreEqual("https://google.com", response.Headers[HeaderKeys.Location]);
+    }
+
+    [TestMethod]
     public async Task RedirectResponseWriter_WriteToResponseAsync_PermanentRedirect()
     {
         // arrange
@@ -56,7 +73,7 @@ public class RedirectResponseWriterFacts
 
         // assert
         Assert.IsTrue(result.Executed);
-        Assert.AreEqual(301, response.StatusCode);
+        Assert.AreEqual(308, response.StatusCode);
         Assert.AreEqual("https://google.com", response.Headers[HeaderKeys.Location]);
     }
 }

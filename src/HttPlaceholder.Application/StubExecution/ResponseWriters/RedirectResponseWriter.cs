@@ -18,7 +18,8 @@ internal class RedirectResponseWriter : IResponseWriter, ISingletonService
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
         CancellationToken cancellationToken) =>
         Task.FromResult(Redirect(stub.Response?.TemporaryRedirect, HttpStatusCode.TemporaryRedirect, response) ??
-                        Redirect(stub.Response?.PermanentRedirect, HttpStatusCode.MovedPermanently, response) ??
+                        Redirect(stub.Response?.PermanentRedirect, HttpStatusCode.PermanentRedirect, response) ??
+                        Redirect(stub.Response?.MovedPermanently, HttpStatusCode.MovedPermanently, response) ??
                         StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
 
     private StubResponseWriterResultModel Redirect(string url, HttpStatusCode httpStatusCode, ResponseModel response)
