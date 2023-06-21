@@ -22,17 +22,20 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
     private readonly ILogger<FileResponseWriter> _logger;
     private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IStubRootPathResolver _stubRootPathResolver;
+    private readonly IMimeService _mimeService;
 
     public FileResponseWriter(
         IFileService fileService,
         IStubRootPathResolver stubRootPathResolver,
         IOptionsMonitor<SettingsModel> options,
-        ILogger<FileResponseWriter> logger)
+        ILogger<FileResponseWriter> logger,
+        IMimeService mimeService)
     {
         _fileService = fileService;
         _stubRootPathResolver = stubRootPathResolver;
         _options = options;
         _logger = logger;
+        _mimeService = mimeService;
     }
 
     /// <inheritdoc />
@@ -85,6 +88,7 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
             return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
+        response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, _mimeService.GetMimeType(finalFilePath));
         response.Body = await _fileService.ReadAllBytesAsync(finalFilePath, cancellationToken);
         response.BodyIsBinary = string.IsNullOrWhiteSpace(stub.Response.TextFile);
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);

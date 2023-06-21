@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -93,6 +94,7 @@ public class FileResponseWriterFacts
         // Arrange
         _settings.Stub.AllowGlobalFileSearch = true;
         var fileServiceMock = _mocker.GetMock<IFileService>();
+        var mimeServiceMock = _mocker.GetMock<IMimeService>();
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
         var body = new byte[] {1, 2, 3};
@@ -117,6 +119,11 @@ public class FileResponseWriterFacts
             .Setup(m => m.ReadAllBytesAsync(path, It.IsAny<CancellationToken>()))
             .ReturnsAsync(body);
 
+        const string mime = "image/png";
+        mimeServiceMock
+            .Setup(m => m.GetMimeType(path))
+            .Returns(mime);
+
         // Act
         var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
@@ -124,6 +131,7 @@ public class FileResponseWriterFacts
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(body, response.Body);
         Assert.AreEqual(response.BodyIsBinary, !textFile);
+        Assert.AreEqual(mime, response.Headers.Single(h => h.Key == "Content-Type").Value);
     }
 
     [DataTestMethod]
