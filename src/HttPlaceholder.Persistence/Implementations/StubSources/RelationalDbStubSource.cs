@@ -158,7 +158,31 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery, cancellationToken);
+        IEnumerable<DbRequestModel> result;
+        if (!string.IsNullOrWhiteSpace(pagingModel?.FromIdentifier))
+        {
+            var correlationIds =
+                (await ctx.QueryAsync<string>(_queryStore.GetPagedRequestCorrelationIdsQuery, cancellationToken))
+                .ToArray();
+            var index = correlationIds
+                .Select((correlationId, index) => new {correlationId, index})
+                .Where(x => x.correlationId.Equals(pagingModel.FromIdentifier))
+                .Select(f => f.index)
+                .FirstOrDefault();
+            correlationIds = correlationIds.Skip(index).ToArray();
+            if (pagingModel.ItemsPerPage.HasValue)
+            {
+                correlationIds = correlationIds.Take(pagingModel.ItemsPerPage.Value).ToArray();
+            }
+
+            result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsByCorrelationIdsQuery,
+                cancellationToken, new {CorrelationIds = correlationIds});
+        }
+        else
+        {
+            result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery, cancellationToken);
+        }
+
         return result
             .Select(r => JsonConvert.DeserializeObject<RequestResultModel>(r.Json));
     }

@@ -17,6 +17,12 @@ internal class SqlServerQueryStore : IQueryStore
 FROM requests";
 
     /// <inheritdoc />
+    public string GetRequestsByCorrelationIdsQuery { get; } // TODO
+
+    /// <inheritdoc />
+    public string GetPagedRequestCorrelationIdsQuery { get; } // TODO
+
+    /// <inheritdoc />
     public string GetRequestQuery => @"SELECT
   id,
   correlation_id AS CorrelationId,

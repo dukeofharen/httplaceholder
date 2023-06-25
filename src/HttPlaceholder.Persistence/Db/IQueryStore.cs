@@ -11,6 +11,16 @@ public interface IQueryStore
     string GetRequestsQuery { get; }
 
     /// <summary>
+    ///     Returns the query for getting all requests for a list of correlation IDs.
+    /// </summary>
+    string GetRequestsByCorrelationIdsQuery { get; }
+
+    /// <summary>
+    ///     Returns the query that is needed to return the correlation IDs that are used for making a paged list of requests.
+    /// </summary>
+    string GetPagedRequestCorrelationIdsQuery { get; }
+
+    /// <summary>
     ///     Returns the query for getting a specific request.
     /// </summary>
     string GetRequestQuery { get; }
