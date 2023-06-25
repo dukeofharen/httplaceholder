@@ -1496,7 +1496,7 @@ In this case, a value between 10.000 and 20.000 milliseconds will be randomly pi
 
 ## Permanent and temporary redirects
 
-The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the "temporaryRedirect" property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the "permanentRedirect" an HTTP 301.
+The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the `temporaryRedirect` property, HttPlaceholder will redirect the user with an HTTP 307, when you use the `permanentRedirect` an HTTP 308 and when you use `movedPermanently` an HTTP 301 is returned..
 
 ```yml
 - id: temp-redirect
@@ -1518,6 +1518,17 @@ The permanent and temporary redirect response writers are short hands for defini
         equals: /permanent-redirect
   response:
     permanentRedirect: https://reddit.com
+```
+
+```yml
+- id: moved-permanently
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /moved-permanently
+  response:
+    movedPermanently: https://ducode.org
 ```
 
 ## Update line endings
