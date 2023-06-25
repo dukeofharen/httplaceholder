@@ -103,6 +103,8 @@ import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
+import { useConfigurationStore } from "@/store/configuration";
+import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 
 export default defineComponent({
   name: "Requests",
@@ -111,6 +113,7 @@ export default defineComponent({
     const tenantStore = useTenantsStore();
     const requestStore = useRequestsStore();
     const generalStore = useSettingsStore();
+    const configStore = useConfigurationStore();
     const route = useRoute();
 
     // Data
@@ -118,6 +121,8 @@ export default defineComponent({
     const tenants = ref<string[]>([]);
     const showDeleteAllRequestsModal = ref(false);
     let signalrConnection: HubConnection;
+    let configuration: ConfigurationModel[] = [];
+    let oldRequestsQueueLength = 0;
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter: RequestSavedFilterModel = {
@@ -140,8 +145,16 @@ export default defineComponent({
       signalrConnection = new HubConnectionBuilder()
         .withUrl("/requestHub")
         .build();
-      signalrConnection.on("RequestReceived", (request: RequestOverviewModel) =>
-        requests.value.unshift(request)
+      signalrConnection.on(
+        "RequestReceived",
+        (request: RequestOverviewModel) => {
+          requests.value.unshift(request);
+
+          // Strip away "old" requests.
+          if (oldRequestsQueueLength) {
+            requests.value = requests.value.slice(0, oldRequestsQueueLength);
+          }
+        }
       );
       try {
         await signalrConnection.start();
@@ -213,6 +226,15 @@ export default defineComponent({
         setRequestFilterForm(filter.value);
       }
     };
+    const loadConfiguration = async () => {
+      configuration = await configStore.getConfiguration();
+      const foundOldRequestsQueueLength = configuration.find(
+        (c) => c.key === "oldRequestsQueueLength"
+      );
+      oldRequestsQueueLength = foundOldRequestsQueueLength
+        ? parseInt(foundOldRequestsQueueLength.value)
+        : 0;
+    };
 
     // Watch
     watch(filter, () => filterChanged(), { deep: true });
@@ -223,6 +245,7 @@ export default defineComponent({
         loadRequests(),
         loadTenantNames(),
         initializeSignalR(),
+        loadConfiguration(),
       ]);
     });
     onUnmounted(() => {
