@@ -9,6 +9,7 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
 
@@ -198,22 +199,23 @@ internal class StubContext : IStubContext, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken) =>
-        (await GetWritableStubSource().GetRequestResultsAsync(cancellationToken))
-        .OrderByDescending(s => s.RequestBeginTime);
+    public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
+        CancellationToken cancellationToken) =>
+        await GetWritableStubSource().GetRequestResultsAsync(pagingModel, cancellationToken);
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        PagingModel pagingModel,
         CancellationToken cancellationToken) =>
-        (await GetWritableStubSource().GetRequestResultsOverviewAsync(cancellationToken))
-        .OrderByDescending(s => s.RequestBeginTime);
+        await GetWritableStubSource().GetRequestResultsOverviewAsync(pagingModel, cancellationToken);
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId,
         CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
-        var results = await source.GetRequestResultsAsync(cancellationToken);
+        var results = await source.GetRequestResultsAsync(null, cancellationToken);
         results = results
             .Where(r => r.ExecutingStubId == stubId)
             .OrderByDescending(s => s.RequestBeginTime);

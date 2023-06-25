@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
@@ -153,6 +154,7 @@ internal class RelationalDbStubSource : BaseWritableStubSource
 
     /// <inheritdoc />
     public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
         CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();

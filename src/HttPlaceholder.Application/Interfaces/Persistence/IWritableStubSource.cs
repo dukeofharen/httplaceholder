@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.Interfaces.Persistence;
@@ -37,16 +38,18 @@ public interface IWritableStubSource : IStubSource
     /// <summary>
     ///     Gets a list of <see cref="RequestResultModel" />.
     /// </summary>
+    /// <param name="pagingModel">The paging information.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of requests.</returns>
-    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Gets a list of <see cref="RequestOverviewModel" />.
     /// </summary>
+    /// <param name="pagingModel">The paging information.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of overview requests.</returns>
-    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(PagingModel pagingModel, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Gets a <see cref="RequestResultModel" /> by correlation ID.

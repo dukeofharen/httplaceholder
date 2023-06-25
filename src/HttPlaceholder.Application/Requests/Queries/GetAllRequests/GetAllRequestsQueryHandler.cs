@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -24,7 +25,9 @@ public class GetAllRequestsQueryHandler : IRequestHandler<GetAllRequestsQuery, I
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestResultModel>> Handle(GetAllRequestsQuery request,
+    public async Task<IEnumerable<RequestResultModel>> Handle(
+        GetAllRequestsQuery request,
         CancellationToken cancellationToken) =>
-        await _stubContext.GetRequestResultsAsync(cancellationToken);
+        await _stubContext.GetRequestResultsAsync(
+            new PagingModel {FromIdentifier = request.FromIdentifier, ItemsPerPage = request.ItemsPerPage}, cancellationToken);
 }

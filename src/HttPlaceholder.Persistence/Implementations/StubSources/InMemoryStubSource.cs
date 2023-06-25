@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
 
@@ -128,11 +129,13 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken)
+    public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
+        CancellationToken cancellationToken)
     {
         lock (_lock)
         {
-            return Task.FromResult(RequestResultModels.AsEnumerable());
+            return Task.FromResult(RequestResultModels.OrderByDescending(r => r.RequestBeginTime).AsEnumerable());
         }
     }
 

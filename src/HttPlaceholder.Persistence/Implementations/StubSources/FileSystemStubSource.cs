@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem;
@@ -130,10 +131,30 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
     /// <inheritdoc />
     public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
         CancellationToken cancellationToken)
     {
         var path = GetRequestsFolder();
-        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        var files = (await _fileService.GetFilesAsync(path, "*.json", cancellationToken))
+            .OrderByDescending(f => f)
+            .ToArray();
+        if (pagingModel != null && !string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+        {
+            var index = files
+                .Select((file, index) => new {file, index})
+                .Where(f => f.file.Contains(pagingModel.FromIdentifier))
+                .Select(f => f.index)
+                .FirstOrDefault();
+            var filesQuery = files
+                .Skip(index);
+            if (pagingModel.ItemsPerPage.HasValue)
+            {
+                filesQuery = filesQuery.Take(pagingModel.ItemsPerPage.Value);
+            }
+
+            files = filesQuery.ToArray();
+        }
+
         var result = files
             .Select(filePath => _fileService
                 .ReadAllTextAsync(filePath, cancellationToken))
