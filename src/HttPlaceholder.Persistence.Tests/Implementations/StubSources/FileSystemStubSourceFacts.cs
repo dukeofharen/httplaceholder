@@ -35,10 +35,16 @@ public class FileSystemStubSourceFacts
         var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var request = new RequestResultModel {CorrelationId = "bla123"};
-        var requestFilePath = Path.Combine(requestsFolder, $"{request.CorrelationId}.json");
+        var millis = 1234;
+        var requestFilePath = Path.Combine(requestsFolder, $"{millis}-{request.CorrelationId}.json");
         var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
         var fileServiceMock = _mocker.GetMock<IFileService>();
+        var dateTimeMock = _mocker.GetMock<IDateTime>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        dateTimeMock
+            .Setup(m => m.UtcNowUnix)
+            .Returns(millis);
 
         // Act
         await source.AddRequestResultAsync(request, null, CancellationToken.None);
@@ -61,10 +67,16 @@ public class FileSystemStubSourceFacts
         var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var request = new RequestResultModel {CorrelationId = "bla123"};
         var response = new ResponseModel {StatusCode = 200};
-        var requestFilePath = Path.Combine(requestsFolder, $"{request.CorrelationId}.json");
+        var millis = 1234;
+        var requestFilePath = Path.Combine(requestsFolder, $"{millis}-{request.CorrelationId}.json");
         var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
         var fileServiceMock = _mocker.GetMock<IFileService>();
+        var dateTimeMock = _mocker.GetMock<IDateTime>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        dateTimeMock
+            .Setup(m => m.UtcNowUnix)
+            .Returns(millis);
 
         // Act
         await source.AddRequestResultAsync(request, response, CancellationToken.None);
@@ -604,5 +616,77 @@ public class FileSystemStubSourceFacts
         // Act
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
             source.PrepareStubSourceAsync(CancellationToken.None));
+    }
+
+    [TestMethod]
+    public async Task FindRequestFilenameAsync_OldRequestPathFound()
+    {
+        // Arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var expectedPath = Path.Join(StorageFolder, "requests", $"{correlationId}.json");
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await source.FindRequestFilenameAsync(correlationId, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedPath, result);
+    }
+
+    [TestMethod]
+    public async Task FindRequestFilenameAsync_NewRequestPathFound()
+    {
+        // Arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var expectedPath = Path.Join(StorageFolder, "requests", $"{correlationId}.json");
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        var expectedFile = $"1-{correlationId}.json";
+        var files = new[] {expectedFile};
+        fileServiceMock
+            .Setup(m => m.GetFilesAsync(Path.Join(StorageFolder, "requests"), $"*-{correlationId}.json",
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
+
+        // Act
+        var result = await source.FindRequestFilenameAsync(correlationId, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedFile, result);
+    }
+
+    [TestMethod]
+    public async Task FindRequestFilenameAsync_NewRequestPathNotFound()
+    {
+        // Arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var expectedPath = Path.Join(StorageFolder, "requests", $"{correlationId}.json");
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        fileServiceMock
+            .Setup(m => m.GetFilesAsync(Path.Join(StorageFolder, "requests"), $"*-{correlationId}.json",
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<string>());
+
+        // Act
+        var result = await source.FindRequestFilenameAsync(correlationId, CancellationToken.None);
+
+        // Assert
+        Assert.IsNull(result);
     }
 }

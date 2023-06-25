@@ -386,8 +386,8 @@ public class StubContextFacts
         var result = (await context.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
 
         // assert
-        Assert.AreEqual(request2, result[0]);
-        Assert.AreEqual(request1, result[1]);
+        Assert.AreEqual(request2, result[1]);
+        Assert.AreEqual(request1, result[0]);
     }
 
     [TestMethod]

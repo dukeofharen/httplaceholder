@@ -206,7 +206,7 @@ internal class StubContext : IStubContext, ISingletonService
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
         CancellationToken cancellationToken) =>
         (await GetWritableStubSource().GetRequestResultsOverviewAsync(cancellationToken))
-        .OrderByDescending(s => s.RequestEndTime);
+        .OrderByDescending(s => s.RequestBeginTime);
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId,
