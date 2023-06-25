@@ -15,6 +15,10 @@
 - When generating a stub based on a request, also take the saved saved response (if there is one) into account (https://github.com/dukeofharen/httplaceholder/pull/311).
 - When using the file response writer and no specific content type is set; determine the content type based on the file extension (https://github.com/dukeofharen/httplaceholder/pull/312).
 - Show executing stub ID when hovering over a request in the UI (https://github.com/dukeofharen/httplaceholder/pull/312).
+- Updated redirect response writer. `permanentRedirect` now returns HTTP 308 (HTTP 301) before and `movedPermanently` returns HTTP 301 (https://github.com/dukeofharen/httplaceholder/pull/312).
+
+# BREAKING CHANGES
+- `permanentRedirect` now returns HTTP 308 instead of HTTP 301. Use `movedPermanently` to return HTTP 301 instead.
 
 [2023.4.25]
 - Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).
