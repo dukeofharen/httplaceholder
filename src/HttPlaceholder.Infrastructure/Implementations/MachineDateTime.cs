@@ -11,4 +11,7 @@ internal class MachineDateTime : IDateTime, ISingletonService
 
     /// <inheritdoc />
     public DateTime UtcNow => DateTime.UtcNow;
+
+    /// <inheritdoc />
+    public long UtcNowUnix => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 }
