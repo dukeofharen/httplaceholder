@@ -135,7 +135,25 @@ internal class InMemoryStubSource : BaseWritableStubSource
     {
         lock (_lock)
         {
-            return Task.FromResult(RequestResultModels.OrderByDescending(r => r.RequestBeginTime).AsEnumerable());
+            var result = RequestResultModels.OrderByDescending(r => r.RequestBeginTime).ToArray();
+            if (pagingModel != null && !string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+            {
+                var index = result
+                    .Select((request, index) => new {request, index})
+                    .Where(f => f.request.CorrelationId.Equals(pagingModel.FromIdentifier))
+                    .Select(f => f.index)
+                    .FirstOrDefault();
+                var resultQuery = result
+                    .Skip(index);
+                if (pagingModel.ItemsPerPage.HasValue)
+                {
+                    resultQuery = resultQuery.Take(pagingModel.ItemsPerPage.Value);
+                }
+
+                result = resultQuery.ToArray();
+            }
+
+            return Task.FromResult(result.AsEnumerable());
         }
     }
 
