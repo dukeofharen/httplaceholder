@@ -160,10 +160,14 @@ export default defineComponent({
       showRenderedBody.value = true;
     };
     const viewRawBody = () => (showRenderedBody.value = false);
-    const copy = () =>
-      copyTextToClipboard(body.value).then(() =>
+    const copy = () => {
+      const valueToCopy = showRenderedBody.value
+        ? renderedBody.value
+        : body.value;
+      copyTextToClipboard(valueToCopy).then(() =>
         success(resources.requestBodyCopiedToClipboard)
       );
+    };
     const showMoreClick = () => {
       showMoreClicked.value = true;
     };
