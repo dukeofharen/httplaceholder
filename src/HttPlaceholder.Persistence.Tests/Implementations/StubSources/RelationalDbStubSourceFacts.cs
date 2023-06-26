@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Implementations.StubSources;
@@ -471,6 +472,129 @@ public class RelationalDbStubSourceFacts
         // Assert
         Assert.AreEqual(1, result.Length);
         Assert.AreEqual("12345", result.Single().CorrelationId);
+    }
+
+    [TestMethod]
+    public async Task GetRequestResultsAsync_FromIdentifierSet_ShouldReturnRequestsSuccessfully()
+    {
+        // Arrange
+        const string correlationIdsQuery = "GET CORRELATION IDS QUERY";
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        mockQueryStore
+            .Setup(m => m.GetPagedRequestCorrelationIdsQuery)
+            .Returns(correlationIdsQuery);
+
+        const string requestsByCorrelationIdsQuery = "GET REQUESTS BY CORRELATION IDS QUERY";
+        mockQueryStore
+            .Setup(m => m.GetRequestsByCorrelationIdsQuery)
+            .Returns(requestsByCorrelationIdsQuery);
+
+        var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        var ids = new[] {Guid.NewGuid().ToString(), Guid.NewGuid().ToString()};
+        _mockDatabaseContext
+            .Setup(m => m.QueryAsync<string>(correlationIdsQuery, It.IsAny<CancellationToken>(), null))
+            .ReturnsAsync(ids);
+
+        var requests = new[]
+        {
+            new DbRequestModel
+            {
+                Id = 1,
+                Json = @"{""CorrelationId"": ""12345""}",
+                CorrelationId = ids[1],
+                ExecutingStubId = "stub1",
+                RequestBeginTime = DateTime.Today,
+                RequestEndTime = DateTime.Today.AddSeconds(2)
+            }
+        };
+        object capturedParam = null;
+        _mockDatabaseContext
+            .Setup(m => m.QueryAsync<DbRequestModel>(requestsByCorrelationIdsQuery, It.IsAny<CancellationToken>(),
+                It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
+            .ReturnsAsync(requests);
+
+        // Act
+        var result =
+            (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1]}, CancellationToken.None))
+            .ToArray();
+
+        // Assert
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual("12345", result.Single().CorrelationId);
+
+        var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
+        var capturedCorrelationIds = parsedParam.SelectToken("$.CorrelationIds").ToObject<string[]>();
+
+        Assert.AreEqual(1, capturedCorrelationIds.Length);
+        Assert.AreEqual(ids[1], capturedCorrelationIds[0]);
+    }
+
+    [TestMethod]
+    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_ShouldReturnRequestsSuccessfully()
+    {
+        // Arrange
+        const string correlationIdsQuery = "GET CORRELATION IDS QUERY";
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        mockQueryStore
+            .Setup(m => m.GetPagedRequestCorrelationIdsQuery)
+            .Returns(correlationIdsQuery);
+
+        const string requestsByCorrelationIdsQuery = "GET REQUESTS BY CORRELATION IDS QUERY";
+        mockQueryStore
+            .Setup(m => m.GetRequestsByCorrelationIdsQuery)
+            .Returns(requestsByCorrelationIdsQuery);
+
+        var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        var ids = new[] {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()};
+        _mockDatabaseContext
+            .Setup(m => m.QueryAsync<string>(correlationIdsQuery, It.IsAny<CancellationToken>(), null))
+            .ReturnsAsync(ids);
+
+        var requests = new[]
+        {
+            new DbRequestModel
+            {
+                Id = 1,
+                Json = @"{""CorrelationId"": ""12345""}",
+                CorrelationId = ids[1],
+                ExecutingStubId = "stub1",
+                RequestBeginTime = DateTime.Today,
+                RequestEndTime = DateTime.Today.AddSeconds(2)
+            },
+            new DbRequestModel
+            {
+                Id = 2,
+                Json = @"{""CorrelationId"": ""54321""}",
+                CorrelationId = ids[2],
+                ExecutingStubId = "stub1",
+                RequestBeginTime = DateTime.Today,
+                RequestEndTime = DateTime.Today.AddSeconds(2)
+            }
+        };
+        object capturedParam = null;
+        _mockDatabaseContext
+            .Setup(m => m.QueryAsync<DbRequestModel>(requestsByCorrelationIdsQuery, It.IsAny<CancellationToken>(),
+                It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
+            .ReturnsAsync(requests);
+
+        // Act
+        var result =
+            (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1], ItemsPerPage = 2}, CancellationToken.None))
+            .ToArray();
+
+        // Assert
+        Assert.AreEqual(2, result.Length);
+
+        var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
+        var capturedCorrelationIds = parsedParam.SelectToken("$.CorrelationIds").ToObject<string[]>();
+
+        Assert.AreEqual(2, capturedCorrelationIds.Length);
+        Assert.AreEqual(ids[1], capturedCorrelationIds[0]);
+        Assert.AreEqual(ids[2], capturedCorrelationIds[1]);
     }
 
     [TestMethod]
