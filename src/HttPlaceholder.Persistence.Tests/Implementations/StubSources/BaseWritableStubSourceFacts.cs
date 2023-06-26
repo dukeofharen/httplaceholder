@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
@@ -25,7 +26,7 @@ public class BaseWritableStubSourceFacts
         source.SetRequests(new[] {request});
 
         // Act
-        var result = (await source.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
+        var result = (await source.GetRequestResultsOverviewAsync(null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -59,7 +60,7 @@ public class BaseWritableStubSourceFacts
         source.SetRequests(new[] {request});
 
         // Act
-        var result = (await source.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
+        var result = (await source.GetRequestResultsOverviewAsync(null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -104,6 +105,7 @@ public class BaseWritableStubSourceFacts
             throw new NotImplementedException();
 
         public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+            PagingModel pagingModel,
             CancellationToken cancellationToken) => Task.FromResult(_requests);
 
         public override Task<RequestResultModel> GetRequestAsync(string correlationId,

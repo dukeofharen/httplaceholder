@@ -19,7 +19,7 @@ public class RequestStubGeneratorFacts
         var generator = _mocker.CreateInstance<RequestStubGenerator>();
 
         stubContextMock
-            .Setup(m => m.GetRequestResultsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsAsync(null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<RequestResultModel>());
 
         // Act / Assert

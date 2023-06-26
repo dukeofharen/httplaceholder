@@ -466,7 +466,7 @@ public class RelationalDbStubSourceFacts
             .ReturnsAsync(requests);
 
         // Act
-        var result = (await stubSource.GetRequestResultsAsync(CancellationToken.None)).ToArray();
+        var result = (await stubSource.GetRequestResultsAsync(null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);

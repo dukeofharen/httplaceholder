@@ -351,7 +351,7 @@ public class StubContextFacts
         var requests = new[] {request1, request2};
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.GetRequestResultsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsAsync(null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(requests);
 
         _stubSources.Add(stubSource.Object);
@@ -359,11 +359,11 @@ public class StubContextFacts
         var context = _mocker.CreateInstance<StubContext>();
 
         // act
-        var result = (await context.GetRequestResultsAsync(It.IsAny<CancellationToken>())).ToArray();
+        var result = (await context.GetRequestResultsAsync(null, It.IsAny<CancellationToken>())).ToArray();
 
         // assert
-        Assert.AreEqual(request2, result[0]);
-        Assert.AreEqual(request1, result[1]);
+        Assert.AreEqual(request1, result[0]);
+        Assert.AreEqual(request2, result[1]);
     }
 
     [TestMethod]
@@ -375,7 +375,7 @@ public class StubContextFacts
         var requests = new[] {request1, request2};
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.GetRequestResultsOverviewAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsOverviewAsync(null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(requests);
 
         _stubSources.Add(stubSource.Object);
@@ -383,7 +383,7 @@ public class StubContextFacts
         var context = _mocker.CreateInstance<StubContext>();
 
         // act
-        var result = (await context.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
+        var result = (await context.GetRequestResultsOverviewAsync(null, CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(request2, result[1]);
@@ -453,7 +453,7 @@ public class StubContextFacts
         var requests = new[] {request1, request2, request3};
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.GetRequestResultsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsAsync(null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(requests);
 
         _stubSources.Add(stubSource.Object);

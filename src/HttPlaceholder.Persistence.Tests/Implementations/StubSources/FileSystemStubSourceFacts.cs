@@ -441,12 +441,12 @@ public class FileSystemStubSourceFacts
         }
 
         // Act
-        var result = (await source.GetRequestResultsAsync(CancellationToken.None)).ToArray();
+        var result = (await source.GetRequestResultsAsync(null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
-        Assert.AreEqual("request-01", result[0].CorrelationId);
-        Assert.AreEqual("request-02", result[1].CorrelationId);
+        Assert.AreEqual("request-02", result[0].CorrelationId);
+        Assert.AreEqual("request-01", result[1].CorrelationId);
     }
 
     [TestMethod]

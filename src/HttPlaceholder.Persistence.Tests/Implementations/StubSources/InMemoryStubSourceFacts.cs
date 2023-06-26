@@ -256,7 +256,7 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.GetRequestResultsAsync(CancellationToken.None);
+        var result = await source.GetRequestResultsAsync(null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(request, result.Single());
