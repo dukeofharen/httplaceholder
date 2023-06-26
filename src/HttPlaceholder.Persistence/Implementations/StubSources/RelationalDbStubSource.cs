@@ -159,24 +159,28 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         IEnumerable<DbRequestModel> result;
-        if (!string.IsNullOrWhiteSpace(pagingModel?.FromIdentifier))
+        if (pagingModel != null)
         {
-            var correlationIds =
+            IEnumerable<string> correlationIds =
                 (await ctx.QueryAsync<string>(_queryStore.GetPagedRequestCorrelationIdsQuery, cancellationToken))
                 .ToArray();
-            var index = correlationIds
-                .Select((correlationId, index) => new {correlationId, index})
-                .Where(x => x.correlationId.Equals(pagingModel.FromIdentifier))
-                .Select(f => f.index)
-                .FirstOrDefault();
-            correlationIds = correlationIds.Skip(index).ToArray();
+            if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+            {
+                var index = correlationIds
+                    .Select((correlationId, index) => new {correlationId, index})
+                    .Where(x => x.correlationId.Equals(pagingModel.FromIdentifier))
+                    .Select(f => f.index)
+                    .FirstOrDefault();
+                correlationIds = correlationIds.Skip(index);
+            }
+
             if (pagingModel.ItemsPerPage.HasValue)
             {
-                correlationIds = correlationIds.Take(pagingModel.ItemsPerPage.Value).ToArray();
+                correlationIds = correlationIds.Take(pagingModel.ItemsPerPage.Value);
             }
 
             result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsByCorrelationIdsQuery,
-                cancellationToken, new {CorrelationIds = correlationIds});
+                cancellationToken, new {CorrelationIds = correlationIds.ToArray()});
         }
         else
         {

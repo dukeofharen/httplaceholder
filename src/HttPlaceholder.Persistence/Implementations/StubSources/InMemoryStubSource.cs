@@ -136,15 +136,20 @@ internal class InMemoryStubSource : BaseWritableStubSource
         lock (_lock)
         {
             var result = RequestResultModels.OrderByDescending(r => r.RequestBeginTime).ToArray();
-            if (pagingModel != null && !string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+            if (pagingModel != null)
             {
-                var index = result
-                    .Select((request, index) => new {request, index})
-                    .Where(f => f.request.CorrelationId.Equals(pagingModel.FromIdentifier))
-                    .Select(f => f.index)
-                    .FirstOrDefault();
-                var resultQuery = result
-                    .Skip(index);
+                IEnumerable<RequestResultModel> resultQuery = result;
+                if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+                {
+                    var index = result
+                        .Select((request, index) => new {request, index})
+                        .Where(f => f.request.CorrelationId.Equals(pagingModel.FromIdentifier))
+                        .Select(f => f.index)
+                        .FirstOrDefault();
+                    resultQuery = result
+                        .Skip(index);
+                }
+
                 if (pagingModel.ItemsPerPage.HasValue)
                 {
                     resultQuery = resultQuery.Take(pagingModel.ItemsPerPage.Value);

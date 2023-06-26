@@ -138,15 +138,20 @@ internal class FileSystemStubSource : BaseWritableStubSource
         var files = (await _fileService.GetFilesAsync(path, "*.json", cancellationToken))
             .OrderByDescending(f => f)
             .ToArray();
-        if (pagingModel != null && !string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+        if (pagingModel != null)
         {
-            var index = files
-                .Select((file, index) => new {file, index})
-                .Where(f => f.file.Contains(pagingModel.FromIdentifier))
-                .Select(f => f.index)
-                .FirstOrDefault();
-            var filesQuery = files
-                .Skip(index);
+            IEnumerable<string> filesQuery = files;
+            if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+            {
+                var index = files
+                    .Select((file, index) => new {file, index})
+                    .Where(f => f.file.Contains(pagingModel.FromIdentifier))
+                    .Select(f => f.index)
+                    .FirstOrDefault();
+                filesQuery = files
+                    .Skip(index);
+            }
+
             if (pagingModel.ItemsPerPage.HasValue)
             {
                 filesQuery = filesQuery.Take(pagingModel.ItemsPerPage.Value);
