@@ -2,6 +2,7 @@
 using System.Linq;
 using Bogus;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
@@ -263,6 +264,57 @@ public class InMemoryStubSourceFacts
     }
 
     [TestMethod]
+    public async Task GetRequestResultsAsync_FromIdentifierSet_HappyFlow()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        var request1 = CreateRequestResultModel();
+        var request2 = CreateRequestResultModel();
+        var request3 = CreateRequestResultModel();
+        source.RequestResultModels.Add(request1);
+        source.RequestResultModels.Add(request2);
+        source.RequestResultModels.Add(request3);
+
+        // Act
+        var result = (await source.GetRequestResultsAsync(new PagingModel
+        {
+            FromIdentifier = request2.CorrelationId
+        }, CancellationToken.None)).ToArray();
+
+        // Assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual(request2, result[0]);
+        Assert.AreEqual(request1, result[1]);
+    }
+
+    [TestMethod]
+    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_HappyFlow()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        var request1 = CreateRequestResultModel();
+        var request2 = CreateRequestResultModel();
+        var request3 = CreateRequestResultModel();
+        var request4 = CreateRequestResultModel();
+        source.RequestResultModels.Add(request1);
+        source.RequestResultModels.Add(request2);
+        source.RequestResultModels.Add(request3);
+        source.RequestResultModels.Add(request4);
+
+        // Act
+        var result = (await source.GetRequestResultsAsync(new PagingModel
+        {
+            FromIdentifier = request3.CorrelationId,
+            ItemsPerPage = 2
+        }, CancellationToken.None)).ToArray();
+
+        // Assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual(request3, result[0]);
+        Assert.AreEqual(request2, result[1]);
+    }
+
+    [TestMethod]
     public async Task GetStubsAsync_HappyFlow()
     {
         // Arrange
@@ -392,8 +444,8 @@ public class InMemoryStubSourceFacts
             },
             StubTenant = _faker.Random.Word(),
             ExecutingStubId = _faker.Random.Words(),
-            RequestBeginTime = _faker.Date.Past(),
-            RequestEndTime = _faker.Date.Past(),
+            RequestBeginTime = DateTime.Now,
+            RequestEndTime = DateTime.Now,
             HasResponse = false
         };
     }
