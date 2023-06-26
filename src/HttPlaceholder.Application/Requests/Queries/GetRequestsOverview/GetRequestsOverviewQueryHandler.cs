@@ -27,7 +27,11 @@ public class
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> Handle(GetRequestsOverviewQuery request,
-        CancellationToken cancellationToken) =>
-        await _stubContext.GetRequestResultsOverviewAsync(
-            new PagingModel {FromIdentifier = request.FromIdentifier, ItemsPerPage = request.ItemsPerPage}, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        var pagingModel = !string.IsNullOrWhiteSpace(request.FromIdentifier) || request.ItemsPerPage.HasValue
+            ? new PagingModel {FromIdentifier = request.FromIdentifier, ItemsPerPage = request.ItemsPerPage}
+            : null;
+        return await _stubContext.GetRequestResultsOverviewAsync(pagingModel, cancellationToken);
+    }
 }

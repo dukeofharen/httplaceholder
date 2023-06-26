@@ -27,7 +27,11 @@ public class GetAllRequestsQueryHandler : IRequestHandler<GetAllRequestsQuery, I
     /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> Handle(
         GetAllRequestsQuery request,
-        CancellationToken cancellationToken) =>
-        await _stubContext.GetRequestResultsAsync(
-            new PagingModel {FromIdentifier = request.FromIdentifier, ItemsPerPage = request.ItemsPerPage}, cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        var pagingModel = !string.IsNullOrWhiteSpace(request.FromIdentifier) || request.ItemsPerPage.HasValue
+            ? new PagingModel {FromIdentifier = request.FromIdentifier, ItemsPerPage = request.ItemsPerPage}
+            : null;
+        return await _stubContext.GetRequestResultsAsync(pagingModel, cancellationToken);
+    }
 }
