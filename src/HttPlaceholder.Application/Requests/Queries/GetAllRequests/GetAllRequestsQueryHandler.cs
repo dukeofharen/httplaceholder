@@ -18,7 +18,6 @@ public class GetAllRequestsQueryHandler : IRequestHandler<GetAllRequestsQuery, I
     /// <summary>
     ///     Constructs a <see cref="GetAllRequestsQueryHandler" /> instance.
     /// </summary>
-    /// <param name="stubContext"></param>
     public GetAllRequestsQueryHandler(IStubContext stubContext)
     {
         _stubContext = stubContext;
