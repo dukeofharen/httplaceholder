@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.FileSystem;
 using HttPlaceholder.Persistence.Implementations.StubSources;
@@ -442,6 +443,86 @@ public class FileSystemStubSourceFacts
 
         // Act
         var result = (await source.GetRequestResultsAsync(null, CancellationToken.None)).ToArray();
+
+        // Assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual("request-02", result[0].CorrelationId);
+        Assert.AreEqual("request-01", result[1].CorrelationId);
+    }
+
+    [TestMethod]
+    public async Task GetRequestResultsAsync_FromIdentifierSet_HappyFlow()
+    {
+        // Arrange
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var files = new[]
+        {
+            Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
+        };
+
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        fileServiceMock
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
+
+        fileServiceMock
+            .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-02"}));
+
+        // Act
+        var result = (await source.GetRequestResultsAsync(new PagingModel
+        {
+            FromIdentifier = "request-01"
+        }, CancellationToken.None)).ToArray();
+
+        // Assert
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual("request-02", result[0].CorrelationId);
+    }
+
+    [TestMethod]
+    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_HappyFlow()
+    {
+        // Arrange
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var files = new[]
+        {
+            Path.Combine(requestsFolder, "request-01.json"),
+            Path.Combine(requestsFolder, "request-02.json"),
+            Path.Combine(requestsFolder, "request-03.json")
+        };
+
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        fileServiceMock
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
+
+        var requestFileContents = new[]
+        {
+            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-01"}),
+            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-02"}),
+            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-03"})
+        };
+
+        for (var i = 0; i < 2; i++)
+        {
+            var file = files[i];
+            var contents = requestFileContents[i];
+            fileServiceMock
+                .Setup(m => m.ReadAllTextAsync(file, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(contents);
+        }
+
+        // Act
+        var result = (await source.GetRequestResultsAsync(new PagingModel
+        {
+            FromIdentifier = "request-02",
+            ItemsPerPage = 2
+        }, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
