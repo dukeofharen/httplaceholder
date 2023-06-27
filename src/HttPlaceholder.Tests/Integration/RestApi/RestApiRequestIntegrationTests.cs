@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Net.Http;
 using HttPlaceholder.Web.Shared.Dto.v1.Requests;
 using Newtonsoft.Json;
 
@@ -30,6 +31,40 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Length);
         Assert.AreEqual(correlation, result.First().CorrelationId);
+    }
+
+    [TestMethod]
+    public async Task RestApiIntegration_Request_GetAll_Paging()
+    {
+        // Arrange
+        for (var i = 0; i < 10; i++)
+        {
+            StubSource.RequestResultModels.Add(new RequestResultModel
+            {
+                CorrelationId = Guid.NewGuid().ToString(),
+                RequestEndTime = DateTime.Now
+            });
+        }
+
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/requests")
+        {
+            Headers =
+            {
+                {"x-from-identifier", StubSource.RequestResultModels[2].CorrelationId},
+                {"x-items-per-page", "2"}
+            }
+        };
+
+        // Act
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<RequestResultDto[]>(content);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual(StubSource.RequestResultModels[2].CorrelationId, result[0].CorrelationId);
+        Assert.AreEqual(StubSource.RequestResultModels[3].CorrelationId, result[1].CorrelationId);
     }
 
     [TestMethod]
@@ -120,6 +155,40 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Length);
         Assert.AreEqual(correlation, result.First().CorrelationId);
+    }
+
+    [TestMethod]
+    public async Task RestApiIntegration_Request_GetOverview_Paging()
+    {
+        // Arrange
+        for (var i = 0; i < 10; i++)
+        {
+            StubSource.RequestResultModels.Add(new RequestResultModel
+            {
+                CorrelationId = Guid.NewGuid().ToString(),
+                RequestEndTime = DateTime.Now
+            });
+        }
+
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/requests/overview")
+        {
+            Headers =
+            {
+                {"x-from-identifier", StubSource.RequestResultModels[2].CorrelationId},
+                {"x-items-per-page", "2"}
+            }
+        };
+
+        // Act
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<RequestOverviewDto[]>(content);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual(StubSource.RequestResultModels[2].CorrelationId, result[0].CorrelationId);
+        Assert.AreEqual(StubSource.RequestResultModels[3].CorrelationId, result[1].CorrelationId);
     }
 
     [TestMethod]
