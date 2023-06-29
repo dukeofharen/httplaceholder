@@ -10101,6 +10101,195 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "12. Requests with paging",
+							"item": [
+								{
+									"name": "Perform requests",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"\"use sandbox2\";",
+													"",
+													"function _series (tasks, cb, currOperation = 0, results = []) {",
+													"    // Bail-out condition",
+													"    if (currOperation === tasks.length) {",
+													"        return cb(null, results);",
+													"    }",
+													"",
+													"    if (typeof tasks[currOperation] !== 'function') {",
+													"        return cb(new Error('asyncSeries: Please provide a function'));",
+													"    }",
+													"",
+													"    tasks[currOperation]((err, res) => {",
+													"        if (err) {",
+													"            return cb(err);",
+													"        }",
+													"",
+													"        results.push(res);",
+													"",
+													"        // Recursively call the next task in series till we're done executing all the operations",
+													"        return _series(tasks, cb, currOperation + 1, results);",
+													"    });",
+													"}",
+													"",
+													"function asyncSeries (tasks, cb = () => {}) {",
+													"    return _series(tasks, cb);",
+													"}",
+													"",
+													"const numbers = [...Array(10).keys()];",
+													"asyncSeries(numbers.map((number) => (cb) => {",
+													"    const url = `${pm.variables.get(\"rootUrl\")}${number}`;",
+													"    setTimeout(function() {",
+													"        pm.sendRequest(url, cb)",
+													"    }, 1000);",
+													"}), (err, result) => {",
+													"    const headers = result.map(r => (r.headers.filter(r => r.key === \"X-HttPlaceholder-Correlation\"))[0].value);",
+													"    pm.globals.set(\"requestIds\", JSON.stringify(headers));",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}{{$guid}}",
+											"host": [
+												"{{rootUrl}}{{$guid}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get paged overview requests",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"const headers = JSON.parse(pm.globals.get(\"requestIds\"));",
+													"pm.variables.set(\"correlationId\", headers[3]);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Your test name\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    const headers = JSON.parse(pm.globals.get(\"requestIds\"));",
+													"    pm.expect(jsonData.length).to.eql(3);",
+													"    pm.expect(jsonData[0].correlationId).to.eql(headers[3]);",
+													"    pm.expect(jsonData[1].correlationId).to.eql(headers[2]);",
+													"    pm.expect(jsonData[2].correlationId).to.eql(headers[1]);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-from-identifier",
+												"value": "{{correlationId}}",
+												"type": "text"
+											},
+											{
+												"key": "x-items-per-page",
+												"value": "3",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/requests/overview",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"requests",
+												"overview"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get paged requests",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"const headers = JSON.parse(pm.globals.get(\"requestIds\"));",
+													"pm.variables.set(\"correlationId\", headers[3]);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Your test name\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    const headers = JSON.parse(pm.globals.get(\"requestIds\"));",
+													"    pm.expect(jsonData.length).to.eql(3);",
+													"    pm.expect(jsonData[0].correlationId).to.eql(headers[3]);",
+													"    pm.expect(jsonData[1].correlationId).to.eql(headers[2]);",
+													"    pm.expect(jsonData[2].correlationId).to.eql(headers[1]);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-from-identifier",
+												"value": "{{correlationId}}",
+												"type": "text"
+											},
+											{
+												"key": "x-items-per-page",
+												"value": "3",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/requests",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"requests"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},
