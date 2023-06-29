@@ -17,3 +17,6 @@ export const imageMimeTypes = [
 ];
 
 export const pdfMimeType = "application/pdf";
+
+// UI constants
+export const requestsPerPage = 15;

@@ -3,14 +3,25 @@ import { del, get } from "@/utils/api";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 import type { RequestResultModel } from "@/domain/request/request-result-model";
 import type { ResponseModel } from "@/domain/request/response-model";
+import { requestsPerPage } from "@/constants/technical";
 
 export const useRequestsStore = defineStore({
   id: "requests",
   state: () => ({}),
   getters: {},
   actions: {
-    getRequestsOverview(): Promise<RequestOverviewModel[]> {
-      return get("/ph-api/requests/overview")
+    getRequestsOverview(
+      fromIdentifier?: string
+    ): Promise<RequestOverviewModel[]> {
+      const headers: any = {
+        "x-items-per-page": requestsPerPage,
+      };
+      if (fromIdentifier) {
+        headers["x-from-identifier"] = fromIdentifier;
+      }
+      return get("/ph-api/requests/overview", {
+        headers,
+      })
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
