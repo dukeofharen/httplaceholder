@@ -138,7 +138,7 @@ export default defineComponent({
       try {
         await requestStore.deleteRequest(correlationId());
         success(resources.requestDeletedSuccessfully);
-        emit("deleted");
+        emit("deleted", correlationId());
       } catch (e) {
         handleHttpError(e);
       }
