@@ -120,7 +120,6 @@ import type { RequestOverviewModel } from "@/domain/request/request-overview-mod
 import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
-import { requestsPerPage } from "@/constants/technical";
 
 export default defineComponent({
   name: "Requests",

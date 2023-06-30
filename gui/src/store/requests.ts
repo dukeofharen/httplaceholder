@@ -3,7 +3,6 @@ import { del, get } from "@/utils/api";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 import type { RequestResultModel } from "@/domain/request/request-result-model";
 import type { ResponseModel } from "@/domain/request/response-model";
-import { requestsPerPage } from "@/constants/technical";
 
 export const useRequestsStore = defineStore({
   id: "requests",
