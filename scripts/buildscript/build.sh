@@ -83,5 +83,5 @@ fi
 echo "Type y to publish to Docker Hub."
 read TYPE
 if [ "$TYPE" = "y" ]; then
-  bash "$BUILDSCRIPTS_FOLDER/publish-docker.sh" "$VERSION" "$DOCKER_USERNAME" "$DOCKER_PASSWORD"
+  bash "$BUILDSCRIPTS_FOLDER/publish-docker.sh" "$VERSION" "$DOCKER_USERNAME" "$DOCKER_PASSWORD" "$DOCKER_REPO_NAME"
 fi
