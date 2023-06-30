@@ -226,13 +226,11 @@ export default defineComponent({
         );
         if (append) {
           requests.value = requests.value.concat(result.slice(1));
-          if (result.length < requestsPageSize) {
-            showLoadMoreButton.value = false;
-          }
         } else {
           requests.value = result;
-          showLoadMoreButton.value = true;
         }
+
+        showLoadMoreButton.value = result.length >= requestsPageSize;
       } catch (e) {
         handleHttpError(e);
       }
