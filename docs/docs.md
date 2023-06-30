@@ -2677,16 +2677,18 @@ When you run the stub, you can just go to `http://placeholder/ph-ui`. If you've 
 
 ## Requests page
 
-On the requests page you can see all requests made to HttPlaceholder. It will show which URL was called and if a valid stub was found for the requests. You can also open a specific request and view the details of this request.
+On the requests page you can see all requests made to HttPlaceholder. It will show which URL was called and if a valid stub was found for the requests. You can also open a specific request and view the details of this request. By default, paging is enabled for the requests. You can change the paging (or disable it) on the [settings page](#settings-page).
 
 ![](img/ui/requests_overview.png)
 
 You have several options here.
 
 - Refresh: fetches the requests from HttPlaceholder.
+- Load all requests: loads all request currently available in HttPlaceholder, disregarding the number of requests per page.
 - Delete all requests: as the name says, deletes all the requests from HttPlaceholder.
 - Filter on stub ID, request ID or URL: a filter search box where you can filter requests either on the executed stub ID, the request correlation ID or the URL.
 - Tenant / category name: a filter for filtering requests that are part of a specific tenant (see [tenants](#tenants)).
+- Load more requests: loads a new batch of n requests (as defined on the [settings page](#settings-page)).
 
 ### Request details
 
@@ -2881,6 +2883,7 @@ On the settings page you can configure all kinds of settings for HttPlaceholder 
 - Dark theme: turns the dark theme on or off.
 - Persist search filters on stubs and request screens: when this option is on, the filters on the stubs and is persisted between page navigations.
 - Store response for request: whenever this settings is enabled, all the responses that are sent to the client are saved alongside the requests. Clicking this checkbox will send a request to the HttPlaceholder configuration API.
+- Default number of requests on the request page. This number determines the number of requests that are loaded by default on the requests page. A "Load more requests" button is shown whenever there are more requests to load. If you set this value to `0`, the paging is disabled and all requests are always loaded.
 - View the configuration HttPlaceholder was started with.
 
 # Tools and client libraries
