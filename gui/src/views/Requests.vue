@@ -10,6 +10,14 @@
         Refresh
       </button>
       <button
+        v-if="shouldShowLoadAllRequestsButton"
+        type="button"
+        class="btn btn-success me-2 btn-mobile full-width"
+        @click="loadAllRequests"
+      >
+        Load all requests
+      </button>
+      <button
         type="button"
         class="btn btn-danger btn-mobile full-width"
         @click="showDeleteAllRequestsModal = true"
@@ -206,6 +214,9 @@ export default defineComponent({
     const shouldShowLoadMoreButton = computed(
       () => showLoadMoreButton.value && requestsPageSize > 0
     );
+    const shouldShowLoadAllRequestsButton = computed(
+      () => requestsPageSize > 0
+    );
 
     // Methods
     const loadRequests = async (fromIdentifier?: string, append?: boolean) => {
@@ -274,6 +285,10 @@ export default defineComponent({
         (r) => r.correlationId !== correlationId
       );
     };
+    const loadAllRequests = async () => {
+      requests.value = await requestStore.getRequestsOverview();
+      showLoadMoreButton.value = false;
+    };
 
     // Watch
     watch(filter, () => filterChanged(), { deep: true });
@@ -307,6 +322,8 @@ export default defineComponent({
       requestDeleted,
       refresh,
       shouldShowLoadMoreButton,
+      shouldShowLoadAllRequestsButton,
+      loadAllRequests,
     };
   },
 });
