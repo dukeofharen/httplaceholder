@@ -1,4 +1,4 @@
-[vnext]
+[2023.6.30]
 - Split form helper buttons into 4 separate buttons (https://github.com/dukeofharen/httplaceholder/pull/305).
 - Updated the CodeMirror editor from 5 to 6 (https://github.com/dukeofharen/httplaceholder/pull/305).
 - Added filter for variable handlers in the UI (https://github.com/dukeofharen/httplaceholder/pull/305).
@@ -21,6 +21,7 @@
 
 # BREAKING CHANGES
 - `permanentRedirect` now returns HTTP 308 instead of HTTP 301. Use `movedPermanently` to return HTTP 301 instead.
+- The way requests are stored when using the file store is slightly changed. This means that when you update to this version, the requests in the API and UI are not returned in the right order. New requests are returned in the right order though.
 
 [2023.4.25]
 - Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).
