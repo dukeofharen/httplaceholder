@@ -7,9 +7,10 @@ RUN cd docs/httpl-docs && pip install mkdocs && python sync.py && mkdocs build &
 # Build UI
 FROM node:18 AS gui-build-env
 WORKDIR /app
+COPY --from=doc-build-env /app/site/. ./docs
 
 COPY . ./
-RUN cd gui && npm install && npm run build
+RUN cd gui && rm -rf public/docs && mv ../docs public && npm install && npm run build
 
 # Run .NET unit tests
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS test-env
