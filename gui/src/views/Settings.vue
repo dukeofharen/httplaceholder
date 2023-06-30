@@ -50,6 +50,21 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-12">
+        <label for="requestPageSize"
+          >Default number of requests on the request page (set to 0 to disable
+          request paging)</label
+        >
+        <input
+          type="number"
+          class="form-control mt-2"
+          id="requestPageSize"
+          v-model="settings.requestPageSize"
+          @keyup="saveSettings"
+        />
+      </div>
+    </div>
 
     <div class="row mt-3">
       <div class="col-md-12">

@@ -2,22 +2,35 @@ import { defineStore } from "pinia";
 import { getSettings, setSettings } from "@/utils/session";
 import { browserUsesDarkTheme } from "@/utils/theme";
 import type { SettingsModel } from "@/domain/settings-model";
+import { requestsPerPage } from "@/constants/technical";
 
 type GeneralState = {
   settings: SettingsModel;
 };
 
-const savedSettings: SettingsModel = getSettings() || {
-  darkTheme: browserUsesDarkTheme(),
-  saveSearchFilters: true,
+const savedSettings = getSettings();
+const settings: SettingsModel = {
+  darkTheme:
+    savedSettings?.darkTheme !== undefined
+      ? savedSettings.darkTheme
+      : browserUsesDarkTheme(),
+  saveSearchFilters:
+    savedSettings?.saveSearchFilters !== undefined
+      ? savedSettings.saveSearchFilters
+      : true,
+  requestPageSize:
+    savedSettings?.requestPageSize !== undefined
+      ? savedSettings.requestPageSize
+      : requestsPerPage,
 };
 export const useSettingsStore = defineStore({
   id: "settings",
   state: () =>
     ({
       settings: <SettingsModel>{
-        darkTheme: savedSettings.darkTheme,
-        saveSearchFilters: savedSettings.saveSearchFilters,
+        darkTheme: settings.darkTheme,
+        saveSearchFilters: settings.saveSearchFilters,
+        requestPageSize: settings.requestPageSize,
       },
     } as GeneralState),
   getters: {
