@@ -81,11 +81,11 @@
         @deleted="requestDeleted"
       />
       <accordion-item
-        v-if="showLoadMoreButton"
+        v-if="shouldShowLoadMoreButton"
         :opened="false"
         @buttonClicked="loadMoreRequests"
       >
-        <template v-slot:button-text>Load more requests </template>
+        <template v-slot:button-text>Load more requests</template>
       </accordion-item>
     </accordion>
     <div v-else>
@@ -132,6 +132,7 @@ export default defineComponent({
     let signalrConnection: HubConnection;
     let configuration: ConfigurationModel[] = [];
     let oldRequestsQueueLength = 0;
+    const requestsPageSize = generalStore.getRequestsPageSize;
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter: RequestSavedFilterModel = {
@@ -202,14 +203,20 @@ export default defineComponent({
     const showFilterBadges = computed(
       () => filter.value.urlStubIdFilter || filter.value.selectedTenantName
     );
+    const shouldShowLoadMoreButton = computed(
+      () => showLoadMoreButton.value && requestsPageSize > 0
+    );
 
     // Methods
     const loadRequests = async (fromIdentifier?: string, append?: boolean) => {
       try {
-        const result = await requestStore.getRequestsOverview(fromIdentifier);
+        const result = await requestStore.getRequestsOverview(
+          fromIdentifier,
+          requestsPageSize
+        );
         if (append) {
           requests.value = requests.value.concat(result.slice(1));
-          if (result.length < requestsPerPage) {
+          if (result.length < requestsPageSize) {
             showLoadMoreButton.value = false;
           }
         } else {
@@ -299,6 +306,7 @@ export default defineComponent({
       loadMoreRequests,
       requestDeleted,
       refresh,
+      shouldShowLoadMoreButton,
     };
   },
 });

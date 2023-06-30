@@ -11,11 +11,13 @@ export const useRequestsStore = defineStore({
   getters: {},
   actions: {
     getRequestsOverview(
-      fromIdentifier?: string
+      fromIdentifier?: string,
+      itemsPerPage?: number
     ): Promise<RequestOverviewModel[]> {
-      const headers: any = {
-        "x-items-per-page": requestsPerPage,
-      };
+      const headers: any = {};
+      if (itemsPerPage && Math.max(itemsPerPage, 0)) {
+        headers["x-items-per-page"] = itemsPerPage + 1;
+      }
       if (fromIdentifier) {
         headers["x-from-identifier"] = fromIdentifier;
       }

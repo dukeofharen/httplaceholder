@@ -37,6 +37,7 @@ export const useSettingsStore = defineStore({
     getSettings: (state): SettingsModel => state.settings,
     getDarkTheme: (state): boolean => state.settings.darkTheme,
     getSaveSearchFilters: (state): boolean => state.settings.saveSearchFilters,
+    getRequestsPageSize: (state): number => state.settings.requestPageSize,
   },
   actions: {
     storeSettings(settings: SettingsModel): void {
