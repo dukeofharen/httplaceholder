@@ -195,8 +195,8 @@ public class HarStubGeneratorFacts
         stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()), Times.Never);
 
-        Assert.AreEqual("prefixgenerated-e3d8cf9a6a2921845d6720cdcfdb677e", result[0].Stub.Id);
-        Assert.AreEqual("prefixgenerated-e3d8cf9a6a2921845d6720cdcfdb677e", result[1].Stub.Id);
-        Assert.AreEqual("prefixgenerated-e3d8cf9a6a2921845d6720cdcfdb677e", result[2].Stub.Id);
+        Assert.AreEqual("prefixgenerated-cf80511589000683cc58855de34781a7", result[0].Stub.Id);
+        Assert.AreEqual("prefixgenerated-cf80511589000683cc58855de34781a7", result[1].Stub.Id);
+        Assert.AreEqual("prefixgenerated-cf80511589000683cc58855de34781a7", result[2].Stub.Id);
     }
 }

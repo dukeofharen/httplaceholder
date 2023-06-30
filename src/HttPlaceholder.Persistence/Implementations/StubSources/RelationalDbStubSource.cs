@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
@@ -153,10 +154,39 @@ internal class RelationalDbStubSource : BaseWritableStubSource
 
     /// <inheritdoc />
     public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
         CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery, cancellationToken);
+        IEnumerable<DbRequestModel> result;
+        if (pagingModel != null)
+        {
+            IEnumerable<string> correlationIds =
+                (await ctx.QueryAsync<string>(_queryStore.GetPagedRequestCorrelationIdsQuery, cancellationToken))
+                .ToArray();
+            if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+            {
+                var index = correlationIds
+                    .Select((correlationId, index) => new {correlationId, index})
+                    .Where(x => x.correlationId.Equals(pagingModel.FromIdentifier))
+                    .Select(f => f.index)
+                    .FirstOrDefault();
+                correlationIds = correlationIds.Skip(index);
+            }
+
+            if (pagingModel.ItemsPerPage.HasValue)
+            {
+                correlationIds = correlationIds.Take(pagingModel.ItemsPerPage.Value);
+            }
+
+            result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsByCorrelationIdsQuery,
+                cancellationToken, new {CorrelationIds = correlationIds.ToArray()});
+        }
+        else
+        {
+            result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery, cancellationToken);
+        }
+
         return result
             .Select(r => JsonConvert.DeserializeObject<RequestResultModel>(r.Json));
     }

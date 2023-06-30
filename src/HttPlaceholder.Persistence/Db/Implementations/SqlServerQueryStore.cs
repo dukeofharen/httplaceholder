@@ -14,7 +14,25 @@ internal class SqlServerQueryStore : IQueryStore
   request_end_time AS RequestEndTime,
   json,
   has_response AS HasResponse
-FROM requests";
+FROM requests
+ORDER BY request_begin_time DESC";
+
+    /// <inheritdoc />
+    public string GetRequestsByCorrelationIdsQuery => @"SELECT
+  id,
+  correlation_id AS CorrelationId,
+  executing_stub_id AS ExecutingStubId,
+  request_begin_time AS RequestBeginTime,
+  request_end_time AS RequestEndTime,
+  json,
+  has_response AS HasResponse
+FROM requests
+WHERE correlation_id IN @CorrelationIds
+ORDER BY request_begin_time DESC";
+
+    /// <inheritdoc />
+    public string GetPagedRequestCorrelationIdsQuery =>
+        "SELECT correlation_id FROM requests ORDER BY request_begin_time DESC";
 
     /// <inheritdoc />
     public string GetRequestQuery => @"SELECT

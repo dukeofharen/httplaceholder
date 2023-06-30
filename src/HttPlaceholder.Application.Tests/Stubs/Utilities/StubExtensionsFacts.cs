@@ -35,12 +35,12 @@ public class StubExtensionsFacts
 
         // Assert
         Assert.AreEqual(stub.Id, result);
-        Assert.AreEqual("generated-9a07c220367e2323072ee8ab466192a4", result);
+        Assert.AreEqual("generated-662956759e097310a3b9ee8ba43a00db", result);
     }
 
     [DataTestMethod]
     [DataRow("stub-id", "prefix-", "prefix-stub-id")]
-    [DataRow(null, "prefix-", "prefix-generated-8358757ce7fac539123f33db05bb11b5")]
+    [DataRow(null, "prefix-", "prefix-generated-0d64002c8a32c99f1863f8f748d6dc12")]
     public void EnsureStubId_StubIdPrefix(string currentStubId, string prefix, string expectedResult)
     {
         // Arrange

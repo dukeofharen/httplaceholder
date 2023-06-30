@@ -33,8 +33,21 @@ public class StubRedirectionIntegrationTests : StubIntegrationTestBase
 
         // act / assert
         using var response = await Client.GetAsync(url);
-        Assert.AreEqual(HttpStatusCode.MovedPermanently, response.StatusCode);
+        Assert.AreEqual(HttpStatusCode.PermanentRedirect, response.StatusCode);
         Assert.AreEqual("https://reddit.com/",
+            response.Headers.Single(h => h.Key == HeaderKeys.Location).Value.Single());
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularGet_MovedPermanently()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}moved-permanently";
+
+        // act / assert
+        using var response = await Client.GetAsync(url);
+        Assert.AreEqual(HttpStatusCode.PermanentRedirect, response.StatusCode);
+        Assert.AreEqual("https://ducode.org/",
             response.Headers.Single(h => h.Key == HeaderKeys.Location).Value.Single());
     }
 }

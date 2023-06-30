@@ -98,6 +98,12 @@ public class StubResponseDto : IMapFrom<StubResponseModel>, IMapTo<StubResponseM
     public string PermanentRedirect { get; set; }
 
     /// <summary>
+    ///     Gets or sets moved permanently.
+    /// </summary>
+    [YamlMember(Alias = "movedPermanently")]
+    public string MovedPermanently { get; set; }
+
+    /// <summary>
     ///     Gets or sets the reverse proxy settings.
     /// </summary>
     [YamlMember(Alias = "reverseProxy")]

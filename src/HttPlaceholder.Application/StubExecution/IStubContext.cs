@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution;
@@ -96,16 +97,22 @@ public interface IStubContext
     /// <summary>
     ///     Retrieves a list of <see cref="RequestResultModel" />.
     /// </summary>
+    /// <param name="pagingModel">The paging information.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of <see cref="RequestResultModel" />.</returns>
-    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
+        CancellationToken cancellationToken);
 
     /// <summary>
     ///     Retrieves a list of <see cref="RequestOverviewModel" />.
     /// </summary>
+    /// <param name="pagingModel">The paging information.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of <see cref="RequestOverviewModel" />.</returns>
-    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        PagingModel pagingModel,
+        CancellationToken cancellationToken);
 
     /// <summary>
     ///     Retrieves a list of <see cref="RequestResultModel" /> by specific stub ID.

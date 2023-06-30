@@ -120,4 +120,38 @@ public class GetAllRequestsFacts : BaseClientTest
         Assert.AreEqual(2, request.StubResponseWriterResults.Count);
         Assert.AreEqual("StatusCodeResponseWriter", request.StubResponseWriterResults[0].ResponseWriterName);
     }
+
+    [TestMethod]
+    public async Task GetAllRequestsAsync_Paging_ShouldReturnAllRequests()
+    {
+        // Arrange
+        const string fromIdentifier = "abc123";
+        const int itemsPerPage = 3;
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/requests")
+            .WithHeaders("x-from-identifier", fromIdentifier)
+            .WithHeaders("x-items-per-page", itemsPerPage.ToString())
+            .Respond("application/json", AllRequestsResponse)));
+
+        // Act
+        var result = (await client.GetAllRequestsAsync(fromIdentifier, itemsPerPage)).ToArray();
+
+        // Assert
+        Assert.AreEqual(1, result.Length);
+
+        var request = result.Single();
+        Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", request.CorrelationId);
+        Assert.AreEqual("POST", request.RequestParameters.Method);
+        Assert.AreEqual(8, request.RequestParameters.Headers.Count);
+        Assert.AreEqual("PostmanRuntime/7.26.8", request.RequestParameters.Headers["User-Agent"]);
+        Assert.AreEqual(2, request.StubExecutionResults.Count);
+        Assert.AreEqual("xml-without-namespaces-specified", request.ExecutingStubId);
+
+        var stubExecutionResult = request.StubExecutionResults[0];
+        Assert.AreEqual("post-with-json-object-checker", stubExecutionResult.StubId);
+        Assert.AreEqual("MethodConditionChecker", stubExecutionResult.Conditions.ElementAt(0).CheckerName);
+
+        Assert.AreEqual(2, request.StubResponseWriterResults.Count);
+        Assert.AreEqual("StatusCodeResponseWriter", request.StubResponseWriterResults[0].ResponseWriterName);
+    }
 }

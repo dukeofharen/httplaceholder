@@ -9,8 +9,20 @@ export const useRequestsStore = defineStore({
   state: () => ({}),
   getters: {},
   actions: {
-    getRequestsOverview(): Promise<RequestOverviewModel[]> {
-      return get("/ph-api/requests/overview")
+    getRequestsOverview(
+      fromIdentifier?: string,
+      itemsPerPage?: number
+    ): Promise<RequestOverviewModel[]> {
+      const headers: any = {};
+      if (itemsPerPage && Math.max(itemsPerPage, 0)) {
+        headers["x-items-per-page"] = itemsPerPage + 1;
+      }
+      if (fromIdentifier) {
+        headers["x-from-identifier"] = fromIdentifier;
+      }
+      return get("/ph-api/requests/overview", {
+        headers,
+      })
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },

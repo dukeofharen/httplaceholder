@@ -261,6 +261,15 @@
   response:
     permanentRedirect: https://reddit.com
 
+- id: moved-permanently
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /moved-permanently
+  response:
+    permanentRedirect: https://ducode.org
+
 - id: client-ip-1
   conditions:
     method: GET
@@ -900,8 +909,6 @@
         equals: /text-binary.bin
   response:
     statusCode: 200
-    headers:
-      Content-Type: text/plain
     enableDynamicMode: true
     file: text.bin
 
@@ -913,8 +920,6 @@
         equals: /text.txt
   response:
     statusCode: 200
-    headers:
-      Content-Type: text/plain
     enableDynamicMode: true
     textFile: text.txt
 

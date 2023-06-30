@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem;
@@ -21,14 +22,17 @@ internal class FileSystemStubSource : BaseWritableStubSource
     private readonly IFileService _fileService;
     private readonly IFileSystemStubCache _fileSystemStubCache;
     private readonly IOptionsMonitor<SettingsModel> _options;
+    private readonly IDateTime _dateTime;
 
     public FileSystemStubSource(
         IFileService fileService,
         IOptionsMonitor<SettingsModel> options,
-        IFileSystemStubCache fileSystemStubCache)
+        IFileSystemStubCache fileSystemStubCache,
+        IDateTime dateTime)
     {
         _fileService = fileService;
         _fileSystemStubCache = fileSystemStubCache;
+        _dateTime = dateTime;
         _options = options;
     }
 
@@ -59,14 +63,13 @@ internal class FileSystemStubSource : BaseWritableStubSource
     public override async Task<RequestResultModel> GetRequestAsync(string correlationId,
         CancellationToken cancellationToken)
     {
-        var path = GetRequestsFolder();
-        var filePath = Path.Combine(path, ConstructRequestFilename(correlationId));
-        if (!await _fileService.FileExistsAsync(filePath, cancellationToken))
+        var requestFilePath = await FindRequestFilenameAsync(correlationId, cancellationToken);
+        if (string.IsNullOrWhiteSpace(requestFilePath))
         {
             return null;
         }
 
-        var contents = await _fileService.ReadAllTextAsync(filePath, cancellationToken);
+        var contents = await _fileService.ReadAllTextAsync(requestFilePath, cancellationToken);
         return JsonConvert.DeserializeObject<RequestResultModel>(contents);
     }
 
@@ -100,9 +103,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     /// <inheritdoc />
     public override async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
     {
-        var requestsPath = GetRequestsFolder();
-        var requestFilePath = Path.Combine(requestsPath, ConstructRequestFilename(correlationId));
-        if (!await _fileService.FileExistsAsync(requestFilePath, cancellationToken))
+        var requestFilePath = await FindRequestFilenameAsync(correlationId, cancellationToken);
+        if (string.IsNullOrWhiteSpace(requestFilePath))
         {
             return false;
         }
@@ -129,10 +131,35 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
     /// <inheritdoc />
     public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
         CancellationToken cancellationToken)
     {
         var path = GetRequestsFolder();
-        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        var files = (await _fileService.GetFilesAsync(path, "*.json", cancellationToken))
+            .OrderByDescending(f => f)
+            .ToArray();
+        if (pagingModel != null)
+        {
+            IEnumerable<string> filesQuery = files;
+            if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+            {
+                var index = files
+                    .Select((file, index) => new {file, index})
+                    .Where(f => f.file.Contains(pagingModel.FromIdentifier))
+                    .Select(f => f.index)
+                    .FirstOrDefault();
+                filesQuery = files
+                    .Skip(index);
+            }
+
+            if (pagingModel.ItemsPerPage.HasValue)
+            {
+                filesQuery = filesQuery.Take(pagingModel.ItemsPerPage.Value);
+            }
+
+            files = filesQuery.ToArray();
+        }
+
         var result = files
             .Select(filePath => _fileService
                 .ReadAllTextAsync(filePath, cancellationToken))
@@ -243,7 +270,27 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
     private static string ConstructStubFilename(string stubId) => $"{stubId}.json";
 
-    private static string ConstructRequestFilename(string correlationId) => $"{correlationId}.json";
+    private static string ConstructOldRequestFilename(string correlationId) => $"{correlationId}.json";
+
+    private string ConstructRequestFilename(string correlationId)
+    {
+        var unix = _dateTime.UtcNowUnix;
+        return $"{unix}-{correlationId}.json";
+    }
+
+    internal async Task<string> FindRequestFilenameAsync(string correlationId, CancellationToken cancellationToken)
+    {
+        var requestsFolder = GetRequestsFolder();
+        var oldRequestFilename = ConstructOldRequestFilename(correlationId);
+        var oldRequestPath = Path.Join(requestsFolder, oldRequestFilename);
+        if (await _fileService.FileExistsAsync(oldRequestPath, cancellationToken))
+        {
+            return oldRequestPath;
+        }
+
+        var files = await _fileService.GetFilesAsync(requestsFolder, $"*-{correlationId}.json", cancellationToken);
+        return !files.Any() ? null : files[0];
+    }
 
     private static string ConstructResponseFilename(string correlationId) => $"{correlationId}.json";
 }

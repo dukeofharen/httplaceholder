@@ -15,7 +15,7 @@ public static class PathUtilities
     ///     A method for removing unsafe characters from a path.
     /// </summary>
     /// <param name="path"></param>
-    /// <returns></returns>
+    /// <returns>The cleaned path.</returns>
     public static string CleanPath(string path)
     {
         if (string.IsNullOrWhiteSpace(path))

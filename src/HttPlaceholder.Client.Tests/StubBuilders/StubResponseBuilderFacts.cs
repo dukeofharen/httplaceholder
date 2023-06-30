@@ -245,6 +245,18 @@ public class StubResponseBuilderFacts
     }
 
     [TestMethod]
+    public void WithMovedPermanentlyRedirect()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .WithMovedPermanentlyRedirect("/moved-permanently")
+            .Build();
+
+        // Assert
+        Assert.AreEqual("/moved-permanently", response.MovedPermanently);
+    }
+
+    [TestMethod]
     public void WithDynamicModeEnabled()
     {
         // Act

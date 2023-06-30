@@ -16,4 +16,9 @@ public interface IDateTime
     ///     Gets the current UTC date and time.
     /// </summary>
     DateTime UtcNow { get; }
+
+    /// <summary>
+    ///     Gets the current UTC date and time as UNIX timestamp milliseconds.
+    /// </summary>
+    long UtcNowUnix { get; }
 }

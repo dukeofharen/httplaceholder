@@ -79,6 +79,11 @@ public class StubResponseDto
     public string PermanentRedirect { get; set; }
 
     /// <summary>
+    ///     Gets or sets moved permanently.
+    /// </summary>
+    public string MovedPermanently { get; set; }
+
+    /// <summary>
     ///     Gets or sets the reverse proxy settings.
     /// </summary>
     public StubResponseReverseProxyDto ReverseProxy { get; set; }

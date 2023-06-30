@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -26,6 +27,11 @@ public class
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> Handle(GetRequestsOverviewQuery request,
-        CancellationToken cancellationToken) =>
-        await _stubContext.GetRequestResultsOverviewAsync(cancellationToken);
+        CancellationToken cancellationToken)
+    {
+        var pagingModel = !string.IsNullOrWhiteSpace(request.FromIdentifier) || request.ItemsPerPage.HasValue
+            ? new PagingModel {FromIdentifier = request.FromIdentifier, ItemsPerPage = request.ItemsPerPage}
+            : null;
+        return await _stubContext.GetRequestResultsOverviewAsync(pagingModel, cancellationToken);
+    }
 }

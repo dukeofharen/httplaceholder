@@ -71,6 +71,8 @@ public class HttPlaceholderClient : IHttPlaceholderClient
 {
     private const string JsonContentType = "application/json";
     private const string TextContentType = "text/plain";
+    private const string FromIdentifierHeaderKey = "x-from-identifier";
+    private const string ItemsPerPageHeaderKey = "x-items-per-page";
 
     /// <summary>
     ///     Creates a <see cref="HttPlaceholderClient" /> instance.
@@ -114,9 +116,28 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<RequestResultDto>>
+        GetAllRequestsAsync(CancellationToken cancellationToken = default) =>
+        await GetAllRequestsAsync(null, 0, cancellationToken);
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync(
+        string fromIdentifier,
+        int numberOfRequestsPerPage,
+        CancellationToken cancellationToken = default)
     {
-        using var response = await HttpClient.GetAsync("/ph-api/requests", cancellationToken);
+        var request = new HttpRequestMessage(HttpMethod.Get, "/ph-api/requests");
+        if (!string.IsNullOrWhiteSpace(fromIdentifier))
+        {
+            request.Headers.Add(FromIdentifierHeaderKey, fromIdentifier);
+        }
+
+        if (numberOfRequestsPerPage > 0)
+        {
+            request.Headers.Add(ItemsPerPageHeaderKey, numberOfRequestsPerPage.ToString());
+        }
+
+        using var response = await HttpClient.SendAsync(request, cancellationToken);
         var content = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
@@ -128,9 +149,26 @@ public class HttPlaceholderClient : IHttPlaceholderClient
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync(
+        CancellationToken cancellationToken = default) =>
+        await GetRequestOverviewAsync(null, 0, cancellationToken);
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync(string fromIdentifier,
+        int numberOfRequestsPerPage,
         CancellationToken cancellationToken = default)
     {
-        using var response = await HttpClient.GetAsync("/ph-api/requests/overview", cancellationToken);
+        var request = new HttpRequestMessage(HttpMethod.Get, "/ph-api/requests/overview");
+        if (!string.IsNullOrWhiteSpace(fromIdentifier))
+        {
+            request.Headers.Add(FromIdentifierHeaderKey, fromIdentifier);
+        }
+
+        if (numberOfRequestsPerPage > 0)
+        {
+            request.Headers.Add(ItemsPerPageHeaderKey, numberOfRequestsPerPage.ToString());
+        }
+
+        using var response = await HttpClient.SendAsync(request, cancellationToken);
         var content = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {

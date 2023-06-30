@@ -1,14 +1,15 @@
 <template>
   <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
     <template v-slot:button-text>
-      <span class="request-header">
+      <span
+        class="request-header"
+        :title="executed ? 'Executed stub: ' + executingStubId : ''"
+      >
         <Method
           v-if="overviewRequest.method"
           :method="overviewRequest.method"
         />
-        <span class="ms-sm-1 request-url" :title="overviewRequest.url">{{
-          overviewRequest.url
-        }}</span>
+        <span class="ms-sm-1 request-url">{{ overviewRequest.url }}</span>
         <span class="ms-sm-1">
           <span>(</span>
           <span
@@ -81,11 +82,14 @@ export default defineComponent({
     // Functions
     const getRequestTime = () => props.overviewRequest.requestEndTime;
     const correlationId = () => props.overviewRequest.correlationId;
-    const executed = () => props.overviewRequest.executingStubId;
     const getTimeFromNow = () => formatFromNow(getRequestTime());
 
     // Computed
     const requestDateTime = computed(() => formatDateTime(getRequestTime()));
+    const executed = computed(() => !!props.overviewRequest.executingStubId);
+    const executingStubId = computed(
+      () => props.overviewRequest.executingStubId
+    );
 
     // Data
     const timeFromNow = ref(getTimeFromNow());
@@ -134,14 +138,14 @@ export default defineComponent({
       try {
         await requestStore.deleteRequest(correlationId());
         success(resources.requestDeletedSuccessfully);
-        emit("deleted");
+        emit("deleted", correlationId());
       } catch (e) {
         handleHttpError(e);
       }
     };
 
     return {
-      executed: executed(),
+      executed,
       requestDateTime,
       timeFromNow,
       refreshTimeFromNowInterval,
@@ -150,6 +154,7 @@ export default defineComponent({
       accordionOpened,
       createStub,
       deleteRequest,
+      executingStubId,
     };
   },
 });

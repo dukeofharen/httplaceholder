@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
@@ -35,7 +36,7 @@ public abstract class BaseWritableStubSource : IWritableStubSource
         CancellationToken cancellationToken);
 
     /// <inheritdoc />
-    public abstract Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken);
+    public abstract Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel, CancellationToken cancellationToken);
 
     /// <inheritdoc />
     public abstract Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken);
@@ -54,8 +55,9 @@ public abstract class BaseWritableStubSource : IWritableStubSource
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        PagingModel pagingModel,
         CancellationToken cancellationToken) =>
-        (await GetRequestResultsAsync(cancellationToken))
+        (await GetRequestResultsAsync(pagingModel, cancellationToken))
         .Select(r => new RequestOverviewModel
         {
             Method = r.RequestParameters?.Method,

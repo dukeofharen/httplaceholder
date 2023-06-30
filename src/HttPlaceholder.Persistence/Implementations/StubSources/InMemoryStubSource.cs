@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
 
@@ -128,11 +129,36 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken)
+    public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
+        CancellationToken cancellationToken)
     {
         lock (_lock)
         {
-            return Task.FromResult(RequestResultModels.AsEnumerable());
+            var result = RequestResultModels.OrderByDescending(r => r.RequestBeginTime).ToArray();
+            if (pagingModel != null)
+            {
+                IEnumerable<RequestResultModel> resultQuery = result;
+                if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
+                {
+                    var index = result
+                        .Select((request, index) => new {request, index})
+                        .Where(f => f.request.CorrelationId.Equals(pagingModel.FromIdentifier))
+                        .Select(f => f.index)
+                        .FirstOrDefault();
+                    resultQuery = result
+                        .Skip(index);
+                }
+
+                if (pagingModel.ItemsPerPage.HasValue)
+                {
+                    resultQuery = resultQuery.Take(pagingModel.ItemsPerPage.Value);
+                }
+
+                result = resultQuery.ToArray();
+            }
+
+            return Task.FromResult(result.AsEnumerable());
         }
     }
 

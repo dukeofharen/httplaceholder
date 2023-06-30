@@ -5,9 +5,17 @@
       <button
         type="button"
         class="btn btn-success me-2 btn-mobile full-width"
-        @click="loadRequests"
+        @click="refresh"
       >
         Refresh
+      </button>
+      <button
+        v-if="shouldShowLoadAllRequestsButton"
+        type="button"
+        class="btn btn-success me-2 btn-mobile full-width"
+        @click="loadAllRequests"
+      >
+        Load all requests
       </button>
       <button
         type="button"
@@ -78,8 +86,15 @@
         v-for="request of filteredRequests"
         :key="request.correlationId"
         :overview-request="request"
-        @deleted="loadRequests"
+        @deleted="requestDeleted"
       />
+      <accordion-item
+        v-if="shouldShowLoadMoreButton"
+        :opened="false"
+        @buttonClicked="loadMoreRequests"
+      >
+        <template v-slot:button-text>Load more requests</template>
+      </accordion-item>
     </accordion>
     <div v-else>
       No requests have been made to HttPlaceholder yet. Perform HTTP requests
@@ -103,6 +118,8 @@ import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
+import { useConfigurationStore } from "@/store/configuration";
+import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 
 export default defineComponent({
   name: "Requests",
@@ -111,13 +128,18 @@ export default defineComponent({
     const tenantStore = useTenantsStore();
     const requestStore = useRequestsStore();
     const generalStore = useSettingsStore();
+    const configStore = useConfigurationStore();
     const route = useRoute();
 
     // Data
     const requests = ref<RequestOverviewModel[]>([]);
     const tenants = ref<string[]>([]);
     const showDeleteAllRequestsModal = ref(false);
+    const showLoadMoreButton = ref(true);
     let signalrConnection: HubConnection;
+    let configuration: ConfigurationModel[] = [];
+    let oldRequestsQueueLength = 0;
+    const requestsPageSize = generalStore.getRequestsPageSize;
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter: RequestSavedFilterModel = {
@@ -140,8 +162,16 @@ export default defineComponent({
       signalrConnection = new HubConnectionBuilder()
         .withUrl("/requestHub")
         .build();
-      signalrConnection.on("RequestReceived", (request: RequestOverviewModel) =>
-        requests.value.unshift(request)
+      signalrConnection.on(
+        "RequestReceived",
+        (request: RequestOverviewModel) => {
+          requests.value.unshift(request);
+
+          // Strip away "old" requests.
+          if (oldRequestsQueueLength) {
+            requests.value = requests.value.slice(0, oldRequestsQueueLength);
+          }
+        }
       );
       try {
         await signalrConnection.start();
@@ -180,14 +210,34 @@ export default defineComponent({
     const showFilterBadges = computed(
       () => filter.value.urlStubIdFilter || filter.value.selectedTenantName
     );
+    const shouldShowLoadMoreButton = computed(
+      () => showLoadMoreButton.value && requestsPageSize > 0
+    );
+    const shouldShowLoadAllRequestsButton = computed(
+      () => requestsPageSize > 0
+    );
 
     // Methods
-    const loadRequests = async () => {
+    const loadRequests = async (fromIdentifier?: string, append?: boolean) => {
       try {
-        requests.value = await requestStore.getRequestsOverview();
+        const result = await requestStore.getRequestsOverview(
+          fromIdentifier,
+          requestsPageSize
+        );
+        if (append) {
+          requests.value = requests.value.concat(result.slice(1));
+        } else {
+          requests.value = result;
+        }
+
+        showLoadMoreButton.value = result.length >= requestsPageSize;
       } catch (e) {
         handleHttpError(e);
       }
+    };
+    const refresh = async () => {
+      await loadRequests(undefined, false);
+      showLoadMoreButton.value = true;
     };
     const loadTenantNames = async () => {
       try {
@@ -213,6 +263,29 @@ export default defineComponent({
         setRequestFilterForm(filter.value);
       }
     };
+    const loadConfiguration = async () => {
+      configuration = await configStore.getConfiguration();
+      const foundOldRequestsQueueLength = configuration.find(
+        (c) => c.key === "oldRequestsQueueLength"
+      );
+      oldRequestsQueueLength = foundOldRequestsQueueLength
+        ? parseInt(foundOldRequestsQueueLength.value)
+        : 0;
+    };
+    const loadMoreRequests = async () => {
+      const lastCorrelationId =
+        requests.value[requests.value.length - 1].correlationId;
+      await loadRequests(lastCorrelationId, true);
+    };
+    const requestDeleted = (correlationId: string) => {
+      requests.value = requests.value.filter(
+        (r) => r.correlationId !== correlationId
+      );
+    };
+    const loadAllRequests = async () => {
+      requests.value = await requestStore.getRequestsOverview();
+      showLoadMoreButton.value = false;
+    };
 
     // Watch
     watch(filter, () => filterChanged(), { deep: true });
@@ -223,6 +296,7 @@ export default defineComponent({
         loadRequests(),
         loadTenantNames(),
         initializeSignalR(),
+        loadConfiguration(),
       ]);
     });
     onUnmounted(() => {
@@ -240,6 +314,13 @@ export default defineComponent({
       filter,
       showDeleteAllRequestsModal,
       showFilterBadges,
+      showLoadMoreButton,
+      loadMoreRequests,
+      requestDeleted,
+      refresh,
+      shouldShowLoadMoreButton,
+      shouldShowLoadAllRequestsButton,
+      loadAllRequests,
     };
   },
 });

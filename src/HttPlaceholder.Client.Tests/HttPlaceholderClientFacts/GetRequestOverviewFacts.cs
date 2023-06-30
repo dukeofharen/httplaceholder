@@ -65,4 +65,26 @@ public class GetRequestOverviewFacts : BaseClientTest
         Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", result[0].CorrelationId);
         Assert.AreEqual("xml-without-namespaces-specified", result[0].ExecutingStubId);
     }
+
+    [TestMethod]
+    public async Task GetRequestOverviewAsync_Paging_ShouldReturnRequestOverview()
+    {
+        // Arrange
+        const string fromIdentifier = "abc123";
+        const int itemsPerPage = 3;
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/requests/overview")
+            .WithHeaders("x-from-identifier", fromIdentifier)
+            .WithHeaders("x-items-per-page", itemsPerPage.ToString())
+            .Respond("application/json", RequestOverviewResponse)));
+
+        // Act
+        var result = (await client.GetRequestOverviewAsync(fromIdentifier, itemsPerPage)).ToArray();
+
+        // Assert
+        Assert.AreEqual(2, result.Length);
+
+        Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", result[0].CorrelationId);
+        Assert.AreEqual("xml-without-namespaces-specified", result[0].ExecutingStubId);
+    }
 }

@@ -19,7 +19,7 @@ public class RequestStubGeneratorFacts
         var generator = _mocker.CreateInstance<RequestStubGenerator>();
 
         stubContextMock
-            .Setup(m => m.GetRequestResultsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsAsync(null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<RequestResultModel>());
 
         // Act / Assert
@@ -36,7 +36,7 @@ public class RequestStubGeneratorFacts
         var httpRequestToConditionsServiceMock = _mocker.GetMock<IHttpRequestToConditionsService>();
         var generator = _mocker.CreateInstance<RequestStubGenerator>();
 
-        const string expectedStubId = "generated-ac96507754bfe6f8bc253f19a0f47aa7";
+        const string expectedStubId = "generated-b7a0313774b50962789dc0b2841f1458";
 
         var request =
             new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()};
@@ -77,7 +77,7 @@ public class RequestStubGeneratorFacts
         var httpRequestToConditionsServiceMock = _mocker.GetMock<IHttpRequestToConditionsService>();
         var generator = _mocker.CreateInstance<RequestStubGenerator>();
 
-        const string expectedStubId = "generated-ac96507754bfe6f8bc253f19a0f47aa7";
+        const string expectedStubId = "generated-b7a0313774b50962789dc0b2841f1458";
 
         var request =
             new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()};
@@ -119,7 +119,7 @@ public class RequestStubGeneratorFacts
         var httpResponseToStubResponseServiceMock = _mocker.GetMock<IHttpResponseToStubResponseService>();
         var generator = _mocker.CreateInstance<RequestStubGenerator>();
 
-        const string expectedStubId = "generated-8358757ce7fac539123f33db05bb11b5";
+        const string expectedStubId = "generated-0d64002c8a32c99f1863f8f748d6dc12";
 
         var request =
             new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()};
