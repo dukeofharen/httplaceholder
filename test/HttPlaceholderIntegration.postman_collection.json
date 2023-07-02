@@ -11135,6 +11135,151 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "Bugfix: error when setting reverse proxy header",
+							"item": [
+								{
+									"name": "Create YAML stub: proxy destination",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: reverse-proxy-bugfix-destination\nconditions:\n  url:\n    path:\n      equals: /reverse-proxy-bugfix-destination\nresponse:\n  text: HELLO FROM PROXY reverse-proxy-bugfix-destination\npriority: 0\nenabled: true",
+											"options": {
+												"raw": {
+													"language": "text"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create YAML stub: proxy",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: reverse-proxy-bugfix\nconditions:\n  url:\n    path:\n      equals: /reverse-proxy-bugfix\nresponse:\n  reverseProxy:\n    url: {{rootUrl}}reverse-proxy-bugfix-destination\n    appendPath: true\n    appendQueryString: true\n    replaceRootUrl: true\npriority: 0\nenabled: true",
+											"options": {
+												"raw": {
+													"language": "text"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Perform stub request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"HELLO FROM PROXY reverse-proxy-bugfix-destination\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "WordPress/6.2.2; http://localhost:8010",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}reverse-proxy-bugfix",
+											"host": [
+												"{{rootUrl}}reverse-proxy-bugfix"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Check request\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    const request = jsonData.find(d => d.requestParameters.url.endsWith(\"/reverse-proxy-bugfix-destination\"));",
+													"    pm.expect(!!request).to.be.true;",
+													"    pm.expect(request.requestParameters.headers[\"User-Agent\"]).to.eql(\"WordPress/6.2.2; http://localhost:8010\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "User-Agent",
+												"value": "WordPress/6.2.2; http://localhost:8010",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/requests",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"requests"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				}

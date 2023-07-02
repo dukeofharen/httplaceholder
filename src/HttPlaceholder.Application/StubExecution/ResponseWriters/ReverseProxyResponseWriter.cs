@@ -78,7 +78,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         var headers = CleanHeaders(originalHeaders);
         foreach (var header in headers)
         {
-            request.Headers.Add(header.Key, header.Value);
+            request.Headers.TryAddWithoutValidation(header.Key, header.Value);
         }
 
         if (method != HttpMethod.Get)
