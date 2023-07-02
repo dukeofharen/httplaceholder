@@ -1,3 +1,6 @@
+[vnext]
+- Fixed bug where some header values were not accepted by the .NET HttpClient when a reverse proxy was used. An example is the `User-Agent` value `WordPress/6.2.2; http://localhost:8010` (https://github.com/dukeofharen/httplaceholder/pull/314).
+
 [2023.6.30]
 - Split form helper buttons into 4 separate buttons (https://github.com/dukeofharen/httplaceholder/pull/305).
 - Updated the CodeMirror editor from 5 to 6 (https://github.com/dukeofharen/httplaceholder/pull/305).
