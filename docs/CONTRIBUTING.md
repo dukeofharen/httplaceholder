@@ -16,11 +16,11 @@ To set up a development environment, please follow these steps:
 ### Setting up development environment for HttPlaceholder
 
 1. Make sure [.NET 7](https://asp.net) is installed.
-1. In your terminal, go to the folder `src`.
-1. In the folder, executed the command `dotnet build`. This will download all NuGet packages and makes sure everything builds as intended.
-1. Go to the folder `src/HttPlaceholder`.
-1. Execute the command `dotnet run`. The HttPlaceholder application will now run and you can interact with it. To learn more about how to start the application with different configurations, go to the page [configuration](docs.md#configuration). The application runs, by default, on addresses <http://localhost:5000> and <https://localhost:5050>.
-1. Ideally, you want to use an IDE or an advanced text editor to make changes to the source code. Any of the following (and probably more) IDEs / text editors are supported and provide full-fledged C#/.NET support:
+2. In your terminal, go to the folder `src`.
+3. In the folder, executed the command `dotnet build`. This will download all NuGet packages and makes sure everything builds as intended.
+4. Go to the folder `src/HttPlaceholder`.
+5. Execute the command `dotnet run`. The HttPlaceholder application will now run and you can interact with it. To learn more about how to start the application with different configurations, go to the page [configuration](docs.md#configuration). The application runs, by default, on addresses <http://localhost:5000> and <https://localhost:5050>.
+6. Ideally, you want to use an IDE or an advanced text editor to make changes to the source code. Any of the following (and probably more) IDEs / text editors are supported and provide full-fledged C#/.NET support:
    - [Visual Studio (Windows only)](https://visualstudio.microsoft.com/)
    - [Visual Studio for Mac](https://visualstudio.microsoft.com/)
    - [Visual Studio Code (cross platform)](https://code.visualstudio.com/)
@@ -29,11 +29,11 @@ To set up a development environment, please follow these steps:
 ### Setting up development environment for the user interface
 
 1. Make sure [Node.js](https://nodejs.org/en/) is installed.
-1. In your terminal, go to the folder `gui` folder.
-1. Execute the command `npm install`. This will download all necessary packages for the frontend application.
-1. When everything is downloaded, executed the command `npm run serve`. The application will be built and can be reached on <http://localhost:9999> ("classic" UI) or <http://localhost:10001> (new UI).
-1. When developing, make sure HttPlaceholder itself is also running (see the previous paragraph).
-1. Ideally, you want to use an IDE or an advanced text editor to make changes to the source code. Any of the following (and probably more) IDEs / text editors are supported and provide fullfledged Vue / JavaScript support:
+2. In your terminal, go to the folder `gui` folder.
+3. Execute the command `npm install`. This will download all necessary packages for the frontend application.
+4. When everything is downloaded, executed the command `npm run serve`. The application will be built and can be reached on <http://localhost:9999> ("classic" UI) or <http://localhost:10001> (new UI).
+5. When developing, make sure HttPlaceholder itself is also running (see the previous paragraph).
+6. Ideally, you want to use an IDE or an advanced text editor to make changes to the source code. Any of the following (and probably more) IDEs / text editors are supported and provide full-fledged Vue / JavaScript support:
    - [Visual Studio (Windows only)](https://visualstudio.microsoft.com/)
    - [Visual Studio for Mac](https://visualstudio.microsoft.com/)
    - [Visual Studio Code (cross platform)](https://code.visualstudio.com/)
@@ -58,8 +58,8 @@ Even better: You could submit a pull request with a fix or new feature!
 1. Search our repository for open or closed
 [pull requests](https://github.com/dukeofharen/httplaceholder/pulls)
 that relates to your submission. You don't want to duplicate effort.
-1. Fork the project
-1. Create your feature branch (`git checkout -b feat/amazing_feature`)
-1. Commit your changes (`git commit -m 'feat: add amazing_feature'`)
-1. Push to the branch (`git push origin feat/amazing_feature`)
-1. Open a pull request
+2. Fork the project
+3. Create your feature branch (`git checkout -b feat/amazing_feature`)
+4. Commit your changes (`git commit -m 'feat: add amazing_feature'`)
+5. Push to the branch (`git push origin feat/amazing_feature`)
+6. Open a pull request
