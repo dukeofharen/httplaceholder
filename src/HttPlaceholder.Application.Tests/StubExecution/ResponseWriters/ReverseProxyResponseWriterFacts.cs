@@ -163,7 +163,8 @@ public class ReverseProxyResponseWriterFacts
             {"X-Api-Key", "abc123"},
             {"Connection", "keep-alive"},
             {HeaderKeys.AcceptEncoding, "utf-8"},
-            {"Accept", MimeTypes.JsonMime}
+            {"Accept", MimeTypes.JsonMime},
+            {"User-Agent", "WordPress/6.2.2; http://localhost:8010"}
         };
         mockHttpContextService
             .Setup(m => m.GetHeaders())
@@ -175,7 +176,7 @@ public class ReverseProxyResponseWriterFacts
             .With(r =>
             {
                 var proxyHeaders = r.Headers.ToDictionary(h => h.Key, h => h.Value.First());
-                return proxyHeaders.Count == 2 &&
+                return proxyHeaders.Count == 3 &&
                        proxyHeaders["X-Api-Key"] == "abc123" &&
                        proxyHeaders["Accept"] == MimeTypes.JsonMime;
             })
