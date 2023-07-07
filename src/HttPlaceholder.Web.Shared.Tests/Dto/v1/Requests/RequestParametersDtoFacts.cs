@@ -23,6 +23,20 @@ public class RequestParametersDtoFacts
     }
 
     [TestMethod]
+    public void Map_BodyIsSetButEmptyString_ShouldUseBodyInMapping()
+    {
+        // Arrange
+        var model = new RequestParametersModel {Body = string.Empty};
+
+        // Act
+        var result = _mapper.Map<RequestParametersDto>(model);
+
+        // Assert
+        Assert.IsFalse(result.BodyIsBinary);
+        Assert.AreEqual(model.Body, result.Body);
+    }
+
+    [TestMethod]
     public void Map_BodyIsNotSet_BinaryBodyIsSet_BinaryBodyIsText_ShouldUseBodyInMapping()
     {
         // Arrange
