@@ -1,3 +1,6 @@
+[2023.7.22]
+- Fixed bug where an exception was thrown when running a proxy and an HTTP was returned by the (https://github.com/dukeofharen/httplaceholder/pull/317).
+
 [2023.7.7]
 - Fixed bug where some header values were not accepted by the .NET HttpClient when a reverse proxy was used. An example is the `User-Agent` value `WordPress/6.2.2; http://localhost:8010` (https://github.com/dukeofharen/httplaceholder/pull/314).
 - The self-signed certificate for HTTPS traffic has been replaced (https://github.com/dukeofharen/httplaceholder/pull/315).

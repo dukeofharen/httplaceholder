@@ -109,9 +109,9 @@ public class StubHandlingMiddleware
 
     private void HandleException(string correlationId, Exception e)
     {
+        _logger.LogWarning($"Unexpected exception thrown: {e}");
         _httpContextService.SetStatusCode(HttpStatusCode.InternalServerError);
         _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlationId);
-        _logger.LogWarning($"Unexpected exception thrown: {e}");
     }
 
     private async Task HandleRequestValidationException(string correlation, RequestValidationException e,
@@ -165,7 +165,7 @@ public class StubHandlingMiddleware
             _httpContextService.AddHeader(key, value);
         }
 
-        if (response.Body != null)
+        if (response.Body != null && response.Body.Any())
         {
             await _httpContextService.WriteAsync(response.Body, cancellationToken);
         }
