@@ -103,11 +103,6 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     public void SetItem(string key, object item)
     {
         var context = _httpContextAccessor.HttpContext;
-        if (context == null)
-        {
-            return;
-        }
-
         if (context.Items.ContainsKey(key))
         {
             context.Items.Remove(key);
@@ -120,11 +115,6 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     public bool DeleteItem(string key)
     {
         var context = _httpContextAccessor.HttpContext;
-        if (context == null)
-        {
-            return false;
-        }
-
         return context.Items.ContainsKey(key) && context.Items.Remove(key);
     }
 
