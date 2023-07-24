@@ -74,4 +74,22 @@ public static class StringHelper
     /// <returns>The input, divided by newline characters.</returns>
     public static string[] SplitNewlines(this string input) =>
         input.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
+
+    /// <summary>
+    ///     Accepts an array of strings and returns the first string that is not empty or whitespace.
+    /// </summary>
+    /// <param name="input">The strings.</param>
+    /// <returns>The first string that contains any other characters than whitespaces. Returns null if nothing is found.</returns>
+    public static string GetFirstNonWhitespaceString(params string[] input)
+    {
+        foreach (var str in input)
+        {
+            if (!string.IsNullOrWhiteSpace(str))
+            {
+                return str;
+            }
+        }
+
+        return null;
+    }
 }

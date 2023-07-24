@@ -100,7 +100,33 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     }
 
     /// <inheritdoc />
-    public void SetItem(string key, object item) => _httpContextAccessor.HttpContext?.Items.Add(key, item);
+    public void SetItem(string key, object item)
+    {
+        var context = _httpContextAccessor.HttpContext;
+        if (context == null)
+        {
+            return;
+        }
+
+        if (context.Items.ContainsKey(key))
+        {
+            context.Items.Remove(key);
+        }
+
+        context.Items.Add(key, item);
+    }
+
+    /// <inheritdoc />
+    public bool DeleteItem(string key)
+    {
+        var context = _httpContextAccessor.HttpContext;
+        if (context == null)
+        {
+            return false;
+        }
+
+        return context.Items.ContainsKey(key) && context.Items.Remove(key);
+    }
 
     /// <inheritdoc />
     public (string, StringValues)[] GetFormValues()

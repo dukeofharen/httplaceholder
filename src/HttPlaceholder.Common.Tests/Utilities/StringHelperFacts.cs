@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Common.Utilities;
+﻿using System.Collections.Generic;
+using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.Common.Tests.Utilities;
 
@@ -92,5 +93,25 @@ public class StringHelperFacts
         Assert.AreEqual("split", result[0]);
         Assert.AreEqual("this", result[1]);
         Assert.AreEqual("text", result[2]);
+    }
+
+    public static IEnumerable<object> GetFirstNonWhitespaceString_TestData =>
+        new[]
+        {
+            new object[] {new[] {"1", "2", "3"}, "1"},
+            new object[] {new[] {"", "2", "3"}, "2"},
+            new object[] {new[] {"", null, "3"}, "3"},
+            new object[] {new[] {"", null, null}, null},
+        };
+
+    [TestMethod]
+    [DynamicData(nameof(GetFirstNonWhitespaceString_TestData))]
+    public void GetFirstNonWhitespaceString_HappyFlow(string[] input, string expectedOutput)
+    {
+        // Act
+        var result = StringHelper.GetFirstNonWhitespaceString(input);
+
+        // Assert
+        Assert.AreEqual(expectedOutput, result);
     }
 }

@@ -3,15 +3,23 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Persistence.Implementations;
 
 internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
 {
+    private readonly IHttpContextService _httpContextService;
     internal readonly ConcurrentDictionary<string, object> ScenarioLocks = new();
     internal readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
+
+    public ScenarioStateStore(IHttpContextService httpContextService)
+    {
+        _httpContextService = httpContextService;
+    }
 
     /// <inheritdoc />
     public ScenarioStateModel GetScenario(string scenario)
@@ -35,6 +43,7 @@ internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
             throw new InvalidOperationException($"Scenario state with key '{lookupKey}' already exists.");
         }
 
+        _httpContextService.SetItem(CachingKeys.ScenarioState, CopyScenarioStateModel(scenarioStateModel));
         return scenarioToAdd;
     }
 
@@ -54,15 +63,17 @@ internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
             throw new InvalidOperationException(
                 $"Something went wrong with updating scenario with key '{lookupKey}'.");
         }
+
+        _httpContextService.SetItem(CachingKeys.ScenarioState, CopyScenarioStateModel(scenarioStateModel));
     }
 
     /// <inheritdoc />
     public object GetScenarioLock(string scenario)
     {
         var lookupKey = scenario.ToLower();
-        if (ScenarioLocks.ContainsKey(lookupKey))
+        if (ScenarioLocks.TryGetValue(lookupKey, out var foundLock))
         {
-            return ScenarioLocks[lookupKey];
+            return foundLock;
         }
 
         var scenarioLock = new object();
@@ -86,6 +97,7 @@ internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
         }
 
         var lookupKey = scenario.ToLower();
+        _httpContextService.DeleteItem(CachingKeys.ScenarioState);
         ScenarioLocks.TryRemove(lookupKey, out _);
         return Scenarios.TryRemove(lookupKey, out _);
     }

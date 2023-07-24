@@ -241,3 +241,14 @@ public static class HeaderKeys
     /// </summary>
     public const string Location = "Location";
 }
+
+/// <summary>
+///     A static constants class used for defining caching keys.
+/// </summary>
+public static class CachingKeys
+{
+    /// <summary>
+    ///     The scenario state caching key.
+    /// </summary>
+    public const string ScenarioState = "scenarioState";
+}
