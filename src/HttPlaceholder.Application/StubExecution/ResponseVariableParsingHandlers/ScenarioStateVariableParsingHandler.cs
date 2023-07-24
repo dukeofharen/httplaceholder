@@ -3,8 +3,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
@@ -14,11 +16,16 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IScenarioStateStore _scenarioStateStore;
+    private readonly IHttpContextService _httpContextService;
 
-    public ScenarioStateVariableParsingHandler(IScenarioStateStore scenarioStateStore, IFileService fileService) :
+    public ScenarioStateVariableParsingHandler(
+        IScenarioStateStore scenarioStateStore,
+        IFileService fileService,
+        IHttpContextService httpContextService) :
         base(fileService)
     {
         _scenarioStateStore = scenarioStateStore;
+        _httpContextService = httpContextService;
     }
 
     /// <inheritdoc />
@@ -39,18 +46,25 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler,
 
     private string InsertState(string current, Match match, StubModel stub)
     {
-        string state;
-        var scenarioName = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
-            ? match.Groups[2].Value
-            : stub.Scenario ?? string.Empty;
-        if (string.IsNullOrWhiteSpace(scenarioName))
+        var state = string.Empty;
+        var customScenarioNameSet = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value);
+        if (!customScenarioNameSet)
         {
-            state = string.Empty;
+            // Try to read the scenario state from the HttpContext as it contains the correct state of the moment the state was set.
+            var scenarioState = _httpContextService.GetItem<ScenarioStateModel>(CachingKeys.ScenarioState);
+            state = scenarioState?.State;
         }
-        else
+
+        if (string.IsNullOrWhiteSpace(state))
         {
-            var scenario = _scenarioStateStore.GetScenario(scenarioName);
-            state = scenario?.State;
+            var scenarioName = customScenarioNameSet
+                ? match.Groups[2].Value
+                : stub.Scenario ?? string.Empty;
+            if (!string.IsNullOrWhiteSpace(scenarioName))
+            {
+                var scenario = _scenarioStateStore.GetScenario(scenarioName);
+                state = scenario?.State;
+            }
         }
 
         return current.Replace(match.Value, state);

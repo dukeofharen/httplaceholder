@@ -85,6 +85,13 @@ public interface IHttpContextService
     void SetItem(string key, object item);
 
     /// <summary>
+    ///     Deletes an item on the current HttpContext based on the key.
+    /// </summary>
+    /// <param name="key">The item key.</param>
+    /// <returns>True if the item was found and deleted; false otherwise.</returns>
+    bool DeleteItem(string key);
+
+    /// <summary>
     ///     Gets the posted form values as tuple list of string and <see cref="StringValues" />.
     /// </summary>
     /// <returns>The posted form values.</returns>

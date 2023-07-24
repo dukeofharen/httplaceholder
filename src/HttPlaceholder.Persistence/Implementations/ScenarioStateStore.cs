@@ -5,6 +5,7 @@ using System.Linq;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Persistence.Implementations;
@@ -42,7 +43,7 @@ internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
             throw new InvalidOperationException($"Scenario state with key '{lookupKey}' already exists.");
         }
 
-        _httpContextService.SetItem("scenarioState", CopyScenarioStateModel(scenarioStateModel));
+        _httpContextService.SetItem(CachingKeys.ScenarioState, CopyScenarioStateModel(scenarioStateModel));
         return scenarioToAdd;
     }
 
@@ -63,7 +64,7 @@ internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
                 $"Something went wrong with updating scenario with key '{lookupKey}'.");
         }
 
-        _httpContextService.SetItem("scenarioState", CopyScenarioStateModel(scenarioStateModel));
+        _httpContextService.SetItem(CachingKeys.ScenarioState, CopyScenarioStateModel(scenarioStateModel));
     }
 
     /// <inheritdoc />
@@ -96,6 +97,7 @@ internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
         }
 
         var lookupKey = scenario.ToLower();
+        _httpContextService.DeleteItem(CachingKeys.ScenarioState);
         ScenarioLocks.TryRemove(lookupKey, out _);
         return Scenarios.TryRemove(lookupKey, out _);
     }
