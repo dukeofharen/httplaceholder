@@ -198,18 +198,49 @@ public class HttpContextServiceFacts
     }
 
     [TestMethod]
-    public void SetItem_GetItem_HappyFlow()
+    public void SetItemTwice_GetItem_HappyFlow()
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
 
         // Act
         service.SetItem("key", 42);
+        service.SetItem("key", 43);
         var result = service.GetItem<int>("key");
 
         // Assert
         Assert.AreEqual(1, _mockHttpContext.Items.Count);
-        Assert.AreEqual(42, result);
+        Assert.AreEqual(43, result);
+    }
+
+    [TestMethod]
+    public void DeleteItem_ItemDoesntExist_ShouldReturnFalse()
+    {
+        // Arrange
+        var service = _mocker.CreateInstance<HttpContextService>();
+        service.SetItem("key1", 42);
+
+        // Act
+        var result = service.DeleteItem("key2");
+
+        // Assert
+        Assert.IsFalse(result);
+        Assert.AreEqual(1, _mockHttpContext.Items.Count);
+    }
+
+    [TestMethod]
+    public void DeleteItem_ItemExists_ShouldReturnTrue()
+    {
+        // Arrange
+        var service = _mocker.CreateInstance<HttpContextService>();
+        service.SetItem("key1", 42);
+
+        // Act
+        var result = service.DeleteItem("key1");
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.IsFalse(_mockHttpContext.Items.Any());
     }
 
     [TestMethod]

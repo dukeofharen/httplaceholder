@@ -1,8 +1,8 @@
 # Build docs
-FROM python:slim-bullseye AS doc-build-env
+FROM python:3.11-bookworm AS doc-build-env
 WORKDIR /app
 COPY . ./
-RUN cd docs/httpl-docs && pip install mkdocs && python sync.py && mkdocs build && cp -r site /app
+RUN cd docs/httpl-docs && pip install -r requirements.txt && python sync.py && mkdocs build && cp -r site /app
 
 # Build UI
 FROM node:18 AS gui-build-env

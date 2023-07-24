@@ -1,3 +1,6 @@
+[vnext]
+- Fixed bug where HttPlaceholder would insert an incorrect value in the response if the "scenario_state" or the "scenario_hitcount" were used (https://github.com/dukeofharen/httplaceholder/pull/318).
+
 [2023.7.22]
 - Fixed bug where an exception was thrown when running a proxy and an HTTP was returned by the (https://github.com/dukeofharen/httplaceholder/pull/317).
 
