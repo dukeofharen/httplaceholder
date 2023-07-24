@@ -7,18 +7,19 @@ namespace HttPlaceholder.Persistence.Tests.Implementations;
 [TestClass]
 public class ScenarioStateStoreFacts
 {
-    private readonly ScenarioStateStore _store = new();
+    private readonly AutoMocker _mocker = new();
 
     [TestMethod]
     public void GetScenario_ScenarioIsNull_ShouldReturnNull()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var scenario = new ScenarioStateModel {Scenario = scenarioName};
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenarioName, scenario));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenarioName, scenario));
 
         // Act
-        var result = _store.GetScenario(null);
+        var result = store.GetScenario(null);
 
         // Assert
         Assert.IsNull(result);
@@ -28,12 +29,13 @@ public class ScenarioStateStoreFacts
     public void GetScenario_ScenarioNotFound_ShouldReturnNull()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var scenario = new ScenarioStateModel {Scenario = scenarioName};
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenarioName, scenario));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenarioName, scenario));
 
         // Act
-        var result = _store.GetScenario("scenario-2");
+        var result = store.GetScenario("scenario-2");
 
         // Assert
         Assert.IsNull(result);
@@ -43,12 +45,13 @@ public class ScenarioStateStoreFacts
     public void GetScenario_ScenarioFound_ShouldReturnCopyOfScenario()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var scenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-1", HitCount = 3};
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenarioName, scenario));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenarioName, scenario));
 
         // Act
-        var result = _store.GetScenario(scenarioName);
+        var result = store.GetScenario(scenarioName);
 
         // Assert
         Assert.AreNotEqual(scenario, result);
@@ -59,12 +62,13 @@ public class ScenarioStateStoreFacts
     public void GetScenario_CaseInsensitivityCheck()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var scenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-1", HitCount = 3};
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenarioName, scenario));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenarioName, scenario));
 
         // Act
-        var result = _store.GetScenario(scenarioName.ToUpper());
+        var result = store.GetScenario(scenarioName.ToUpper());
 
         // Assert
         Assert.AreNotEqual(scenario, result);
@@ -75,12 +79,13 @@ public class ScenarioStateStoreFacts
     public void AddScenario_ScenarioAlreadyExists_ShouldThrowInvalidOperationException()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenarioName, new ScenarioStateModel()));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenarioName, new ScenarioStateModel()));
 
         // Act / Assert
         Assert.ThrowsException<InvalidOperationException>(() =>
-                _store.AddScenario(scenarioName, new ScenarioStateModel()),
+                store.AddScenario(scenarioName, new ScenarioStateModel()),
             "Scenario state with key 'scenario-1' already exists.");
     }
 
@@ -88,11 +93,12 @@ public class ScenarioStateStoreFacts
     public void AddScenario_ShouldAddScenario()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var scenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-1", HitCount = 3};
 
         // Act
-        var result = _store.AddScenario(scenarioName, scenario);
+        var result = store.AddScenario(scenarioName, scenario);
 
         // Assert
         Assert.AreNotEqual(scenario, result);
@@ -103,45 +109,48 @@ public class ScenarioStateStoreFacts
     public void AddScenario_CaseInsensitivityCheck()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var scenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-1", HitCount = 3};
 
         // Act
-        _store.AddScenario(scenarioName.ToUpper(), scenario);
+        store.AddScenario(scenarioName.ToUpper(), scenario);
 
         // Assert
-        Assert.AreEqual(scenarioName, _store.Scenarios.Keys.Single());
+        Assert.AreEqual(scenarioName, store.Scenarios.Keys.Single());
     }
 
     [TestMethod]
     public void UpdateScenario_ScenarioNotFound_ShouldNotUpdate()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var scenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-1", HitCount = 3};
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenarioName, scenario));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenarioName, scenario));
 
         // Act
-        _store.UpdateScenario("scenario-2", new ScenarioStateModel());
+        store.UpdateScenario("scenario-2", new ScenarioStateModel());
 
         // Assert
-        AssertScenarioStatesAreEqual(_store.Scenarios.Values.Single(), scenario);
+        AssertScenarioStatesAreEqual(store.Scenarios.Values.Single(), scenario);
     }
 
     [TestMethod]
     public void UpdateScenario_ScenarioFound_ShouldUpdateScenario()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var existingScenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-1", HitCount = 3};
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenarioName, existingScenario));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenarioName, existingScenario));
         var newScenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-2", HitCount = 5};
 
         // Act
-        _store.UpdateScenario(scenarioName, newScenario);
+        store.UpdateScenario(scenarioName, newScenario);
 
         // Assert
-        var scenarioInStore = _store.Scenarios.Values.Single();
+        var scenarioInStore = store.Scenarios.Values.Single();
         Assert.AreNotEqual(newScenario, scenarioInStore);
         AssertScenarioStatesAreEqual(scenarioInStore, newScenario);
     }
@@ -150,16 +159,17 @@ public class ScenarioStateStoreFacts
     public void UpdateScenario_CaseInsensitivityCheck()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenarioName = "scenario-1";
         var existingScenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-1", HitCount = 3};
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenarioName, existingScenario));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenarioName, existingScenario));
         var newScenario = new ScenarioStateModel {Scenario = scenarioName, State = "state-2", HitCount = 5};
 
         // Act
-        _store.UpdateScenario(scenarioName.ToUpper(), newScenario);
+        store.UpdateScenario(scenarioName.ToUpper(), newScenario);
 
         // Assert
-        var scenarioInStore = _store.Scenarios.Values.Single();
+        var scenarioInStore = store.Scenarios.Values.Single();
         Assert.AreNotEqual(newScenario, scenarioInStore);
         AssertScenarioStatesAreEqual(scenarioInStore, newScenario);
     }
@@ -168,32 +178,34 @@ public class ScenarioStateStoreFacts
     public void GetScenarioLock_ShouldGetLock()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenario1 = "scenario-1";
         const string scenario2 = "scenario-2";
         var lock1 = new object();
-        Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario1, lock1));
+        Assert.IsTrue(store.ScenarioLocks.TryAdd(scenario1, lock1));
 
         // Act
-        var result1 = _store.GetScenarioLock(scenario1);
-        var result2 = _store.GetScenarioLock(scenario2);
+        var result1 = store.GetScenarioLock(scenario1);
+        var result2 = store.GetScenarioLock(scenario2);
 
         // Assert
         Assert.AreEqual(lock1, result1);
         Assert.AreNotEqual(lock1, result2);
-        Assert.AreEqual(2, _store.ScenarioLocks.Count);
+        Assert.AreEqual(2, store.ScenarioLocks.Count);
     }
 
     [TestMethod]
     public void GetScenarioLock_CaseInsensitivityCheck()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenario = "scenario-1";
         var scenarioLock = new object();
-        Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, scenarioLock));
+        Assert.IsTrue(store.ScenarioLocks.TryAdd(scenario, scenarioLock));
 
         // Act
-        var result1 = _store.GetScenarioLock(scenario);
-        var result2 = _store.GetScenarioLock(scenario.ToUpper());
+        var result1 = store.GetScenarioLock(scenario);
+        var result2 = store.GetScenarioLock(scenario.ToUpper());
 
         // Assert
         Assert.AreEqual(result1, result2);
@@ -203,13 +215,14 @@ public class ScenarioStateStoreFacts
     public void GetAllScenarios_HappyFlow()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         var scenario1 = new ScenarioStateModel {Scenario = "scenario1", State = "state1", HitCount = 2};
         var scenario2 = new ScenarioStateModel {Scenario = "scenario2", State = "state2", HitCount = 3};
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenario1.Scenario, scenario1));
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenario2.Scenario, scenario2));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenario1.Scenario, scenario1));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenario2.Scenario, scenario2));
 
         // Act
-        var result = _store.GetAllScenarios().ToArray();
+        var result = store.GetAllScenarios().ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -226,83 +239,88 @@ public class ScenarioStateStoreFacts
     public void DeleteScenario_ScenarioNotSet_ShouldNotDeleteScenario()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenario = "scenario-1";
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
-        Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, new object()));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+        Assert.IsTrue(store.ScenarioLocks.TryAdd(scenario, new object()));
 
         // Act
-        var result = _store.DeleteScenario(null);
+        var result = store.DeleteScenario(null);
 
         // Assert
         Assert.IsFalse(result);
-        Assert.IsTrue(_store.Scenarios.Any());
-        Assert.IsTrue(_store.ScenarioLocks.Any());
+        Assert.IsTrue(store.Scenarios.Any());
+        Assert.IsTrue(store.ScenarioLocks.Any());
     }
 
     [TestMethod]
     public void DeleteScenario_ScenarioFound_ShouldReturnTrue()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenario = "scenario-1";
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
-        Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, new object()));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+        Assert.IsTrue(store.ScenarioLocks.TryAdd(scenario, new object()));
 
         // Act
-        var result = _store.DeleteScenario(scenario);
+        var result = store.DeleteScenario(scenario);
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsFalse(_store.Scenarios.Any());
-        Assert.IsFalse(_store.ScenarioLocks.Any());
+        Assert.IsFalse(store.Scenarios.Any());
+        Assert.IsFalse(store.ScenarioLocks.Any());
     }
 
     [TestMethod]
     public void DeleteScenario_ScenarioNotFound_ShouldReturnFalse()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenario = "scenario-1";
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
-        Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, new object()));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+        Assert.IsTrue(store.ScenarioLocks.TryAdd(scenario, new object()));
 
         // Act
-        var result = _store.DeleteScenario("scenario-2");
+        var result = store.DeleteScenario("scenario-2");
 
         // Assert
         Assert.IsFalse(result);
-        Assert.IsTrue(_store.Scenarios.Any());
-        Assert.IsTrue(_store.ScenarioLocks.Any());
+        Assert.IsTrue(store.Scenarios.Any());
+        Assert.IsTrue(store.ScenarioLocks.Any());
     }
 
     [TestMethod]
     public void DeleteScenario_CaseInsensitivityCheck()
     {
         // Arrange
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
         const string scenario = "scenario-1";
-        Assert.IsTrue(_store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
-        Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, new object()));
+        Assert.IsTrue(store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+        Assert.IsTrue(store.ScenarioLocks.TryAdd(scenario, new object()));
 
         // Act
-        var result = _store.DeleteScenario(scenario.ToUpper());
+        var result = store.DeleteScenario(scenario.ToUpper());
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsFalse(_store.Scenarios.Any());
-        Assert.IsFalse(_store.ScenarioLocks.Any());
+        Assert.IsFalse(store.Scenarios.Any());
+        Assert.IsFalse(store.ScenarioLocks.Any());
     }
 
     [TestMethod]
     public void DeleteAllScenarios_HappyFlow()
     {
         // Arrange
-        Assert.IsTrue(_store.Scenarios.TryAdd("scenario-1", new ScenarioStateModel()));
-        Assert.IsTrue(_store.ScenarioLocks.TryAdd("scenario-1", new object()));
+        var store = _mocker.CreateInstance<ScenarioStateStore>();
+        Assert.IsTrue(store.Scenarios.TryAdd("scenario-1", new ScenarioStateModel()));
+        Assert.IsTrue(store.ScenarioLocks.TryAdd("scenario-1", new object()));
 
         // Act
-        _store.DeleteAllScenarios();
+        store.DeleteAllScenarios();
 
         // Assert
-        Assert.IsFalse(_store.Scenarios.Any());
-        Assert.IsFalse(_store.ScenarioLocks.Any());
+        Assert.IsFalse(store.Scenarios.Any());
+        Assert.IsFalse(store.ScenarioLocks.Any());
     }
 
     private static void AssertScenarioStatesAreEqual(ScenarioStateModel actual, ScenarioStateModel expected)
