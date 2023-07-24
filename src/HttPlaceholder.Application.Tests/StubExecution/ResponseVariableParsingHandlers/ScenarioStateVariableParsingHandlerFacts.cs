@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Domain.Entities;
@@ -49,6 +50,30 @@ public class ScenarioStateVariableParsingHandlerFacts
         mockScenarioStateStore
             .Setup(m => m.GetScenario("scenario_doesnt_exist"))
             .Returns((ScenarioStateModel)null);
+
+        // Act
+        var matches = ResponseVariableParser.VarRegex.Matches(input);
+        var result = await handler.ParseAsync(input, matches, stubModel, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [TestMethod]
+    public async Task Parse_Matches_ReadFromHttpContext_ShouldParseState()
+    {
+        // Arrange
+        var handler = _mocker.CreateInstance<ScenarioStateVariableParsingHandler>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        const string input =
+            "((scenario_state))";
+        const string expectedResult = "state_from_HttpContext";
+
+        var stubModel = new StubModel {Scenario = "stub-scenario"};
+
+        mockHttpContextService
+            .Setup(m => m.GetItem<ScenarioStateModel>(CachingKeys.ScenarioState))
+            .Returns(new ScenarioStateModel {State = "state_from_HttpContext"});
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);

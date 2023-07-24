@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
@@ -57,7 +58,7 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
 
         if (hitCount == null)
         {
-            var scenarioName = match.Groups[2].Value;
+            var scenarioName = StringHelper.GetFirstNonWhitespaceString(match.Groups[2].Value, stub.Scenario);
             if (!string.IsNullOrWhiteSpace(scenarioName))
             {
                 var scenario = _scenarioStateStore.GetScenario(scenarioName);
