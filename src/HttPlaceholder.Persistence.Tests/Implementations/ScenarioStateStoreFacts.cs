@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Implementations;
 
@@ -102,6 +103,9 @@ public class ScenarioStateStoreFacts
 
         // Assert
         Assert.AreNotEqual(scenario, result);
+        _mocker.GetMock<IHttpContextService>()
+            .Verify(m => m.SetItem(CachingKeys.ScenarioState, It.Is<ScenarioStateModel>(
+                _ => _.HitCount == scenario.HitCount && _.State == scenario.State && _.Scenario == scenarioName)));
         AssertScenarioStatesAreEqual(result, scenario);
     }
 
@@ -151,6 +155,9 @@ public class ScenarioStateStoreFacts
 
         // Assert
         var scenarioInStore = store.Scenarios.Values.Single();
+        _mocker.GetMock<IHttpContextService>()
+            .Verify(m => m.SetItem(CachingKeys.ScenarioState, It.Is<ScenarioStateModel>(
+                _ => _.HitCount == newScenario.HitCount && _.State == newScenario.State && _.Scenario == scenarioName)));
         Assert.AreNotEqual(newScenario, scenarioInStore);
         AssertScenarioStatesAreEqual(scenarioInStore, newScenario);
     }
@@ -269,6 +276,8 @@ public class ScenarioStateStoreFacts
         Assert.IsTrue(result);
         Assert.IsFalse(store.Scenarios.Any());
         Assert.IsFalse(store.ScenarioLocks.Any());
+        _mocker.GetMock<IHttpContextService>()
+            .Verify(m => m.DeleteItem(CachingKeys.ScenarioState));
     }
 
     [TestMethod]
