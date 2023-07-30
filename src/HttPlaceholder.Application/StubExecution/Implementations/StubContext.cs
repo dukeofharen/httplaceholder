@@ -8,12 +8,11 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
-using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Persistence.Implementations;
+namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class StubContext : IStubContext, ISingletonService
 {

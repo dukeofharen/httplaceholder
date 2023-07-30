@@ -4,9 +4,10 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
-using HttPlaceholder.Persistence.Implementations;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.TestUtilities.Options;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations;
+namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
 [TestClass]
 public class StubContextFacts
