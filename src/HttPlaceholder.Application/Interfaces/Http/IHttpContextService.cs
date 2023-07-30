@@ -3,6 +3,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Application.Interfaces.Http;
@@ -158,4 +159,20 @@ public interface IHttpContextService
     ///     Aborts the current HTTP request / response.
     /// </summary>
     void AbortConnection();
+
+
+    /// <summary>
+    ///     Appends a cookie to the current HttpContext.
+    /// </summary>
+    /// <param name="key">The cookie key.</param>
+    /// <param name="value">The cookie value.</param>
+    /// <param name="options">The cookie options.</param>
+    void AppendCookie(string key, string value, CookieOptions options);
+
+    /// <summary>
+    ///     Get a request cookie based on the key.
+    /// </summary>
+    /// <param name="key">The cookie key.</param>
+    /// <returns>The request cookie or null otherwise.</returns>
+    KeyValuePair<string, string>? GetRequestCookie(string key);
 }

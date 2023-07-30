@@ -210,4 +210,20 @@ internal class HttpContextService : IHttpContextService, ISingletonService
 
     /// <inheritdoc />
     public void AbortConnection() => _httpContextAccessor.HttpContext.Abort();
+
+    /// <inheritdoc />
+    public void AppendCookie(string key, string value, CookieOptions options) =>
+        _httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, options);
+
+    /// <inheritdoc />
+    public KeyValuePair<string, string>? GetRequestCookie(string key)
+    {
+        var result = _httpContextAccessor.HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == key);
+        if (string.IsNullOrWhiteSpace(result.Key))
+        {
+            return null;
+        }
+
+        return result;
+    }
 }

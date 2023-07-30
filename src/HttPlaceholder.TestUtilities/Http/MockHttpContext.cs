@@ -28,6 +28,8 @@ public class MockHttpContext : HttpContext
         FeatureCollectionMock = new Mock<IFeatureCollection>();
         Items = new Dictionary<object, object>();
         Session = new MockSession();
+        ResponseCookiesMock = new Mock<IResponseCookies>();
+        RequestCookieCollection = new RequestCookieCollection(new Dictionary<string, string>());
 
         HttpResponseMock
             .SetupSet(m => m.StatusCode = It.IsAny<int>())
@@ -45,6 +47,10 @@ public class MockHttpContext : HttpContext
             .Setup(m => m.Headers)
             .Returns(new MockHeaderDictionary());
 
+        HttpRequestMock
+            .Setup(m => m.Cookies)
+            .Returns(RequestCookieCollection);
+
         HttpResponseMock
             .Setup(m => m.Headers)
             .Returns(new MockHeaderDictionary());
@@ -52,6 +58,10 @@ public class MockHttpContext : HttpContext
         HttpResponseMock
             .Setup(m => m.Redirect(It.IsAny<string>()))
             .Callback<string>(u => _actualRedirectUrl = u);
+
+        HttpResponseMock
+            .Setup(m => m.Cookies)
+            .Returns(ResponseCookiesMock.Object);
     }
 
     public Mock<ConnectionInfo> ConnectionInfoMock { get; }
@@ -63,6 +73,10 @@ public class MockHttpContext : HttpContext
     public Mock<IServiceProvider> ServiceProviderMock { get; }
 
     public Mock<IFeatureCollection> FeatureCollectionMock { get; }
+
+    public Mock<IResponseCookies> ResponseCookiesMock { get; }
+
+    public RequestCookieCollection RequestCookieCollection { get; }
 
     public bool AbortCalled { get; private set; }
 

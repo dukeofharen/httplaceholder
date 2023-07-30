@@ -399,4 +399,58 @@ public class HttpContextServiceFacts
         // Assert
         Assert.IsTrue(_mockHttpContext.AbortCalled);
     }
+
+    [TestMethod]
+    public void AppendCookie_HappyFlow()
+    {
+        // Arrange
+        const string key = "cookieKey";
+        const string value = "cookieValue";
+        var options = new CookieOptions();
+        var service = _mocker.CreateInstance<HttpContextService>();
+
+        // Act
+        service.AppendCookie(key, value, options);
+
+        // Assert
+        _mockHttpContext
+            .ResponseCookiesMock
+            .Verify(m => m.Append(key, value, options));
+    }
+
+    [TestMethod]
+    public void GetRequestCookie_HappyFlow()
+    {
+        // Arrange
+        const string key = "cookieKey";
+        const string expectedValue = "cookieValue";
+        var service = _mocker.CreateInstance<HttpContextService>();
+
+        _mockHttpContext.RequestCookieCollection.Add(key, expectedValue);
+
+        // Act
+        var result = service.GetRequestCookie(key);
+
+        // Assert
+        Assert.IsTrue(result.HasValue);
+        Assert.AreEqual(key, result.Value.Key);
+        Assert.AreEqual(expectedValue, result.Value.Value);
+    }
+
+    [TestMethod]
+    public void GetRequestCookie_CookieNotFound()
+    {
+        // Arrange
+        const string key = "cookieKey";
+        const string expectedValue = "cookieValue";
+        var service = _mocker.CreateInstance<HttpContextService>();
+
+        _mockHttpContext.RequestCookieCollection.Add(key + "1", expectedValue);
+
+        // Act
+        var result = service.GetRequestCookie(key);
+
+        // Assert
+        Assert.IsNull(result);
+    }
 }
