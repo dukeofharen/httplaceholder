@@ -108,7 +108,6 @@ public static class StartupUtilities
 
             await next.Invoke();
         })
-        .UseMiddleware<ApiHeadersMiddleware>()
         .UseMiddleware<ApiExceptionHandlingMiddleware>()
         .UseMiddleware<StubHandlingMiddleware>();
 
