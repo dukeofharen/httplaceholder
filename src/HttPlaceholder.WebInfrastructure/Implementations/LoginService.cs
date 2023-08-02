@@ -5,7 +5,7 @@ using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Web.Shared.Authorization.Implementations;
+namespace HttPlaceholder.WebInfrastructure.Implementations;
 
 internal class LoginService : ILoginService, ITransientService
 {

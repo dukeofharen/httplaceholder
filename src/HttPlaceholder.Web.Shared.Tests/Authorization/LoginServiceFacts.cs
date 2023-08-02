@@ -1,6 +1,5 @@
 ﻿using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Web.Shared.Authorization.Implementations;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Web.Shared.Tests.Authorization;
