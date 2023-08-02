@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Domain;
@@ -14,8 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-public class StubHandler : IStubHandler
+internal class StubHandler : IStubHandler, ISingletonService
 {
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IResourcesService _resourcesService;
