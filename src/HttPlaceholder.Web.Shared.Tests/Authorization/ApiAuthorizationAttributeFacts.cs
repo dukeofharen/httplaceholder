@@ -1,15 +1,10 @@
-﻿using System.Security.Claims;
-using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Interfaces.Authentication;
-using HttPlaceholder.Application.Interfaces.Http;
+﻿using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Web.Shared.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Web.Shared.Tests.Authorization;
 
@@ -17,177 +12,50 @@ namespace HttPlaceholder.Web.Shared.Tests.Authorization;
 public class ApiAuthorizationAttributeFacts
 {
     private readonly ApiAuthorizationAttribute _attribute = new();
-    private readonly Mock<IHttpContextService> _mockHttpContextService = new();
-    private readonly MockLogger<ApiAuthorizationAttribute> _mockLogger = new();
-    private readonly Mock<ILoginCookieService> _mockLoginService = new();
-    private readonly SettingsModel _settings = new() {Authentication = new AuthenticationSettingsModel()};
+    private readonly Mock<IApiAuthorizationService> _mockApiAuthorizationService = new();
 
     [TestMethod]
-    public void OnActionExecuting_LoginCookieSet_ShouldAddUserContext()
+    public void OnActionExecuting_AuthIsCorrect_ShouldNotSetResult()
     {
         // Arrange
-        var context = CreateContext();
-        _mockLoginService
-            .Setup(m => m.CheckLoginCookie())
+        _mockApiAuthorizationService
+            .Setup(m => m.CheckAuthorization())
             .Returns(true);
-        const string username = "user";
-        _settings.Authentication.ApiUsername = username;
-        _settings.Authentication.ApiPassword = "password";
-
-        ClaimsPrincipal capturedClaimsPrincipal = null;
-        _mockHttpContextService
-            .Setup(m => m.SetUser(It.IsAny<ClaimsPrincipal>()))
-            .Callback<ClaimsPrincipal>(p => capturedClaimsPrincipal = p);
+        var context = CreateContext();
 
         // Act
         _attribute.OnActionExecuting(context);
 
         // Assert
-        AssertUser(username, capturedClaimsPrincipal);
         Assert.IsNull(context.Result);
     }
 
     [TestMethod]
-    public void OnActionExecuting_LoginCookieNotSet_NoAuthorizationHeader()
+    public void OnActionExecuting_AuthIsInorrect_ShouldNotSetResultToUnauthorizedResult()
     {
         // Arrange
-        var context = CreateContext();
-        _mockLoginService
-            .Setup(m => m.CheckLoginCookie())
+        _mockApiAuthorizationService
+            .Setup(m => m.CheckAuthorization())
             .Returns(false);
-        SetHeaders(new Dictionary<string, string>());
+        var context = CreateContext();
 
         // Act
         _attribute.OnActionExecuting(context);
 
         // Assert
-        AssertUserNotSet();
-        Assert.IsInstanceOfType(context.Result, typeof(UnauthorizedResult));
+        Assert.IsInstanceOfType<UnauthorizedResult>(context.Result);
     }
-
-    [TestMethod]
-    public void OnActionExecuting_LoginCookieNotSet_BasicAuthIncorrectAmountOfParts()
-    {
-        // Arrange
-        var context = CreateContext();
-        _mockLoginService
-            .Setup(m => m.CheckLoginCookie())
-            .Returns(false);
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjpwYXNzOm9uemlu"}});
-
-        // Act
-        _attribute.OnActionExecuting(context);
-
-        // Assert
-        AssertUserNotSet();
-        Assert.IsInstanceOfType(context.Result, typeof(UnauthorizedResult));
-    }
-
-    [TestMethod]
-    public void OnActionExecuting_LoginCookieNotSet_UsernameAndPasswordIncorrect()
-    {
-        // Arrange
-        var context = CreateContext();
-        _mockLoginService
-            .Setup(m => m.CheckLoginCookie())
-            .Returns(false);
-        _settings.Authentication.ApiUsername = "user";
-        _settings.Authentication.ApiPassword = "pass";
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjE6cGFzczE="}});
-
-        // Act
-        _attribute.OnActionExecuting(context);
-
-        // Assert
-        AssertUserNotSet();
-        Assert.IsInstanceOfType(context.Result, typeof(UnauthorizedResult));
-    }
-
-    [TestMethod]
-    public void OnActionExecuting_LoginCookieNotSet_ExceptionWhileParsingBasicAuth()
-    {
-        // Arrange
-        var context = CreateContext();
-        _mockLoginService
-            .Setup(m => m.CheckLoginCookie())
-            .Returns(false);
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic ()*&"}});
-
-        // Act
-        _attribute.OnActionExecuting(context);
-
-        // Assert
-        AssertUserNotSet();
-        Assert.IsInstanceOfType(context.Result, typeof(UnauthorizedResult));
-        _mockLogger.ContainsWithExactText(LogLevel.Warning, "Error while parsing basic authentication.");
-    }
-
-    [TestMethod]
-    public void OnActionExecuting_LoginCookieNotSet_UsernameAndPasswordCorrect()
-    {
-        // Arrange
-        var context = CreateContext();
-        _mockLoginService
-            .Setup(m => m.CheckLoginCookie())
-            .Returns(false);
-        _settings.Authentication.ApiUsername = "user";
-        _settings.Authentication.ApiPassword = "pass";
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjpwYXNz"}});
-
-        ClaimsPrincipal capturedClaimsPrincipal = null;
-        _mockHttpContextService
-            .Setup(m => m.SetUser(It.IsAny<ClaimsPrincipal>()))
-            .Callback<ClaimsPrincipal>(p => capturedClaimsPrincipal = p);
-
-        // Act
-        _attribute.OnActionExecuting(context);
-
-        // Assert
-        AssertUser("user", capturedClaimsPrincipal);
-        Assert.IsNull(context.Result);
-    }
-
-    private void SetHeaders(IDictionary<string, string> headers) =>
-        _mockHttpContextService
-            .Setup(m => m.GetHeaders())
-            .Returns(headers);
 
     private ActionExecutingContext CreateContext()
     {
         var httpContext = new MockHttpContext();
         httpContext.ServiceProviderMock
-            .Setup(m => m.GetService(typeof(ILoginCookieService)))
-            .Returns(_mockLoginService.Object);
-        httpContext.ServiceProviderMock
-            .Setup(m => m.GetService(typeof(IOptionsMonitor<SettingsModel>)))
-            .Returns(MockSettingsFactory.GetOptionsMonitor(_settings));
-        httpContext.ServiceProviderMock
-            .Setup(m => m.GetService(typeof(ILogger<ApiAuthorizationAttribute>)))
-            .Returns(_mockLogger);
-        httpContext.ServiceProviderMock
-            .Setup(m => m.GetService(typeof(IHttpContextService)))
-            .Returns(_mockHttpContextService.Object);
+            .Setup(m => m.GetService(typeof(IApiAuthorizationService)))
+            .Returns(_mockApiAuthorizationService.Object);
         return new ActionExecutingContext(
             new ActionContext(httpContext, new RouteData(), new ActionDescriptor(), new ModelStateDictionary()),
             new List<IFilterMetadata>(),
             new Dictionary<string, object>(),
             new object()) {HttpContext = httpContext};
     }
-
-    private static void AssertUser(string username, ClaimsPrincipal principal)
-    {
-        Assert.IsNotNull(principal);
-
-        var identity = principal.Identity;
-        Assert.IsNotNull(identity);
-        Assert.IsInstanceOfType(identity, typeof(ClaimsIdentity));
-
-        var claimsIdentity = (ClaimsIdentity)identity;
-        var claims = claimsIdentity.Claims.ToArray();
-        Assert.AreEqual(1, claims.Length);
-        Assert.AreEqual(username, claims.Single(c => c.Type == ClaimTypes.Name).Value);
-    }
-
-    private void AssertUserNotSet() =>
-        _mockHttpContextService.Verify(m => m.SetUser(It.IsAny<ClaimsPrincipal>()), Times.Never);
 }
