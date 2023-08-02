@@ -1,12 +1,8 @@
 ﻿using System.Net;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Web.Shared.Middleware;
 
