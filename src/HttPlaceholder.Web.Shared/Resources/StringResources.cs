@@ -11,11 +11,6 @@ public static class StringResources
     public const string CmdExample = @"Example: httplaceholder --apiusername user --apipassword pass";
 
     /// <summary>
-    ///     The exception thrown format string.
-    /// </summary>
-    public const string ExceptionThrown = @"Unexpected exception thrown: {0}";
-
-    /// <summary>
     ///     The explanation header.
     /// </summary>
     public const string ExplanationHeader =

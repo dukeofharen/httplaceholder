@@ -20,39 +20,25 @@ public class StubHandlingMiddleware
         "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub", "/stubHub"
     };
 
-    private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;
-    private readonly ILogger<StubHandlingMiddleware> _logger;
     private readonly RequestDelegate _next;
     private readonly IOptionsMonitor<SettingsModel> _options;
-    private readonly IRequestLoggerFactory _requestLoggerFactory;
-    private readonly IResourcesService _resourcesService;
-    private readonly IStubContext _stubContext;
-    private readonly IStubRequestExecutor _stubRequestExecutor;
+    private readonly IStubHandler _stubHandler;
+
 
     /// <summary>
     ///     Constructs a <see cref="StubHandlingMiddleware" /> instance.
     /// </summary>
     public StubHandlingMiddleware(
         RequestDelegate next,
-        IClientDataResolver clientDataResolver,
         IHttpContextService httpContextService,
-        ILogger<StubHandlingMiddleware> logger,
-        IRequestLoggerFactory requestLoggerFactory,
-        IStubContext stubContext,
-        IStubRequestExecutor stubRequestExecutor,
         IOptionsMonitor<SettingsModel> options,
-        IResourcesService resourcesService)
+        IStubHandler stubHandler)
     {
         _next = next;
-        _clientDataResolver = clientDataResolver;
         _httpContextService = httpContextService;
-        _logger = logger;
-        _requestLoggerFactory = requestLoggerFactory;
-        _stubContext = stubContext;
-        _stubRequestExecutor = stubRequestExecutor;
-        _resourcesService = resourcesService;
         _options = options;
+        _stubHandler = stubHandler;
     }
 
     /// <summary>
@@ -76,100 +62,6 @@ public class StubHandlingMiddleware
             return;
         }
 
-        var correlationId = Guid.NewGuid().ToString();
-        var requestLogger = _requestLoggerFactory.GetRequestLogger();
-        requestLogger.SetCorrelationId(correlationId);
-        ResponseModel response = null;
-        try
-        {
-            response = await HandleRequest(correlationId, cancellationToken);
-        }
-        catch (RequestValidationException e)
-        {
-            await HandleRequestValidationException(correlationId, e, settings, cancellationToken);
-        }
-        catch (TaskCanceledException e)
-        {
-            _logger.LogDebug(e, "Request was cancelled.");
-        }
-        catch (Exception e)
-        {
-            HandleException(correlationId, e);
-        }
-
-        var loggingResult = requestLogger.GetResult();
-        var enableRequestLogging = settings?.Storage?.EnableRequestLogging ?? false;
-        if (enableRequestLogging)
-        {
-            _logger.LogInformation($"Request: {JObject.FromObject(loggingResult)}");
-        }
-
-        await _stubContext.AddRequestResultAsync(loggingResult, response, cancellationToken);
-    }
-
-    private void HandleException(string correlationId, Exception e)
-    {
-        _logger.LogWarning($"Unexpected exception thrown: {e}");
-        _httpContextService.SetStatusCode(HttpStatusCode.InternalServerError);
-        _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlationId);
-    }
-
-    private async Task HandleRequestValidationException(string correlation, RequestValidationException e,
-        SettingsModel settings, CancellationToken cancellationToken)
-    {
-        _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
-        _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlation);
-        if (settings?.Gui?.EnableUserInterface == true)
-        {
-            var pageContents = _resourcesService.ReadAsString("Files/StubNotConfigured.html")
-                .Replace("[ROOT_URL]", _httpContextService.RootUrl);
-            _httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
-            await _httpContextService.WriteAsync(pageContents, cancellationToken);
-        }
-
-        _logger.LogDebug($"Request validation exception thrown: {e.Message}");
-    }
-
-    private async Task<ResponseModel> HandleRequest(string correlation, CancellationToken cancellationToken)
-    {
-        var requestLogger = _requestLoggerFactory.GetRequestLogger();
-        // Enable rewind here to be able to read the posted body multiple times.
-        _httpContextService.EnableRewind();
-
-        // Log the request here
-        requestLogger.LogRequestParameters(
-            _httpContextService.Method,
-            _httpContextService.DisplayUrl,
-            await _httpContextService.GetBodyAsBytesAsync(cancellationToken),
-            _clientDataResolver.GetClientIp(),
-            _httpContextService.GetHeaders());
-
-        _httpContextService.ClearResponse();
-        var response = await _stubRequestExecutor.ExecuteRequestAsync(cancellationToken);
-        if (response.AbortConnection)
-        {
-            _httpContextService.AbortConnection();
-            return response;
-        }
-
-        _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlation);
-        var requestResult = requestLogger.GetResult();
-        if (!string.IsNullOrWhiteSpace(requestResult.ExecutingStubId))
-        {
-            _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderExecutedStub, requestResult.ExecutingStubId);
-        }
-
-        _httpContextService.SetStatusCode(response.StatusCode);
-        foreach (var (key, value) in response.Headers)
-        {
-            _httpContextService.AddHeader(key, value);
-        }
-
-        if (response.Body != null && response.Body.Any())
-        {
-            await _httpContextService.WriteAsync(response.Body, cancellationToken);
-        }
-
-        return response;
+        await _stubHandler.HandleStubRequestAsync(cancellationToken);
     }
 }
