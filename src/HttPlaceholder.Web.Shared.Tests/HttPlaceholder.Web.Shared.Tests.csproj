@@ -25,4 +25,8 @@
       <ProjectReference Include="..\HttPlaceholder.Web.Shared\HttPlaceholder.Web.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Infrastructure\Web\" />
+    </ItemGroup>
+
 </Project>

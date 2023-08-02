@@ -31,7 +31,4 @@
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="7.0.5" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Authorization\Implementations\" />
-    </ItemGroup>
 </Project>

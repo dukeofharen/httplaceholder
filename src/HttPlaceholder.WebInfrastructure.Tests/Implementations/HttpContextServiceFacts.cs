@@ -5,7 +5,7 @@ using HttPlaceholder.Web.Shared.Infrastructure.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
-namespace HttPlaceholder.Web.Shared.Tests.Infrastructure.Web;
+namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
 
 [TestClass]
 public class HttpContextServiceFacts
