@@ -1,8 +1,9 @@
 ﻿using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.WebInfrastructure.Implementations;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Web.Shared.Tests.Authorization;
+namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
 
 [TestClass]
 public class LoginServiceFacts
