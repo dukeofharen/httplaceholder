@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
 
 [TestClass]
-public class LoginServiceFacts
+public class LoginCookieServiceFacts
 {
     private readonly IOptionsMonitor<SettingsModel> _options = MockSettingsFactory.GetOptionsMonitor();
     private readonly AutoMocker _mocker = new();
@@ -15,10 +15,10 @@ public class LoginServiceFacts
     public void Initialize() => _mocker.Use(_options);
 
     [TestMethod]
-    public void LoginService_CheckLoginCookie_NoUsernameAndPasswordSet_ShouldReturnTrue()
+    public void CheckLoginCookie_NoUsernameAndPasswordSet_ShouldReturnTrue()
     {
         // Arrange
-        var service = _mocker.CreateInstance<LoginService>();
+        var service = _mocker.CreateInstance<LoginCookieService>();
 
         // Act
         var result = service.CheckLoginCookie();
@@ -28,10 +28,10 @@ public class LoginServiceFacts
     }
 
     [TestMethod]
-    public void LoginService_CheckLoginCookie_UsernameAndPasswordSet_NoCookieSet_ShouldReturnFalse()
+    public void CheckLoginCookie_UsernameAndPasswordSet_NoCookieSet_ShouldReturnFalse()
     {
         // Arrange
-        var service = _mocker.CreateInstance<LoginService>();
+        var service = _mocker.CreateInstance<LoginCookieService>();
         _options.CurrentValue.Authentication.ApiUsername = "user";
         _options.CurrentValue.Authentication.ApiPassword = "pass";
 
@@ -43,10 +43,10 @@ public class LoginServiceFacts
     }
 
     [TestMethod]
-    public void LoginService_CheckLoginCookie_UsernameAndPasswordSet_HashIncorrect_ShouldReturnFalse()
+    public void CheckLoginCookie_UsernameAndPasswordSet_HashIncorrect_ShouldReturnFalse()
     {
         // Arrange
-        var service = _mocker.CreateInstance<LoginService>();
+        var service = _mocker.CreateInstance<LoginCookieService>();
         _options.CurrentValue.Authentication.ApiUsername = "user";
         _options.CurrentValue.Authentication.ApiPassword = "pass";
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
@@ -62,10 +62,10 @@ public class LoginServiceFacts
     }
 
     [TestMethod]
-    public void LoginService_CheckLoginCookie_UsernameAndPasswordSet_HashCorrect_ShouldReturnTrue()
+    public void CheckLoginCookie_UsernameAndPasswordSet_HashCorrect_ShouldReturnTrue()
     {
         // Arrange
-        var service = _mocker.CreateInstance<LoginService>();
+        var service = _mocker.CreateInstance<LoginCookieService>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         httpContextServiceMock
             .Setup(m => m.GetRequestCookie("HttPlaceholderLoggedin"))

@@ -11,7 +11,7 @@ public class RequestHub : BaseHub
     /// <summary>
     ///     Constructs a <see cref="RequestHub" /> instance.
     /// </summary>
-    public RequestHub(ILoginService loginService) : base(loginService)
+    public RequestHub(ILoginCookieService loginCookieService) : base(loginCookieService)
     {
     }
 }

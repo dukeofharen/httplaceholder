@@ -20,7 +20,7 @@ public class ApiAuthorizationAttribute : ActionFilterAttribute
         var httpContext = context.HttpContext;
         var requestServices = httpContext.RequestServices;
 
-        var loginService = requestServices.GetRequiredService<ILoginService>();
+        var loginService = requestServices.GetRequiredService<ILoginCookieService>();
         var settings = requestServices.GetRequiredService<IOptionsMonitor<SettingsModel>>().CurrentValue;
         var logger = requestServices.GetRequiredService<ILogger<ApiAuthorizationAttribute>>();
         var httpContextService = requestServices.GetRequiredService<IHttpContextService>();

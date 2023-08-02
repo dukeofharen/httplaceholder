@@ -19,7 +19,7 @@ public class ApiAuthorizationAttributeFacts
     private readonly ApiAuthorizationAttribute _attribute = new();
     private readonly Mock<IHttpContextService> _mockHttpContextService = new();
     private readonly MockLogger<ApiAuthorizationAttribute> _mockLogger = new();
-    private readonly Mock<ILoginService> _mockLoginService = new();
+    private readonly Mock<ILoginCookieService> _mockLoginService = new();
     private readonly SettingsModel _settings = new() {Authentication = new AuthenticationSettingsModel()};
 
     [TestMethod]
@@ -156,7 +156,7 @@ public class ApiAuthorizationAttributeFacts
     {
         var httpContext = new MockHttpContext();
         httpContext.ServiceProviderMock
-            .Setup(m => m.GetService(typeof(ILoginService)))
+            .Setup(m => m.GetService(typeof(ILoginCookieService)))
             .Returns(_mockLoginService.Object);
         httpContext.ServiceProviderMock
             .Setup(m => m.GetService(typeof(IOptionsMonitor<SettingsModel>)))

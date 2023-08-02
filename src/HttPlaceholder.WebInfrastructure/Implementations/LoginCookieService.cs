@@ -7,14 +7,14 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.WebInfrastructure.Implementations;
 
-internal class LoginService : ILoginService, ITransientService
+internal class LoginCookieService : ILoginCookieService, ITransientService
 {
     private const string LoginCookieKey = "HttPlaceholderLoggedin";
     private const string Salt = "83b2737f-7d85-4a0a-8113-b98ed4a255a1";
     private readonly IHttpContextService _httpContextService;
     private readonly IOptionsMonitor<SettingsModel> _options;
 
-    public LoginService(
+    public LoginCookieService(
         IOptionsMonitor<SettingsModel> options,
         IHttpContextService httpContextService)
     {

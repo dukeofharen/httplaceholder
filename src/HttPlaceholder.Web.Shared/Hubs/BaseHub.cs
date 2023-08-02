@@ -8,20 +8,20 @@ namespace HttPlaceholder.Web.Shared.Hubs;
 /// </summary>
 public abstract class BaseHub : Hub
 {
-    private readonly ILoginService _loginService;
+    private readonly ILoginCookieService _loginCookieService;
 
     /// <summary>
     ///     Constructs a <see cref="BaseHub" /> instance.
     /// </summary>
-    protected BaseHub(ILoginService loginService)
+    protected BaseHub(ILoginCookieService loginCookieService)
     {
-        _loginService = loginService;
+        _loginCookieService = loginCookieService;
     }
 
     /// <inheritdoc />
     public override Task OnConnectedAsync()
     {
-        if (!_loginService.CheckLoginCookie())
+        if (!_loginCookieService.CheckLoginCookie())
         {
             throw new InvalidOperationException("NOT AUTHORIZED!");
         }

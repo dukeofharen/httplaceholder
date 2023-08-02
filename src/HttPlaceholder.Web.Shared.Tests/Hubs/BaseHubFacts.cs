@@ -16,7 +16,7 @@ public class BaseHubFacts
     {
         // Arrange
         var hub = _mocker.CreateInstance<TestHub>();
-        var loginServiceMock = _mocker.GetMock<ILoginService>();
+        var loginServiceMock = _mocker.GetMock<ILoginCookieService>();
         loginServiceMock
             .Setup(m => m.CheckLoginCookie())
             .Returns(false);
@@ -30,7 +30,7 @@ public class BaseHubFacts
     {
         // Arrange
         var hub = _mocker.CreateInstance<TestHub>();
-        var loginServiceMock = _mocker.GetMock<ILoginService>();
+        var loginServiceMock = _mocker.GetMock<ILoginCookieService>();
         loginServiceMock
             .Setup(m => m.CheckLoginCookie())
             .Returns(true);
@@ -41,7 +41,7 @@ public class BaseHubFacts
 
     private class TestHub : BaseHub
     {
-        public TestHub(ILoginService loginService) : base(loginService)
+        public TestHub(ILoginCookieService loginCookieService) : base(loginCookieService)
         {
         }
     }

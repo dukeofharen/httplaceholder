@@ -3,7 +3,7 @@
 /// <summary>
 ///     Describes a class that is used for working with logins.
 /// </summary>
-public interface ILoginService
+public interface ILoginCookieService
 {
     /// <summary>
     ///     Creates a login cookie based on the username and password.

@@ -11,7 +11,7 @@ public class ScenarioHub : BaseHub
     /// <summary>
     ///     Constructs a <see cref="ScenarioHub" /> instance.
     /// </summary>
-    public ScenarioHub(ILoginService loginService) : base(loginService)
+    public ScenarioHub(ILoginCookieService loginCookieService) : base(loginCookieService)
     {
     }
 }

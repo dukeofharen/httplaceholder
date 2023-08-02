@@ -112,7 +112,7 @@ internal class StubHandler : IStubHandler, ISingletonService
         // Enable rewind here to be able to read the posted body multiple times.
         _httpContextService.EnableRewind();
 
-        // Log the request here
+        // Log the request here.
         requestLogger.LogRequestParameters(
             _httpContextService.Method,
             _httpContextService.DisplayUrl,
