@@ -15,10 +15,7 @@ public class ClientIpResolverFacts
     public void Initialize()
     {
         _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
-        var httpContextAccessorMock = _mocker.GetMock<IHttpContextAccessor>();
-        httpContextAccessorMock
-            .Setup(m => m.HttpContext)
-            .Returns(_mockHttpContext);
+        _mocker.Use(TestObjectFactory.CreateHttpContextAccessor(_mockHttpContext));
     }
 
     [DataTestMethod]

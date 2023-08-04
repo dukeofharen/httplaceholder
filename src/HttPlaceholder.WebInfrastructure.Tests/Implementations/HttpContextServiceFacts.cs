@@ -14,13 +14,7 @@ public class HttpContextServiceFacts
     private readonly MockHttpContext _mockHttpContext = new();
 
     [TestInitialize]
-    public void Initialize()
-    {
-        var httpContextAccessorMock = _mocker.GetMock<IHttpContextAccessor>();
-        httpContextAccessorMock
-            .Setup(m => m.HttpContext)
-            .Returns(_mockHttpContext);
-    }
+    public void Initialize() => _mocker.Use(TestObjectFactory.CreateHttpContextAccessor(_mockHttpContext));
 
     [TestMethod]
     public void Method_HappyFlow()

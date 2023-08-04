@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Moq;
 using Newtonsoft.Json;
@@ -43,5 +44,14 @@ public static class TestObjectFactory
             .Returns(clientProxyMock.Object);
 
         return (hubContextMock.Object, clientProxyMock);
+    }
+
+    public static IHttpContextAccessor CreateHttpContextAccessor(HttpContext httpContext)
+    {
+        var mock = new Mock<IHttpContextAccessor>();
+        mock
+            .Setup(m => m.HttpContext)
+            .Returns(httpContext);
+        return mock.Object;
     }
 }
