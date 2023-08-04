@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Common;
+﻿using HttPlaceholder.Application.Interfaces.HostedServices;
+using HttPlaceholder.Common;
 using NCrontab;
 
 namespace HttPlaceholder.Web.Shared.HostedServices;

@@ -1,4 +1,9 @@
-﻿namespace HttPlaceholder.Web.Shared.HostedServices;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+
+namespace HttPlaceholder.Application.Interfaces.HostedServices;
 
 /// <summary>
 ///     Describes a class that implements a hosted service.

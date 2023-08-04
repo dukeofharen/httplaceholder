@@ -16,6 +16,7 @@
         <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Primitives" Version="7.0.0" />
@@ -28,5 +29,7 @@
         <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
         <ProjectReference Include="..\HttPlaceholder.Domain\HttPlaceholder.Domain.csproj" />
     </ItemGroup>
+
+
 
 </Project>
