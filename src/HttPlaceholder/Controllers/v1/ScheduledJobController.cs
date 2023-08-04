@@ -42,6 +42,6 @@ public class ScheduledJobController : BaseApiController
     /// <returns>A list of scheduled job names.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<string>> GetScheduledJobNames() =>
-        Ok(Mediator.Send(new GetScheduledJobNamesQuery()));
+    public async Task<ActionResult<IEnumerable<string>>> GetScheduledJobNames() =>
+        Ok(await Mediator.Send(new GetScheduledJobNamesQuery()));
 }
