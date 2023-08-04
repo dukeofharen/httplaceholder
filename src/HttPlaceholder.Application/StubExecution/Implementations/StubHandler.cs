@@ -52,6 +52,13 @@ internal class StubHandler : IStubHandler, ISingletonService
     /// <inheritdoc />
     public async Task HandleStubRequestAsync(CancellationToken cancellationToken)
     {
+        if (_settings?.Stub?.HealthcheckOnRootUrl == true && _httpContextService.Path == "/")
+        {
+            _httpContextService.SetStatusCode(HttpStatusCode.OK);
+            await _httpContextService.WriteAsync("OK", cancellationToken);
+            return;
+        }
+
         var correlationId = Guid.NewGuid().ToString();
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
         requestLogger.SetCorrelationId(correlationId);

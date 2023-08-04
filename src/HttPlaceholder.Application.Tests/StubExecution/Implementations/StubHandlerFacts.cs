@@ -39,6 +39,27 @@ public class StubHandlerFacts
     }
 
     [TestMethod]
+    public async Task HandleStubRequestAsync_HealthCheck_ShouldReturnOK()
+    {
+        // Arrange
+        var handler = _mocker.CreateInstance<StubHandler>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+
+        const string requestPath = "/";
+        httpContextServiceMock
+            .Setup(m => m.Path)
+            .Returns(requestPath);
+        _settings.Stub.HealthcheckOnRootUrl = true;
+
+        // Act
+        await handler.HandleStubRequestAsync(CancellationToken.None);
+
+        // Act
+        httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.OK));
+        httpContextServiceMock.Verify(m => m.WriteAsync("OK", It.IsAny<CancellationToken>()));
+    }
+
+    [TestMethod]
     public async Task HandleStubRequestAsync_ExecuteStub_HappyFlow()
     {
         // Arrange
