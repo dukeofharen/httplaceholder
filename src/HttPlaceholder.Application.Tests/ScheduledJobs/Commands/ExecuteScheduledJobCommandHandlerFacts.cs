@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Interfaces.HostedServices;
+using HttPlaceholder.Application.ScheduledJobs;
 using HttPlaceholder.Application.ScheduledJobs.Commands.ExecuteScheduledJob;
 
-namespace HttPlaceholder.Application.Tests.ScheduledJobs;
+namespace HttPlaceholder.Application.Tests.ScheduledJobs.Commands;
 
 [TestClass]
 public class ExecuteScheduledJobCommandHandlerFacts

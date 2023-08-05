@@ -1,5 +1,7 @@
-﻿using HttPlaceholder.Common;
-using HttPlaceholder.Web.Shared.HostedServices;
+﻿using System.Linq;
+using HttPlaceholder.Application.ScheduledJobs;
+using HttPlaceholder.Common;
+using HttPlaceholder.TestUtilities.Logging;
 using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Web.Shared.Tests.HostedServices;

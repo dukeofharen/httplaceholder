@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Interfaces.HostedServices;
 using MediatR;
 
 namespace HttPlaceholder.Application.ScheduledJobs.Queries.GetScheduledJobNames;

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
-namespace HttPlaceholder.Application.Interfaces.HostedServices;
+namespace HttPlaceholder.Application.ScheduledJobs;
 
 /// <summary>
 ///     Describes a class that implements a hosted service.

@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Interfaces.HostedServices;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.ScheduledJobs;
 using MediatR;

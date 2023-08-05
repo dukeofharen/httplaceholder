@@ -1,8 +1,11 @@
-﻿using HttPlaceholder.Application.Interfaces.HostedServices;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Common;
+using Microsoft.Extensions.Logging;
 using NCrontab;
 
-namespace HttPlaceholder.Web.Shared.HostedServices;
+namespace HttPlaceholder.Application.ScheduledJobs;
 
 /// <summary>
 ///     An abstract class that needs to be implemented by any hosted service.

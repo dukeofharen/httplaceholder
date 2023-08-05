@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces.HostedServices;
+﻿using HttPlaceholder.Application.ScheduledJobs;
 
 namespace HttPlaceholder.Web.Shared.HostedServices;
 
