@@ -5,6 +5,7 @@ using System.Text;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Provider;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Configuration;
 using HttPlaceholder.Web.Shared.Resources;
 using HttPlaceholder.Web.Shared.Utilities.Implementations;
@@ -20,9 +21,7 @@ namespace HttPlaceholder.Web.Shared.Utilities;
 public static class ProgramUtilities
 {
     private static readonly Stopwatch _startupWatch = new();
-    private static readonly string[] _verboseArgs = {"-V", "--verbose"};
-    private static readonly string[] _versionArgs = {"-v", "--version"};
-    private static readonly string[] _helpArgs = {"-h", "--help", "-?"};
+
 
     /// <summary>
     ///     Configure the logging.
@@ -30,7 +29,7 @@ public static class ProgramUtilities
     /// <param name="args">The command line arguments.</param>
     public static void ConfigureLogging(string[] args)
     {
-        var verbose = IsVerbose(args);
+        var verbose = CliArgs.IsVerbose(args);
         var loggingConfig = new LoggerConfiguration();
         loggingConfig = verbose
             ? loggingConfig.MinimumLevel.Debug()
@@ -50,10 +49,10 @@ public static class ProgramUtilities
     public static void HandleCommands(string[] args)
     {
         var version = AssemblyHelper.GetAssemblyVersion();
-        HandleArgument(() => Console.WriteLine(version), args, _versionArgs);
+        HandleArgument(() => Console.WriteLine(version), args, CliArgs.VersionArgs);
 
         Console.WriteLine(StringResources.VersionHeader, version, DateTime.Now.Year);
-        HandleArgument(() => Console.WriteLine(GetManPage()), args, _helpArgs);
+        HandleArgument(() => Console.WriteLine(GetManPage()), args, CliArgs.HelpArgs);
     }
 
     /// <summary>
@@ -67,7 +66,7 @@ public static class ProgramUtilities
         var argsDictionary = configParser.ParseConfiguration(args);
         var settings = DeserializeSettings(argsDictionary);
 
-        if (IsVerbose(args))
+        if (CliArgs.IsVerbose(args))
         {
             Console.WriteLine(GetVerbosePage(argsDictionary, args));
         }
@@ -176,12 +175,5 @@ public static class ProgramUtilities
         builder.AppendLine(StringResources.CmdExample);
 
         return builder.ToString();
-    }
-
-    private static bool IsVerbose(IEnumerable<string> args)
-    {
-        var env = Environment.GetEnvironmentVariable("verbose");
-        return args.Any(_verboseArgs.Contains) ||
-               string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
     }
 }
