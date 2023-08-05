@@ -22,7 +22,6 @@
 
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 [![code with hearth by dukeofharen](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-dukeofharen-ff1414.svg?style=flat-square)](https://github.com/dukeofharen)
-[![pipeline status](https://gitlab.com/ducode/httplaceholder/badges/master/pipeline.svg)](https://gitlab.com/ducode/httplaceholder/-/commits/master)
 [![Docker pulls](https://img.shields.io/docker/pulls/dukeofharen/httplaceholder)](https://hub.docker.com/r/dukeofharen/httplaceholder)
 [![Nuget downloads](https://img.shields.io/github/downloads/dukeofharen/httplaceholder/total?label=nuget)](https://www.nuget.org/packages/HttPlaceholder/)
 
