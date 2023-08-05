@@ -21,9 +21,6 @@ public class SetScenarioCommandHandler : IRequestHandler<SetScenarioCommand>
     }
 
     /// <inheritdoc />
-    public async Task<Unit> Handle(SetScenarioCommand request, CancellationToken cancellationToken)
-    {
+    public async Task Handle(SetScenarioCommand request, CancellationToken cancellationToken) =>
         await _scenarioService.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel, cancellationToken);
-        return Unit.Value;
-    }
 }

@@ -27,7 +27,7 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
     }
 
     /// <inheritdoc />
-    public async Task<Unit> Handle(UpdateStubCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateStubCommand request, CancellationToken cancellationToken)
     {
         var validationResults = _stubModelValidator.ValidateStubModel(request.Stub).ToArray();
         if (validationResults.Any())
@@ -53,7 +53,5 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
         await _stubContext.DeleteStubAsync(request.StubId, cancellationToken);
         await _stubContext.DeleteStubAsync(request.Stub.Id, cancellationToken);
         await _stubContext.AddStubAsync(request.Stub, cancellationToken);
-
-        return Unit.Value;
     }
 }

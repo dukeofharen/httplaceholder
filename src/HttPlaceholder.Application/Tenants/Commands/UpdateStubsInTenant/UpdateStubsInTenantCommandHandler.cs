@@ -21,9 +21,6 @@ public class UpdateStubsInTenantCommandHandler : IRequestHandler<UpdateStubsInTe
     }
 
     /// <inheritdoc />
-    public async Task<Unit> Handle(UpdateStubsInTenantCommand request, CancellationToken cancellationToken)
-    {
+    public async Task Handle(UpdateStubsInTenantCommand request, CancellationToken cancellationToken) =>
         await _stubContext.UpdateAllStubs(request.Tenant, request.Stubs, cancellationToken);
-        return Unit.Value;
-    }
 }

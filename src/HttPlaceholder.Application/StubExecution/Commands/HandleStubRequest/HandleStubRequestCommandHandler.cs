@@ -21,9 +21,6 @@ public class HandleStubRequestCommandHandler : IRequestHandler<HandleStubRequest
     }
 
     /// <inheritdoc />
-    public async Task<Unit> Handle(HandleStubRequestCommand request, CancellationToken cancellationToken)
-    {
+    public async Task Handle(HandleStubRequestCommand request, CancellationToken cancellationToken) =>
         await _stubHandler.HandleStubRequestAsync(cancellationToken);
-        return Unit.Value;
-    }
 }

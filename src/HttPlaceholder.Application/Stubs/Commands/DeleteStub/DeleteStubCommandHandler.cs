@@ -23,13 +23,11 @@ public class DeleteStubCommandHandler : IRequestHandler<DeleteStubCommand>
     }
 
     /// <inheritdoc />
-    public async Task<Unit> Handle(DeleteStubCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteStubCommand request, CancellationToken cancellationToken)
     {
         if (!await _stubContext.DeleteStubAsync(request.StubId, cancellationToken))
         {
             throw new NotFoundException(nameof(StubModel), request.StubId);
         }
-
-        return Unit.Value;
     }
 }

@@ -27,7 +27,7 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
     }
 
     /// <inheritdoc />
-    public Task<Unit> Handle(UpdateConfigurationValueCommand request, CancellationToken cancellationToken)
+    public Task Handle(UpdateConfigurationValueCommand request, CancellationToken cancellationToken)
     {
         var metadata = ConfigKeys.GetConfigMetadata().FirstOrDefault(m =>
             string.Equals(m.Key, request.ConfigurationKey, StringComparison.OrdinalIgnoreCase));
@@ -59,6 +59,6 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
 
         provider.Set(metadata.Path, request.NewValue);
         provider.Load();
-        return Unit.Task;
+        return Task.CompletedTask;
     }
 }
