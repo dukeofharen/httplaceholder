@@ -1,6 +1,7 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.Commands.HandleStubRequest;
 using HttPlaceholder.Web.Shared.Middleware;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Web.Shared.Tests.Middleware;
@@ -63,7 +64,7 @@ public class StubHandlingMiddlewareFacts
         await middleware.Invoke(null);
 
         // Assert
-        _mocker.GetMock<IStubHandler>()
-            .Verify(m => m.HandleStubRequestAsync(It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IMediator>()
+            .Verify(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()));
     }
 }

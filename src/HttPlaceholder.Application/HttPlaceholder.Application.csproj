@@ -29,6 +29,7 @@
         <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
         <ProjectReference Include="..\HttPlaceholder.Domain\HttPlaceholder.Domain.csproj" />
 
+
     </ItemGroup>
 
 

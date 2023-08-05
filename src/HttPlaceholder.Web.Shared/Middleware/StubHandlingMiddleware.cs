@@ -1,5 +1,7 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.Commands.HandleStubRequest;
+using MediatR;
 
 namespace HttPlaceholder.Web.Shared.Middleware;
 
@@ -15,7 +17,7 @@ public class StubHandlingMiddleware
 
     private readonly IHttpContextService _httpContextService;
     private readonly RequestDelegate _next;
-    private readonly IStubHandler _stubHandler;
+    private readonly IMediator _mediator;
 
 
     /// <summary>
@@ -24,17 +26,18 @@ public class StubHandlingMiddleware
     public StubHandlingMiddleware(
         RequestDelegate next,
         IHttpContextService httpContextService,
-        IStubHandler stubHandler)
+        IMediator mediator)
     {
         _next = next;
         _httpContextService = httpContextService;
-        _stubHandler = stubHandler;
+        _mediator = mediator;
     }
 
     /// <summary>
     ///     Handles the middleware.
     /// </summary>
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(
+        HttpContext context)
     {
         if (_segmentsToIgnore.Any(s => _httpContextService.Path.Contains(s, StringComparison.OrdinalIgnoreCase)))
         {
@@ -42,6 +45,6 @@ public class StubHandlingMiddleware
             return;
         }
 
-        await _stubHandler.HandleStubRequestAsync(context?.RequestAborted ?? CancellationToken.None);
+        await _mediator.Send(new HandleStubRequestCommand(), context?.RequestAborted ?? CancellationToken.None);
     }
 }
