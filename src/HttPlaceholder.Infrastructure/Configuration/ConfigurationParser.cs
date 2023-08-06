@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 using static HttPlaceholder.Domain.DefaultConfiguration;
@@ -51,7 +52,7 @@ public class ConfigurationParser
         var envResult = ParseEnvironment(configMetadata);
         var argsResult = args.Parse();
         var configFileResult = ParseConfigFile(envResult, argsResult);
-        return DetermineFinalConfigDictionary(envResult, argsResult, configFileResult, configMetadata);
+        return DetermineFinalConfigDictionary(envResult, argsResult, configFileResult, configMetadata, args);
     }
 
     private IDictionary<string, string> ParseEnvironment(
@@ -109,7 +110,8 @@ public class ConfigurationParser
         IDictionary<string, string> envResult,
         IDictionary<string, string> argsResult,
         IDictionary<string, string> configFileResult,
-        ConfigMetadataModel[] configMetadata)
+        ConfigMetadataModel[] configMetadata,
+        IEnumerable<string> args)
     {
         var result = new Dictionary<string, string>();
         foreach (var constant in configMetadata)
@@ -152,6 +154,11 @@ public class ConfigurationParser
             {
                 finalResult.Add(constant.Path, item.Value);
             }
+        }
+
+        if (CliArgs.IsVerbose(args))
+        {
+            finalResult.Add("Logging:VerboseLoggingEnabled", "True");
         }
 
         return finalResult;

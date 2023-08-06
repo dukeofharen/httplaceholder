@@ -29,4 +29,9 @@ public class SettingsModel
     ///     Gets or sets the stub settings.
     /// </summary>
     public StubSettingsModel Stub { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the logging settings.
+    /// </summary>
+    public LoggingSettingsModel Logging { get; set; }
 }
