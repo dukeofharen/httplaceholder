@@ -28,7 +28,7 @@ public class AuditBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TR
         CancellationToken cancellationToken)
     {
         Console.WriteLine(request.GetType().FullName);
-        if (_options.CurrentValue?.Logging.VerboseLoggingEnabled == false)
+        if (_options?.CurrentValue?.Logging?.VerboseLoggingEnabled == false)
         {
             return await next();
         }
