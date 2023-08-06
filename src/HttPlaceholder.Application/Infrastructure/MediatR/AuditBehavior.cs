@@ -36,7 +36,9 @@ public class AuditBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TR
     }
 
     /// <inheritdoc />
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
     {
         if (_options?.CurrentValue?.Logging?.VerboseLoggingEnabled != true)
@@ -63,7 +65,7 @@ public class AuditBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TR
             stopwatch.Start();
             var result = await next();
             stopwatch.Stop();
-
+            builder.AppendLine($"Result: {JsonConvert.SerializeObject(result)}");
             builder.AppendLine($"Duration: {stopwatch.Elapsed.Milliseconds} ms");
             return result;
         }
