@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
@@ -52,6 +53,17 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
         var stubs = (await _stubContext.GetStubsAsync(cancellationToken)).Where(s => s.Stub.Enabled).ToArray();
         var orderedConditionCheckers = _conditionCheckers.OrderByDescending(c => c.Priority).ToArray();
+
+        var beforeCheckingNotification = new BeforeCheckingStubConditionsNotification
+        {
+            ConditionCheckers = orderedConditionCheckers, Stubs = stubs
+        };
+        await _mediator.Publish(beforeCheckingNotification, cancellationToken);
+        if (beforeCheckingNotification.Response != null)
+        {
+            return beforeCheckingNotification.Response;
+        }
+
         foreach (var fullStub in stubs)
         {
             var stub = fullStub.Stub;
