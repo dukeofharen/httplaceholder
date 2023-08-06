@@ -1,0 +1,3 @@
+=== Extensibility ===
+
+This folder contains several classes which can be used to be able to plug into the HttPlaceholder pipeline. HttPlaceholder works with MediatR (see https://github.com/jbogard/MediatR) which is a simple .NET library which implements the mediator pattern. HttPlaceholder uses queries and commands to communicate from the web API project to the application project (which is this project and contains all business logic). For extensibility, MediatR notifications are used. All available notifications which can be used are found in the "Notifications" folder. To listen to one of the notifications, a class extending the INotificationHandler should be implemented and added to the .NET service collection.
