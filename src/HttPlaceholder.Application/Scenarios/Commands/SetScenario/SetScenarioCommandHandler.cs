@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 /// <summary>
 ///     A command handler for setting a scenario.
 /// </summary>
-public class SetScenarioCommandHandler : IRequestHandler<SetScenarioCommand>
+public class SetScenarioCommandHandler : IRequestHandler<SetScenarioCommand, Unit>
 {
     private readonly IScenarioService _scenarioService;
 
@@ -21,6 +21,9 @@ public class SetScenarioCommandHandler : IRequestHandler<SetScenarioCommand>
     }
 
     /// <inheritdoc />
-    public async Task Handle(SetScenarioCommand request, CancellationToken cancellationToken) =>
+    public async Task<Unit> Handle(SetScenarioCommand request, CancellationToken cancellationToken)
+    {
         await _scenarioService.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel, cancellationToken);
+        return Unit.Value;
+    }
 }

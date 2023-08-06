@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Requests.Commands.DeleteAllRequests;
 /// <summary>
 ///     A command handler for deleting all requests.
 /// </summary>
-public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequestsCommand>
+public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequestsCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 
@@ -21,6 +21,9 @@ public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequests
     }
 
     /// <inheritdoc />
-    public async Task Handle(DeleteAllRequestsCommand request, CancellationToken cancellationToken) =>
+    public async Task<Unit> Handle(DeleteAllRequestsCommand request, CancellationToken cancellationToken)
+    {
         await _stubContext.DeleteAllRequestResultsAsync(cancellationToken);
+        return Unit.Value;
+    }
 }

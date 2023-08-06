@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
 /// <summary>
 ///     A command handler for updating all stubs belonging to a tenant.
 /// </summary>
-public class UpdateStubsInTenantCommandHandler : IRequestHandler<UpdateStubsInTenantCommand>
+public class UpdateStubsInTenantCommandHandler : IRequestHandler<UpdateStubsInTenantCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 
@@ -21,6 +21,9 @@ public class UpdateStubsInTenantCommandHandler : IRequestHandler<UpdateStubsInTe
     }
 
     /// <inheritdoc />
-    public async Task Handle(UpdateStubsInTenantCommand request, CancellationToken cancellationToken) =>
+    public async Task<Unit> Handle(UpdateStubsInTenantCommand request, CancellationToken cancellationToken)
+    {
         await _stubContext.UpdateAllStubs(request.Tenant, request.Stubs, cancellationToken);
+        return Unit.Value;
+    }
 }

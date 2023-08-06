@@ -5,7 +5,7 @@ namespace HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 /// <summary>
 ///     A command for deleting a scenario.
 /// </summary>
-public class DeleteScenarioCommand : IRequest
+public class DeleteScenarioCommand : IRequest<Unit>
 {
     /// <summary>
     ///     Constructs a <see cref="DeleteScenarioCommand" /> instance.

@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Stubs.Commands.DeleteAllStubs;
 /// <summary>
 ///     A command handler for deleting all stubs.
 /// </summary>
-public class DeleteAllStubsCommandHandler : IRequestHandler<DeleteAllStubsCommand>
+public class DeleteAllStubsCommandHandler : IRequestHandler<DeleteAllStubsCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 
@@ -22,6 +22,9 @@ public class DeleteAllStubsCommandHandler : IRequestHandler<DeleteAllStubsComman
     }
 
     /// <inheritdoc />
-    public async Task Handle(DeleteAllStubsCommand request, CancellationToken cancellationToken) =>
+    public async Task<Unit> Handle(DeleteAllStubsCommand request, CancellationToken cancellationToken)
+    {
         await _stubContext.DeleteAllStubsAsync(cancellationToken);
+        return Unit.Value;
+    }
 }

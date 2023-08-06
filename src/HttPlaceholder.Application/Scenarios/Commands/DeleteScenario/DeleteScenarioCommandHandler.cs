@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 /// <summary>
 ///     A command handler for deleting a scenario.
 /// </summary>
-public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioCommand>
+public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioCommand, Unit>
 {
     private readonly IScenarioService _scenarioService;
 
@@ -22,11 +22,13 @@ public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioComman
     }
 
     /// <inheritdoc />
-    public async Task Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
     {
         if (!await _scenarioService.DeleteScenarioAsync(request.ScenarioName, cancellationToken))
         {
             throw new NotFoundException($"Scenario '{request.ScenarioName}' not found.");
         }
+
+        return Unit.Value;
     }
 }

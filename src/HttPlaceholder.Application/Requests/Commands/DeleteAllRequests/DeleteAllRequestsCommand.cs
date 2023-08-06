@@ -5,6 +5,6 @@ namespace HttPlaceholder.Application.Requests.Commands.DeleteAllRequests;
 /// <summary>
 ///     A command for deleting all requests.
 /// </summary>
-public class DeleteAllRequestsCommand : IRequest
+public class DeleteAllRequestsCommand : IRequest<Unit>
 {
 }

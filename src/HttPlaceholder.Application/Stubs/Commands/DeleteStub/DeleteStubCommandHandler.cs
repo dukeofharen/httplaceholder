@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Stubs.Commands.DeleteStub;
 /// <summary>
 ///     A command handler for deleting a stub.
 /// </summary>
-public class DeleteStubCommandHandler : IRequestHandler<DeleteStubCommand>
+public class DeleteStubCommandHandler : IRequestHandler<DeleteStubCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 
@@ -23,11 +23,13 @@ public class DeleteStubCommandHandler : IRequestHandler<DeleteStubCommand>
     }
 
     /// <inheritdoc />
-    public async Task Handle(DeleteStubCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteStubCommand request, CancellationToken cancellationToken)
     {
         if (!await _stubContext.DeleteStubAsync(request.StubId, cancellationToken))
         {
             throw new NotFoundException(nameof(StubModel), request.StubId);
         }
+
+        return Unit.Value;
     }
 }

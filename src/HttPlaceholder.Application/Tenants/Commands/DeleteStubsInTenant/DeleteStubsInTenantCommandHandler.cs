@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant;
 /// <summary>
 ///     A command handler for deleting all stubs belonging to a specific tenant.
 /// </summary>
-public class DeleteStubsInTenantCommandHandler : IRequestHandler<DeleteStubsInTenantCommand>
+public class DeleteStubsInTenantCommandHandler : IRequestHandler<DeleteStubsInTenantCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 
@@ -22,6 +22,9 @@ public class DeleteStubsInTenantCommandHandler : IRequestHandler<DeleteStubsInTe
     }
 
     /// <inheritdoc />
-    public async Task Handle(DeleteStubsInTenantCommand request, CancellationToken cancellationToken) =>
+    public async Task<Unit> Handle(DeleteStubsInTenantCommand request, CancellationToken cancellationToken)
+    {
         await _stubContext.DeleteAllStubsAsync(request.Tenant, cancellationToken);
+        return Unit.Value;
+    }
 }

@@ -24,7 +24,7 @@ internal class StubHandler : IStubHandler, ISingletonService
     private readonly ILogger<StubHandler> _logger;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;
-    private readonly SettingsModel _settings;
+    IOptionsMonitor<SettingsModel> _options;
 
     /// <summary>
     ///     Constructs a <see cref="StubHandler"/> instance
@@ -46,13 +46,14 @@ internal class StubHandler : IStubHandler, ISingletonService
         _logger = logger;
         _clientDataResolver = clientDataResolver;
         _httpContextService = httpContextService;
-        _settings = options.CurrentValue;
+        _options = options;
     }
 
     /// <inheritdoc />
     public async Task HandleStubRequestAsync(CancellationToken cancellationToken)
     {
-        if (_settings?.Stub?.HealthcheckOnRootUrl == true && _httpContextService.Path == "/")
+        var settings = _options.CurrentValue;
+        if (settings?.Stub?.HealthcheckOnRootUrl == true && _httpContextService.Path == "/")
         {
             _httpContextService.SetStatusCode(HttpStatusCode.OK);
             await _httpContextService.WriteAsync("OK", cancellationToken);
@@ -69,7 +70,7 @@ internal class StubHandler : IStubHandler, ISingletonService
         }
         catch (RequestValidationException e)
         {
-            await HandleRequestValidationException(correlationId, e, _settings, cancellationToken);
+            await HandleRequestValidationException(correlationId, e, settings, cancellationToken);
         }
         catch (TaskCanceledException e)
         {
@@ -81,7 +82,7 @@ internal class StubHandler : IStubHandler, ISingletonService
         }
 
         var loggingResult = requestLogger.GetResult();
-        var enableRequestLogging = _settings?.Storage?.EnableRequestLogging ?? false;
+        var enableRequestLogging = settings?.Storage?.EnableRequestLogging ?? false;
         if (enableRequestLogging)
         {
             _logger.LogInformation($"Request: {JObject.FromObject(loggingResult)}");

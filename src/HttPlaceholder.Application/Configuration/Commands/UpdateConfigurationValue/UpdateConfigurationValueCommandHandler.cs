@@ -12,7 +12,7 @@ namespace HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationV
 /// <summary>
 ///     A handler for updating a configuration value runtime.
 /// </summary>
-public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConfigurationValueCommand>
+public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConfigurationValueCommand, Unit>
 {
     private static readonly string[] _expectedBoolValues = {"true", "false"};
     private readonly IConfigurationRoot _configuration;
@@ -27,7 +27,7 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
     }
 
     /// <inheritdoc />
-    public Task Handle(UpdateConfigurationValueCommand request, CancellationToken cancellationToken)
+    public Task<Unit> Handle(UpdateConfigurationValueCommand request, CancellationToken cancellationToken)
     {
         var metadata = ConfigKeys.GetConfigMetadata().FirstOrDefault(m =>
             string.Equals(m.Key, request.ConfigurationKey, StringComparison.OrdinalIgnoreCase));
@@ -59,6 +59,6 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
 
         provider.Set(metadata.Path, request.NewValue);
         provider.Load();
-        return Task.CompletedTask;
+        return Unit.Task;
     }
 }

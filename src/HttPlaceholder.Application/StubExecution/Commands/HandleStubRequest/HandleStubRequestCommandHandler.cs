@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.Commands.HandleStubRequest;
 /// <summary>
 ///     A command handler for handling a stub request.
 /// </summary>
-public class HandleStubRequestCommandHandler : IRequestHandler<HandleStubRequestCommand>
+public class HandleStubRequestCommandHandler : IRequestHandler<HandleStubRequestCommand, Unit>
 {
     private readonly IStubHandler _stubHandler;
 
@@ -21,6 +21,9 @@ public class HandleStubRequestCommandHandler : IRequestHandler<HandleStubRequest
     }
 
     /// <inheritdoc />
-    public async Task Handle(HandleStubRequestCommand request, CancellationToken cancellationToken) =>
+    public async Task<Unit> Handle(HandleStubRequestCommand request, CancellationToken cancellationToken)
+    {
         await _stubHandler.HandleStubRequestAsync(cancellationToken);
+        return Unit.Value;
+    }
 }

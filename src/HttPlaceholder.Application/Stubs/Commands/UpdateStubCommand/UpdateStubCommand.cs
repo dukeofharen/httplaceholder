@@ -6,7 +6,7 @@ namespace HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
 /// <summary>
 ///     A command for updating a stub.
 /// </summary>
-public class UpdateStubCommand : IRequest
+public class UpdateStubCommand : IRequest<Unit>
 {
     /// <summary>
     ///     Constructs an <see cref="UpdateStubCommand" /> instance.
