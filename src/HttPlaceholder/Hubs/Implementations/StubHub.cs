@@ -11,7 +11,7 @@ public class StubHub : BaseHub
     /// <summary>
     ///     Constructs a <see cref="StubHub" /> instance.
     /// </summary>
-    public StubHub(ILoginService loginService) : base(loginService)
+    public StubHub(ILoginCookieService loginCookieService) : base(loginCookieService)
     {
     }
 }

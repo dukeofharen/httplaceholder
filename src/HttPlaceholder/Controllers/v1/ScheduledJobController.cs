@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Application.ScheduledJobs.Commands.ExecuteScheduledJob;
+using HttPlaceholder.Application.ScheduledJobs.Queries.GetScheduledJobNames;
 using HttPlaceholder.Web.Shared.Authorization;
 using HttPlaceholder.Web.Shared.Dto.v1.ScheduledJobs;
-using HttPlaceholder.Web.Shared.HostedServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,16 +18,6 @@ namespace HttPlaceholder.Controllers.v1;
 [ApiAuthorization]
 public class ScheduledJobController : BaseApiController
 {
-    private readonly IEnumerable<ICustomHostedService> _hostedServices;
-
-    /// <summary>
-    ///     Constructs a <see cref="ScheduledJobController" /> instance.
-    /// </summary>
-    public ScheduledJobController(IEnumerable<ICustomHostedService> hostedServices)
-    {
-        _hostedServices = hostedServices;
-    }
-
     /// <summary>
     ///     Runs a specified scheduled job.
     /// </summary>
@@ -43,22 +30,10 @@ public class ScheduledJobController : BaseApiController
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> RunScheduledJob([FromRoute] string jobName, CancellationToken cancellationToken)
     {
-        var message = "OK";
-        var job = _hostedServices.FirstOrDefault(s =>
-                string.Equals(jobName, s.Key, StringComparison.OrdinalIgnoreCase))
-            .IfNull(() => throw new NotFoundException($"Hosted service with key '{jobName}'."));
-        var statusCode = HttpStatusCode.OK;
-        try
-        {
-            await job.ProcessAsync(cancellationToken);
-        }
-        catch (Exception ex)
-        {
-            message = ex.ToString();
-            statusCode = HttpStatusCode.InternalServerError;
-        }
+        var result = await Mediator.Send(new ExecuteScheduledJobCommand(jobName), cancellationToken);
+        var statusCode = result.Failed ? HttpStatusCode.InternalServerError : HttpStatusCode.OK;
 
-        return StatusCode((int)statusCode, new JobExecutionResultDto(message));
+        return StatusCode((int)statusCode, new JobExecutionResultDto(result.Message));
     }
 
     /// <summary>
@@ -67,5 +42,6 @@ public class ScheduledJobController : BaseApiController
     /// <returns>A list of scheduled job names.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public ActionResult<IEnumerable<string>> GetScheduledJobNames() => Ok(_hostedServices.Select(s => s.Key));
+    public async Task<ActionResult<IEnumerable<string>>> GetScheduledJobNames() =>
+        Ok(await Mediator.Send(new GetScheduledJobNamesQuery()));
 }

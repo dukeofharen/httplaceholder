@@ -5,7 +5,7 @@ namespace HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationV
 /// <summary>
 ///     A command for updating a configuration value runtime.
 /// </summary>
-public class UpdateConfigurationValueCommand : IRequest
+public class UpdateConfigurationValueCommand : IRequest<Unit>
 {
     /// <summary>
     ///     Constructs a <see cref="UpdateConfigurationValueCommand" /> object.

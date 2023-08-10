@@ -7,6 +7,7 @@ using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Persistence;
 using HttPlaceholder.Resources;
 using HttPlaceholder.Web.Shared.Middleware;
+using HttPlaceholder.WebInfrastructure;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
 
@@ -26,6 +27,7 @@ public static class StartupUtilities
         IConfiguration configuration) =>
         services
             .Configure<SettingsModel>(configuration)
+            .AddWebInfrastructureModule()
             .AddInfrastructureModule()
             .AddApplicationModule()
             .AddPersistenceModule(configuration)
@@ -108,7 +110,6 @@ public static class StartupUtilities
 
             await next.Invoke();
         })
-        .UseMiddleware<ApiHeadersMiddleware>()
         .UseMiddleware<ApiExceptionHandlingMiddleware>()
         .UseMiddleware<StubHandlingMiddleware>();
 

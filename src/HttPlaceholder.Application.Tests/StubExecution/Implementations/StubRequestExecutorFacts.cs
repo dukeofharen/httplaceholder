@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Extensibility.Notifications;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain.Enums;
+using MediatR;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -38,7 +40,7 @@ public class StubRequestExecutorFacts
     [TestMethod]
     public async Task StubRequestExecutor_ExecuteRequestAsync_NoConditionPassed_ShouldThrowException()
     {
-        // arrange
+        // Arrange
         _conditionCheckerMock1
             .Setup(m => m.ValidateAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
@@ -48,19 +50,41 @@ public class StubRequestExecutorFacts
 
         var executor = _mocker.CreateInstance<StubRequestExecutor>();
 
-        // act
+        // Act
         var exception =
             await Assert.ThrowsExceptionAsync<RequestValidationException>(() =>
                 executor.ExecuteRequestAsync(CancellationToken.None));
 
-        // assert
+        // Assert
         Assert.IsTrue(exception.Message.Contains("and the request did not pass"));
+    }
+
+    [TestMethod]
+    public async Task StubRequestExecutor_BeforeCheckingNotificationSentAndHandled_ShouldReturnCustomResponse()
+    {
+        // Arrange
+        var executor = _mocker.CreateInstance<StubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
+
+        var expectedResponse = new ResponseModel();
+        mediatorMock
+            .Setup(m => m.Publish(
+                It.Is<BeforeCheckingStubConditionsNotification>(n => n.ConditionCheckers != null && n.Stubs != null),
+                It.IsAny<CancellationToken>()))
+            .Callback<BeforeCheckingStubConditionsNotification, CancellationToken>((n, _) =>
+                n.Response = expectedResponse);
+
+        // Act
+        var result = await executor.ExecuteRequestAsync(CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedResponse, result);
     }
 
     [TestMethod]
     public async Task StubRequestExecutor_ExecuteRequestAsync_NoConditionExecuted_ShouldPickFirstStub()
     {
-        // arrange
+        // Arrange
         var expectedResponseModel = new ResponseModel();
 
         _conditionCheckerMock1
@@ -86,17 +110,17 @@ public class StubRequestExecutorFacts
 
         var executor = _mocker.CreateInstance<StubRequestExecutor>();
 
-        // act
+        // Act
         var result = await executor.ExecuteRequestAsync(CancellationToken.None);
 
-        // assert
+        // Assert
         Assert.AreEqual(expectedResponseModel, result);
     }
 
     [TestMethod]
     public async Task StubRequestExecutor_ExecuteRequestAsync_MultipleValidStubs_ShouldPickStubWithHighestPriority()
     {
-        // arrange
+        // Arrange
         var expectedResponseModel = new ResponseModel();
 
         _conditionCheckerMock1
@@ -127,17 +151,17 @@ public class StubRequestExecutorFacts
 
         var executor = _mocker.CreateInstance<StubRequestExecutor>();
 
-        // act
+        // Act
         var response = await executor.ExecuteRequestAsync(CancellationToken.None);
 
-        // assert
+        // Assert
         Assert.AreEqual(expectedResponseModel, response);
     }
 
     [TestMethod]
     public async Task StubRequestExecutor_ExecuteRequestAsync_HappyFlow()
     {
-        // arrange
+        // Arrange
         var expectedResponseModel = new ResponseModel();
         _conditionCheckerMock1
             .Setup(m => m.ValidateAsync(_stub1.Stub, It.IsAny<CancellationToken>()))
@@ -167,13 +191,15 @@ public class StubRequestExecutorFacts
 
         var executor = _mocker.CreateInstance<StubRequestExecutor>();
 
-        // act
+        // Act
         var response = await executor.ExecuteRequestAsync(CancellationToken.None);
 
-        // assert
+        // Assert
         Assert.AreEqual(expectedResponseModel, response);
 
         _mocker.GetMock<IScenarioService>()
             .Verify(m => m.IncreaseHitCountAsync(_stub2.Stub.Scenario, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IMediator>()
+            .Verify(m => m.Publish(It.Is<BeforeStubResponseReturnedNotification>(n => n.Response == response), It.IsAny<CancellationToken>()));
     }
 }

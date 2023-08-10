@@ -39,6 +39,8 @@ public class MockLogger<TCategoryName> : ILogger<TCategoryName>
         e.LogLevel == logLevel &&
         e.State == text);
 
+    public bool HasEntries() => Entries.Any();
+
     public class LogEntry
     {
         public LogLevel LogLevel { get; set; }

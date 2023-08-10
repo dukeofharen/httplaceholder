@@ -5,7 +5,7 @@ namespace HttPlaceholder.Application.Stubs.Commands.DeleteStub;
 /// <summary>
 ///     A command for deleting a stub.
 /// </summary>
-public class DeleteStubCommand : IRequest
+public class DeleteStubCommand : IRequest<Unit>
 {
     /// <summary>
     ///     Constructs a <see cref="DeleteStubCommand" /> instance.

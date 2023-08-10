@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant;
 /// <summary>
 ///     A command handler for deleting all stubs belonging to a specific tenant.
 /// </summary>
-public class DeleteStubsInTenantCommandHandler : IRequestHandler<DeleteStubsInTenantCommand>
+public class DeleteStubsInTenantCommandHandler : IRequestHandler<DeleteStubsInTenantCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 

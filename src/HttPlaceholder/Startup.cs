@@ -58,7 +58,8 @@ public class Startup
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The configuration.</param>
     public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration) =>
-        services.ConfigureServices<Startup>(configuration)
+        services
+            .ConfigureServices<Startup>(configuration)
             .AddSignalRHubs()
             .AddHostedServices(configuration);
 }

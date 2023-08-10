@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 /// <summary>
 ///     A command handler for setting a scenario.
 /// </summary>
-public class SetScenarioCommandHandler : IRequestHandler<SetScenarioCommand>
+public class SetScenarioCommandHandler : IRequestHandler<SetScenarioCommand, Unit>
 {
     private readonly IScenarioService _scenarioService;
 

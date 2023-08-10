@@ -1,4 +1,6 @@
-﻿namespace HttPlaceholder.Web.Shared.HostedServices;
+﻿using HttPlaceholder.Application.ScheduledJobs;
+
+namespace HttPlaceholder.Web.Shared.HostedServices;
 
 /// <summary>
 ///     A utility class that is used for working with hosted services.

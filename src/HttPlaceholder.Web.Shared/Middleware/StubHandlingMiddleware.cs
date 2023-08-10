@@ -4,7 +4,9 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.Commands;
 using HttPlaceholder.Domain;
+using MediatR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
@@ -20,59 +22,60 @@ public class StubHandlingMiddleware
         "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub", "/stubHub"
     };
 
-    private readonly IClientDataResolver _clientDataResolver;
-    private readonly IHttpContextService _httpContextService;
-    private readonly ILogger<StubHandlingMiddleware> _logger;
     private readonly RequestDelegate _next;
-    private readonly IOptionsMonitor<SettingsModel> _options;
+    private readonly IMediator _mediator;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IResourcesService _resourcesService;
     private readonly IStubContext _stubContext;
-    private readonly IStubRequestExecutor _stubRequestExecutor;
+    private readonly ILogger<StubHandlingMiddleware> _logger;
+    private readonly IClientDataResolver _clientDataResolver;
+    private readonly IHttpContextService _httpContextService;
+    private readonly IOptionsMonitor<SettingsModel> _options;
+
 
     /// <summary>
     ///     Constructs a <see cref="StubHandlingMiddleware" /> instance.
     /// </summary>
     public StubHandlingMiddleware(
         RequestDelegate next,
-        IClientDataResolver clientDataResolver,
-        IHttpContextService httpContextService,
-        ILogger<StubHandlingMiddleware> logger,
+        IMediator mediator,
         IRequestLoggerFactory requestLoggerFactory,
+        IResourcesService resourcesService,
         IStubContext stubContext,
-        IStubRequestExecutor stubRequestExecutor,
+        ILogger<StubHandlingMiddleware> logger,
+        IClientDataResolver clientDataResolver,
         IOptionsMonitor<SettingsModel> options,
-        IResourcesService resourcesService)
+        IHttpContextService httpContextService)
     {
         _next = next;
+        _mediator = mediator;
+        _requestLoggerFactory = requestLoggerFactory;
+        _resourcesService = resourcesService;
+        _stubContext = stubContext;
+        _logger = logger;
         _clientDataResolver = clientDataResolver;
         _httpContextService = httpContextService;
-        _logger = logger;
-        _requestLoggerFactory = requestLoggerFactory;
-        _stubContext = stubContext;
-        _stubRequestExecutor = stubRequestExecutor;
-        _resourcesService = resourcesService;
         _options = options;
     }
 
     /// <summary>
     ///     Handles the middleware.
     /// </summary>
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(
+        HttpContext context)
     {
-        var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
-        var path = _httpContextService.Path;
-        var settings = _options.CurrentValue;
-        if (settings?.Stub?.HealthcheckOnRootUrl == true && path == "/")
+        if (_segmentsToIgnore.Any(s => _httpContextService.Path.Contains(s, StringComparison.OrdinalIgnoreCase)))
         {
-            _httpContextService.SetStatusCode(HttpStatusCode.OK);
-            await _httpContextService.WriteAsync("OK", cancellationToken);
+            await _next(context);
             return;
         }
 
-        if (_segmentsToIgnore.Any(s => path.Contains(s, StringComparison.OrdinalIgnoreCase)))
+        var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
+        var settings = _options.CurrentValue;
+        if (settings?.Stub?.HealthcheckOnRootUrl == true && _httpContextService.Path == "/")
         {
-            await _next(context);
+            _httpContextService.SetStatusCode(HttpStatusCode.OK);
+            await _httpContextService.WriteAsync("OK", cancellationToken);
             return;
         }
 
@@ -136,7 +139,7 @@ public class StubHandlingMiddleware
         // Enable rewind here to be able to read the posted body multiple times.
         _httpContextService.EnableRewind();
 
-        // Log the request here
+        // Log the request here.
         requestLogger.LogRequestParameters(
             _httpContextService.Method,
             _httpContextService.DisplayUrl,
@@ -145,7 +148,7 @@ public class StubHandlingMiddleware
             _httpContextService.GetHeaders());
 
         _httpContextService.ClearResponse();
-        var response = await _stubRequestExecutor.ExecuteRequestAsync(cancellationToken);
+        var response = await _mediator.Send(new HandleStubRequestCommand(), cancellationToken);
         if (response.AbortConnection)
         {
             _httpContextService.AbortConnection();

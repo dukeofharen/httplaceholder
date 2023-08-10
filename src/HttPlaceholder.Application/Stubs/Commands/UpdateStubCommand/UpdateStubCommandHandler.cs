@@ -12,7 +12,7 @@ namespace HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
 /// <summary>
 ///     A command handler for updating a stub.
 /// </summary>
-public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
+public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand, Unit>
 {
     private readonly IStubContext _stubContext;
     private readonly IStubModelValidator _stubModelValidator;
@@ -53,7 +53,6 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
         await _stubContext.DeleteStubAsync(request.StubId, cancellationToken);
         await _stubContext.DeleteStubAsync(request.Stub.Id, cancellationToken);
         await _stubContext.AddStubAsync(request.Stub, cancellationToken);
-
         return Unit.Value;
     }
 }

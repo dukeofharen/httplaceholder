@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
 /// <summary>
 ///     A command handler for deleting all scenarios.
 /// </summary>
-public class DeleteAllScenariosCommandHandler : IRequestHandler<DeleteAllScenariosCommand>
+public class DeleteAllScenariosCommandHandler : IRequestHandler<DeleteAllScenariosCommand, Unit>
 {
     private readonly IScenarioService _scenarioService;
 

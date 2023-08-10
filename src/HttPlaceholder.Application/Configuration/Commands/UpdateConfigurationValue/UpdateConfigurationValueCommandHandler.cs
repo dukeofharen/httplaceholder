@@ -12,7 +12,7 @@ namespace HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationV
 /// <summary>
 ///     A handler for updating a configuration value runtime.
 /// </summary>
-public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConfigurationValueCommand>
+public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConfigurationValueCommand, Unit>
 {
     private static readonly string[] _expectedBoolValues = {"true", "false"};
     private readonly IConfigurationRoot _configuration;

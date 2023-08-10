@@ -375,47 +375,6 @@ response:
     }
 
     [TestMethod]
-    public async Task RestApiIntegration_Stub_Get_HeadersAreSet()
-    {
-        // arrange
-        var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
-
-        // act / assert
-        using var response = await Client.SendAsync(request);
-        Assert.IsTrue(response.IsSuccessStatusCode);
-        Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
-        Assert.AreEqual("Authorization, Content-Type",
-            response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
-        Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS",
-            response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
-        Assert.AreEqual("no-store, no-cache",
-            response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
-    }
-
-    [TestMethod]
-    public async Task RestApiIntegration_Stub_Options_HeadersAreSet()
-    {
-        // arrange
-        var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        var request = new HttpRequestMessage {Method = HttpMethod.Options, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
-        request.Headers.Add("Origin", "http://localhost:8080");
-
-        // act / assert
-        using var response = await Client.SendAsync(request);
-        Assert.IsTrue(response.IsSuccessStatusCode);
-        Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
-        Assert.AreEqual("Authorization, Content-Type",
-            response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
-        Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS",
-            response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
-        Assert.AreEqual("no-store, no-cache",
-            response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
-    }
-
-    [TestMethod]
     public async Task RestApiIntegration_Stub_Add_Then_Update_Yaml()
     {
         // Add

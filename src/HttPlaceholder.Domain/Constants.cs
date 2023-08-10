@@ -1,4 +1,8 @@
-﻿namespace HttPlaceholder.Domain;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace HttPlaceholder.Domain;
 
 /// <summary>
 ///     A class that contains several constants for use in HttPlaceholder.
@@ -251,4 +255,37 @@ public static class CachingKeys
     ///     The scenario state caching key.
     /// </summary>
     public const string ScenarioState = "scenarioState";
+}
+
+/// <summary>
+///     A static constants class used for the CLI arguments.
+/// </summary>
+public static class CliArgs
+{
+    /// <summary>
+    ///     CLI arguments that enable verbose logging.
+    /// </summary>
+    public static readonly string[] VerboseArgs = {"-V", "--verbose"};
+
+    /// <summary>
+    ///     CLI arguments that show the HttPlaceholder version.
+    /// </summary>
+    public static readonly string[] VersionArgs = {"-v", "--version"};
+
+    /// <summary>
+    ///     CLI arguments that show the help page.
+    /// </summary>
+    public static readonly string[] HelpArgs = {"-h", "--help", "-?"};
+
+    /// <summary>
+    ///     Determines whether verbose logging is enabled.
+    /// </summary>
+    /// <param name="args">The CLI args.</param>
+    /// <returns>True if verbose logging is enabled; false otherwise.</returns>
+    public static bool IsVerbose(IEnumerable<string> args)
+    {
+        var env = Environment.GetEnvironmentVariable("verbose");
+        return args.Any(VerboseArgs.Contains) ||
+               string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
+    }
 }

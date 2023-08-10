@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Stubs.Commands.DeleteAllStubs;
 /// <summary>
 ///     A command handler for deleting all stubs.
 /// </summary>
-public class DeleteAllStubsCommandHandler : IRequestHandler<DeleteAllStubsCommand>
+public class DeleteAllStubsCommandHandler : IRequestHandler<DeleteAllStubsCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 

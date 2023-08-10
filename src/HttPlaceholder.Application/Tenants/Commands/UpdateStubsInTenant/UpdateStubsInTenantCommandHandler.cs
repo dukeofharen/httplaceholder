@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
 /// <summary>
 ///     A command handler for updating all stubs belonging to a tenant.
 /// </summary>
-public class UpdateStubsInTenantCommandHandler : IRequestHandler<UpdateStubsInTenantCommand>
+public class UpdateStubsInTenantCommandHandler : IRequestHandler<UpdateStubsInTenantCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 

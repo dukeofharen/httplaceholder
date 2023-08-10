@@ -6,7 +6,7 @@ namespace HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 /// <summary>
 ///     A command for setting a scenario.
 /// </summary>
-public class SetScenarioCommand : IRequest
+public class SetScenarioCommand : IRequest<Unit>
 {
     /// <summary>
     ///     Constructs a <see cref="SetScenarioCommand" /> instance

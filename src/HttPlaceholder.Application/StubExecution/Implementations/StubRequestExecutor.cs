@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Extensibility.Notifications;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
@@ -21,6 +23,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
     private readonly IScenarioService _scenarioService;
     private readonly IStubContext _stubContext;
     private readonly IStubResponseGenerator _stubResponseGenerator;
+    private readonly IMediator _mediator;
 
     public StubRequestExecutor(
         IEnumerable<IConditionChecker> conditionCheckers,
@@ -29,7 +32,8 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         IRequestLoggerFactory requestLoggerFactory,
         IStubContext stubContext,
         IStubResponseGenerator stubResponseGenerator,
-        IScenarioService scenarioService)
+        IScenarioService scenarioService,
+        IMediator mediator)
     {
         _conditionCheckers = conditionCheckers;
         _finalStubDeterminer = finalStubDeterminer;
@@ -38,6 +42,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         _stubContext = stubContext;
         _stubResponseGenerator = stubResponseGenerator;
         _scenarioService = scenarioService;
+        _mediator = mediator;
     }
 
     /// <inheritdoc />
@@ -47,6 +52,17 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
         var stubs = (await _stubContext.GetStubsAsync(cancellationToken)).Where(s => s.Stub.Enabled).ToArray();
         var orderedConditionCheckers = _conditionCheckers.OrderByDescending(c => c.Priority).ToArray();
+
+        var beforeCheckingNotification = new BeforeCheckingStubConditionsNotification
+        {
+            ConditionCheckers = orderedConditionCheckers, Stubs = stubs
+        };
+        await _mediator.Publish(beforeCheckingNotification, cancellationToken);
+        if (beforeCheckingNotification.Response != null)
+        {
+            return beforeCheckingNotification.Response;
+        }
+
         foreach (var fullStub in stubs)
         {
             var stub = fullStub.Stub;
@@ -90,6 +106,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         await _scenarioService.IncreaseHitCountAsync(finalStub.Scenario, cancellationToken);
         requestLogger.SetExecutingStubId(finalStub.Id);
         var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub, cancellationToken);
+        await _mediator.Publish(new BeforeStubResponseReturnedNotification {Response = response}, cancellationToken);
         return response;
     }
 

@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Requests.Commands.DeleteAllRequests;
 /// <summary>
 ///     A command handler for deleting all requests.
 /// </summary>
-public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequestsCommand>
+public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequestsCommand, Unit>
 {
     private readonly IStubContext _stubContext;
 

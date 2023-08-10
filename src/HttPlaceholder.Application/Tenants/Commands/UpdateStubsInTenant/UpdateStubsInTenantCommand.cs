@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
 /// <summary>
 ///     A command for updating all stubs belonging to a tenant.
 /// </summary>
-public class UpdateStubsInTenantCommand : IRequest
+public class UpdateStubsInTenantCommand : IRequest<Unit>
 {
     /// <summary>
     ///     Constructs an <see cref="UpdateStubsInTenantCommand" /> instance.
