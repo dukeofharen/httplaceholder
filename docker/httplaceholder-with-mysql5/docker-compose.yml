@@ -6,7 +6,7 @@ services:
       - mysql
     image: dukeofharen/httplaceholder:latest
     environment:
-      mysqlConnectionString: 'Server=mysql;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true'
+      mysqlConnectionString: 'Server=mysql;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true;SSL Mode=None'
       verbose: 'true'
     ports:
       - 5000:5000
