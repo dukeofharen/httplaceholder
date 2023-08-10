@@ -59,7 +59,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in MySQL 5 configuration.
 echo "Testing HttPlaceholder with in MySQL 5 configuration"
-dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mysql5.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true;SSL Mode=None" --storeResponses > $DIR/logs/httplaceholder-mysql5.txt 2>&1 &
 sleep 5
 npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-mysql5.txt
 assert-test-ok
@@ -67,7 +67,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in MySQL 8 configuration.
 echo "Testing HttPlaceholder with in MySQL 8 configuration"
-dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost,3307;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mysql8.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Port=3307;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mysql8.txt 2>&1 &
 sleep 5
 npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-mysql8.txt
 assert-test-ok
@@ -75,7 +75,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in MariaDB configuration.
 echo "Testing HttPlaceholder with in MariaDB configuration"
-dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost,3308;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mariadb.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Port=3308;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mariadb.txt 2>&1 &
 sleep 5
 npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-mariadb.txt
 assert-test-ok
