@@ -4,6 +4,7 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.Commands;
 using HttPlaceholder.Domain;
 using MediatR;
 using Microsoft.Extensions.Options;
@@ -26,7 +27,6 @@ public class StubHandlingMiddleware
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IResourcesService _resourcesService;
     private readonly IStubContext _stubContext;
-    private readonly IStubRequestExecutor _stubRequestExecutor;
     private readonly ILogger<StubHandlingMiddleware> _logger;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;
@@ -42,7 +42,6 @@ public class StubHandlingMiddleware
         IRequestLoggerFactory requestLoggerFactory,
         IResourcesService resourcesService,
         IStubContext stubContext,
-        IStubRequestExecutor stubRequestExecutor,
         ILogger<StubHandlingMiddleware> logger,
         IClientDataResolver clientDataResolver,
         IOptionsMonitor<SettingsModel> options,
@@ -53,7 +52,6 @@ public class StubHandlingMiddleware
         _requestLoggerFactory = requestLoggerFactory;
         _resourcesService = resourcesService;
         _stubContext = stubContext;
-        _stubRequestExecutor = stubRequestExecutor;
         _logger = logger;
         _clientDataResolver = clientDataResolver;
         _httpContextService = httpContextService;
@@ -150,7 +148,7 @@ public class StubHandlingMiddleware
             _httpContextService.GetHeaders());
 
         _httpContextService.ClearResponse();
-        var response = await _stubRequestExecutor.ExecuteRequestAsync(cancellationToken);
+        var response = await _mediator.Send(new HandleStubRequestCommand(), cancellationToken);
         if (response.AbortConnection)
         {
             _httpContextService.AbortConnection();

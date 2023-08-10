@@ -4,7 +4,9 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.Commands;
 using HttPlaceholder.Web.Shared.Middleware;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
@@ -98,7 +100,7 @@ public class StubHandlingMiddlewareFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var clientDataResolverMock = _mocker.GetMock<IClientDataResolver>();
         var stubContextMock = _mocker.GetMock<IStubContext>();
-        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
 
         const string requestPath = "/stub-path";
 
@@ -137,8 +139,8 @@ public class StubHandlingMiddlewareFacts
             StatusCode = 201,
             BodyIsBinary = true
         };
-        stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
         var requestResultModel = new RequestResultModel {ExecutingStubId = "stub123"};
@@ -172,15 +174,15 @@ public class StubHandlingMiddlewareFacts
         // Arrange
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
 
         httpContextServiceMock
             .Setup(m => m.Path)
             .Returns("/path");
 
         var stubResponse = new ResponseModel {AbortConnection = true};
-        stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
         var requestResultModel = new RequestResultModel();
@@ -202,7 +204,7 @@ public class StubHandlingMiddlewareFacts
         // Arrange
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
 
         const string requestPath = "/stub-path";
 
@@ -211,8 +213,8 @@ public class StubHandlingMiddlewareFacts
             .Returns(requestPath);
 
         var stubResponse = new ResponseModel();
-        stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
         httpContextServiceMock
@@ -240,7 +242,7 @@ public class StubHandlingMiddlewareFacts
         _settings.Storage.EnableRequestLogging = true;
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
 
         const string requestPath = "/stub-path";
 
@@ -249,8 +251,8 @@ public class StubHandlingMiddlewareFacts
             .Returns(requestPath);
 
         var stubResponse = new ResponseModel();
-        stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
         var requestResultModel = new RequestResultModel();
@@ -275,7 +277,7 @@ public class StubHandlingMiddlewareFacts
         _settings.Gui.EnableUserInterface = true;
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
         var resourcesServiceMock = _mocker.GetMock<IResourcesService>();
 
         const string requestPath = "/stub-path";
@@ -284,8 +286,8 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.Path)
             .Returns(requestPath);
 
-        stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new RequestValidationException("ERROR!"));
 
         const string page501 = "Not implemented [ROOT_URL]";
@@ -321,7 +323,7 @@ public class StubHandlingMiddlewareFacts
         _settings.Gui.EnableUserInterface = true;
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
 
         const string requestPath = "/stub-path";
 
@@ -329,8 +331,8 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.Path)
             .Returns(requestPath);
 
-        stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new TaskCanceledException("Cancelled"));
 
         var requestResultModel = new RequestResultModel();
@@ -355,7 +357,7 @@ public class StubHandlingMiddlewareFacts
         _settings.Gui.EnableUserInterface = false;
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
 
         const string requestPath = "/stub-path";
 
@@ -363,8 +365,8 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.Path)
             .Returns(requestPath);
 
-        stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new RequestValidationException("ERROR!"));
 
         var requestResultModel = new RequestResultModel();
@@ -393,7 +395,7 @@ public class StubHandlingMiddlewareFacts
         _settings.Storage.EnableRequestLogging = true;
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
 
         const string requestPath = "/stub-path";
 
@@ -401,8 +403,8 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.Path)
             .Returns(requestPath);
 
-        stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("ERROR!"));
 
         var requestResultModel = new RequestResultModel();
