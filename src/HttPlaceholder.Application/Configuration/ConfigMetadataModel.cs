@@ -52,6 +52,9 @@ public class ConfigMetadataModel
     /// </summary>
     public bool? CanBeMutated { get; private set; }
 
+    /// <inheritdoc />
+    public override string ToString() => Key;
+
     /// <summary>
     ///     Creates a new <see cref="ConfigMetadataModel" /> instance
     /// </summary>
