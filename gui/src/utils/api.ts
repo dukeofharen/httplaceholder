@@ -5,7 +5,7 @@ import { useHttpStore } from "@/store/http";
 
 export interface RequestOptions {
   headers: object | undefined;
-  rootUrl: string | undefined;
+  rootUrl?: string;
 }
 
 export interface PreparedRequest {
