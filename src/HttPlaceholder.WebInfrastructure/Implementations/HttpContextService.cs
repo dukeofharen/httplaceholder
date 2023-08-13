@@ -40,32 +40,6 @@ internal class HttpContextService : IHttpContextService, ISingletonService
         $"{_httpContextAccessor.HttpContext.Request.Path}{_httpContextAccessor.HttpContext.Request.QueryString}";
 
     /// <inheritdoc />
-    public string DisplayUrl
-    {
-        get
-        {
-            var proto = _clientDataResolver.IsHttps() ? "https" : "http";
-            var host = _clientDataResolver.GetHost();
-            string path = _httpContextAccessor.HttpContext.Request.Path;
-            var query = _httpContextAccessor.HttpContext.Request.QueryString.HasValue
-                ? _httpContextAccessor.HttpContext.Request.QueryString.Value
-                : string.Empty;
-            return $"{proto}://{host}{path}{query}";
-        }
-    }
-
-    /// <inheritdoc />
-    public string RootUrl
-    {
-        get
-        {
-            var proto = _clientDataResolver.IsHttps() ? "https" : "http";
-            var host = _clientDataResolver.GetHost();
-            return $"{proto}://{host}";
-        }
-    }
-
-    /// <inheritdoc />
     public async Task<string> GetBodyAsync(CancellationToken cancellationToken) =>
         Encoding.UTF8.GetString(await GetBodyAsBytesAsync(cancellationToken));
 
