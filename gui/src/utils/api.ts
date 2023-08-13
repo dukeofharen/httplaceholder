@@ -5,6 +5,7 @@ import { useHttpStore } from "@/store/http";
 
 export interface RequestOptions {
   headers: object | undefined;
+  rootUrl: string | undefined;
 }
 
 export interface PreparedRequest {
@@ -51,8 +52,15 @@ const handleError = (error: any): void => {
 };
 
 const determineRequestOptions = (
-  requestOptions: RequestOptions
+  requestOptions: RequestOptions | undefined
 ): RequestOptions => {
+  if (!requestOptions) {
+    requestOptions = {
+      headers: {},
+      rootUrl: "",
+    };
+  }
+
   if (!defaultRequestOptions) {
     return requestOptions;
   }
@@ -96,13 +104,8 @@ export function setDefaultRequestOptions(options: RequestOptions) {
   defaultRequestOptions = options;
 }
 
-export function get(url: string, options?: RequestOptions): Promise<any> {
-  options = determineRequestOptions(
-    options || {
-      headers: {},
-    }
-  );
-  console.log(options);
+export async function get(url: string, options?: RequestOptions): Promise<any> {
+  options = determineRequestOptions(options);
   const request = <RequestInit>{
     method: "GET",
     headers: options.headers || {},
@@ -110,15 +113,16 @@ export function get(url: string, options?: RequestOptions): Promise<any> {
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
-  return fetch(url, request).then(handleResponse).catch(handleError);
+  try {
+    const response = await fetch(url, request);
+    return await handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
-export function del(url: string, options?: RequestOptions): Promise<any> {
-  options = determineRequestOptions(
-    options || {
-      headers: {},
-    }
-  );
+export async function del(url: string, options?: RequestOptions): Promise<any> {
+  options = determineRequestOptions(options);
   const request = <RequestInit>{
     method: "DELETE",
     headers: options.headers || {},
@@ -126,20 +130,21 @@ export function del(url: string, options?: RequestOptions): Promise<any> {
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
-  return fetch(url, request).then(handleResponse).catch(handleError);
+  try {
+    const response = await fetch(url, request);
+    return await handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
-export function put(
+export async function put(
   url: string,
   body: any,
   options?: RequestOptions
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
-  options = determineRequestOptions(
-    options || {
-      headers: {},
-    }
-  );
+  options = determineRequestOptions(options);
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
     options.headers || {}
@@ -152,20 +157,21 @@ export function put(
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
-  return fetch(url, request).then(handleResponse).catch(handleError);
+  try {
+    const response = await fetch(url, request);
+    return await handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
-export function post(
+export async function post(
   url: string,
   body: any,
   options?: RequestOptions
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
-  options = determineRequestOptions(
-    options || {
-      headers: {},
-    }
-  );
+  options = determineRequestOptions(options);
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
     options.headers || {}
@@ -178,20 +184,21 @@ export function post(
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
-  return fetch(url, request).then(handleResponse).catch(handleError);
+  try {
+    const response = await fetch(url, request);
+    return await handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 }
 
-export function patch(
+export async function patch(
   url: string,
   body: any,
   options?: RequestOptions
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
-  options = determineRequestOptions(
-    options || {
-      headers: {},
-    }
-  );
+  options = determineRequestOptions(options);
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
     options.headers || {}
@@ -204,5 +211,10 @@ export function patch(
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
-  return fetch(url, request).then(handleResponse).catch(handleError);
+  try {
+    const response = await fetch(url, request);
+    return await handleResponse(response);
+  } catch (error) {
+    return handleError(error);
+  }
 }
