@@ -75,6 +75,11 @@ public static class ConfigKeys
     public const string UseHttpsKey = "useHttps";
 
     /// <summary>
+    ///     Constant for publicUrl.
+    /// </summary>
+    public const string PublicUrl = "publicUrl";
+
+    /// <summary>
     ///     Constant for enableRequestLogging.
     /// </summary>
     public const string EnableRequestLoggingKey = "enableRequestLogging";
@@ -256,6 +261,15 @@ public static class ConfigKeys
             "Web:UseHttps",
             ConfigKeyType.Web,
             true,
+            null,
+            null),
+        Create(
+            PublicUrl,
+            "specifies the URL on which this HttPlaceholder instance can be reached. Useful if running behind a reverse proxy.",
+            "https://example.com/stubs",
+            "Web:PublicUrl",
+            ConfigKeyType.Web,
+            null,
             null,
             null),
         Create(
