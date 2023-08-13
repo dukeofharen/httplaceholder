@@ -1,5 +1,6 @@
 type BeforeSendHandler = { (url: string, request: RequestInit): void };
 const beforeSendHandlers: BeforeSendHandler[] = [];
+let defaultRequestOptions: RequestOptions | undefined;
 import { useHttpStore } from "@/store/http";
 
 export interface RequestOptions {
@@ -49,6 +50,18 @@ const handleError = (error: any): void => {
   throw error;
 };
 
+const determineRequestOptions = (
+  requestOptions: RequestOptions
+): RequestOptions => {
+  if (!defaultRequestOptions) {
+    return requestOptions;
+  }
+
+  return {
+    headers: { ...defaultRequestOptions.headers, ...requestOptions.headers },
+  } as RequestOptions;
+};
+
 function prepareRequest(input: any): PreparedRequest {
   switch (typeof input) {
     case "string":
@@ -79,10 +92,17 @@ export function addBeforeSendHandler(action: BeforeSendHandler): void {
   beforeSendHandlers.push(action);
 }
 
+export function setDefaultRequestOptions(options: RequestOptions) {
+  defaultRequestOptions = options;
+}
+
 export function get(url: string, options?: RequestOptions): Promise<any> {
-  options = options || {
-    headers: {},
-  };
+  options = determineRequestOptions(
+    options || {
+      headers: {},
+    }
+  );
+  console.log(options);
   const request = <RequestInit>{
     method: "GET",
     headers: options.headers || {},
@@ -94,9 +114,11 @@ export function get(url: string, options?: RequestOptions): Promise<any> {
 }
 
 export function del(url: string, options?: RequestOptions): Promise<any> {
-  options = options || {
-    headers: {},
-  };
+  options = determineRequestOptions(
+    options || {
+      headers: {},
+    }
+  );
   const request = <RequestInit>{
     method: "DELETE",
     headers: options.headers || {},
@@ -113,9 +135,11 @@ export function put(
   options?: RequestOptions
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
-  options = options || {
-    headers: {},
-  };
+  options = determineRequestOptions(
+    options || {
+      headers: {},
+    }
+  );
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
     options.headers || {}
@@ -137,9 +161,11 @@ export function post(
   options?: RequestOptions
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
-  options = options || {
-    headers: {},
-  };
+  options = determineRequestOptions(
+    options || {
+      headers: {},
+    }
+  );
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
     options.headers || {}
@@ -161,9 +187,11 @@ export function patch(
   options?: RequestOptions
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
-  options = options || {
-    headers: {},
-  };
+  options = determineRequestOptions(
+    options || {
+      headers: {},
+    }
+  );
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
     options.headers || {}
