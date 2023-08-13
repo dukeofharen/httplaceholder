@@ -70,6 +70,14 @@ const determineRequestOptions = (
   } as RequestOptions;
 };
 
+const determineUrl = (options: RequestOptions, url: string) => {
+  if (!options.rootUrl) {
+    return url;
+  }
+
+  return options.rootUrl + url;
+};
+
 function prepareRequest(input: any): PreparedRequest {
   switch (typeof input) {
     case "string":
@@ -110,6 +118,7 @@ export async function get(url: string, options?: RequestOptions): Promise<any> {
     method: "GET",
     headers: options.headers || {},
   };
+  url = determineUrl(options, url);
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
@@ -127,6 +136,7 @@ export async function del(url: string, options?: RequestOptions): Promise<any> {
     method: "DELETE",
     headers: options.headers || {},
   };
+  url = determineUrl(options, url);
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
@@ -154,6 +164,7 @@ export async function put(
     headers,
     body: preparedRequest.body,
   };
+  url = determineUrl(options, url);
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
@@ -181,6 +192,7 @@ export async function post(
     headers,
     body: preparedRequest.body,
   };
+  url = determineUrl(options, url);
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
@@ -208,6 +220,7 @@ export async function patch(
     headers,
     body: preparedRequest.body,
   };
+  url = determineUrl(options, url);
   handleBeforeSend(url, request);
   const httpSore = useHttpStore();
   httpSore.increaseNumberOfCurrentHttpCalls();
