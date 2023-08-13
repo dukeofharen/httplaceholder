@@ -400,6 +400,7 @@ public class ReverseProxyResponseWriterFacts
         // Arrange
         var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var urlResolverMock = _mocker.GetMock<IUrlResolver>();
         var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
@@ -424,8 +425,8 @@ public class ReverseProxyResponseWriterFacts
         mockHttpContextService
             .Setup(m => m.GetHeaders())
             .Returns(new Dictionary<string, string>());
-        mockHttpContextService
-            .Setup(m => m.RootUrl)
+        urlResolverMock
+            .Setup(m => m.GetRootUrl())
             .Returns("http://localhost:5000");
 
         var mockHttp = new MockHttpMessageHandler();
@@ -460,6 +461,7 @@ public class ReverseProxyResponseWriterFacts
         var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
+        var urlResolverMock = _mocker.GetMock<IUrlResolver>();
 
         const string proxyUrl = "https://ducode.org";
         const string path = "/todoitems/todos/1";
@@ -483,8 +485,8 @@ public class ReverseProxyResponseWriterFacts
         mockHttpContextService
             .Setup(m => m.GetHeaders())
             .Returns(new Dictionary<string, string>());
-        mockHttpContextService
-            .Setup(m => m.RootUrl)
+        urlResolverMock
+            .Setup(m => m.GetRootUrl())
             .Returns("http://localhost:5000");
 
         var client = new HttpClient(new ErrorHttpMessageHandler());

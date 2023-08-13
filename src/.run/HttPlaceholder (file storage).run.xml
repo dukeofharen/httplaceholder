@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HttPlaceholder (file storage)" type="DotNetProject" factoryName=".NET Project">
     <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net7.0/HttPlaceholder" />
-    <option name="PROGRAM_PARAMETERS" value="-V --fileStorageLocation $USER_HOME$/CodeMetadata/httplaceholder/stubsRoot --oldRequestsQueueLength 100" />
+    <option name="PROGRAM_PARAMETERS" value="-V --fileStorageLocation $USER_HOME$/CodeMetadata/httplaceholder/stubsRoot --oldRequestsQueueLength 100 --publicUrl https://example.com/stubs" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>

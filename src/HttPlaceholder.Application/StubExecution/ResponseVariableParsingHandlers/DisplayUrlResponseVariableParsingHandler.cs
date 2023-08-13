@@ -16,15 +16,18 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class DisplayUrlResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
+    private readonly IUrlResolver _urlResolver;
     private readonly ILogger<DisplayUrlResponseVariableParsingHandler> _logger;
 
-    public DisplayUrlResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService,
-        ILogger<DisplayUrlResponseVariableParsingHandler> logger) :
+
+    public DisplayUrlResponseVariableParsingHandler(
+        IFileService fileService,
+        ILogger<DisplayUrlResponseVariableParsingHandler> logger,
+        IUrlResolver urlResolver) :
         base(fileService)
     {
-        _httpContextService = httpContextService;
         _logger = logger;
+        _urlResolver = urlResolver;
     }
 
     /// <inheritdoc />
@@ -41,7 +44,7 @@ internal class DisplayUrlResponseVariableParsingHandler : BaseVariableParsingHan
         CancellationToken cancellationToken) =>
         Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => HandleDisplayUrl(match, current, _httpContextService.DisplayUrl)));
+            .Aggregate(input, (current, match) => HandleDisplayUrl(match, current, _urlResolver.GetDisplayUrl())));
 
     private string HandleDisplayUrl(Match match, string current, string url)
     {

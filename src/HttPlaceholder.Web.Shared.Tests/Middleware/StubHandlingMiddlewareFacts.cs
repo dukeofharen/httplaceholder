@@ -101,6 +101,7 @@ public class StubHandlingMiddlewareFacts
         var clientDataResolverMock = _mocker.GetMock<IClientDataResolver>();
         var stubContextMock = _mocker.GetMock<IStubContext>();
         var mediatorMock = _mocker.GetMock<IMediator>();
+        var urlResolverMock = _mocker.GetMock<IUrlResolver>();
 
         const string requestPath = "/stub-path";
 
@@ -113,8 +114,8 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.Method)
             .Returns(method);
 
-        httpContextServiceMock
-            .Setup(m => m.DisplayUrl)
+        urlResolverMock
+            .Setup(m => m.GetDisplayUrl())
             .Returns(requestPath);
 
         var requestBody = "posted body"u8.ToArray();

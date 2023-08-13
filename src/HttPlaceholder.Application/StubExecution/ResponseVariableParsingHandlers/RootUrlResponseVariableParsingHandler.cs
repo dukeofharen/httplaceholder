@@ -15,12 +15,14 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class RootUrlResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
+    private readonly IUrlResolver _urlResolver;
 
-    public RootUrlResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) :
+    public RootUrlResponseVariableParsingHandler(
+        IFileService fileService,
+        IUrlResolver urlResolver) :
         base(fileService)
     {
-        _httpContextService = httpContextService;
+        _urlResolver = urlResolver;
     }
 
     /// <inheritdoc />
@@ -35,7 +37,7 @@ internal class RootUrlResponseVariableParsingHandler : BaseVariableParsingHandle
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var url = _httpContextService.RootUrl;
+        var url = _urlResolver.GetRootUrl();
         return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => current.Replace(match.Value, url)));

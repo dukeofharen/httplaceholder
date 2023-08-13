@@ -21,11 +21,11 @@ public class DisplayUrlResponseVariableParsingHandlerFacts
 
         const string expectedResult = $"URL: {url}";
 
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var urlResolverMock = _mocker.GetMock<IUrlResolver>();
         var handler = _mocker.CreateInstance<DisplayUrlResponseVariableParsingHandler>();
 
-        httpContextServiceMock
-            .Setup(m => m.DisplayUrl)
+        urlResolverMock
+            .Setup(m => m.GetDisplayUrl())
             .Returns(url);
 
         // act
@@ -45,11 +45,11 @@ public class DisplayUrlResponseVariableParsingHandlerFacts
 
         const string expectedResult = "User ID: 123";
 
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var urlResolverMock = _mocker.GetMock<IUrlResolver>();
         var handler = _mocker.CreateInstance<DisplayUrlResponseVariableParsingHandler>();
 
-        httpContextServiceMock
-            .Setup(m => m.DisplayUrl)
+        urlResolverMock
+            .Setup(m => m.GetDisplayUrl())
             .Returns(url);
 
         // act
@@ -69,11 +69,11 @@ public class DisplayUrlResponseVariableParsingHandlerFacts
 
         const string expectedResult = "User ID: ";
 
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var urlResolverMock = _mocker.GetMock<IUrlResolver>();
         var handler = _mocker.CreateInstance<DisplayUrlResponseVariableParsingHandler>();
 
-        httpContextServiceMock
-            .Setup(m => m.DisplayUrl)
+        urlResolverMock
+            .Setup(m => m.GetDisplayUrl())
             .Returns(url);
 
         // act

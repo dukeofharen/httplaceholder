@@ -2412,7 +2412,7 @@ By disabling the reading of the proxy headers, the IP, host and protocol as rece
 
 ### Public URL
 
-When running HttPlaceholder behind a reverse proxy, you should set the public URL. This makes sure that requests made by the [UI](#management-interface) will succeed and the value written by the [root URL variable parser](#root-url) is correct. This is not needed when not running behind a reverse proxy.
+When running HttPlaceholder behind a reverse proxy, you should set the public URL. This makes sure that requests made by the [UI](#management-interface) will succeed and the value written by the [root URL variable parser](#root-url) and [display URL variable parser](#display-url) is correct. This is not needed when not running behind a reverse proxy.
 
 ```bash
 httplaceholder --publicUrl https://example.com/stubs
