@@ -47,6 +47,20 @@ public class StringHelperFacts
     }
 
     [DataTestMethod]
+    [DataRow("input-", '-', "input")]
+    [DataRow("input", '-', "input")]
+    [DataRow("--input-", '-', "--input")]
+    [DataRow("--input----", '-', "--input")]
+    public void EnsureDoesntEndWith_HappyFlow(string input, char character, string expectedResult)
+    {
+        // Act
+        var result = input.EnsureDoesntEndWith(character);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [DataTestMethod]
     [DataRow("-input", "-", "-input")]
     [DataRow("input", "-", "-input")]
     public void EnsureStartsWith_HappyFlow(string input, string append, string expectedResult)

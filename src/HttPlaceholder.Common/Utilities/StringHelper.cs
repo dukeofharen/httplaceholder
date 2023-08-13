@@ -44,6 +44,14 @@ public static class StringHelper
     }
 
     /// <summary>
+    ///     Ensures that a string doesn't end with a given string.
+    /// </summary>
+    /// <param name="input">The input string.</param>
+    /// <param name="character">The character the input should not end with.</param>
+    /// <returns>The converted input.</returns>
+    public static string EnsureDoesntEndWith(this string input, char character) => input.TrimEnd(character);
+
+    /// <summary>
     ///     Ensures that a string starts with a given string.
     /// </summary>
     /// <param name="input">The input string.</param>
