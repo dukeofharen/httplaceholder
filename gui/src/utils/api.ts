@@ -67,6 +67,7 @@ const determineRequestOptions = (
 
   return {
     headers: { ...defaultRequestOptions.headers, ...requestOptions.headers },
+    rootUrl: defaultRequestOptions.rootUrl ?? requestOptions.rootUrl ?? "",
   } as RequestOptions;
 };
 
