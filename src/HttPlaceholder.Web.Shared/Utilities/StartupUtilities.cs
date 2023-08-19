@@ -53,6 +53,7 @@ public static class StartupUtilities
         var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
         if (Directory.Exists(path))
         {
+            app.UseMiddleware<IndexHtmlMiddleware>(path);
             app.UseFileServer(new FileServerOptions
             {
                 EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(path), RequestPath = "/ph-ui"
