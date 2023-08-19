@@ -13,7 +13,7 @@ public class HandleStubRequestCommandHandler : IRequestHandler<HandleStubRequest
     private readonly IStubRequestExecutor _stubRequestExecutor;
 
     /// <summary>
-    ///     Constructs a <see cref="HandleStubRequestCommandHandler"/> instance.
+    ///     Constructs a <see cref="HandleStubRequestCommandHandler" /> instance.
     /// </summary>
     /// <param name="stubRequestExecutor"></param>
     public HandleStubRequestCommandHandler(IStubRequestExecutor stubRequestExecutor)

@@ -30,7 +30,7 @@ public class RestApiConfigurationTests : RestApiIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         var config = JsonConvert.DeserializeObject<IEnumerable<ConfigurationDto>>(content);
         Assert.IsNotNull(config);
-        Assert.AreEqual(2, config.Count());
+        Assert.AreEqual(3, config.Count());
     }
 
     [TestMethod]
@@ -55,7 +55,7 @@ public class RestApiConfigurationTests : RestApiIntegrationTestBase
         var content = await getConfigResponse.Content.ReadAsStringAsync();
         var config = JsonConvert.DeserializeObject<ConfigurationDto[]>(content);
         Assert.IsNotNull(config);
-        Assert.AreEqual(3, config.Length);
+        Assert.AreEqual(4, config.Length);
         var storeResponsesConfig = config.Single(c => c.Key == "storeResponses");
         Assert.AreEqual("true", storeResponsesConfig.Value);
     }

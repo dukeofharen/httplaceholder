@@ -1,5 +1,6 @@
-import { addBeforeSendHandler } from "@/utils/api";
+import { addBeforeSendHandler, setDefaultRequestOptions } from "@/utils/api";
 import { useUsersStore } from "@/store/users";
+import { getRootUrl } from "@/utils/config";
 
 addBeforeSendHandler((url: string, request: RequestInit) => {
   const usersStore = useUsersStore();
@@ -8,4 +9,9 @@ addBeforeSendHandler((url: string, request: RequestInit) => {
   if (token && !headerKeys.find((k) => k.toLowerCase() === "authorization")) {
     (request.headers as any).Authorization = `Basic ${token}`;
   }
+});
+
+setDefaultRequestOptions({
+  headers: undefined,
+  rootUrl: getRootUrl(),
 });

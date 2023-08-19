@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Web.Shared.Infrastructure.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
@@ -57,56 +56,6 @@ public class HttpContextServiceFacts
 
         // Assert
         Assert.AreEqual("/path?key1=val1", result);
-    }
-
-    [DataTestMethod]
-    [DataRow(false, "httplaceholder.com", "/path", "?key1=val1", "http://httplaceholder.com/path?key1=val1")]
-    [DataRow(true, "httplaceholder.com", "/path", "?key1=val1", "https://httplaceholder.com/path?key1=val1")]
-    [DataRow(true, "httplaceholder.com", "/path", null, "https://httplaceholder.com/path")]
-    public void DisplayUrl_HappyFlow(bool isHttps, string host, string path, string queryString, string expectedUrl)
-    {
-        // Arrange
-        _mockHttpContext.SetRequestPath(path);
-        _mockHttpContext.SetQueryString(queryString);
-
-        var mockClientDataResolver = _mocker.GetMock<IClientDataResolver>();
-        mockClientDataResolver
-            .Setup(m => m.IsHttps())
-            .Returns(isHttps);
-        mockClientDataResolver
-            .Setup(m => m.GetHost())
-            .Returns(host);
-
-        var service = _mocker.CreateInstance<HttpContextService>();
-
-        // Act
-        var result = service.DisplayUrl;
-
-        // Assert
-        Assert.AreEqual(expectedUrl, result);
-    }
-
-    [DataTestMethod]
-    [DataRow(false, "httplaceholder.com", "http://httplaceholder.com")]
-    [DataRow(true, "httplaceholder.com", "https://httplaceholder.com")]
-    public void RootUrl_HappyFlow(bool isHttps, string host, string expectedUrl)
-    {
-        // Arrange
-        var mockClientDataResolver = _mocker.GetMock<IClientDataResolver>();
-        mockClientDataResolver
-            .Setup(m => m.IsHttps())
-            .Returns(isHttps);
-        mockClientDataResolver
-            .Setup(m => m.GetHost())
-            .Returns(host);
-
-        var service = _mocker.CreateInstance<HttpContextService>();
-
-        // Act
-        var result = service.RootUrl;
-
-        // Assert
-        Assert.AreEqual(expectedUrl, result);
     }
 
     [TestMethod]

@@ -200,6 +200,7 @@ public class StubRequestExecutorFacts
         _mocker.GetMock<IScenarioService>()
             .Verify(m => m.IncreaseHitCountAsync(_stub2.Stub.Scenario, It.IsAny<CancellationToken>()));
         _mocker.GetMock<IMediator>()
-            .Verify(m => m.Publish(It.Is<BeforeStubResponseReturnedNotification>(n => n.Response == response), It.IsAny<CancellationToken>()));
+            .Verify(m => m.Publish(It.Is<BeforeStubResponseReturnedNotification>(n => n.Response == response),
+                It.IsAny<CancellationToken>()));
     }
 }

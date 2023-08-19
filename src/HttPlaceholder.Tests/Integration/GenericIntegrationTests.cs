@@ -108,7 +108,7 @@ public class GenericIntegrationTests : IntegrationTestBase
     }
 
     [TestMethod]
-    public async Task GenericIntegration_Ui_Returns404()
+    public async Task GenericIntegration_Ui_ReturnsModifiedHtml()
     {
         // The URL ph-ui is not executed as stub, so it doesn't return an HTTP 500 when called.
 
@@ -117,8 +117,14 @@ public class GenericIntegrationTests : IntegrationTestBase
 
         var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
-        // Act / Assert
+        // Act
         using var response = await Client.SendAsync(request);
-        Assert.AreNotEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+
+        // Assert
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.IsTrue(content.Contains(
+            """<base href="http://localhost"><script type="text/javascript">window.rootUrl = "http://localhost";</script>"""));
     }
 }

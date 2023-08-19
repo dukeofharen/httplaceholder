@@ -7,7 +7,7 @@ services:
       sqliteConnectionString: 'Data Source=/etc/httplaceholder/httplaceholder.db'
       verbose: 'true'
     ports:
-      - 5000:5000
+      - "5000:5000"
     restart: on-failure
     volumes:
       - sqlite_data:/etc/httplaceholder

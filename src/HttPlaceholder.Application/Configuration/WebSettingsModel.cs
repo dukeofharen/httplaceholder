@@ -21,6 +21,11 @@ public class WebSettingsModel
     public bool UseHttps { get; set; }
 
     /// <summary>
+    ///     Gets or sets the public URL.
+    /// </summary>
+    public string PublicUrl { get; set; }
+
+    /// <summary>
     ///     Gets or sets the path to the HttPlaceholder private key.
     /// </summary>
     public string PfxPath { get; set; }

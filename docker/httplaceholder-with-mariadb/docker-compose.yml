@@ -9,7 +9,7 @@ services:
       mysqlConnectionString: 'Server=mariadb;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true'
       verbose: 'true'
     ports:
-      - 5000:5000
+      - "5000:5000"
     restart: on-failure
   mariadb:
     image: mariadb:10
@@ -19,7 +19,7 @@ services:
       MYSQL_USER: httplaceholder
       MYSQL_PASSWORD: httplaceholder
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
 

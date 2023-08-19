@@ -10,10 +10,10 @@ namespace HttPlaceholder.WebInfrastructure.Implementations;
 
 internal class ApiAuthorizationService : IApiAuthorizationService, ISingletonService
 {
+    private readonly IHttpContextService _httpContextService;
+    private readonly ILogger<ApiAuthorizationService> _logger;
     private readonly ILoginCookieService _loginCookieService;
     private readonly SettingsModel _settings;
-    private readonly ILogger<ApiAuthorizationService> _logger;
-    private readonly IHttpContextService _httpContextService;
 
     public ApiAuthorizationService(
         ILoginCookieService loginCookieService,

@@ -18,12 +18,12 @@ namespace HttPlaceholder.Application.Infrastructure.MediatR;
 public class AuditBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly ILogger<AuditBehavior<TRequest, TResponse>> _logger;
+    private readonly IOptionsMonitor<SettingsModel> _options;
 
     /// <summary>
-    ///     Constructs an <see cref="AuditBehavior{TRequest, TResponse}"/> instance
+    ///     Constructs an <see cref="AuditBehavior{TRequest, TResponse}" /> instance
     /// </summary>
     public AuditBehavior(
         IOptionsMonitor<SettingsModel> options,

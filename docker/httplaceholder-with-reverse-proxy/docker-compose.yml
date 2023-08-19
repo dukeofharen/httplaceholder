@@ -1,0 +1,23 @@
+# A Docker Compose example that starts HttPlaceholder with a file storage location and uses Nginx as reverse proxy.
+# HttPlaceholder can, when the Docker containers are started, be reached on http://localhost/httplaceholder and the UI on http://localhost/httplaceholder/ph-ui.
+version: '3.8'
+services:
+  httplaceholder:
+    image: dukeofharen/httplaceholder:latest
+    environment:
+      verbose: 'true'
+      publicUrl: 'http://localhost/httplaceholder'
+    restart: on-failure
+    volumes:
+      - stub_data:/root/.httplaceholder
+  nginx:
+    image: nginx:1.25.2
+    depends_on:
+      - httplaceholder
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+
+volumes:
+  stub_data:

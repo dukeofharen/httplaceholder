@@ -31,7 +31,8 @@ WHERE correlation_id IN @CorrelationIds
 ORDER BY request_begin_time DESC";
 
     /// <inheritdoc />
-    public string GetPagedRequestCorrelationIdsQuery => "SELECT correlation_id FROM requests ORDER BY request_begin_time DESC";
+    public string GetPagedRequestCorrelationIdsQuery =>
+        "SELECT correlation_id FROM requests ORDER BY request_begin_time DESC";
 
     /// <inheritdoc />
     public string GetRequestQuery => @"SELECT

@@ -22,15 +22,16 @@ public class StubHandlingMiddleware
         "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub", "/stubHub"
     };
 
-    private readonly RequestDelegate _next;
+    private readonly IClientDataResolver _clientDataResolver;
+    private readonly IHttpContextService _httpContextService;
+    private readonly ILogger<StubHandlingMiddleware> _logger;
     private readonly IMediator _mediator;
+    private readonly RequestDelegate _next;
+    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IResourcesService _resourcesService;
     private readonly IStubContext _stubContext;
-    private readonly ILogger<StubHandlingMiddleware> _logger;
-    private readonly IClientDataResolver _clientDataResolver;
-    private readonly IHttpContextService _httpContextService;
-    private readonly IOptionsMonitor<SettingsModel> _options;
+    private readonly IUrlResolver _urlResolver;
 
 
     /// <summary>
@@ -45,7 +46,8 @@ public class StubHandlingMiddleware
         ILogger<StubHandlingMiddleware> logger,
         IClientDataResolver clientDataResolver,
         IOptionsMonitor<SettingsModel> options,
-        IHttpContextService httpContextService)
+        IHttpContextService httpContextService,
+        IUrlResolver urlResolver)
     {
         _next = next;
         _mediator = mediator;
@@ -55,6 +57,7 @@ public class StubHandlingMiddleware
         _logger = logger;
         _clientDataResolver = clientDataResolver;
         _httpContextService = httpContextService;
+        _urlResolver = urlResolver;
         _options = options;
     }
 
@@ -125,7 +128,7 @@ public class StubHandlingMiddleware
         if (settings?.Gui?.EnableUserInterface == true)
         {
             var pageContents = _resourcesService.ReadAsString("Files/StubNotConfigured.html")
-                .Replace("[ROOT_URL]", _httpContextService.RootUrl);
+                .Replace("[ROOT_URL]", _urlResolver.GetRootUrl());
             _httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
             await _httpContextService.WriteAsync(pageContents, cancellationToken);
         }
@@ -142,7 +145,7 @@ public class StubHandlingMiddleware
         // Log the request here.
         requestLogger.LogRequestParameters(
             _httpContextService.Method,
-            _httpContextService.DisplayUrl,
+            _urlResolver.GetDisplayUrl(),
             await _httpContextService.GetBodyAsBytesAsync(cancellationToken),
             _clientDataResolver.GetClientIp(),
             _httpContextService.GetHeaders());

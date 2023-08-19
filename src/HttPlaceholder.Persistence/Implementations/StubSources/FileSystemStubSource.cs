@@ -19,10 +19,10 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 /// </summary>
 internal class FileSystemStubSource : BaseWritableStubSource
 {
+    private readonly IDateTime _dateTime;
     private readonly IFileService _fileService;
     private readonly IFileSystemStubCache _fileSystemStubCache;
     private readonly IOptionsMonitor<SettingsModel> _options;
-    private readonly IDateTime _dateTime;
 
     public FileSystemStubSource(
         IFileService fileService,

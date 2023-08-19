@@ -27,27 +27,36 @@ public class RequestController : BaseApiController
     ///     Get all Requests.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <param name="fromIdentifier">The identifier from which to find items. If this is not set; means to query from the start.</param>
+    /// <param name="fromIdentifier">
+    ///     The identifier from which to find items. If this is not set; means to query from the
+    ///     start.
+    /// </param>
     /// <param name="itemsPerPage">The number of items to show on a page.</param>
     /// <returns>All request results</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetAll(CancellationToken cancellationToken,
-        [FromHeader(Name = "x-from-identifier")] string fromIdentifier, [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
-        Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetAllRequestsQuery(fromIdentifier, itemsPerPage),
+        [FromHeader(Name = "x-from-identifier")]
+        string fromIdentifier, [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
+        Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(
+            new GetAllRequestsQuery(fromIdentifier, itemsPerPage),
             cancellationToken)));
 
     /// <summary>
     ///     Get overview of all Requests.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <param name="fromIdentifier">The identifier from which to find items. If this is not set; means to query from the start.</param>
+    /// <param name="fromIdentifier">
+    ///     The identifier from which to find items. If this is not set; means to query from the
+    ///     start.
+    /// </param>
     /// <param name="itemsPerPage">The number of items to show on a page.</param>
     /// <returns>All request results</returns>
     [HttpGet("overview")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RequestOverviewDto>>> GetOverview(CancellationToken cancellationToken,
-        [FromHeader(Name = "x-from-identifier")] string fromIdentifier, [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
+        [FromHeader(Name = "x-from-identifier")]
+        string fromIdentifier, [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
         Ok(Mapper.Map<IEnumerable<RequestOverviewDto>>(await Mediator.Send(
             new GetRequestsOverviewQuery(fromIdentifier, itemsPerPage),
             cancellationToken)));

@@ -15,8 +15,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IScenarioStateStore _scenarioStateStore;
     private readonly IHttpContextService _httpContextService;
+    private readonly IScenarioStateStore _scenarioStateStore;
 
     public ScenarioStateVariableParsingHandler(
         IScenarioStateStore scenarioStateStore,

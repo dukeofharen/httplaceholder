@@ -1,2 +1,2 @@
-!gui/.gitkeep
-gui/
+gui/*
+!gui/index.html

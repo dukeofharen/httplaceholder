@@ -29,16 +29,6 @@ public interface IHttpContextService
     string FullPath { get; }
 
     /// <summary>
-    ///     Gets the current display URL (the full URL + protocol and hostname).
-    /// </summary>
-    string DisplayUrl { get; }
-
-    /// <summary>
-    ///     Gets the current root URL (protocol + hostname).
-    /// </summary>
-    string RootUrl { get; }
-
-    /// <summary>
     ///     Gets the posted body as string.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>

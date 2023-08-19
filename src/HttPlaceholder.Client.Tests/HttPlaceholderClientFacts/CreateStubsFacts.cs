@@ -95,14 +95,16 @@ public class CreateStubsFacts : BaseClientTest
             {
                 Id = "test-situation1",
                 Tenant = "01-get",
-                Conditions = new StubConditionsDto
-                {
-                    Method = "GET",
-                    Url = new StubUrlConditionDto
+                Conditions =
+                    new StubConditionsDto
                     {
-                        Path = "/testtesttest", Query = new Dictionary<string, object> {{"id", "13"}}
-                    }
-                },
+                        Method = "GET",
+                        Url = new StubUrlConditionDto
+                        {
+                            Path = "/testtesttest",
+                            Query = new Dictionary<string, object> {{"id", "13"}}
+                        }
+                    },
                 Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}
             },
             new StubDto

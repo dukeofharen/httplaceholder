@@ -14,10 +14,10 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 internal class RequestStubGenerator : IRequestStubGenerator, ISingletonService
 {
     private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
+    private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;
     private readonly ILogger<RequestStubGenerator> _logger;
     private readonly IMapper _mapper;
     private readonly IStubContext _stubContext;
-    private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;
 
     public RequestStubGenerator(
         IStubContext stubContext,

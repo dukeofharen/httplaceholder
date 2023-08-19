@@ -276,10 +276,8 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(request3);
 
         // Act
-        var result = (await source.GetRequestResultsAsync(new PagingModel
-        {
-            FromIdentifier = request2.CorrelationId
-        }, CancellationToken.None)).ToArray();
+        var result = (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = request2.CorrelationId},
+            CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -302,11 +300,10 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(request4);
 
         // Act
-        var result = (await source.GetRequestResultsAsync(new PagingModel
-        {
-            FromIdentifier = request3.CorrelationId,
-            ItemsPerPage = 2
-        }, CancellationToken.None)).ToArray();
+        var result =
+            (await source.GetRequestResultsAsync(
+                new PagingModel {FromIdentifier = request3.CorrelationId, ItemsPerPage = 2}, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);

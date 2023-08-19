@@ -35,15 +35,18 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IHttpContextService _httpContextService;
     private readonly ILogger<ReverseProxyResponseWriter> _logger;
+    private readonly IUrlResolver _urlResolver;
 
     public ReverseProxyResponseWriter(
         IHttpClientFactory httpClientFactory,
         IHttpContextService httpContextService,
-        ILogger<ReverseProxyResponseWriter> logger)
+        ILogger<ReverseProxyResponseWriter> logger,
+        IUrlResolver urlResolver)
     {
         _httpClientFactory = httpClientFactory;
         _httpContextService = httpContextService;
         _logger = logger;
+        _urlResolver = urlResolver;
     }
 
     /// <inheritdoc />
@@ -147,7 +150,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
     {
         var rootUrlParts = proxyUrl.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
         var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
-        var httPlaceholderRootUrl = _httpContextService.RootUrl;
+        var httPlaceholderRootUrl = _urlResolver.GetRootUrl();
         var path = GetPath(stub);
         if (appendPath && !string.IsNullOrWhiteSpace(path))
         {

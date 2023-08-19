@@ -21,11 +21,11 @@ public class RootUrlResponseVariableParsingHandlerFacts
 
         const string expectedResult = $"URL: {url}";
 
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var urlResolverMock = _mocker.GetMock<IUrlResolver>();
         var handler = _mocker.CreateInstance<RootUrlResponseVariableParsingHandler>();
 
-        httpContextServiceMock
-            .Setup(m => m.RootUrl)
+        urlResolverMock
+            .Setup(m => m.GetRootUrl())
             .Returns(url);
 
         // act

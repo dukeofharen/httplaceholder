@@ -186,6 +186,7 @@ import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 import dayjs from "dayjs";
 import { vsprintf } from "sprintf-js";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import { getRootUrl } from "@/utils/config";
 
 export default defineComponent({
   name: "Stubs",
@@ -249,7 +250,7 @@ export default defineComponent({
 
     const initializeSignalR = async () => {
       signalrConnection = new HubConnectionBuilder()
-        .withUrl("/stubHub")
+        .withUrl(`${getRootUrl()}/stubHub`)
         .build();
       signalrConnection.on("StubAdded", (stub: FullStubOverviewModel) => {
         if (!stubs.value.find((s) => s.stub.id === stub.stub.id)) {

@@ -8,8 +8,8 @@ namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
 [TestClass]
 public class LoginCookieServiceFacts
 {
-    private readonly IOptionsMonitor<SettingsModel> _options = MockSettingsFactory.GetOptionsMonitor();
     private readonly AutoMocker _mocker = new();
+    private readonly IOptionsMonitor<SettingsModel> _options = MockSettingsFactory.GetOptionsMonitor();
 
     [TestInitialize]
     public void Initialize() => _mocker.Use(_options);
@@ -69,7 +69,8 @@ public class LoginCookieServiceFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         httpContextServiceMock
             .Setup(m => m.GetRequestCookie("HttPlaceholderLoggedin"))
-            .Returns(new KeyValuePair<string, string>("HttPlaceholderLoggedin", "qkUYd4wTaLeznD/nN1v9ei9/5XUekWt1hyOctq3bQZ9DMhSk7FJz+l1ILk++kyYlu+VguxVcuEC9R4Ryk763GA=="));
+            .Returns(new KeyValuePair<string, string>("HttPlaceholderLoggedin",
+                "qkUYd4wTaLeznD/nN1v9ei9/5XUekWt1hyOctq3bQZ9DMhSk7FJz+l1ILk++kyYlu+VguxVcuEC9R4Ryk763GA=="));
         _options.CurrentValue.Authentication.ApiUsername = "user";
         _options.CurrentValue.Authentication.ApiPassword = "pass";
 

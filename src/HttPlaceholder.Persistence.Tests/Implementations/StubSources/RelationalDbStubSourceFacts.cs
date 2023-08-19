@@ -548,7 +548,11 @@ public class RelationalDbStubSourceFacts
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
-        var ids = new[] {Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()};
+        var ids = new[]
+        {
+            Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(),
+            Guid.NewGuid().ToString()
+        };
         _mockDatabaseContext
             .Setup(m => m.QueryAsync<string>(correlationIdsQuery, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(ids);
@@ -583,7 +587,8 @@ public class RelationalDbStubSourceFacts
 
         // Act
         var result =
-            (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1], ItemsPerPage = 2}, CancellationToken.None))
+            (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1], ItemsPerPage = 2},
+                CancellationToken.None))
             .ToArray();
 
         // Assert
