@@ -1,5 +1,6 @@
 import { addBeforeSendHandler, setDefaultRequestOptions } from "@/utils/api";
 import { useUsersStore } from "@/store/users";
+import { getRootUrl } from "@/utils/config";
 
 addBeforeSendHandler((url: string, request: RequestInit) => {
   const usersStore = useUsersStore();
@@ -12,5 +13,5 @@ addBeforeSendHandler((url: string, request: RequestInit) => {
 
 setDefaultRequestOptions({
   headers: undefined,
-  rootUrl: (window as any).rootUrl ?? "",
+  rootUrl: getRootUrl(),
 });

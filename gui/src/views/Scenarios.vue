@@ -74,6 +74,7 @@ import { useScenariosStore } from "@/store/scenarios";
 import { defineComponent } from "vue";
 import type { ScenarioModel } from "@/domain/scenario/scenario-model";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
+import { getRootUrl } from "@/utils/config";
 
 export default defineComponent({
   name: "Scenarios",
@@ -101,7 +102,7 @@ export default defineComponent({
     // Functions
     const initializeSignalR = async () => {
       signalrConnection = new HubConnectionBuilder()
-        .withUrl("/scenarioHub")
+        .withUrl(`${getRootUrl()}/scenarioHub`)
         .build();
       signalrConnection.on("ScenarioSet", (scenario: ScenarioModel) => {
         const foundScenario = scenarios.value.find(

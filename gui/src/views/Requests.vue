@@ -120,6 +120,7 @@ import type { RequestOverviewModel } from "@/domain/request/request-overview-mod
 import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
+import { getRootUrl } from "@/utils/config";
 
 export default defineComponent({
   name: "Requests",
@@ -160,7 +161,7 @@ export default defineComponent({
     // Functions
     const initializeSignalR = async () => {
       signalrConnection = new HubConnectionBuilder()
-        .withUrl("/requestHub")
+        .withUrl(`${getRootUrl()}/requestHub`)
         .build();
       signalrConnection.on(
         "RequestReceived",
