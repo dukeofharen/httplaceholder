@@ -10,7 +10,7 @@ namespace HttPlaceholder.Web.Shared.Middleware;
 /// </summary>
 public class IndexHtmlMiddleware
 {
-    private static string _indexHtml;
+    internal static string IndexHtml;
     private readonly RequestDelegate _next;
     private readonly string _guiPath;
     private readonly IHttpContextService _httpContextService;
@@ -47,7 +47,7 @@ public class IndexHtmlMiddleware
         if (parts.Any(p => path.Equals(p, StringComparison.OrdinalIgnoreCase)))
         {
             var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
-            if (string.IsNullOrWhiteSpace(_indexHtml))
+            if (string.IsNullOrWhiteSpace(IndexHtml))
             {
                 var indexHtml = await _fileService.ReadAllTextAsync(Path.Join(_guiPath, "index.html"), cancellationToken);
                 var rootUrl = _urlResolver.GetRootUrl();
@@ -56,11 +56,11 @@ public class IndexHtmlMiddleware
                 headNode.PrependChild(HtmlNode.CreateNode(
                     @$"<script type=""text/javascript"">window.rootUrl = ""{rootUrl}"";</script>"));
                 headNode.PrependChild(HtmlNode.CreateNode(@$"<base href=""{rootUrl}"">"));
-                _indexHtml = doc.DocumentNode.InnerHtml;
+                IndexHtml = doc.DocumentNode.OuterHtml;
             }
 
-            _httpContextService.AddHeader("Content-Type", MimeTypes.HtmlMime);
-            await _httpContextService.WriteAsync(_indexHtml, cancellationToken);
+            _httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
+            await _httpContextService.WriteAsync(IndexHtml, cancellationToken);
         }
         else
         {
