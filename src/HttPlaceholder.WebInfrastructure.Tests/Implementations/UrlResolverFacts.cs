@@ -20,8 +20,10 @@ public class UrlResolverFacts
     [DataRow(false, "httplaceholder.com", "/path", "?key1=val1", null, "http://httplaceholder.com/path?key1=val1")]
     [DataRow(true, "httplaceholder.com", "/path", "?key1=val1", null, "https://httplaceholder.com/path?key1=val1")]
     [DataRow(true, "httplaceholder.com", "/path", null, null, "https://httplaceholder.com/path")]
-    [DataRow(true, "httplaceholder.com", "/path", "?key1=val1", "https://example.com/stubs/", "https://example.com/stubs/path?key1=val1")]
-    [DataRow(true, "httplaceholder.com", "/path", "?key1=val1", "https://example.com/stubs", "https://example.com/stubs/path?key1=val1")]
+    [DataRow(true, "httplaceholder.com", "/path", "?key1=val1", "https://example.com/stubs/",
+        "https://example.com/stubs/path?key1=val1")]
+    [DataRow(true, "httplaceholder.com", "/path", "?key1=val1", "https://example.com/stubs",
+        "https://example.com/stubs/path?key1=val1")]
     public void GetDisplayUrl_HappyFlow(
         bool isHttps,
         string host,
@@ -38,7 +40,7 @@ public class UrlResolverFacts
         {
             var options = MockSettingsFactory.GetOptionsMonitor(new SettingsModel
             {
-                Web = new WebSettingsModel() {PublicUrl = configuredPublicUrl}
+                Web = new WebSettingsModel {PublicUrl = configuredPublicUrl}
             });
             _mocker.Use(options);
         }
@@ -78,7 +80,7 @@ public class UrlResolverFacts
         {
             var options = MockSettingsFactory.GetOptionsMonitor(new SettingsModel
             {
-                Web = new WebSettingsModel() {PublicUrl = configuredPublicUrl}
+                Web = new WebSettingsModel {PublicUrl = configuredPublicUrl}
             });
             _mocker.Use(options);
         }

@@ -11,12 +11,12 @@ namespace HttPlaceholder.Web.Shared.Middleware;
 public class IndexHtmlMiddleware
 {
     internal static string IndexHtml;
-    private readonly RequestDelegate _next;
-    private readonly string _guiPath;
-    private readonly IHttpContextService _httpContextService;
     private readonly IFileService _fileService;
-    private readonly IUrlResolver _urlResolver;
+    private readonly string _guiPath;
     private readonly IHtmlService _htmlService;
+    private readonly IHttpContextService _httpContextService;
+    private readonly RequestDelegate _next;
+    private readonly IUrlResolver _urlResolver;
 
     /// <summary>
     ///     Constructs an <see cref="IndexHtmlMiddleware" /> instance.
@@ -49,7 +49,8 @@ public class IndexHtmlMiddleware
             var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
             if (string.IsNullOrWhiteSpace(IndexHtml))
             {
-                var indexHtml = await _fileService.ReadAllTextAsync(Path.Join(_guiPath, "index.html"), cancellationToken);
+                var indexHtml =
+                    await _fileService.ReadAllTextAsync(Path.Join(_guiPath, "index.html"), cancellationToken);
                 var rootUrl = _urlResolver.GetRootUrl();
                 var doc = _htmlService.ReadHtml(indexHtml);
                 var headNode = doc.DocumentNode.SelectSingleNode("//html/head");

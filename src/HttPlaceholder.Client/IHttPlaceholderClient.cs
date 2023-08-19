@@ -46,11 +46,15 @@ public interface IHttPlaceholderClient
     /// <summary>
     ///     Retrieves all requests made to HttPlaceholder.
     /// </summary>
-    /// <param name="fromIdentifier">The correlation ID from which the requests will be skipped. All requests before this request are not taken into account.</param>
+    /// <param name="fromIdentifier">
+    ///     The correlation ID from which the requests will be skipped. All requests before this
+    ///     request are not taken into account.
+    /// </param>
     /// <param name="numberOfRequestsPerPage">The number of requests to return.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The requests.</returns>
-    Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync(string fromIdentifier, int numberOfRequestsPerPage, CancellationToken cancellationToken = default);
+    Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync(string fromIdentifier, int numberOfRequestsPerPage,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Retrieves all requests made to HttPlaceholder as overview.
@@ -62,11 +66,15 @@ public interface IHttPlaceholderClient
     /// <summary>
     ///     Retrieves all requests made to HttPlaceholder as overview.
     /// </summary>
-    /// <param name="fromIdentifier">The correlation ID from which the requests will be skipped. All requests before this request are not taken into account.</param>
+    /// <param name="fromIdentifier">
+    ///     The correlation ID from which the requests will be skipped. All requests before this
+    ///     request are not taken into account.
+    /// </param>
     /// <param name="numberOfRequestsPerPage">The number of requests to return.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The request overview.</returns>
-    Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync(string fromIdentifier, int numberOfRequestsPerPage, CancellationToken cancellationToken = default);
+    Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync(string fromIdentifier, int numberOfRequestsPerPage,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Retrieves a request by correlation ID.

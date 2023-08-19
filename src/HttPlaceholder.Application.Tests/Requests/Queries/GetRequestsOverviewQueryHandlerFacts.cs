@@ -1,5 +1,4 @@
-﻿using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
-using HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
+﻿using HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Models;
 
@@ -43,7 +42,9 @@ public class GetRequestsOverviewQueryHandlerFacts
         var response = Array.Empty<RequestOverviewModel>();
         var stubContextMock = _mocker.GetMock<IStubContext>();
         stubContextMock
-            .Setup(m => m.GetRequestResultsOverviewAsync(It.Is<PagingModel>(p => p.FromIdentifier == "abc123" && !p.ItemsPerPage.HasValue), It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsOverviewAsync(
+                It.Is<PagingModel>(p => p.FromIdentifier == "abc123" && !p.ItemsPerPage.HasValue),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(response);
 
         // Act
@@ -63,7 +64,9 @@ public class GetRequestsOverviewQueryHandlerFacts
         var response = Array.Empty<RequestOverviewModel>();
         var stubContextMock = _mocker.GetMock<IStubContext>();
         stubContextMock
-            .Setup(m => m.GetRequestResultsOverviewAsync(It.Is<PagingModel>(p => p.FromIdentifier == "abc123" && p.ItemsPerPage == 2), It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsOverviewAsync(
+                It.Is<PagingModel>(p => p.FromIdentifier == "abc123" && p.ItemsPerPage == 2),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(response);
 
         // Act

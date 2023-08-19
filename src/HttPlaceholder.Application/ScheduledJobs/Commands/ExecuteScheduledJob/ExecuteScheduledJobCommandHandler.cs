@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
@@ -19,7 +18,7 @@ public class ExecuteScheduledJobCommandHandler : IRequestHandler<ExecuteSchedule
     private readonly IEnumerable<ICustomHostedService> _hostedServices;
 
     /// <summary>
-    ///     Constructs an <see cref="ExecuteScheduledJobCommandHandler"/> instance.
+    ///     Constructs an <see cref="ExecuteScheduledJobCommandHandler" /> instance.
     /// </summary>
     public ExecuteScheduledJobCommandHandler(IEnumerable<ICustomHostedService> hostedServices)
     {
@@ -27,7 +26,8 @@ public class ExecuteScheduledJobCommandHandler : IRequestHandler<ExecuteSchedule
     }
 
     /// <inheritdoc />
-    public async Task<JobExecutionResultModel> Handle(ExecuteScheduledJobCommand request, CancellationToken cancellationToken)
+    public async Task<JobExecutionResultModel> Handle(ExecuteScheduledJobCommand request,
+        CancellationToken cancellationToken)
     {
         var message = "OK";
         var job = _hostedServices.FirstOrDefault(s =>

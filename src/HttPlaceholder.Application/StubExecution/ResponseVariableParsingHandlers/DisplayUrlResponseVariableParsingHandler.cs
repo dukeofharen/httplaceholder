@@ -16,8 +16,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class DisplayUrlResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IUrlResolver _urlResolver;
     private readonly ILogger<DisplayUrlResponseVariableParsingHandler> _logger;
+    private readonly IUrlResolver _urlResolver;
 
 
     public DisplayUrlResponseVariableParsingHandler(

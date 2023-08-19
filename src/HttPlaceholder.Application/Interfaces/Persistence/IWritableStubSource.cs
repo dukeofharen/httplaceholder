@@ -41,7 +41,8 @@ public interface IWritableStubSource : IStubSource
     /// <param name="pagingModel">The paging information.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of requests.</returns>
-    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel, CancellationToken cancellationToken);
+    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel,
+        CancellationToken cancellationToken);
 
     /// <summary>
     ///     Gets a list of <see cref="RequestOverviewModel" />.
@@ -49,7 +50,8 @@ public interface IWritableStubSource : IStubSource
     /// <param name="pagingModel">The paging information.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of overview requests.</returns>
-    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(PagingModel pagingModel, CancellationToken cancellationToken);
+    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(PagingModel pagingModel,
+        CancellationToken cancellationToken);
 
     /// <summary>
     ///     Gets a <see cref="RequestResultModel" /> by correlation ID.

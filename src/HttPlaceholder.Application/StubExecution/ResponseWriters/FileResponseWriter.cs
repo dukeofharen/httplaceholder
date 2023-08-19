@@ -20,9 +20,9 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
 {
     private readonly IFileService _fileService;
     private readonly ILogger<FileResponseWriter> _logger;
+    private readonly IMimeService _mimeService;
     private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IStubRootPathResolver _stubRootPathResolver;
-    private readonly IMimeService _mimeService;
 
     public FileResponseWriter(
         IFileService fileService,

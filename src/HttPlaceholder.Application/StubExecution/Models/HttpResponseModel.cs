@@ -9,7 +9,8 @@ namespace HttPlaceholder.Application.StubExecution.Models;
 
 /// <summary>
 ///     A model that contains a representation of an HTTP response.
-///     This model is mainly used in converting one data source (e.g. a HTTP Archive, or HAR) to an intermediate data source
+///     This model is mainly used in converting one data source (e.g. a HTTP Archive, or HAR) to an intermediate data
+///     source
 ///     that can be used to generate a response for use in a stub.
 /// </summary>
 public class HttpResponseModel : IHaveCustomMapping

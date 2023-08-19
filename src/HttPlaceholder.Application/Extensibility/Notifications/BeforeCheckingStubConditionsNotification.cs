@@ -22,7 +22,8 @@ public class BeforeCheckingStubConditionsNotification : INotification
 
     /// <summary>
     ///     Gets or sets the response that should be returned.
-    ///     Leave this null to continue stub execution, set this if you want to return the response directly without continuing stub execution.
+    ///     Leave this null to continue stub execution, set this if you want to return the response directly without continuing
+    ///     stub execution.
     /// </summary>
     public ResponseModel Response { get; set; }
 }

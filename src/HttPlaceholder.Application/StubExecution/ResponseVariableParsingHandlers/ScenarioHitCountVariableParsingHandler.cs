@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,8 +16,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IScenarioStateStore _scenarioStateStore;
     private readonly IHttpContextService _httpContextService;
+    private readonly IScenarioStateStore _scenarioStateStore;
 
     public ScenarioHitCountVariableParsingHandler(
         IScenarioStateStore scenarioStateStore,

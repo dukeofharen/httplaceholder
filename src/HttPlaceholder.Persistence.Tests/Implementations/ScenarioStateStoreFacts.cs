@@ -157,7 +157,8 @@ public class ScenarioStateStoreFacts
         var scenarioInStore = store.Scenarios.Values.Single();
         _mocker.GetMock<IHttpContextService>()
             .Verify(m => m.SetItem(CachingKeys.ScenarioState, It.Is<ScenarioStateModel>(
-                _ => _.HitCount == newScenario.HitCount && _.State == newScenario.State && _.Scenario == scenarioName)));
+                _ => _.HitCount == newScenario.HitCount && _.State == newScenario.State &&
+                     _.Scenario == scenarioName)));
         Assert.AreNotEqual(newScenario, scenarioInStore);
         AssertScenarioStatesAreEqual(scenarioInStore, newScenario);
     }

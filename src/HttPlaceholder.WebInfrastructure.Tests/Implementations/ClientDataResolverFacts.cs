@@ -1,6 +1,5 @@
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Web.Shared.Infrastructure.Web;
-using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
 

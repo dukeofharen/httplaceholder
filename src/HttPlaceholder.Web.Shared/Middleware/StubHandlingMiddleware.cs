@@ -22,15 +22,15 @@ public class StubHandlingMiddleware
         "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub", "/stubHub"
     };
 
-    private readonly RequestDelegate _next;
+    private readonly IClientDataResolver _clientDataResolver;
+    private readonly IHttpContextService _httpContextService;
+    private readonly ILogger<StubHandlingMiddleware> _logger;
     private readonly IMediator _mediator;
+    private readonly RequestDelegate _next;
+    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IResourcesService _resourcesService;
     private readonly IStubContext _stubContext;
-    private readonly ILogger<StubHandlingMiddleware> _logger;
-    private readonly IClientDataResolver _clientDataResolver;
-    private readonly IHttpContextService _httpContextService;
-    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IUrlResolver _urlResolver;
 
 

@@ -126,7 +126,10 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         {
             CorrelationId = correlationId,
             RequestParameters =
-                new RequestParametersModel {Url = "/the-url", Headers = new Dictionary<string, string>(), Method = "GET"},
+                new RequestParametersModel
+                {
+                    Url = "/the-url", Headers = new Dictionary<string, string>(), Method = "GET"
+                },
             HasResponse = true,
             ExecutingStubId = "x"
         };
@@ -149,7 +152,8 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
 
         // Check the response.
         var stub = JsonConvert.DeserializeObject<FullStubModel>(content);
-        Assert.AreEqual("/the-url", ((JObject)stub.Stub.Conditions.Url.Path).ToObject<StubConditionStringCheckingModel>().StringEquals);
+        Assert.AreEqual("/the-url",
+            ((JObject)stub.Stub.Conditions.Url.Path).ToObject<StubConditionStringCheckingModel>().StringEquals);
         Assert.AreEqual("the content", stub.Stub.Response.Text);
     }
 

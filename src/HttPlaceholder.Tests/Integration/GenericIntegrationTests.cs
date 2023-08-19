@@ -124,6 +124,7 @@ public class GenericIntegrationTests : IntegrationTestBase
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
 
         var content = await response.Content.ReadAsStringAsync();
-        Assert.IsTrue(content.Contains("""<base href="http://localhost"><script type="text/javascript">window.rootUrl = "http://localhost";</script>"""));
+        Assert.IsTrue(content.Contains(
+            """<base href="http://localhost"><script type="text/javascript">window.rootUrl = "http://localhost";</script>"""));
     }
 }

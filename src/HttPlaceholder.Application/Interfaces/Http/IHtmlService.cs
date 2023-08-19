@@ -8,9 +8,9 @@ namespace HttPlaceholder.Application.Interfaces.Http;
 public interface IHtmlService
 {
     /// <summary>
-    ///     Reads an HTML string and converts it to an <see cref="HtmlDocument"/>.
+    ///     Reads an HTML string and converts it to an <see cref="HtmlDocument" />.
     /// </summary>
     /// <param name="html">The HTML string.</param>
-    /// <returns>The converted <see cref="HtmlDocument"/>.</returns>
+    /// <returns>The converted <see cref="HtmlDocument" />.</returns>
     HtmlDocument ReadHtml(string html);
 }

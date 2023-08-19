@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
 public class GetRequestsOverviewQuery : IRequest<IEnumerable<RequestOverviewModel>>
 {
     /// <summary>
-    ///     Constructs a <see cref="GetRequestsOverviewQuery"/>.
+    ///     Constructs a <see cref="GetRequestsOverviewQuery" />.
     /// </summary>
     public GetRequestsOverviewQuery(string fromIdentifier, int? itemsPerPage)
     {

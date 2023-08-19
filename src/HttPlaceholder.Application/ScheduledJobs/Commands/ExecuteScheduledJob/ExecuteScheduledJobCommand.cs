@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.ScheduledJobs.Commands.ExecuteScheduledJob;
 public class ExecuteScheduledJobCommand : IRequest<JobExecutionResultModel>
 {
     /// <summary>
-    ///     Constructs an <see cref="ExecuteScheduledJobCommand"/> instance.
+    ///     Constructs an <see cref="ExecuteScheduledJobCommand" /> instance.
     /// </summary>
     /// <param name="jobName"></param>
     public ExecuteScheduledJobCommand(string jobName)

@@ -19,11 +19,11 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
     private readonly IEnumerable<IConditionChecker> _conditionCheckers;
     private readonly IFinalStubDeterminer _finalStubDeterminer;
     private readonly ILogger<StubRequestExecutor> _logger;
+    private readonly IMediator _mediator;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IScenarioService _scenarioService;
     private readonly IStubContext _stubContext;
     private readonly IStubResponseGenerator _stubResponseGenerator;
-    private readonly IMediator _mediator;
 
     public StubRequestExecutor(
         IEnumerable<IConditionChecker> conditionCheckers,

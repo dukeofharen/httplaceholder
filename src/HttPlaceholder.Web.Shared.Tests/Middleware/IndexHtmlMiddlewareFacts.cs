@@ -93,7 +93,9 @@ public class IndexHtmlMiddlewareFacts
         // Assert
         Assert.IsFalse(_nextCalled);
         Assert.IsNotNull(capturedHtml);
-        Assert.AreEqual("""<html><head><base href="http://localhost/httplaceholder"><script type="text/javascript">window.rootUrl = "http://localhost/httplaceholder";</script></head><body></body></html>""", capturedHtml);
+        Assert.AreEqual(
+            """<html><head><base href="http://localhost/httplaceholder"><script type="text/javascript">window.rootUrl = "http://localhost/httplaceholder";</script></head><body></body></html>""",
+            capturedHtml);
         httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime));
     }
 

@@ -472,10 +472,9 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-02"}));
 
         // Act
-        var result = (await source.GetRequestResultsAsync(new PagingModel
-        {
-            FromIdentifier = "request-01"
-        }, CancellationToken.None)).ToArray();
+        var result =
+            (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = "request-01"},
+                CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -489,8 +488,7 @@ public class FileSystemStubSourceFacts
         var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var files = new[]
         {
-            Path.Combine(requestsFolder, "request-01.json"),
-            Path.Combine(requestsFolder, "request-02.json"),
+            Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
             Path.Combine(requestsFolder, "request-03.json")
         };
 
@@ -518,11 +516,9 @@ public class FileSystemStubSourceFacts
         }
 
         // Act
-        var result = (await source.GetRequestResultsAsync(new PagingModel
-        {
-            FromIdentifier = "request-02",
-            ItemsPerPage = 2
-        }, CancellationToken.None)).ToArray();
+        var result =
+            (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = "request-02", ItemsPerPage = 2},
+                CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);

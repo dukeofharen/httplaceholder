@@ -14,7 +14,7 @@ public class GetScheduledJobNamesQueryHandler : IRequestHandler<GetScheduledJobN
     private readonly IEnumerable<ICustomHostedService> _hostedServices;
 
     /// <summary>
-    ///     Constructs an <see cref="GetScheduledJobNamesQueryHandler"/> instance.
+    ///     Constructs an <see cref="GetScheduledJobNamesQueryHandler" /> instance.
     /// </summary>
     public GetScheduledJobNamesQueryHandler(IEnumerable<ICustomHostedService> hostedServices)
     {

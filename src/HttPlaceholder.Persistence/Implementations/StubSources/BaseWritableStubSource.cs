@@ -36,7 +36,8 @@ public abstract class BaseWritableStubSource : IWritableStubSource
         CancellationToken cancellationToken);
 
     /// <inheritdoc />
-    public abstract Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel, CancellationToken cancellationToken);
+    public abstract Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel,
+        CancellationToken cancellationToken);
 
     /// <inheritdoc />
     public abstract Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken);

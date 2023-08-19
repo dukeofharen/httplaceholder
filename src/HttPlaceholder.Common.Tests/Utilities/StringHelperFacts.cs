@@ -6,6 +6,13 @@ namespace HttPlaceholder.Common.Tests.Utilities;
 [TestClass]
 public class StringHelperFacts
 {
+    public static IEnumerable<object> GetFirstNonWhitespaceString_TestData =>
+        new[]
+        {
+            new object[] {new[] {"1", "2", "3"}, "1"}, new object[] {new[] {"", "2", "3"}, "2"},
+            new object[] {new[] {"", null, "3"}, "3"}, new object[] {new[] {"", null, null}, null}
+        };
+
     [TestMethod]
     public void IsRegexMatchOrSubstring_IsNotAMatch_ShouldReturnFalse()
     {
@@ -108,15 +115,6 @@ public class StringHelperFacts
         Assert.AreEqual("this", result[1]);
         Assert.AreEqual("text", result[2]);
     }
-
-    public static IEnumerable<object> GetFirstNonWhitespaceString_TestData =>
-        new[]
-        {
-            new object[] {new[] {"1", "2", "3"}, "1"},
-            new object[] {new[] {"", "2", "3"}, "2"},
-            new object[] {new[] {"", null, "3"}, "3"},
-            new object[] {new[] {"", null, null}, null},
-        };
 
     [TestMethod]
     [DynamicData(nameof(GetFirstNonWhitespaceString_TestData))]

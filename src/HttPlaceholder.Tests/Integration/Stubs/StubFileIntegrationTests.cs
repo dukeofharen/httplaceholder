@@ -34,7 +34,8 @@ public class StubFileIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(fileContents, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("application/octet-stream", response.Content.Headers.Single(h => h.Key == "Content-Type").Value.Single());
+        Assert.AreEqual("application/octet-stream",
+            response.Content.Headers.Single(h => h.Key == "Content-Type").Value.Single());
     }
 
     [TestMethod]

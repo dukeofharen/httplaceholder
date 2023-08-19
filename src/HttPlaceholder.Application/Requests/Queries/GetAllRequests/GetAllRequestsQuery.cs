@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 public class GetAllRequestsQuery : IRequest<IEnumerable<RequestResultModel>>
 {
     /// <summary>
-    ///     Constructs a <see cref="GetAllRequestsQuery"/>.
+    ///     Constructs a <see cref="GetAllRequestsQuery" />.
     /// </summary>
     public GetAllRequestsQuery(string fromIdentifier, int? itemsPerPage)
     {

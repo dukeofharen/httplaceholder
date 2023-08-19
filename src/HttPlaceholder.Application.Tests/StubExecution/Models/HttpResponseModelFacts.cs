@@ -1,5 +1,4 @@
-﻿using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using HttPlaceholder.Application.StubExecution.Models;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Models;
