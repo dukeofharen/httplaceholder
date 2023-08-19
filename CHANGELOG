@@ -2,6 +2,7 @@
 - Fixed bug where HttPlaceholder would insert an incorrect value in the response if the "scenario_state" or the "scenario_hitcount" were used (https://github.com/dukeofharen/httplaceholder/pull/318).
 - Made several infrastructure changes to the code (https://github.com/dukeofharen/httplaceholder/pull/320).
 - Added AuditBehavior which logs all the interactions between the web API and the application layer using MediatR (only in verbose logging mode) (https://github.com/dukeofharen/httplaceholder/pull/320).
+- Added new `publicUrl` property which makes it possible to assign a root URL for both HttPlaceholder and the UI. Useful if you run HttPlaceholder behind a reverse proxy (https://github.com/dukeofharen/httplaceholder/pull/321).
 
 # BREAKING CHANGES
 
