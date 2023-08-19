@@ -9,7 +9,7 @@ services:
       sqlServerConnectionString: 'Server=mssql,1433;Database=httplaceholder;User Id=sa;Password=Password123!'
       verbose: 'true'
     ports:
-      - 5000:5000
+      - "5000:5000"
     restart: on-failure
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -18,7 +18,7 @@ services:
       SA_PASSWORD: Password123!
       MSSQL_PID: Developer
     ports:
-      - 1433:1433
+      - "1433:1433"
     volumes:
       - mssql_data:/var/opt/mssql
       - ./initscripts:/usr/local/bin/initscripts

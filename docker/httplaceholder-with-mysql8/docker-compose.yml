@@ -9,7 +9,7 @@ services:
       mysqlConnectionString: 'Server=mysql;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true'
       verbose: 'true'
     ports:
-      - 5000:5000
+      - "5000:5000"
     restart: on-failure
   mysql:
     image: mysql:8
@@ -19,7 +19,7 @@ services:
       MYSQL_USER: httplaceholder
       MYSQL_PASSWORD: httplaceholder
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - mysql8_data:/var/lib/mysql
 
