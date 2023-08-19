@@ -24,8 +24,8 @@ public class IndexHtmlMiddlewareFacts
         _mocker.Use(UiPath);
     }
 
-    // [TestCleanup]
-    // public void Cleanup() => _mocker.VerifyAll();
+    [TestCleanup]
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public async Task Invoke_PathNotForUi_ShouldContinue()
@@ -106,6 +106,7 @@ public class IndexHtmlMiddlewareFacts
         var urlResolverMock = _mocker.GetMock<IUrlResolver>();
         var htmlServiceMock = _mocker.GetMock<IHtmlService>();
         var middleware = _mocker.CreateInstance<IndexHtmlMiddleware>();
+        IndexHtmlMiddleware.IndexHtml = null;
 
         httpContextServiceMock
             .Setup(m => m.Path)
