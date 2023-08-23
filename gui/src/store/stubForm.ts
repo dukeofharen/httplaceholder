@@ -50,7 +50,7 @@ export const useStubFormStore = defineStore({
       currentSelectedFormHelper: FormHelperKey.None,
       formIsDirty: false,
       formHelperSelectorFilter: "",
-    } as StubFormState),
+    }) as StubFormState,
   getters: {
     getInput: (state): string => state.input,
     getInputLength: (state): number => state.input.length,
@@ -384,7 +384,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(
-            defaultValues.jsonPath
+            defaultValues.jsonPath,
           );
           this.setInput(yaml.dump(parsed));
         }
@@ -429,7 +429,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.xpath = parsed.conditions.xpath.concat(
-            defaultValues.xpath
+            defaultValues.xpath,
           );
           this.setInput(yaml.dump(parsed));
         }
@@ -528,7 +528,7 @@ export const useStubFormStore = defineStore({
 
           if (parsed.response.headers) {
             const key: string | undefined = Object.keys(
-              parsed.response.headers
+              parsed.response.headers,
             ).find((k) => k.toLowerCase().trim() === "content-type");
             if (key) {
               delete parsed.response.headers[key];
@@ -778,7 +778,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.replace = parsed.response.replace.concat(
-            defaultValues.stringReplace
+            defaultValues.stringReplace,
           );
 
           this.setInput(yaml.dump(parsed));
@@ -798,7 +798,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.replace = parsed.response.replace.concat(
-            defaultValues.regexReplace
+            defaultValues.regexReplace,
           );
 
           this.setInput(yaml.dump(parsed));

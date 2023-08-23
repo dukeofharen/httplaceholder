@@ -18,13 +18,13 @@ export const useMetadataStore = defineStore({
         variableHandlers: [],
       },
       authenticationEnabled: false,
-    } as MetadataState),
+    }) as MetadataState,
   getters: {
     getAuthenticationEnabled: (state): boolean => state.authenticationEnabled,
   },
   actions: {
     checkFeatureIsEnabled: (
-      feature: FeatureFlagType
+      feature: FeatureFlagType,
     ): Promise<FeatureResultModel> =>
       get(`/ph-api/metadata/features/${feature}`),
     async checkAuthenticationIsEnabled(): Promise<boolean> {

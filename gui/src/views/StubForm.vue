@@ -104,7 +104,7 @@ export default defineComponent({
       set: (value) => stubFormStore.setInput(value),
     });
     const showFormHelperSelector = computed(
-      () => !stubFormStore.getInputHasMultipleStubs
+      () => !stubFormStore.getInputHasMultipleStubs,
     );
     const editorType = computed(() => {
       if (selectedEditorType.value !== editorTypes.none) {

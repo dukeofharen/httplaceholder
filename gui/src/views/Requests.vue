@@ -172,7 +172,7 @@ export default defineComponent({
           if (oldRequestsQueueLength) {
             requests.value = requests.value.slice(0, oldRequestsQueueLength);
           }
-        }
+        },
       );
       try {
         await signalrConnection.start();
@@ -202,20 +202,20 @@ export default defineComponent({
 
       if (filter.value.selectedTenantName) {
         result = result.filter(
-          (r) => r.stubTenant === filter.value.selectedTenantName
+          (r) => r.stubTenant === filter.value.selectedTenantName,
         );
       }
 
       return result;
     });
     const showFilterBadges = computed(
-      () => filter.value.urlStubIdFilter || filter.value.selectedTenantName
+      () => filter.value.urlStubIdFilter || filter.value.selectedTenantName,
     );
     const shouldShowLoadMoreButton = computed(
-      () => showLoadMoreButton.value && requestsPageSize > 0
+      () => showLoadMoreButton.value && requestsPageSize > 0,
     );
     const shouldShowLoadAllRequestsButton = computed(
-      () => requestsPageSize > 0
+      () => requestsPageSize > 0,
     );
 
     // Methods
@@ -223,7 +223,7 @@ export default defineComponent({
       try {
         const result = await requestStore.getRequestsOverview(
           fromIdentifier,
-          requestsPageSize
+          requestsPageSize,
         );
         if (append) {
           requests.value = requests.value.concat(result.slice(1));
@@ -267,7 +267,7 @@ export default defineComponent({
     const loadConfiguration = async () => {
       configuration = await configStore.getConfiguration();
       const foundOldRequestsQueueLength = configuration.find(
-        (c) => c.key === "oldRequestsQueueLength"
+        (c) => c.key === "oldRequestsQueueLength",
       );
       oldRequestsQueueLength = foundOldRequestsQueueLength
         ? parseInt(foundOldRequestsQueueLength.value)
@@ -280,7 +280,7 @@ export default defineComponent({
     };
     const requestDeleted = (correlationId: string) => {
       requests.value = requests.value.filter(
-        (r) => r.correlationId !== correlationId
+        (r) => r.correlationId !== correlationId,
       );
     };
     const loadAllRequests = async () => {

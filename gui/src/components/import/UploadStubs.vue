@@ -39,7 +39,7 @@ export default defineComponent({
         warning(
           vsprintf(resources.uploadInvalidFiles, [file.filename]) +
             " " +
-            resources.onlyUploadYmlFiles
+            resources.onlyUploadYmlFiles,
         );
         return;
       }

@@ -32,7 +32,7 @@ export const useSettingsStore = defineStore({
         saveSearchFilters: settings.saveSearchFilters,
         requestPageSize: settings.requestPageSize,
       },
-    } as GeneralState),
+    }) as GeneralState,
   getters: {
     getSettings: (state): SettingsModel => state.settings,
     getDarkTheme: (state): boolean => state.settings.darkTheme,

@@ -97,7 +97,7 @@ export default defineComponent({
     const contentType = computed<string>(() => {
       const headers = props.renderModel.headers;
       const contentTypeHeaderKey = Object.keys(headers).find(
-        (k) => k.toLowerCase() === "content-type"
+        (k) => k.toLowerCase() === "content-type",
       );
       if (!contentTypeHeaderKey) {
         return "";
@@ -147,7 +147,7 @@ export default defineComponent({
     });
     const showMoreButtonEnabled = computed(() => {
       const newlineCount = countNewlineCharacters(
-        showRenderedBody.value ? renderedBody.value : body.value
+        showRenderedBody.value ? renderedBody.value : body.value,
       );
       return newlineCount >= requestBodyLineLimit;
     });
@@ -165,7 +165,7 @@ export default defineComponent({
         ? renderedBody.value
         : body.value;
       copyTextToClipboard(valueToCopy).then(() =>
-        success(resources.requestBodyCopiedToClipboard)
+        success(resources.requestBodyCopiedToClipboard),
       );
     };
     const showMoreClick = () => {

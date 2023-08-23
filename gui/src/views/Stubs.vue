@@ -240,7 +240,7 @@ export default defineComponent({
 
       if (filter.value.selectedTenantName) {
         stubsResult = stubsResult.filter(
-          (s) => s.stub.tenant === filter.value.selectedTenantName
+          (s) => s.stub.tenant === filter.value.selectedTenantName,
         );
       }
 
@@ -273,13 +273,13 @@ export default defineComponent({
     // Computed
     const filteredStubs = computed(() => filterStubs(stubs.value));
     const filteredNonReadOnlyStubs = computed(() =>
-      filteredStubs.value.filter((s) => !s.metadata.readOnly)
+      filteredStubs.value.filter((s) => !s.metadata.readOnly),
     );
     const disableMutationButtons = computed(
-      () => !filteredNonReadOnlyStubs.value.length
+      () => !filteredNonReadOnlyStubs.value.length,
     );
     const showFilterBadges = computed(
-      () => filter.value.stubFilter || filter.value.selectedTenantName
+      () => filter.value.stubFilter || filter.value.selectedTenantName,
     );
 
     // Methods
@@ -366,10 +366,10 @@ export default defineComponent({
     const download = async () => {
       try {
         const stubs = filterStubs(await stubStore.getStubs()).map(
-          (fs) => fs.stub
+          (fs) => fs.stub,
         );
         const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(
-          stubs
+          stubs,
         )}`;
         const dateTime = dayjs().format("YYYY-MM-DD_HH-mm");
         downloadBlob(`${dateTime}-stubs.yml`, downloadString);

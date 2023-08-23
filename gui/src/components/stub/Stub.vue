@@ -140,13 +140,13 @@ export default defineComponent({
       return !!scenario.value;
     });
     const isReadOnly = computed(() =>
-      fullStub.value ? fullStub.value.metadata.readOnly : true
+      fullStub.value ? fullStub.value.metadata.readOnly : true,
     );
     const enableDisableTitle = computed(
-      () => `${isEnabled() ? "Disable" : "Enable"} stub`
+      () => `${isEnabled() ? "Disable" : "Enable"} stub`,
     );
     const enableDisableText = computed(() =>
-      isEnabled() ? "Disable" : "Enable"
+      isEnabled() ? "Disable" : "Enable",
     );
     const enabled = computed(() => isEnabled());
     const deleteStubTitle = computed(() => `Delete stub '${getStubId()}'?`);
@@ -213,7 +213,7 @@ export default defineComponent({
         const fullStub = await stubStore.getStub(getStubId());
         const stub = fullStub.stub;
         const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(
-          stub
+          stub,
         )}`;
         downloadBlob(`${stub.id}-stub.yml`, downloadString);
       } catch (e) {

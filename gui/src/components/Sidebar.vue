@@ -115,7 +115,7 @@ export default defineComponent({
             authEnabled &&
             isAuthenticated) ||
           (i.hideWhenAuthEnabledAndNotLoggedIn && !authEnabled) ||
-          i.onlyShowWhenLoggedInAndAuthEnabled === false
+          i.onlyShowWhenLoggedInAndAuthEnabled === false,
       );
     });
 

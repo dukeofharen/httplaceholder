@@ -63,11 +63,11 @@ export default defineComponent({
 
     // Computed
     const headers = computed(() =>
-      response.value ? response.value?.headers : ({} as HashMap)
+      response.value ? response.value?.headers : ({} as HashMap),
     );
     const hasHeaders = computed(() => Object.keys(headers.value).length > 0);
     const statusCode = computed(() =>
-      response.value ? response.value?.statusCode : null
+      response.value ? response.value?.statusCode : null,
     );
     const hasResponse = computed(() => props.request.hasResponse);
     const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
@@ -83,7 +83,7 @@ export default defineComponent({
     const loadResponse = async () => {
       if (hasResponse.value && !response.value.statusCode) {
         response.value = await requestStore.getResponse(
-          props.request.correlationId
+          props.request.correlationId,
         );
       }
     };

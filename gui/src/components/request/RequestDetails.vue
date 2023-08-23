@@ -93,31 +93,31 @@ export default defineComponent({
     // Computed
     const requestParams = computed(() => props.request?.requestParameters);
     const requestTime = computed(() =>
-      formatDateTime(props.request?.requestEndTime)
+      formatDateTime(props.request?.requestEndTime),
     );
     const duration = computed(() => {
       const req = props.request;
       return getDuration(req?.requestBeginTime, req?.requestEndTime);
     });
     const showQueryParameters = computed(
-      () => requestParams.value?.url?.includes("?") || false
+      () => requestParams.value?.url?.includes("?") || false,
     );
     const showRequestBody = computed(
-      () => !!requestParams.value?.body || false
+      () => !!requestParams.value?.body || false,
     );
     const showStubExecutionResults = computed(
       () =>
         props.request?.stubExecutionResults &&
-        props.request?.stubExecutionResults.length
+        props.request?.stubExecutionResults.length,
     );
     const showStubResponseWriterResults = computed(
       () =>
         props.request?.stubResponseWriterResults &&
-        props.request?.stubResponseWriterResults.length
+        props.request?.stubResponseWriterResults.length,
     );
     const showResults = computed(
       () =>
-        showStubExecutionResults.value || showStubResponseWriterResults.value
+        showStubExecutionResults.value || showStubResponseWriterResults.value,
     );
     const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
       return {

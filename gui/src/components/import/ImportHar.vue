@@ -191,7 +191,7 @@ export default defineComponent({
       await handleSave(e);
     onMounted(() => document.addEventListener("keydown", keydownEventListener));
     onUnmounted(() =>
-      document.removeEventListener("keydown", keydownEventListener)
+      document.removeEventListener("keydown", keydownEventListener),
     );
 
     return {

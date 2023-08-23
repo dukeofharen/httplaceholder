@@ -106,7 +106,7 @@ export default defineComponent({
         .build();
       signalrConnection.on("ScenarioSet", (scenario: ScenarioModel) => {
         const foundScenario = scenarios.value.find(
-          (s) => s.scenario === scenario.scenario
+          (s) => s.scenario === scenario.scenario,
         );
         if (foundScenario) {
           scenarios.value = scenarios.value.filter((s) => s !== foundScenario);
@@ -116,11 +116,11 @@ export default defineComponent({
       });
       signalrConnection.on("ScenarioDeleted", (scenarioName: string) => {
         const foundScenario = scenarios.value.find(
-          (s) => s.scenario === scenarioName
+          (s) => s.scenario === scenarioName,
         );
         if (foundScenario) {
           scenarios.value = scenarios.value.filter(
-            (s) => s.scenario !== scenarioName
+            (s) => s.scenario !== scenarioName,
           );
         }
       });
@@ -161,7 +161,7 @@ export default defineComponent({
 
     // Lifecycle
     onMounted(
-      async () => await Promise.all([loadScenarios(), initializeSignalR()])
+      async () => await Promise.all([loadScenarios(), initializeSignalR()]),
     );
     onUnmounted(() => {
       if (signalrConnection) {

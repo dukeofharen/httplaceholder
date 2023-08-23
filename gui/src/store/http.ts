@@ -12,7 +12,7 @@ export const useHttpStore = defineStore({
     ({
       numberOfCurrentHttpCalls: 0,
       showLoader: false,
-    } as HttpState),
+    }) as HttpState,
   getters: {
     isExecutingHttpCalls: (state): boolean =>
       state.showLoader && state.numberOfCurrentHttpCalls > 0,
@@ -27,7 +27,7 @@ export const useHttpStore = defineStore({
       if (!this.showLoader) {
         this.showLoaderTimeout = setTimeout(
           () => (this.showLoader = true),
-          200
+          200,
         );
       }
     },

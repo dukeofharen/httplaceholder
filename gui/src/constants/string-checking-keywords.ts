@@ -6,7 +6,7 @@ export interface StringCheckingKeyword {
 }
 
 export function getStringCheckingKeywords(
-  insertPresent: boolean
+  insertPresent: boolean,
 ): StringCheckingKeyword[] {
   const result = [
     {
