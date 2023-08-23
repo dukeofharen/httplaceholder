@@ -13,18 +13,13 @@
   - [General](#general-stub-info)
   - [Description](#description)
   - [Enabled](#enabled)
-  - [Scenario](#request-scenario)
-    - [Hit counter checking](#hit-counter-checking)
-    - [State checking](#state-checking)
   - [Priority](#priority)
   - [URI](#uri)
     - [Path](#path)
     - [Full path](#full-path)
     - [Query string](#query-string)
     - [Is HTTPS](#is-https)
-  - [HTTP method](#method)
-  - [Security](#security)
-    - [Basic authentication](#basic-authentication)
+  - [HTTP method](#http-method)
   - [HTTP headers](#request-headers)
   - [Request body](#request-body)
     - [Raw body](#raw-body)
@@ -34,16 +29,21 @@
     - [XPath](#xpath)
   - [Client IP validation](#client-ip-validation)
   - [Hostname](#hostname)
+  - [Security](#security)
+    - [Basic authentication](#basic-authentication)
   - [String checking keywords](#string-checking-keywords)
+  - [Scenario](#request-scenario)
+    - [Hit counter checking](#hit-counter-checking)
+    - [State checking](#state-checking)
 - **[Response writers](#response-writers)**
+  - [Status code](#status-code)
+  - [Response headers](#response-headers)
   - [Response body](#response-body)
     - [Text](#text-response)
     - [JSON](#json-response)
     - [XML](#xml-response)
     - [HTML](#html-response)
     - [Base64](#base64-response)
-  - [Status code](#status-code)
-  - [Response headers](#response-headers)
   - [Content type](#content-type)
   - [Files](#files)
     - [Image](#image)
@@ -431,99 +431,6 @@ Describes whether the stub is enabled or not. If no `enabled` field is provided,
     text: This stub is disabled.
 ```
 
-## Request scenario
-
-Scenarios make it possible to make stubs stateful. When you assign a scenario to a stub, a hit counter will be kept for the scenario and it is also possible to assign a state to a scenario. The default state of a scenario is "Start". Right now, the scenario state is only kept in memory, which means that when the application is restarted, all the scenarios will be reset.
-
-The scenario state can be set either to response writers (see [response](#scenario)) or by calling the [REST API](#rest-api).
-
-The scenario makes it possible to configure your stubs to return different responses on the same request.
-
-```yaml
-- id: scenario-test
-  scenario: scenario-name
-  conditions:
-    url:
-      path:
-        equals: /the-url
-  response:
-    text: OK!
-```
-
-### Hit counter checking
-
-Whenever a stub that is attached to a scenario is hit, the hit counter for that scenario will be increased. This makes it possible to create stubs that check the hit counter of the scenario it is in. Here is an example:
-
-```yaml
-- id: min-hits
-  scenario: min
-  conditions:
-    method: GET
-    url:
-      path:
-        equals: /min-hits
-  response:
-    text: OK, number of hits increased
-
-- id: min-hits-clear
-  scenario: min
-  conditions:
-    method: GET
-    url:
-      path:
-        equals: /min-hits
-    scenario:
-      minHits: 3
-  response:
-    text: OK, min hits reached. Clearing state.
-    scenario:
-      clearState: true
-```
-
-In this example, both stubs are part of the `min` scenario. Whenever the `/min-hits` URL is called, the hit counter of the scenario will be increased. Whenever the scenario has at least 3 hits, the `min-hits-clear` stub will be executed. The `clearState` response writer makes sure the scenario is reset (so the counter is reset to 0). For more information about that, click [here](#scenario).
-
-Under the `conditions.scenario` option, you have 3 options for hit counter checking:
-
-- `minHits`: the minimum number of (inclusive) hits a scenario should have been called.
-- `maxHits`: the maximum number of (exclusive) hits a scenario should have been called.
-- `exactHits`: the exact number of hits a scenario should have been called.
-
-### State checking
-
-A scenario can be in a specific state. A state is represented as a simple string value. Here is an example:
-
-```yaml
-- id: scenario-state-1
-  scenario: scenario-state
-  conditions:
-    method: GET
-    url:
-      path:
-        equals: /state-check
-    scenario:
-      scenarioState: Start
-  response:
-    text: OK, scenario is in state 'Start'
-    scenario:
-      setScenarioState: state-2
-
-- id: scenario-state-2
-  scenario: scenario-state
-  conditions:
-    method: GET
-    url:
-      path:
-        equals: /state-check
-    scenario:
-      scenarioState: state-2
-  response:
-    text: OK, scenario is in state 'state-2'. Resetting to default.
-    scenario:
-      clearState: true
-```
-
-In this example, both stubs are part of the `scenario-state` scenario. Whenever the `/state-check` URL is called, HttPlaceholder will (in this case) check the current state (a fresh scenario state is always `Start`). If the stub is hit, the scenario state will be set to `state-2` by the `setScenarioState` response writer (see [response](#scenario)). Whenever the same URL is called again, the second stub will be hit and after that the scenario state will be reset to its default values.
-
 ## Priority
 
 There are cases when a request matches multiple stub. If this is the case, you can use the "priority" element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default.
@@ -654,7 +561,7 @@ This condition checker can be used to verify if a request uses HTTPS or not. To 
 - Method: GET
 - URL: https://localhost:5050/anyPath
 
-## Method
+## HTTP method
 
 This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).
 
@@ -684,31 +591,6 @@ It is also possible to specify multiple HTTP methods. A request with any of thes
 
 - Method: GET
 - URL: http://localhost:5000/anyPath
-
-## Security
-
-### Basic authentication
-
-This condition checker can check whether the sent basic authentication matches with the data in the stub.
-
-```yml
-- id: basic-auth
-  conditions:
-    method: GET
-    basicAuthentication:
-      username: user
-      password: pass
-  response:
-    statusCode: 200
-    text: OK
-```
-
-**Correct request**
-
-- Method: GET
-- URL: http://localhost:5000/anyPath
-- Headers:
-  - Authorization: Basic dXNlcjpwYXNz
 
 ## Request headers
 
@@ -1105,6 +987,31 @@ It is possible to check if a hostname in a request is correct. The condition can
     text: OK
 ```
 
+## Security
+
+### Basic authentication
+
+This condition checker can check whether the sent basic authentication matches with the data in the stub.
+
+```yml
+- id: basic-auth
+  conditions:
+    method: GET
+    basicAuthentication:
+      username: user
+      password: pass
+  response:
+    statusCode: 200
+    text: OK
+```
+
+**Correct request**
+
+- Method: GET
+- URL: http://localhost:5000/anyPath
+- Headers:
+  - Authorization: Basic dXNlcjpwYXNz
+
 ## String checking keywords
 
 Many request condition checkers take a string as input. Take the [path](#path) condition checker as example. It can be configured like this:
@@ -1171,9 +1078,139 @@ The following keywords can be used:
 - `maxlength`: checks if the input has a maximum (inclusive) length.
 - `exactlength`: checks if the input has an exact length.
 
+## Request scenario
+
+Scenarios make it possible to make stubs stateful. When you assign a scenario to a stub, a hit counter will be kept for the scenario and it is also possible to assign a state to a scenario. The default state of a scenario is "Start". Right now, the scenario state is only kept in memory, which means that when the application is restarted, all the scenarios will be reset.
+
+The scenario state can be set either to response writers (see [response](#scenario)) or by calling the [REST API](#rest-api).
+
+The scenario makes it possible to configure your stubs to return different responses on the same request.
+
+```yaml
+- id: scenario-test
+  scenario: scenario-name
+  conditions:
+    url:
+      path:
+        equals: /the-url
+  response:
+    text: OK!
+```
+
+### Hit counter checking
+
+Whenever a stub that is attached to a scenario is hit, the hit counter for that scenario will be increased. This makes it possible to create stubs that check the hit counter of the scenario it is in. Here is an example:
+
+```yaml
+- id: min-hits
+  scenario: min
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /min-hits
+  response:
+    text: OK, number of hits increased
+
+- id: min-hits-clear
+  scenario: min
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /min-hits
+    scenario:
+      minHits: 3
+  response:
+    text: OK, min hits reached. Clearing state.
+    scenario:
+      clearState: true
+```
+
+In this example, both stubs are part of the `min` scenario. Whenever the `/min-hits` URL is called, the hit counter of the scenario will be increased. Whenever the scenario has at least 3 hits, the `min-hits-clear` stub will be executed. The `clearState` response writer makes sure the scenario is reset (so the counter is reset to 0). For more information about that, click [here](#scenario).
+
+Under the `conditions.scenario` option, you have 3 options for hit counter checking:
+
+- `minHits`: the minimum number of (inclusive) hits a scenario should have been called.
+- `maxHits`: the maximum number of (exclusive) hits a scenario should have been called.
+- `exactHits`: the exact number of hits a scenario should have been called.
+
+### State checking
+
+A scenario can be in a specific state. A state is represented as a simple string value. Here is an example:
+
+```yaml
+- id: scenario-state-1
+  scenario: scenario-state
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /state-check
+    scenario:
+      scenarioState: Start
+  response:
+    text: OK, scenario is in state 'Start'
+    scenario:
+      setScenarioState: state-2
+
+- id: scenario-state-2
+  scenario: scenario-state
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /state-check
+    scenario:
+      scenarioState: state-2
+  response:
+    text: OK, scenario is in state 'state-2'. Resetting to default.
+    scenario:
+      clearState: true
+```
+
+In this example, both stubs are part of the `scenario-state` scenario. Whenever the `/state-check` URL is called, HttPlaceholder will (in this case) check the current state (a fresh scenario state is always `Start`). If the stub is hit, the scenario state will be set to `state-2` by the `setScenarioState` response writer (see [response](#scenario)). Whenever the same URL is called again, the second stub will be hit and after that the scenario state will be reset to its default values.
+
 # Response writers
 
 If a request succeeds and a stub is found, the configured response will be returned. There are several "response writers" within HttPlaceholder which can be used to arrange your response. These will be explained in this paragraph.
+
+## Status code
+
+To set the HTTP status code of a response, use the "statusCode" response writer. If this is not set, the default will be used (which is 200 OK).
+
+```yml
+- id: situation-03
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /text.txt
+  response:
+    statusCode: 200
+    text: It works!
+    headers:
+      Content-Type: text/plain
+```
+
+## Response headers
+
+To return a set of HTTP headers with your response, use the "headers" response writer.
+
+```yml
+- id: situation-03
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /text.txt
+  response:
+    statusCode: 200
+    text: It works!
+    headers:
+      Content-Type: text/plain
+      X-Correlation: correlation_id
+```
 
 ## Response body
 
@@ -1266,43 +1303,6 @@ You can also specify a base64 string which should be decoded and returned by Htt
   response:
     statusCode: 200
     base64: SXQgd29ya3Mh
-    headers:
-      Content-Type: text/plain
-      X-Correlation: correlation_id
-```
-
-## Status code
-
-To set the HTTP status code of a response, use the "statusCode" response writer. If this is not set, the default will be used (which is 200 OK).
-
-```yml
-- id: situation-03
-  conditions:
-    method: GET
-    url:
-      path:
-        equals: /text.txt
-  response:
-    statusCode: 200
-    text: It works!
-    headers:
-      Content-Type: text/plain
-```
-
-## Response headers
-
-To return a set of HTTP headers with your response, use the "headers" response writer.
-
-```yml
-- id: situation-03
-  conditions:
-    method: GET
-    url:
-      path:
-        equals: /text.txt
-  response:
-    statusCode: 200
-    text: It works!
     headers:
       Content-Type: text/plain
       X-Correlation: correlation_id

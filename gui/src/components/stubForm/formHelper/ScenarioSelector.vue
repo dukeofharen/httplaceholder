@@ -55,7 +55,7 @@ export default defineComponent({
     onMounted(async () => {
       try {
         const scenariosResult = (await scenarioStore.getAllScenarios()).map(
-          (s) => s.scenario
+          (s) => s.scenario,
         );
         scenariosResult.sort();
         scenarios.value = scenariosResult;

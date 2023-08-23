@@ -41,7 +41,7 @@ export default defineComponent({
     // Watch
     watch(
       () => props.code,
-      () => reloadCode()
+      () => reloadCode(),
     );
 
     return { codeBlock, languageClass };

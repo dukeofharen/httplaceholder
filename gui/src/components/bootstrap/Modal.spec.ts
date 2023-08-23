@@ -46,7 +46,7 @@ describe("Modal", () => {
     expect(bootstrapModal.show).toHaveBeenCalledOnce();
     expect(bootstrapModal.hide).toHaveBeenCalledTimes(0);
     expect(bootstrapUtil.getOrCreateInstance).toHaveBeenCalledWith(
-      wrapper.vm.modal
+      wrapper.vm.modal,
     );
   });
 
@@ -60,7 +60,7 @@ describe("Modal", () => {
     expect(bootstrapModal.show).toHaveBeenCalledTimes(0);
     expect(bootstrapModal.hide).toHaveBeenCalledOnce();
     expect(bootstrapUtil.getOrCreateInstance).toHaveBeenCalledWith(
-      wrapper.vm.modal
+      wrapper.vm.modal,
     );
   });
 

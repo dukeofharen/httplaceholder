@@ -124,7 +124,7 @@ export default defineComponent({
     const storeResponses = computed({
       get: () => {
         const configValue = config.value.find(
-          (c) => c.key === storeResponsesKey
+          (c) => c.key === storeResponsesKey,
         );
         if (!configValue) {
           return false;

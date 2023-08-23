@@ -138,11 +138,11 @@ export default defineComponent({
 
     // Computed
     const showDynamicModeRow = computed(
-      () => responseBodyType.value !== ResponseBodyType.base64
+      () => responseBodyType.value !== ResponseBodyType.base64,
     );
     const showVariableParsers = computed(() => showDynamicModeRow.value);
     const showResponseBodyTypeDropdown = computed(
-      () => !props.presetResponseBodyType
+      () => !props.presetResponseBodyType,
     );
     const variableParserItems = computed(() => {
       if (!metadata.value || !metadata.value.variableHandlers) {
@@ -154,7 +154,7 @@ export default defineComponent({
     const showResponseBody = computed(
       () =>
         responseBodyType.value !== ResponseBodyType.base64 ||
-        showBase64TextInput.value
+        showBase64TextInput.value,
     );
     const enableDynamicMode = computed({
       get: () => stubFormStore.getDynamicMode,
@@ -202,7 +202,7 @@ export default defineComponent({
         responseBody.value = JSON.stringify(
           JSON.parse(responseBody.value),
           null,
-          spaces
+          spaces,
         );
       } catch (e) {
         warning(`Error occurred while formatting JSON: ${e}`);

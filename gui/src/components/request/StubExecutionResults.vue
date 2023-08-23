@@ -37,7 +37,7 @@ export default defineComponent({
     // Computed
     const compare = (
       a: StubExecutionResultModel,
-      b: StubExecutionResultModel
+      b: StubExecutionResultModel,
     ) => {
       if (a.stubId > b.stubId) return 1;
       if (a.stubId < b.stubId) return -1;

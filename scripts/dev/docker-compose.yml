@@ -23,7 +23,7 @@ services:
     volumes:
       - mysql8_data:/var/lib/mysql
   mariadb:
-    image: mariadb:10.9
+    image: mariadb:11
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: httplaceholder

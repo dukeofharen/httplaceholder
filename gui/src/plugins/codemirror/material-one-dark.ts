@@ -102,7 +102,7 @@ const oneDarkTheme = /*@__PURE__*/ EditorView.theme(
       },
     },
   },
-  { dark: true }
+  { dark: true },
 );
 /**
  The highlighting style for code in the One Dark theme.

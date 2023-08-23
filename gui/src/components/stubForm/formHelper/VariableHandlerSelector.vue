@@ -100,7 +100,7 @@ export default defineComponent({
       let result = props.variableParserItems;
       if (handlerFilter.value) {
         result = result.filter((h) =>
-          h.fullName.toLowerCase().includes(handlerFilter.value.toLowerCase())
+          h.fullName.toLowerCase().includes(handlerFilter.value.toLowerCase()),
         );
       }
 
@@ -117,7 +117,7 @@ export default defineComponent({
       }
 
       return examples.value.filter((e) =>
-        e.toLowerCase().includes(exampleFilter.value.toLowerCase())
+        e.toLowerCase().includes(exampleFilter.value.toLowerCase()),
       );
     });
 

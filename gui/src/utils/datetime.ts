@@ -19,7 +19,7 @@ export function formatFromNow(input: string): string | undefined {
 
 export function getDuration(
   fromInput: string,
-  toInput: string
+  toInput: string,
 ): number | undefined {
   if (!fromInput || !toInput) {
     return;

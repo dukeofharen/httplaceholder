@@ -72,7 +72,7 @@ export default defineComponent({
     // Watch
     watch(
       () => props.modelValue,
-      (newModelValue) => (code.value = newModelValue)
+      (newModelValue) => (code.value = newModelValue),
     );
     watch(code, (newCode) => emit("update:modelValue", newCode));
 

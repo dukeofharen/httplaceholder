@@ -70,7 +70,7 @@ export default defineComponent({
     const scenarioName = computed(() => route.params.scenario as string);
     const newScenario = computed(() => !scenarioName.value);
     const title = computed(() =>
-      newScenario.value ? "Add scenario" : "Update scenario"
+      newScenario.value ? "Add scenario" : "Update scenario",
     );
     const saveDisabled = computed(() => !scenarioForm.value.scenario);
 
@@ -106,7 +106,7 @@ export default defineComponent({
       if (!newScenario.value) {
         try {
           scenarioForm.value = await scenarioStore.getScenario(
-            scenarioName.value
+            scenarioName.value,
           );
         } catch (e: any) {
           if (e.status !== 404) {
@@ -116,7 +116,7 @@ export default defineComponent({
       }
     });
     onUnmounted(() =>
-      document.removeEventListener("keydown", keydownEventListener)
+      document.removeEventListener("keydown", keydownEventListener),
     );
 
     // Watches
@@ -135,7 +135,7 @@ export default defineComponent({
           ? undefined
           : parsedHitCount;
       },
-      { deep: true }
+      { deep: true },
     );
 
     return { title, scenarioForm, save, saveDisabled };

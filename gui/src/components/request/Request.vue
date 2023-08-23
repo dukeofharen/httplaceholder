@@ -88,7 +88,7 @@ export default defineComponent({
     const requestDateTime = computed(() => formatDateTime(getRequestTime()));
     const executed = computed(() => !!props.overviewRequest.executingStubId);
     const executingStubId = computed(
-      () => props.overviewRequest.executingStubId
+      () => props.overviewRequest.executingStubId,
     );
 
     // Data

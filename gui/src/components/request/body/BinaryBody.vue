@@ -52,7 +52,7 @@ export default defineComponent({
     const contentType = computed(() => {
       const headers = props.renderModel.headers;
       const contentTypeHeaderKey = Object.keys(headers).find(
-        (k) => k.toLowerCase() === "content-type"
+        (k) => k.toLowerCase() === "content-type",
       );
       if (!contentTypeHeaderKey) {
         return "";

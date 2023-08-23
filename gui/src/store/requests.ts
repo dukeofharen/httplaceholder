@@ -11,7 +11,7 @@ export const useRequestsStore = defineStore({
   actions: {
     getRequestsOverview(
       fromIdentifier?: string,
-      itemsPerPage?: number
+      itemsPerPage?: number,
     ): Promise<RequestOverviewModel[]> {
       const headers: any = {};
       if (itemsPerPage && Math.max(itemsPerPage, 0)) {

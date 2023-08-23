@@ -205,7 +205,7 @@ export default defineComponent({
       },
     ];
     const selectedFormHelperCategory = ref<StubFormHelperCategory>(
-      StubFormHelperCategory.None
+      StubFormHelperCategory.None,
     );
     const formHelperItems = ref();
 
@@ -230,7 +230,7 @@ export default defineComponent({
       showFormHelperItems.value = true;
       selectedFormHelperCategory.value = category;
       const formHelpers = stubFormHelpers.filter(
-        (h) => h.stubFormHelperCategory === category
+        (h) => h.stubFormHelperCategory === category,
       );
       if (formHelpers.length === 1) {
         onFormHelperItemClick(formHelpers[0]);
@@ -251,13 +251,13 @@ export default defineComponent({
 
     // Computed
     const currentSelectedFormHelper = computed(
-      () => stubFormStore.getCurrentSelectedFormHelper
+      () => stubFormStore.getCurrentSelectedFormHelper,
     );
     const filteredStubFormHelpers = computed(() => {
       let result = stubFormHelpers;
       if (selectedFormHelperCategory.value) {
         result = result.filter(
-          (r) => r.stubFormHelperCategory === selectedFormHelperCategory.value
+          (r) => r.stubFormHelperCategory === selectedFormHelperCategory.value,
         );
       }
 
@@ -285,7 +285,7 @@ export default defineComponent({
     });
     watch(
       () => route.params,
-      () => closeFormHelperAndList()
+      () => closeFormHelperAndList(),
     );
 
     // Lifecycle

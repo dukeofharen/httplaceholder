@@ -52,7 +52,7 @@ public static class ImageSharpUtilities
         var (width, height) = processingContext.GetCurrentSize();
 
         // measure the text size
-        var size = TextMeasurer.Measure(text, new TextOptions(font));
+        var size = TextMeasurer.MeasureSize(text, new TextOptions(font));
 
         //find out how much we need to scale the text to fill the space (up or down)
         var scalingFactor = Math.Min(width / size.Width, height / size.Height);
@@ -61,7 +61,7 @@ public static class ImageSharpUtilities
         var scaledFont = new Font(font, scalingFactor * font.Size);
 
         var center = new PointF(width / 2, height / 2);
-        var textOptions = new TextOptions(scaledFont)
+        var textOptions = new RichTextOptions(scaledFont)
         {
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
@@ -125,11 +125,11 @@ public static class ImageSharpUtilities
 
             trapCount--;
 
-            s = TextMeasurer.Measure(text, new TextOptions(scaledFont) {WrappingLength = targetWidth});
+            s = TextMeasurer.MeasureSize(text, new TextOptions(scaledFont) {WrappingLength = targetWidth});
         }
 
         var center = new PointF(padding, height / 2);
-        var textOptions = new TextOptions(scaledFont)
+        var textOptions = new RichTextOptions(scaledFont)
         {
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,

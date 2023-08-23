@@ -28,7 +28,7 @@ export const useImportStore = defineStore({
   getters: {},
   actions: {
     async importCurlCommands(
-      input: ImportInputModel
+      input: ImportInputModel,
     ): Promise<FullStubModel[]> {
       return post(`/ph-api/import/curl${buildQueryString(input)}`, input.input)
         .then((response) => Promise.resolve(response))
@@ -42,7 +42,7 @@ export const useImportStore = defineStore({
     importOpenApi(input: ImportInputModel): Promise<FullStubModel[]> {
       return post(
         `/ph-api/import/openapi${buildQueryString(input)}`,
-        input.input
+        input.input,
       )
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));

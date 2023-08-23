@@ -19,7 +19,7 @@ export const useUsersStore = defineStore({
   state: () =>
     ({
       userToken: token || "",
-    } as UserState),
+    }) as UserState,
   getters: {
     getAuthenticated: (state) => !!state.userToken,
     getUserToken: (state) => state.userToken,
@@ -51,7 +51,7 @@ export const useUsersStore = defineStore({
       clearUserToken();
       this.userToken = "";
       document.cookie = `HttPlaceholderLoggedin=;expires=${new Date(
-        0
+        0,
       ).toUTCString()}`;
     },
   },

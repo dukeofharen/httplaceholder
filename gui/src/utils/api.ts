@@ -52,7 +52,7 @@ const handleError = (error: any): void => {
 };
 
 const determineRequestOptions = (
-  requestOptions: RequestOptions | undefined
+  requestOptions: RequestOptions | undefined,
 ): RequestOptions => {
   if (!requestOptions) {
     requestOptions = {
@@ -152,13 +152,13 @@ export async function del(url: string, options?: RequestOptions): Promise<any> {
 export async function put(
   url: string,
   body: any,
-  options?: RequestOptions
+  options?: RequestOptions,
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
   options = determineRequestOptions(options);
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
-    options.headers || {}
+    options.headers || {},
   );
   const request = {
     method: "PUT",
@@ -180,13 +180,13 @@ export async function put(
 export async function post(
   url: string,
   body: any,
-  options?: RequestOptions
+  options?: RequestOptions,
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
   options = determineRequestOptions(options);
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
-    options.headers || {}
+    options.headers || {},
   );
   const request = {
     method: "POST",
@@ -208,13 +208,13 @@ export async function post(
 export async function patch(
   url: string,
   body: any,
-  options?: RequestOptions
+  options?: RequestOptions,
 ): Promise<any> {
   const preparedRequest = prepareRequest(body);
   options = determineRequestOptions(options);
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
-    options.headers || {}
+    options.headers || {},
   );
   const request = {
     method: "PATCH",

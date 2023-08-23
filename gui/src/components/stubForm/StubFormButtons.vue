@@ -61,7 +61,7 @@ export default defineComponent({
     const newStub = computed(() => !route.params.stubId);
     const stubId = computed(() => route.params.stubId as string);
     const showSaveAsNewStubButton = computed(
-      () => !stubFormStore.getInputHasMultipleStubs && !newStub.value
+      () => !stubFormStore.getInputHasMultipleStubs && !newStub.value,
     );
 
     // Methods
@@ -133,7 +133,7 @@ export default defineComponent({
     const keydownEventListener = async (e: KeyboardEvent) => await checkSave(e);
     onMounted(() => document.addEventListener("keydown", keydownEventListener));
     onUnmounted(() =>
-      document.removeEventListener("keydown", keydownEventListener)
+      document.removeEventListener("keydown", keydownEventListener),
     );
 
     return {

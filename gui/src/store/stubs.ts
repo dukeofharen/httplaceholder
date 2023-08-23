@@ -87,7 +87,7 @@ export const useStubsStore = defineStore({
         .catch((error) => Promise.reject(error));
     },
     createStubBasedOnRequest(
-      payload: CreateStubBasedOnRequestInputModel
+      payload: CreateStubBasedOnRequestInputModel,
     ): Promise<FullStubModel> {
       return post(`/ph-api/requests/${payload.correlationId}/stubs`, {
         doNotCreateStub:

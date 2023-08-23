@@ -14,7 +14,7 @@ export const useConfigurationStore = defineStore({
         .catch((error) => Promise.reject(error));
     },
     updateConfigurationValue(
-      inputModel: UpdateConfigurationValueInputModel
+      inputModel: UpdateConfigurationValueInputModel,
     ): Promise<any> {
       return patch("/ph-api/configuration", inputModel)
         .then((response) => Promise.resolve(response))
