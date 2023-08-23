@@ -12,7 +12,7 @@ services:
       - "5000:5000"
     restart: on-failure
   mariadb:
-    image: mariadb:10
+    image: mariadb:11
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: httplaceholder

@@ -13,7 +13,7 @@ COPY . ./
 RUN cd gui && npm install && npm run build
 
 # Build docs
-FROM python:slim-bullseye AS doc-build-env
+FROM python:3.11-bookworm AS doc-build-env
 WORKDIR /app
 COPY . ./
 RUN cd docs/httpl-docs && pip install mkdocs && python sync.py && mkdocs build && cp -r site /app
