@@ -7,13 +7,17 @@ import { basicSetup } from "codemirror";
 import { computed, onMounted, ref, shallowRef, watch } from "vue";
 import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
-import { StreamLanguage } from "@codemirror/language";
+import {
+  Language,
+  LanguageSupport,
+  StreamLanguage,
+} from "@codemirror/language";
 import { yaml } from "@codemirror/legacy-modes/mode/yaml";
 import { oneDark } from "@/plugins/codemirror/material-one-dark";
 import { html } from "@codemirror/lang-html";
 import { xml } from "@codemirror/lang-xml";
 import { json } from "@codemirror/lang-json";
-import { EditorState } from "@codemirror/state";
+import { EditorState, Compartment } from "@codemirror/state";
 import { EditorView, keymap } from "@codemirror/view";
 import {
   defaultKeymap,
@@ -21,6 +25,7 @@ import {
   historyKeymap,
   indentWithTab,
 } from "@codemirror/commands";
+import { markdownLanguage } from "@codemirror/lang-markdown";
 
 export default defineComponent({
   name: "CodeEditor",
@@ -46,6 +51,7 @@ export default defineComponent({
     const state = shallowRef<EditorState>();
     const view = shallowRef<EditorView>();
     const code = ref(props.modelValue);
+    const language = new Compartment();
 
     // Watch
     watch(
@@ -66,6 +72,17 @@ export default defineComponent({
       },
     );
     watch(code, (newCode) => emit("update:modelValue", newCode));
+    watch(
+      () => props.language,
+      () => {
+        if (cmLanguage.value) {
+          console.log("Reconfigure lang", cmLanguage.value);
+          view.value?.dispatch({
+            effects: language.reconfigure(cmLanguage.value),
+          });
+        }
+      },
+    );
 
     // Methods
     const replaceSelection = (replacement: string) => {
@@ -86,41 +103,52 @@ export default defineComponent({
       ].join("");
     };
 
-    // Lifecycle
-    onMounted(() => {
-      const extensions = [];
+    // Computed
+    const cmLanguage = computed<Language | LanguageSupport>(() => {
       switch (props.language) {
-        case "yaml":
-          extensions.push(StreamLanguage.define(yaml));
-          break;
         case "html":
-          extensions.push(html());
-          break;
+          return html();
         case "xml":
-          extensions.push(xml());
-          break;
+          return xml();
         case "json":
-          extensions.push(json());
-          break;
+          return json();
+        case "yaml":
+          return StreamLanguage.define(yaml);
+        default:
+          return markdownLanguage;
+      }
+    });
+    const cmExtensions = computed(() => {
+      const extensions = [];
+      if (cmLanguage.value) {
+        extensions.push(language.of(cmLanguage.value));
       }
 
       if (generalStore.getDarkTheme) {
         extensions.push(oneDark);
       }
 
+      extensions.push(basicSetup);
+      extensions.push(
+        EditorView.updateListener.of((viewUpdate) => {
+          if (viewUpdate.docChanged) {
+            code.value = viewUpdate.state.doc.toString();
+          }
+        }),
+      );
+      extensions.push(history());
+      extensions.push(
+        keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
+      );
+
+      return extensions;
+    });
+
+    // Lifecycle
+    onMounted(() => {
       state.value = EditorState.create({
         doc: props.modelValue,
-        extensions: extensions.concat([
-          basicSetup,
-          EditorView.updateListener.of((viewUpdate) => {
-            if (viewUpdate.docChanged) {
-              code.value = viewUpdate.state.doc.toString();
-            }
-          }),
-          EditorState.tabSize.of(14),
-          history(),
-          keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
-        ]),
+        extensions: cmExtensions.value,
       });
 
       view.value = new EditorView({
