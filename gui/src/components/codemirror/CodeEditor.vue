@@ -1,23 +1,29 @@
 <template>
-  <codemirror v-model="code" :extensions="extensions" @ready="handleReady" />
+  <div ref="container"></div>
 </template>
 
 <script lang="ts">
-import { computed, ref, shallowRef, watch } from "vue";
+import { basicSetup } from "codemirror";
+import { computed, onMounted, ref, shallowRef, watch } from "vue";
 import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
-import { Codemirror } from "vue-codemirror";
 import { StreamLanguage } from "@codemirror/language";
 import { yaml } from "@codemirror/legacy-modes/mode/yaml";
 import { oneDark } from "@/plugins/codemirror/material-one-dark";
 import { html } from "@codemirror/lang-html";
 import { xml } from "@codemirror/lang-xml";
 import { json } from "@codemirror/lang-json";
-import type { EditorView } from "@codemirror/view";
+import { EditorState } from "@codemirror/state";
+import { EditorView, keymap } from "@codemirror/view";
+import {
+  defaultKeymap,
+  history,
+  historyKeymap,
+  indentWithTab,
+} from "@codemirror/commands";
 
 export default defineComponent({
   name: "CodeEditor",
-  components: { Codemirror },
   props: {
     modelValue: {
       type: String,
@@ -36,43 +42,28 @@ export default defineComponent({
     const generalStore = useSettingsStore();
 
     // Data
-    const code = ref(props.modelValue);
+    const container = shallowRef<HTMLDivElement>();
+    const state = shallowRef<EditorState>();
     const view = shallowRef<EditorView>();
-
-    // Computed
-    const extensions = computed(() => {
-      const result = [];
-      switch (props.language) {
-        case "yaml":
-          result.push(StreamLanguage.define(yaml));
-          break;
-        case "html":
-          result.push(html());
-          break;
-        case "xml":
-          result.push(xml());
-          break;
-        case "json":
-          result.push(json());
-          break;
-      }
-
-      if (generalStore.getDarkTheme) {
-        result.push(oneDark);
-      }
-
-      return result;
-    });
-
-    // Events
-    const handleReady = (payload: any) => {
-      view.value = payload.view;
-    };
+    const code = ref(props.modelValue);
 
     // Watch
     watch(
       () => props.modelValue,
-      (newModelValue) => (code.value = newModelValue),
+      (newModelValue) => {
+        code.value = newModelValue;
+        if (view.value) {
+          if (view.value.state.doc.toString() !== code.value) {
+            view.value.dispatch({
+              changes: {
+                from: 0,
+                to: view.value.state.doc.length,
+                insert: code.value,
+              },
+            });
+          }
+        }
+      },
     );
     watch(code, (newCode) => emit("update:modelValue", newCode));
 
@@ -95,7 +86,50 @@ export default defineComponent({
       ].join("");
     };
 
-    return { code, extensions, replaceSelection, handleReady };
+    // Lifecycle
+    onMounted(() => {
+      const extensions = [];
+      switch (props.language) {
+        case "yaml":
+          extensions.push(StreamLanguage.define(yaml));
+          break;
+        case "html":
+          extensions.push(html());
+          break;
+        case "xml":
+          extensions.push(xml());
+          break;
+        case "json":
+          extensions.push(json());
+          break;
+      }
+
+      if (generalStore.getDarkTheme) {
+        extensions.push(oneDark);
+      }
+
+      state.value = EditorState.create({
+        doc: props.modelValue,
+        extensions: extensions.concat([
+          basicSetup,
+          EditorView.updateListener.of((viewUpdate) => {
+            if (viewUpdate.docChanged) {
+              code.value = viewUpdate.state.doc.toString();
+            }
+          }),
+          EditorState.tabSize.of(14),
+          history(),
+          keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
+        ]),
+      });
+
+      view.value = new EditorView({
+        state: state.value,
+        parent: container.value!,
+      });
+    });
+
+    return { container, replaceSelection };
   },
 });
 </script>
