@@ -183,7 +183,7 @@ export default defineComponent({
 
       view.value = new EditorView({
         state: state.value,
-        parent: container.value!,
+        parent: container.value ?? undefined,
       });
     });
 
