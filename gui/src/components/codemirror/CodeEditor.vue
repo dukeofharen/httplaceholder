@@ -76,7 +76,6 @@ export default defineComponent({
       () => props.language,
       () => {
         if (cmLanguage.value) {
-          console.log("Reconfigure lang", cmLanguage.value);
           view.value?.dispatch({
             effects: language.reconfigure(cmLanguage.value),
           });
@@ -101,6 +100,32 @@ export default defineComponent({
         replacement,
         newCode.slice(to),
       ].join("");
+    };
+    const lineDeletion = (target: EditorView) => {
+      const state = target.state;
+      const ranges = state.selection.ranges;
+      const hasSelection = ranges.length
+        ? ranges[0].to - ranges[0].from > 0
+        : false;
+      if (hasSelection) {
+        // Don't delete if there is a selection.
+        return false;
+      }
+
+      const position = state.selection.main.from;
+      const line = state.doc.lineAt(position);
+      const numOfLines = state.doc.lines;
+      const from = line.from;
+      const to = line.number !== numOfLines ? line.to + 1 : line.to;
+      target.dispatch({
+        changes: {
+          from,
+          to,
+          insert: "",
+        },
+      });
+
+      return true;
     };
 
     // Computed
@@ -138,7 +163,12 @@ export default defineComponent({
       );
       extensions.push(history());
       extensions.push(
-        keymap.of([...defaultKeymap, ...historyKeymap, indentWithTab]),
+        keymap.of([
+          { key: "Ctrl-x", mac: "Mod-x", run: lineDeletion },
+          ...defaultKeymap,
+          ...historyKeymap,
+          indentWithTab,
+        ]),
       );
 
       return extensions;
