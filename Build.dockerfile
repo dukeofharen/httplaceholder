@@ -50,7 +50,6 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS linux-app-build-env
 WORKDIR /app
 COPY . ./
 COPY --from=gui-build-env /app/gui/dist ./gui-dist
-COPY --from=doc-build-env /app/site/. ./gui/docs
 RUN VERSION=$(cat version.txt) && \
     ROOT_DIR=/app && \
     GUI_DIR=$ROOT_DIR/gui-dist && \
@@ -75,7 +74,6 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS mac-app-build-env
 WORKDIR /app
 COPY . ./
 COPY --from=gui-build-env /app/gui/dist ./gui-dist
-COPY --from=doc-build-env /app/site/. ./gui/docs
 RUN VERSION=$(cat version.txt) && \
     ROOT_DIR=/app && \
     GUI_DIR=$ROOT_DIR/gui-dist && \
@@ -100,7 +98,6 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS windows-app-build-env
 WORKDIR /app
 COPY . ./
 COPY --from=gui-build-env /app/gui/dist ./gui-dist
-COPY --from=doc-build-env /app/site/. ./gui/docs
 RUN VERSION=$(cat version.txt) && \
     ROOT_DIR=/app && \
     GUI_DIR=$ROOT_DIR/gui-dist && \
@@ -126,7 +123,6 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS tool-build-env
 WORKDIR /app
 COPY . ./
 COPY --from=gui-build-env /app/gui/dist ./gui-dist
-COPY --from=doc-build-env /app/site/. ./gui/docs
 RUN VERSION=$(cat version.txt) && \
     ROOT_DIR=/app && \
     GUI_DIR=$ROOT_DIR/gui-dist && \
@@ -135,6 +131,7 @@ RUN VERSION=$(cat version.txt) && \
     cd $ROOT_DIR/src/HttPlaceholder && \
     mkdir $DIST_DIR && \
     rm -rf gui && \
+    cp -r $GUI_DIR ./gui && \
     sed -i 's/<PackAsTool>false<\/PackAsTool>/<PackAsTool>true<\/PackAsTool>/' HttPlaceholder.csproj && \
     dotnet pack -c Tool \
         -o $DIST_DIR \
