@@ -26,6 +26,7 @@ import {
   indentWithTab,
 } from "@codemirror/commands";
 import { markdownLanguage } from "@codemirror/lang-markdown";
+import { copyTextToClipboard } from "@/utils/clipboard";
 
 export default defineComponent({
   name: "CodeEditor",
@@ -112,6 +113,7 @@ export default defineComponent({
         return false;
       }
 
+      // Remove the line.
       const position = state.selection.main.from;
       const line = state.doc.lineAt(position);
       const numOfLines = state.doc.lines;
@@ -124,6 +126,10 @@ export default defineComponent({
           insert: "",
         },
       });
+
+      // Move line to clipboard.
+      const lineText = state.doc.toString().slice(from, to);
+      copyTextToClipboard(lineText).then();
 
       return true;
     };
@@ -164,10 +170,10 @@ export default defineComponent({
       extensions.push(history());
       extensions.push(
         keymap.of([
-          { key: "Ctrl-x", mac: "Mod-x", run: lineDeletion },
           ...defaultKeymap,
           ...historyKeymap,
           indentWithTab,
+          { key: "Ctrl-x", mac: "Mod-x", run: lineDeletion },
         ]),
       );
 
