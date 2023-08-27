@@ -1,7 +1,7 @@
 import { curl } from "./examples/curl";
 import { har } from "./examples/har";
 import { openapi } from "./examples/openapi";
-import { getRootUrl } from "@/utils/config";
+import { getUiRootUrl } from "@/utils/config";
 
 export const resources = {
   somethingWentWrongServer: "Something went wrong while contacting the server.",
@@ -43,7 +43,7 @@ response:
 };
 
 export function renderDocLink(hashTag?: string) {
-  let docsUrl = `${getRootUrl()}/docs/index.html`;
+  let docsUrl = `${getUiRootUrl()}/docs/index.html`;
   if (hashTag) {
     docsUrl += `#${hashTag}`;
   }
