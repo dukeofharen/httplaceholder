@@ -14,6 +14,7 @@
   "dependencies": {
     "@codemirror/lang-html": "^6.4.5",
     "@codemirror/lang-json": "^6.0.1",
+    "@codemirror/lang-markdown": "^6.2.0",
     "@codemirror/lang-xml": "^6.0.2",
     "@codemirror/language": "^6.9.0",
     "@codemirror/legacy-modes": "^6.3.3",
@@ -23,6 +24,7 @@
     "@microsoft/signalr": "^7.0.10",
     "bootstrap": "^5.3.1",
     "bootstrap-icons": "^1.10.5",
+    "codemirror": "^6.0.1",
     "dayjs": "^1.11.9",
     "highlight.js": "^11.8.0",
     "js-yaml": "^4.1.0",
@@ -32,7 +34,6 @@
     "sprintf-js": "^1.1.2",
     "toastr": "^2.1.4",
     "vue": "^3.3.4",
-    "vue-codemirror": "^6.1.1",
     "vue-pdf-embed": "^1.1.6",
     "vue-router": "^4.2.4",
     "vue3-slide-up-down": "^2.0.1",
