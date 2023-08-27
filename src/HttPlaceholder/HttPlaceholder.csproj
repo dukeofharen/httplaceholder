@@ -24,12 +24,13 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
         <PackageProjectUrl>https://httplaceholder.org</PackageProjectUrl>
+        <NoDefaultExcludes>true</NoDefaultExcludes>
     </PropertyGroup>
     <ItemGroup>
         <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-        
+
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\HttPlaceholder.Web.Shared\HttPlaceholder.Web.Shared.csproj" />
