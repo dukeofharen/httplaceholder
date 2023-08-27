@@ -4,6 +4,7 @@
 - Added AuditBehavior which logs all the interactions between the web API and the application layer using MediatR (only in verbose logging mode) (https://github.com/dukeofharen/httplaceholder/pull/320).
 - Added new `publicUrl` property which makes it possible to assign a root URL for both HttPlaceholder and the UI. Useful if you run HttPlaceholder behind a reverse proxy (https://github.com/dukeofharen/httplaceholder/pull/321).
 - Re-added `Ctrl+X` functionality to delete lines in the code editor in the UI (https://github.com/dukeofharen/httplaceholder/pull/323).
+- Fixed bug where UI was not packaged in the .NET tool (https://github.com/dukeofharen/httplaceholder/pull/324).
 
 # BREAKING CHANGES
 
