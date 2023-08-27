@@ -125,6 +125,7 @@ export default defineComponent({
           to,
           insert: "",
         },
+        userEvent: "input",
       });
 
       // Move line to clipboard.
