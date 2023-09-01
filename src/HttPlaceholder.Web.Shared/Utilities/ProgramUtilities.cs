@@ -137,6 +137,7 @@ public static class ProgramUtilities
         var utility = new ProgramUtility();
         options.AddServerHeader = false;
         var (httpPorts, httpsPorts) = utility.GetPorts(settings);
+        var hosts = utility.GetHostnames();
         foreach (var port in httpPorts)
         {
             options.Listen(IPAddress.Any, port);

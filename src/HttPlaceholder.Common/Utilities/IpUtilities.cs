@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 namespace HttPlaceholder.Common.Utilities;
@@ -16,13 +18,27 @@ public static class IpUtilities
     /// <returns>The local IP address, or null if it was not found.</returns>
     public static string GetLocalIpAddress()
     {
-        var host = Dns.GetHostEntry(Dns.GetHostName());
-        foreach (var ip in host.AddressList)
+        if (!NetworkInterface.GetIsNetworkAvailable())
         {
-            if (ip.AddressFamily == AddressFamily.InterNetwork)
+            return null;
+        }
+
+        try
+        {
+            var result = NetworkInterface.GetAllNetworkInterfaces()
+                .Where(i => i.OperationalStatus == OperationalStatus.Up &&
+                            i.NetworkInterfaceType != NetworkInterfaceType.Loopback)
+                .Select(i => i.GetIPProperties())
+                .SelectMany(p => p.UnicastAddresses)
+                .FirstOrDefault();
+            if (result != null)
             {
-                return ip.ToString();
+                return result.Address.ToString();
             }
+        }
+        catch (Exception)
+        {
+            return null;
         }
 
         return null;
