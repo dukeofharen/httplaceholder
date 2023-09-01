@@ -137,10 +137,14 @@ public static class ProgramUtilities
         var utility = new ProgramUtility();
         options.AddServerHeader = false;
         var (httpPorts, httpsPorts) = utility.GetPorts(settings);
-        var hosts = utility.GetHostnames();
+        var hosts = utility.GetHostnames().ToArray();
         foreach (var port in httpPorts)
         {
             options.Listen(IPAddress.Any, port);
+            foreach (var host in hosts)
+            {
+                Log.Logger.Information($"Available on http://{host}:{port}");
+            }
         }
 
         foreach (var port in httpsPorts)
@@ -148,9 +152,11 @@ public static class ProgramUtilities
             options.Listen(IPAddress.Any, port,
                 listenOptions =>
                     listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
+            foreach (var host in hosts)
+            {
+                Log.Logger.Information($"Available on https://{host}:{port}");
+            }
         }
-
-        Log.Logger.Information("Woisjawel!");
     }
 
     private static string GetManPage()
