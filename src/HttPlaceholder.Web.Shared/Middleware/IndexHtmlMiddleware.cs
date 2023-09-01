@@ -56,7 +56,7 @@ public class IndexHtmlMiddleware
                 var headNode = doc.DocumentNode.SelectSingleNode("//html/head");
                 headNode.PrependChild(HtmlNode.CreateNode(
                     @$"<script type=""text/javascript"">window.rootUrl = ""{rootUrl}"";</script>"));
-                headNode.PrependChild(HtmlNode.CreateNode(@$"<base href=""{rootUrl}"">"));
+                headNode.PrependChild(HtmlNode.CreateNode(@$"<base href=""{rootUrl}/ph-ui/"">"));
                 IndexHtml = doc.DocumentNode.OuterHtml;
             }
 
