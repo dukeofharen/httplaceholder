@@ -1,3 +1,6 @@
+[vnext]
+- Fixed small oversight in dark mode in the UI (https://github.com/dukeofharen/httplaceholder/pull/326).
+
 [2023.8.27]
 - Fixed bug where HttPlaceholder would insert an incorrect value in the response if the "scenario_state" or the "scenario_hitcount" were used (https://github.com/dukeofharen/httplaceholder/pull/318).
 - Made several infrastructure changes to the code (https://github.com/dukeofharen/httplaceholder/pull/320).
@@ -5,8 +8,6 @@
 - Added new `publicUrl` property which makes it possible to assign a root URL for both HttPlaceholder and the UI. Useful if you run HttPlaceholder behind a reverse proxy (https://github.com/dukeofharen/httplaceholder/pull/321).
 - Re-added `Ctrl+X` functionality to delete lines in the code editor in the UI (https://github.com/dukeofharen/httplaceholder/pull/323).
 - Fixed bug where UI was not packaged in the .NET tool (https://github.com/dukeofharen/httplaceholder/pull/324).
-
-# BREAKING CHANGES
 
 [2023.7.22]
 - Fixed bug where an exception was thrown when running a proxy and an HTTP 204 was returned by the (https://github.com/dukeofharen/httplaceholder/pull/317).

@@ -56,8 +56,10 @@
   .table {
     color: $gray-400;
 
-    tr {
+    tr td {
+      color: $gray-400;
       border-color: $gray-700;
+      background-color: $gray-900;
     }
   }
 
