@@ -10,7 +10,6 @@ namespace HttPlaceholder.Web.Shared.Middleware;
 /// </summary>
 public class IndexHtmlMiddleware
 {
-    internal static string IndexHtml;
     private readonly IFileService _fileService;
     private readonly string _guiPath;
     private readonly IHtmlService _htmlService;
@@ -47,21 +46,16 @@ public class IndexHtmlMiddleware
         if (parts.Any(p => path.Equals(p, StringComparison.OrdinalIgnoreCase)))
         {
             var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
-            if (string.IsNullOrWhiteSpace(IndexHtml))
-            {
-                var indexHtml =
-                    await _fileService.ReadAllTextAsync(Path.Join(_guiPath, "index.html"), cancellationToken);
-                var rootUrl = _urlResolver.GetRootUrl();
-                var doc = _htmlService.ReadHtml(indexHtml);
-                var headNode = doc.DocumentNode.SelectSingleNode("//html/head");
-                headNode.PrependChild(HtmlNode.CreateNode(
-                    @$"<script type=""text/javascript"">window.rootUrl = ""{rootUrl}"";</script>"));
-                headNode.PrependChild(HtmlNode.CreateNode(@$"<base href=""{rootUrl}/ph-ui/"">"));
-                IndexHtml = doc.DocumentNode.OuterHtml;
-            }
-
+            var indexHtml =
+                await _fileService.ReadAllTextAsync(Path.Join(_guiPath, "index.html"), cancellationToken);
+            var rootUrl = _urlResolver.GetRootUrl();
+            var doc = _htmlService.ReadHtml(indexHtml);
+            var headNode = doc.DocumentNode.SelectSingleNode("//html/head");
+            headNode.PrependChild(HtmlNode.CreateNode(
+                @$"<script type=""text/javascript"">window.rootUrl = ""{rootUrl}"";</script>"));
+            headNode.PrependChild(HtmlNode.CreateNode(@$"<base href=""{rootUrl}/ph-ui/"">"));
             _httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
-            await _httpContextService.WriteAsync(IndexHtml, cancellationToken);
+            await _httpContextService.WriteAsync(doc.DocumentNode.OuterHtml, cancellationToken);
         }
         else
         {
