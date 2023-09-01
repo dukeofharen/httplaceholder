@@ -1,5 +1,6 @@
 [vnext]
 - Fixed small oversight in dark mode in the UI (https://github.com/dukeofharen/httplaceholder/pull/326).
+- Fixed bug in the caching of the index.html of the UI (https://github.com/dukeofharen/httplaceholder/pull/327).
 
 [2023.8.27]
 - Fixed bug where HttPlaceholder would insert an incorrect value in the response if the "scenario_state" or the "scenario_hitcount" were used (https://github.com/dukeofharen/httplaceholder/pull/318).

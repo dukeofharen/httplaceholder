@@ -60,7 +60,6 @@ public class IndexHtmlMiddlewareFacts
         var urlResolverMock = _mocker.GetMock<IUrlResolver>();
         var htmlServiceMock = _mocker.GetMock<IHtmlService>();
         var middleware = _mocker.CreateInstance<IndexHtmlMiddleware>();
-        IndexHtmlMiddleware.IndexHtml = null;
 
         httpContextServiceMock
             .Setup(m => m.Path)
@@ -94,55 +93,8 @@ public class IndexHtmlMiddlewareFacts
         Assert.IsFalse(_nextCalled);
         Assert.IsNotNull(capturedHtml);
         Assert.AreEqual(
-            """<html><head><base href="http://localhost/httplaceholder"><script type="text/javascript">window.rootUrl = "http://localhost/httplaceholder";</script></head><body></body></html>""",
+            """<html><head><base href="http://localhost/httplaceholder/ph-ui/"><script type="text/javascript">window.rootUrl = "http://localhost/httplaceholder";</script></head><body></body></html>""",
             capturedHtml);
         httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime));
-    }
-
-    [TestMethod]
-    public async Task Invoke_PathForUi_ShouldCache()
-    {
-        // Arrange
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var fileServiceMock = _mocker.GetMock<IFileService>();
-        var urlResolverMock = _mocker.GetMock<IUrlResolver>();
-        var htmlServiceMock = _mocker.GetMock<IHtmlService>();
-        var middleware = _mocker.CreateInstance<IndexHtmlMiddleware>();
-        IndexHtmlMiddleware.IndexHtml = null;
-
-        httpContextServiceMock
-            .Setup(m => m.Path)
-            .Returns("/ph-ui/index.html");
-
-        const string indexHtml = "<html><head></head><body></body></html>";
-        fileServiceMock
-            .Setup(m => m.ReadAllTextAsync(Path.Join(UiPath, "index.html"), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(indexHtml);
-
-        const string rootUrl = "http://localhost/httplaceholder";
-        urlResolverMock
-            .Setup(m => m.GetRootUrl())
-            .Returns(rootUrl);
-
-        var doc = new HtmlDocument();
-        doc.LoadHtml(indexHtml);
-        htmlServiceMock
-            .Setup(m => m.ReadHtml(indexHtml))
-            .Returns(doc);
-
-        string capturedHtml = null;
-        httpContextServiceMock
-            .Setup(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .Callback<string, CancellationToken>((h, _) => capturedHtml = h);
-
-        // Act
-        await middleware.Invoke(new MockHttpContext());
-        await middleware.Invoke(new MockHttpContext());
-        await middleware.Invoke(new MockHttpContext());
-
-        // Assert
-        Assert.IsFalse(_nextCalled);
-        Assert.IsNotNull(capturedHtml);
-        urlResolverMock.Verify(m => m.GetRootUrl(), Times.Once);
     }
 }
