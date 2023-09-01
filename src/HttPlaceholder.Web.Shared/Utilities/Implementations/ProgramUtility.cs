@@ -11,20 +11,24 @@ namespace HttPlaceholder.Web.Shared.Utilities.Implementations;
 public class ProgramUtility : IProgramUtility
 {
     private readonly ITcpService _tcpService;
+    private readonly IIpService _ipService;
 
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
-    public ProgramUtility() : this(new TcpService())
+    public ProgramUtility() : this(new TcpService(), new IpService())
     {
     }
 
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
-    internal ProgramUtility(ITcpService tcpService)
+    internal ProgramUtility(
+        ITcpService tcpService,
+        IIpService ipService)
     {
         _tcpService = tcpService;
+        _ipService = ipService;
     }
 
     /// <inheritdoc />
@@ -39,6 +43,19 @@ public class ProgramUtility : IProgramUtility
         }
 
         return (httpPortsResult, httpsPortsResult);
+    }
+
+    /// <inheritdoc />
+    public IEnumerable<string> GetHostnames()
+    {
+        var result = new List<string> {"127.0.0.1", "localhost"};
+        var localIp = _ipService.GetLocalIpAddress();
+        if (!string.IsNullOrWhiteSpace(localIp))
+        {
+            result.Add(localIp);
+        }
+
+        return result;
     }
 
     private IList<int> HandlePorts(string portInput, int defaultPort)

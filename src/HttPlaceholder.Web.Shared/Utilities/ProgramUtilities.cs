@@ -11,6 +11,7 @@ using HttPlaceholder.Web.Shared.Resources;
 using HttPlaceholder.Web.Shared.Utilities.Implementations;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
+using Serilog.Events;
 
 namespace HttPlaceholder.Web.Shared.Utilities;
 
@@ -33,7 +34,8 @@ public static class ProgramUtilities
         var loggingConfig = new LoggerConfiguration();
         loggingConfig = verbose
             ? loggingConfig.MinimumLevel.Debug()
-            : loggingConfig.MinimumLevel.Information();
+            : loggingConfig.MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
         Log.Logger = loggingConfig
             .Enrich.FromLogContext()
             .WriteTo.Console(
@@ -146,6 +148,8 @@ public static class ProgramUtilities
                 listenOptions =>
                     listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
         }
+
+        Log.Logger.Information("Woisjawel!");
     }
 
     private static string GetManPage()
