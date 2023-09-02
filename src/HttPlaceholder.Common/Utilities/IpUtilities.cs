@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
@@ -25,12 +24,13 @@ public static class IpUtilities
 
         try
         {
-            var result = NetworkInterface.GetAllNetworkInterfaces()
+            var result = NetworkInterface
+                .GetAllNetworkInterfaces()
                 .Where(i => i.OperationalStatus == OperationalStatus.Up &&
                             i.NetworkInterfaceType != NetworkInterfaceType.Loopback)
                 .Select(i => i.GetIPProperties())
                 .SelectMany(p => p.UnicastAddresses)
-                .FirstOrDefault();
+                .FirstOrDefault(p => p.Address.AddressFamily == AddressFamily.InterNetwork);
             if (result != null)
             {
                 return result.Address.ToString();
