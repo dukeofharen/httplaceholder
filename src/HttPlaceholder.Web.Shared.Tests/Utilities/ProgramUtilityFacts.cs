@@ -7,8 +7,8 @@ namespace HttPlaceholder.Web.Shared.Tests.Utilities;
 [TestClass]
 public class ProgramUtilityFacts
 {
-    private readonly Mock<ITcpService> _mockTcp = new();
     private readonly Mock<IIpService> _mockIpService = new();
+    private readonly Mock<ITcpService> _mockTcp = new();
     private readonly SettingsModel _settings = MockSettingsFactory.GetSettings();
     private ProgramUtility _utility;
 
@@ -237,7 +237,7 @@ public class ProgramUtilityFacts
             .Returns((string)null);
 
         // Act
-        var result = (_utility.GetHostnames()).ToArray();
+        var result = _utility.GetHostnames().ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -255,7 +255,7 @@ public class ProgramUtilityFacts
             .Returns(localIp);
 
         // Act
-        var result = (_utility.GetHostnames()).ToArray();
+        var result = _utility.GetHostnames().ToArray();
 
         // Assert
         Assert.AreEqual(3, result.Length);

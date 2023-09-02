@@ -1,4 +1,5 @@
 ﻿namespace HttPlaceholder.Common;
+
 /// <summary>
 ///     Describes a service for working with IP addresses.
 /// </summary>

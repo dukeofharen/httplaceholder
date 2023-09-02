@@ -10,8 +10,8 @@ namespace HttPlaceholder.Web.Shared.Utilities.Implementations;
 /// </summary>
 public class ProgramUtility : IProgramUtility
 {
-    private readonly ITcpService _tcpService;
     private readonly IIpService _ipService;
+    private readonly ITcpService _tcpService;
 
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.
@@ -35,7 +35,7 @@ public class ProgramUtility : IProgramUtility
     public (IEnumerable<int> httpPorts, IEnumerable<int> httpsPorts) GetPorts(SettingsModel settings)
     {
         IEnumerable<int> httpsPortsResult = Array.Empty<int>();
-        IEnumerable<int> httpPortsResult = HandlePorts(settings.Web.HttpPort, DefaultConfiguration.DefaultHttpPort);
+        var httpPortsResult = HandlePorts(settings.Web.HttpPort, DefaultConfiguration.DefaultHttpPort);
         if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
             !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
         {
