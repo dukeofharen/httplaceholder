@@ -7,6 +7,7 @@ namespace HttPlaceholder.Web.Shared.Tests.Utilities;
 [TestClass]
 public class ProgramUtilityFacts
 {
+    private readonly Mock<IIpService> _mockIpService = new();
     private readonly Mock<ITcpService> _mockTcp = new();
     private readonly SettingsModel _settings = MockSettingsFactory.GetSettings();
     private ProgramUtility _utility;
@@ -19,11 +20,15 @@ public class ProgramUtilityFacts
         _settings.Web.UseHttps = true;
         _settings.Web.PfxPath = "/etc/key.pfx";
         _settings.Web.PfxPassword = "1234";
-        _utility = new ProgramUtility(_mockTcp.Object);
+        _utility = new ProgramUtility(_mockTcp.Object, _mockIpService.Object);
     }
 
     [TestCleanup]
-    public void Cleanup() => _mockTcp.VerifyAll();
+    public void Cleanup()
+    {
+        _mockTcp.VerifyAll();
+        _mockIpService.VerifyAll();
+    }
 
     [TestMethod]
     public void GetPorts_Http_DefaultPortTaken_ShouldTakeNextFreePort()
@@ -221,5 +226,41 @@ public class ProgramUtilityFacts
 
         // Assert
         Assert.AreEqual(expectedError, exception.Message);
+    }
+
+    [TestMethod]
+    public void GetHostnames_NoLocalIpAddressFound_ShouldReturnLocalhostOnly()
+    {
+        // Arrange
+        _mockIpService
+            .Setup(m => m.GetLocalIpAddress())
+            .Returns((string)null);
+
+        // Act
+        var result = _utility.GetHostnames().ToArray();
+
+        // Assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual("127.0.0.1", result[0]);
+        Assert.AreEqual("localhost", result[1]);
+    }
+
+    [TestMethod]
+    public void GetHostnames_LocalIpAddressFound_ShouldReturnLocalhostAndLocalIp()
+    {
+        // Arrange
+        const string localIp = "192.168.178.32";
+        _mockIpService
+            .Setup(m => m.GetLocalIpAddress())
+            .Returns(localIp);
+
+        // Act
+        var result = _utility.GetHostnames().ToArray();
+
+        // Assert
+        Assert.AreEqual(3, result.Length);
+        Assert.AreEqual("127.0.0.1", result[0]);
+        Assert.AreEqual("localhost", result[1]);
+        Assert.AreEqual(localIp, result[2]);
     }
 }

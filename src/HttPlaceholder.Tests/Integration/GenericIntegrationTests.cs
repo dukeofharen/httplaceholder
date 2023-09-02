@@ -125,6 +125,6 @@ public class GenericIntegrationTests : IntegrationTestBase
 
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsTrue(content.Contains(
-            """<base href="http://localhost"><script type="text/javascript">window.rootUrl = "http://localhost";</script>"""));
+            """<base href="http://localhost/ph-ui/"><script type="text/javascript">window.rootUrl = "http://localhost";</script>"""));
     }
 }

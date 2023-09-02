@@ -10,28 +10,32 @@ namespace HttPlaceholder.Web.Shared.Utilities.Implementations;
 /// </summary>
 public class ProgramUtility : IProgramUtility
 {
+    private readonly IIpService _ipService;
     private readonly ITcpService _tcpService;
 
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
-    public ProgramUtility() : this(new TcpService())
+    public ProgramUtility() : this(new TcpService(), new IpService())
     {
     }
 
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
-    internal ProgramUtility(ITcpService tcpService)
+    internal ProgramUtility(
+        ITcpService tcpService,
+        IIpService ipService)
     {
         _tcpService = tcpService;
+        _ipService = ipService;
     }
 
     /// <inheritdoc />
     public (IEnumerable<int> httpPorts, IEnumerable<int> httpsPorts) GetPorts(SettingsModel settings)
     {
         IEnumerable<int> httpsPortsResult = Array.Empty<int>();
-        IEnumerable<int> httpPortsResult = HandlePorts(settings.Web.HttpPort, DefaultConfiguration.DefaultHttpPort);
+        var httpPortsResult = HandlePorts(settings.Web.HttpPort, DefaultConfiguration.DefaultHttpPort);
         if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
             !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
         {
@@ -41,7 +45,20 @@ public class ProgramUtility : IProgramUtility
         return (httpPortsResult, httpsPortsResult);
     }
 
-    private IList<int> HandlePorts(string portInput, int defaultPort)
+    /// <inheritdoc />
+    public IEnumerable<string> GetHostnames()
+    {
+        var result = new List<string> {"127.0.0.1", "localhost"};
+        var localIp = _ipService.GetLocalIpAddress();
+        if (!string.IsNullOrWhiteSpace(localIp))
+        {
+            result.Add(localIp);
+        }
+
+        return result;
+    }
+
+    private IEnumerable<int> HandlePorts(string portInput, int defaultPort)
     {
         var result = new List<int>();
         var ports = ParsePorts(portInput);

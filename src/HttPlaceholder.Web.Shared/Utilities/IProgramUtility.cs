@@ -13,4 +13,10 @@ public interface IProgramUtility
     /// <param name="settings">The settings.</param>
     /// <returns>A tuple containing lists with HTTP and HTTPS ports.</returns>
     (IEnumerable<int> httpPorts, IEnumerable<int> httpsPorts) GetPorts(SettingsModel settings);
+
+    /// <summary>
+    ///     Gets the hostnames and IP addresses the API is reachable on.
+    /// </summary>
+    /// <returns>A list of IP addresses.</returns>
+    IEnumerable<string> GetHostnames();
 }

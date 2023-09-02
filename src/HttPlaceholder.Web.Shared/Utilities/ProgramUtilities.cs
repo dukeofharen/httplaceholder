@@ -11,6 +11,7 @@ using HttPlaceholder.Web.Shared.Resources;
 using HttPlaceholder.Web.Shared.Utilities.Implementations;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
+using Serilog.Events;
 
 namespace HttPlaceholder.Web.Shared.Utilities;
 
@@ -33,7 +34,8 @@ public static class ProgramUtilities
         var loggingConfig = new LoggerConfiguration();
         loggingConfig = verbose
             ? loggingConfig.MinimumLevel.Debug()
-            : loggingConfig.MinimumLevel.Information();
+            : loggingConfig.MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning);
         Log.Logger = loggingConfig
             .Enrich.FromLogContext()
             .WriteTo.Console(
@@ -135,9 +137,14 @@ public static class ProgramUtilities
         var utility = new ProgramUtility();
         options.AddServerHeader = false;
         var (httpPorts, httpsPorts) = utility.GetPorts(settings);
+        var hosts = utility.GetHostnames().ToArray();
         foreach (var port in httpPorts)
         {
             options.Listen(IPAddress.Any, port);
+            foreach (var host in hosts)
+            {
+                Log.Logger.Information($"Available on http://{host}:{port}");
+            }
         }
 
         foreach (var port in httpsPorts)
@@ -145,6 +152,10 @@ public static class ProgramUtilities
             options.Listen(IPAddress.Any, port,
                 listenOptions =>
                     listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
+            foreach (var host in hosts)
+            {
+                Log.Logger.Information($"Available on https://{host}:{port}");
+            }
         }
     }
 
