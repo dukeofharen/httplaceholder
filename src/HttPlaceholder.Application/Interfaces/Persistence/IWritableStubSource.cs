@@ -15,77 +15,94 @@ public interface IWritableStubSource : IStubSource
     ///     Adds a <see cref="StubModel" />.
     /// </summary>
     /// <param name="stub">The stub.</param>
+    /// <param name="user">The user the stubs should be added for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task AddStubAsync(StubModel stub, CancellationToken cancellationToken);
+    Task AddStubAsync(StubModel stub, string user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Deletes a stub.
     /// </summary>
     /// <param name="stubId">The stub ID.</param>
+    /// <param name="user">The user the stubs should be deleted for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>True if the stub was deleted, false otherwise.</returns>
-    Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken);
+    Task<bool> DeleteStubAsync(string stubId, string user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Add a <see cref="RequestResultModel" />.
     /// </summary>
     /// <param name="requestResult">The request.</param>
     /// <param name="responseModel">The response that belongs to the request.</param>
+    /// <param name="user">The user the request should be added for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
-        CancellationToken cancellationToken);
+    Task AddRequestResultAsync(
+        RequestResultModel requestResult,
+        ResponseModel responseModel,
+        string user = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Gets a list of <see cref="RequestResultModel" />.
     /// </summary>
     /// <param name="pagingModel">The paging information.</param>
+    /// <param name="user">The user the requests should be retrieved for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of requests.</returns>
-    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel,
-        CancellationToken cancellationToken);
+    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
+        PagingModel pagingModel,
+        string user = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Gets a list of <see cref="RequestOverviewModel" />.
     /// </summary>
     /// <param name="pagingModel">The paging information.</param>
+    /// <param name="user">The user the requests should be retrieved for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of overview requests.</returns>
-    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(PagingModel pagingModel,
-        CancellationToken cancellationToken);
+    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        PagingModel pagingModel,
+        string user = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Gets a <see cref="RequestResultModel" /> by correlation ID.
     /// </summary>
     /// <param name="correlationId">The request correlation ID.</param>
+    /// <param name="user">The user the request should be retrieved for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The request.</returns>
-    Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken);
+    Task<RequestResultModel> GetRequestAsync(string correlationId, string user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Gets a <see cref="ResponseModel" /> by request correlation ID.
     /// </summary>
     /// <param name="correlationId">The request correlation ID.</param>
+    /// <param name="user">The user the response should be retrieved for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The response.</returns>
-    Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken);
+    Task<ResponseModel> GetResponseAsync(string correlationId, string user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Deletes all requests.
     /// </summary>
+    /// <param name="user">The user the requests should be deleted for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken);
+    Task DeleteAllRequestResultsAsync(string user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Deletes a specific request.
     /// </summary>
     /// <param name="correlationId">The request correlation ID.</param>
+    /// <param name="user">The user the request should be deleted for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>True if the request was deleted, false otherwise.</returns>
-    Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken);
+    Task<bool> DeleteRequestAsync(string correlationId, string user = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Clean all old requests.
     /// </summary>
+    /// <param name="user">The user the requests should be cleaned for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task CleanOldRequestResultsAsync(CancellationToken cancellationToken);
+    Task CleanOldRequestResultsAsync(string user = null, CancellationToken cancellationToken = default);
 }
