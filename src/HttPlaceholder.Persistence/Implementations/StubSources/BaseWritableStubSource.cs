@@ -14,51 +14,24 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 public abstract class BaseWritableStubSource : IWritableStubSource
 {
     /// <inheritdoc />
-    public abstract Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken);
+    public abstract Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default);
 
     /// <inheritdoc />
-    public abstract Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken);
+    public abstract Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default);
 
     /// <inheritdoc />
-    public abstract Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken);
+    public abstract Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
 
     /// <inheritdoc />
     public abstract Task PrepareStubSourceAsync(CancellationToken cancellationToken);
 
     /// <inheritdoc />
-    public abstract Task AddStubAsync(StubModel stub, CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public abstract Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public abstract Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
-        CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public abstract Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel,
-        CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public abstract Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public abstract Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public abstract Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public abstract Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public abstract Task CleanOldRequestResultsAsync(CancellationToken cancellationToken);
-
-    /// <inheritdoc />
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
-        PagingModel pagingModel,
-        CancellationToken cancellationToken) =>
-        (await GetRequestResultsAsync(pagingModel, cancellationToken))
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(PagingModel pagingModel, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        (await GetRequestResultsAsync(pagingModel, distributionKey, cancellationToken))
         .Select(r => new RequestOverviewModel
         {
             Method = r.RequestParameters?.Method,
@@ -70,4 +43,42 @@ public abstract class BaseWritableStubSource : IWritableStubSource
             RequestEndTime = r.RequestEndTime,
             HasResponse = r.HasResponse
         });
+
+    /// <inheritdoc />
+    public abstract Task AddStubAsync(StubModel stub, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<bool> DeleteStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<ResponseModel> GetResponseAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task DeleteAllRequestResultsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<bool> DeleteRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task CleanOldRequestResultsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default);
 }
