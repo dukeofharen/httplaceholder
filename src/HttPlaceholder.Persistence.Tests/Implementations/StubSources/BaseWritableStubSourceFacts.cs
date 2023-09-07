@@ -26,7 +26,7 @@ public class BaseWritableStubSourceFacts
         source.SetRequests(new[] {request});
 
         // Act
-        var result = (await source.GetRequestResultsOverviewAsync(null, CancellationToken.None)).ToArray();
+        var result = (await source.GetRequestResultsOverviewAsync(null, "key", CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -60,7 +60,7 @@ public class BaseWritableStubSourceFacts
         source.SetRequests(new[] {request});
 
         // Act
-        var result = (await source.GetRequestResultsOverviewAsync(null, CancellationToken.None)).ToArray();
+        var result = (await source.GetRequestResultsOverviewAsync(null, "key", CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -82,46 +82,41 @@ public class BaseWritableStubSourceFacts
 
         public void SetRequests(IEnumerable<RequestResultModel> requests) => _requests = requests;
 
-        public override Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken) =>
-            throw new NotImplementedException();
+        public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<IEnumerable<StubOverviewModel>>
-            GetStubsOverviewAsync(CancellationToken cancellationToken) => throw new NotImplementedException();
+        public override Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken) =>
-            throw new NotImplementedException();
+        public override Task<StubModel> GetStubAsync(string stubId, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>
-            throw new NotImplementedException();
+        public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) => throw new NotImplementedException();
 
-        public override Task AddStubAsync(StubModel stub, CancellationToken cancellationToken) =>
-            throw new NotImplementedException();
+        public override Task AddStubAsync(StubModel stub, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken) =>
-            throw new NotImplementedException();
+        public override Task<bool> DeleteStubAsync(string stubId, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
-            CancellationToken cancellationToken) =>
+        public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel, string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
         public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
             PagingModel pagingModel,
-            CancellationToken cancellationToken) => Task.FromResult(_requests);
+            string distributionKey = null,
+            CancellationToken cancellationToken = default) => Task.FromResult(_requests);
 
-        public override Task<RequestResultModel> GetRequestAsync(string correlationId,
-            CancellationToken cancellationToken) => throw new NotImplementedException();
-
-        public override Task<ResponseModel>
-            GetResponseAsync(string correlationId, CancellationToken cancellationToken) =>
+        public override Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
-        public override Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken) =>
+        public override Task<ResponseModel> GetResponseAsync(string correlationId, string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
-        public override Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken) =>
+        public override Task DeleteAllRequestResultsAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+        public override Task<bool> DeleteRequestAsync(string correlationId, string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
-        public override Task CleanOldRequestResultsAsync(CancellationToken cancellationToken) =>
-            throw new NotImplementedException();
+        public override Task CleanOldRequestResultsAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
     }
 }
