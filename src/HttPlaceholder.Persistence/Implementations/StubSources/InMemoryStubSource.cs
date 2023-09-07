@@ -32,7 +32,8 @@ internal class InMemoryStubSource : BaseWritableStubSource
 
     /// <inheritdoc />
     public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
-        CancellationToken cancellationToken)
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -49,7 +50,8 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task AddStubAsync(StubModel stub, CancellationToken cancellationToken)
+    public override Task AddStubAsync(StubModel stub, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -59,7 +61,8 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -68,7 +71,8 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken)
+    public override Task<ResponseModel> GetResponseAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -84,7 +88,8 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken)
+    public override Task DeleteAllRequestResultsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -96,7 +101,8 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override Task<bool> DeleteRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -113,7 +119,8 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
+    public override Task<bool> DeleteStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -129,9 +136,9 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
-        PagingModel pagingModel,
-        CancellationToken cancellationToken)
+    public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -163,7 +170,8 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken)
+    public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
@@ -173,18 +181,20 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(
-        CancellationToken cancellationToken) =>
-        (await GetStubsAsync(cancellationToken))
+    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        (await GetStubsAsync(distributionKey, cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />
-    public override Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken) =>
+    public override Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
         Task.FromResult(StubModels.FirstOrDefault(s => s.Id == stubId));
 
     /// <inheritdoc />
-    public override Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
+    public override Task CleanOldRequestResultsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {

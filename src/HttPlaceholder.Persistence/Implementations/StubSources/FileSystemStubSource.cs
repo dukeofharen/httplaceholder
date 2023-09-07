@@ -38,7 +38,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
     /// <inheritdoc />
     public override async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
-        CancellationToken cancellationToken)
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var requestsFolder = GetRequestsFolder();
         var responsesFolder = GetResponsesFolder();
@@ -50,7 +51,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task AddStubAsync(StubModel stub, CancellationToken cancellationToken)
+    public override async Task AddStubAsync(StubModel stub, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var path = GetStubsFolder();
         var filePath = Path.Combine(path, ConstructStubFilename(stub.Id));
@@ -60,8 +62,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<RequestResultModel> GetRequestAsync(string correlationId,
-        CancellationToken cancellationToken)
+    public override async Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var requestFilePath = await FindRequestFilenameAsync(correlationId, cancellationToken);
         if (string.IsNullOrWhiteSpace(requestFilePath))
@@ -74,8 +76,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<ResponseModel> GetResponseAsync(string correlationId,
-        CancellationToken cancellationToken)
+    public override async Task<ResponseModel> GetResponseAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var path = GetResponsesFolder();
         var filePath = Path.Combine(path, ConstructResponseFilename(correlationId));
@@ -89,7 +91,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken)
+    public override async Task DeleteAllRequestResultsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var requestsPath = GetRequestsFolder();
         var files = await _fileService.GetFilesAsync(requestsPath, "*.json", cancellationToken);
@@ -101,7 +104,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override async Task<bool> DeleteRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var requestFilePath = await FindRequestFilenameAsync(correlationId, cancellationToken);
         if (string.IsNullOrWhiteSpace(requestFilePath))
@@ -115,7 +119,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
+    public override async Task<bool> DeleteStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var path = GetStubsFolder();
         var filePath = Path.Combine(path, ConstructStubFilename(stubId));
@@ -130,9 +135,9 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
-        PagingModel pagingModel,
-        CancellationToken cancellationToken)
+    public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var path = GetRequestsFolder();
         var files = (await _fileService.GetFilesAsync(path, "*.json", cancellationToken))
@@ -169,25 +174,28 @@ internal class FileSystemStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken) =>
+    public override async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
         await _fileSystemStubCache.GetOrUpdateStubCacheAsync(cancellationToken);
 
     /// <inheritdoc />
-    public override async Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken)
+    public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var stubs = await _fileSystemStubCache.GetOrUpdateStubCacheAsync(cancellationToken);
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(
-        CancellationToken cancellationToken) =>
-        (await GetStubsAsync(cancellationToken))
+    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        (await GetStubsAsync(distributionKey, cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />
-    public override async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
+    public override async Task CleanOldRequestResultsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var path = GetRequestsFolder();
         var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
