@@ -4,6 +4,7 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.TestUtilities.Options;
 
@@ -12,6 +13,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 [TestClass]
 public class StubContextFacts
 {
+    private const string DistrubutionKey = "username";
     private readonly AutoMocker _mocker = new();
     private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
     private readonly IList<IStubSource> _stubSources = new List<IStubSource>();
@@ -21,10 +23,17 @@ public class StubContextFacts
     {
         _mocker.Use<IEnumerable<IStubSource>>(_stubSources);
         _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
+        _mocker.GetMock<IStubRequestContext>()
+            .Setup(m => m.DistributionKey)
+            .Returns(DistrubutionKey);
     }
 
     [TestCleanup]
-    public void Cleanup() => _mocker.VerifyAll();
+    public void Cleanup()
+    {
+        _mocker.GetMock<IRequestNotify>().VerifyAll();
+        _mocker.GetMock<IStubNotify>().VerifyAll();
+    }
 
     [TestMethod]
     public async Task GetStubsAsync_HappyFlow()
@@ -38,11 +47,11 @@ public class StubContextFacts
         var stub3 = new StubModel();
 
         stubSource1
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub1, stub2});
 
         stubSource2
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub3});
 
         _stubSources.Add(stubSource1.Object);
@@ -72,11 +81,11 @@ public class StubContextFacts
         var stub3 = new StubOverviewModel();
 
         stubSource1
-            .Setup(m => m.GetStubsOverviewAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsOverviewAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub1, stub2});
 
         stubSource2
-            .Setup(m => m.GetStubsOverviewAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsOverviewAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub3});
 
         _stubSources.Add(stubSource1.Object);
@@ -106,11 +115,11 @@ public class StubContextFacts
         var stub3 = new StubModel {Tenant = "TENaNT1"};
 
         stubSource1
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub1, stub2});
 
         stubSource2
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub3});
 
         _stubSources.Add(stubSource1.Object);
@@ -137,7 +146,7 @@ public class StubContextFacts
         var writableStubSource = new Mock<IWritableStubSource>();
         var readOnlyStubSource = new Mock<IStubSource>();
         readOnlyStubSource
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub});
 
         _stubSources.Add(writableStubSource.Object);
@@ -157,13 +166,13 @@ public class StubContextFacts
         var stubToBeAdded = new StubModel {Id = "new-stub-02"};
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.AddStubAsync(stubToBeAdded, It.IsAny<CancellationToken>()))
+            .Setup(m => m.AddStubAsync(stubToBeAdded, DistrubutionKey, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         var stub = new StubModel {Id = "new-stub-01"};
         var readOnlyStubSource = new Mock<IStubSource>();
         readOnlyStubSource
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub});
 
         _stubSources.Add(stubSource.Object);
@@ -176,7 +185,8 @@ public class StubContextFacts
         await context.AddStubAsync(stubToBeAdded, CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.AddStubAsync(stubToBeAdded, It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.AddStubAsync(stubToBeAdded, DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Once);
         stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stubToBeAdded.Id),
             It.IsAny<CancellationToken>()));
     }
@@ -188,7 +198,7 @@ public class StubContextFacts
         const string stubId = "stubId1";
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.DeleteStubAsync(stubId, It.IsAny<CancellationToken>()))
+            .Setup(m => m.DeleteStubAsync(stubId, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         _stubSources.Add(stubSource.Object);
@@ -215,10 +225,10 @@ public class StubContextFacts
         var stub2 = new StubModel {Id = "stub2"};
 
         stubSource1
-            .Setup(m => m.GetStubAsync(stub2.Id, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubAsync(stub2.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub2);
         stubSource2
-            .Setup(m => m.GetStubAsync(stub1.Id, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubAsync(stub1.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub1);
 
         _stubSources.Add(stubSource1.Object);
@@ -242,13 +252,13 @@ public class StubContextFacts
 
         var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
         stubSource
-            .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubAsync(stub.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub);
 
         var request = new RequestResultModel {ExecutingStubId = stub.Id};
         var response = new ResponseModel();
         stubSource
-            .Setup(m => m.AddRequestResultAsync(request, response, It.IsAny<CancellationToken>()))
+            .Setup(m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         _stubSources.Add(stubSource.Object);
@@ -259,8 +269,11 @@ public class StubContextFacts
         await context.AddRequestResultAsync(request, response, CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.AddRequestResultAsync(request, response, It.IsAny<CancellationToken>()), Times.Once);
-        stubSource.Verify(m => m.CleanOldRequestResultsAsync(It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(
+            m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Once);
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Once);
 
         Assert.AreEqual(stub.Tenant, request.StubTenant);
     }
@@ -274,13 +287,13 @@ public class StubContextFacts
 
         var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
         stubSource
-            .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubAsync(stub.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub);
 
         var request = new RequestResultModel {ExecutingStubId = stub.Id};
         var response = new ResponseModel();
         stubSource
-            .Setup(m => m.AddRequestResultAsync(request, response, It.IsAny<CancellationToken>()))
+            .Setup(m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         _stubSources.Add(stubSource.Object);
@@ -291,7 +304,8 @@ public class StubContextFacts
         await context.AddRequestResultAsync(request, response, CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.AddRequestResultAsync(request, null, It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.AddRequestResultAsync(request, null, DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     [TestMethod]
@@ -305,13 +319,13 @@ public class StubContextFacts
 
         var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
         stubSource
-            .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubAsync(stub.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub);
 
         var request = new RequestResultModel {ExecutingStubId = stub.Id};
         var response = new ResponseModel();
         stubSource
-            .Setup(m => m.AddRequestResultAsync(request, response, It.IsAny<CancellationToken>()))
+            .Setup(m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         _stubSources.Add(stubSource.Object);
@@ -323,8 +337,11 @@ public class StubContextFacts
         await context.AddRequestResultAsync(request, response, CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.AddRequestResultAsync(request, response, It.IsAny<CancellationToken>()), Times.Once);
-        stubSource.Verify(m => m.CleanOldRequestResultsAsync(It.IsAny<CancellationToken>()), Times.Never);
+        stubSource.Verify(
+            m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Once);
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Never);
         requestNotifyMock.Verify(m => m.NewRequestReceivedAsync(request, It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -341,7 +358,8 @@ public class StubContextFacts
         await context.CleanOldRequestResultsAsync(CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.CleanOldRequestResultsAsync(It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     [TestMethod]
@@ -353,7 +371,7 @@ public class StubContextFacts
         var requests = new[] {request1, request2};
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.GetRequestResultsAsync(null, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsAsync(null, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(requests);
 
         _stubSources.Add(stubSource.Object);
@@ -377,7 +395,7 @@ public class StubContextFacts
         var requests = new[] {request1, request2};
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.GetRequestResultsOverviewAsync(null, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsOverviewAsync(null, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(requests);
 
         _stubSources.Add(stubSource.Object);
@@ -400,7 +418,7 @@ public class StubContextFacts
         var request = new RequestResultModel {CorrelationId = correlationId};
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.GetRequestAsync(correlationId, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestAsync(correlationId, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(request);
 
         _stubSources.Add(stubSource.Object);
@@ -422,7 +440,7 @@ public class StubContextFacts
         var response = new ResponseModel();
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.GetResponseAsync(correlationId, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetResponseAsync(correlationId, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(response);
 
         _stubSources.Add(stubSource.Object);
@@ -455,7 +473,7 @@ public class StubContextFacts
         var requests = new[] {request1, request2, request3};
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.GetRequestResultsAsync(null, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetRequestResultsAsync(null, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(requests);
 
         _stubSources.Add(stubSource.Object);
@@ -477,7 +495,7 @@ public class StubContextFacts
         // arrange
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.DeleteAllRequestResultsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.DeleteAllRequestResultsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         _stubSources.Add(stubSource.Object);
@@ -488,7 +506,8 @@ public class StubContextFacts
         await context.DeleteAllRequestResultsAsync(CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.DeleteAllRequestResultsAsync(It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.DeleteAllRequestResultsAsync(DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     [TestMethod]
@@ -498,7 +517,7 @@ public class StubContextFacts
         var correlationId = Guid.NewGuid().ToString();
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
-            .Setup(m => m.DeleteRequestAsync(correlationId, It.IsAny<CancellationToken>()))
+            .Setup(m => m.DeleteRequestAsync(correlationId, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         _stubSources.Add(stubSource.Object);
@@ -510,7 +529,7 @@ public class StubContextFacts
 
         // assert
         Assert.IsTrue(result);
-        stubSource.Verify(m => m.DeleteRequestAsync(correlationId, It.IsAny<CancellationToken>()));
+        stubSource.Verify(m => m.DeleteRequestAsync(correlationId, DistrubutionKey, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -525,7 +544,7 @@ public class StubContextFacts
         var stub3 = new StubModel {Id = "stub3", Tenant = tenant.ToUpper()};
 
         stubSource
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub1, stub2, stub3});
 
         _stubSources.Add(stubSource.Object);
@@ -537,9 +556,10 @@ public class StubContextFacts
         await context.DeleteAllStubsAsync(tenant, CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.DeleteStubAsync(stub1.Id, It.IsAny<CancellationToken>()), Times.Once);
-        stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, It.IsAny<CancellationToken>()), Times.Never);
-        stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.DeleteStubAsync(stub1.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, DistrubutionKey, It.IsAny<CancellationToken>()),
+            Times.Never);
+        stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id, It.IsAny<CancellationToken>()), Times.Once);
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id, It.IsAny<CancellationToken>()), Times.Never);
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id, It.IsAny<CancellationToken>()), Times.Once);
@@ -556,7 +576,7 @@ public class StubContextFacts
         var stub3 = new StubModel {Id = "stub3", Tenant = "tenant1"};
 
         stubSource
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub1, stub2, stub3});
 
         _stubSources.Add(stubSource.Object);
@@ -568,9 +588,9 @@ public class StubContextFacts
         await context.DeleteAllStubsAsync(CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.DeleteStubAsync(stub1.Id, It.IsAny<CancellationToken>()));
-        stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, It.IsAny<CancellationToken>()));
-        stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, It.IsAny<CancellationToken>()));
+        stubSource.Verify(m => m.DeleteStubAsync(stub1.Id, DistrubutionKey, It.IsAny<CancellationToken>()));
+        stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, DistrubutionKey, It.IsAny<CancellationToken>()));
+        stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, DistrubutionKey, It.IsAny<CancellationToken>()));
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id, It.IsAny<CancellationToken>()));
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id, It.IsAny<CancellationToken>()));
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id, It.IsAny<CancellationToken>()));
@@ -591,7 +611,7 @@ public class StubContextFacts
         var newStubs = new[] {new StubModel {Id = stub2.Id}, new StubModel {Id = stub3.Id}};
 
         stubSource
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub1, stub2, stub3});
 
         _stubSources.Add(stubSource.Object);
@@ -603,18 +623,24 @@ public class StubContextFacts
         await context.UpdateAllStubs(tenant1, newStubs, CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.DeleteStubAsync(stub1.Id, It.IsAny<CancellationToken>()), Times.Once);
-        stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, It.IsAny<CancellationToken>()), Times.Once);
-        stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.DeleteStubAsync(stub1.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id, It.IsAny<CancellationToken>()), Times.Once);
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id, It.IsAny<CancellationToken>()), Times.Once);
         stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id, It.IsAny<CancellationToken>()), Times.Once);
 
-        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub1.Id), It.IsAny<CancellationToken>()),
+        stubSource.Verify(
+            m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub1.Id), DistrubutionKey,
+                It.IsAny<CancellationToken>()),
             Times.Never);
-        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub2.Id), It.IsAny<CancellationToken>()),
+        stubSource.Verify(
+            m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub2.Id), DistrubutionKey,
+                It.IsAny<CancellationToken>()),
             Times.Once);
-        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub3.Id), It.IsAny<CancellationToken>()),
+        stubSource.Verify(
+            m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub3.Id), DistrubutionKey,
+                It.IsAny<CancellationToken>()),
             Times.Once);
         stubNotifyMock.Verify(
             m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stub1.Id),
@@ -645,7 +671,7 @@ public class StubContextFacts
         var stub5 = new StubModel {Id = "stub5", Tenant = string.Empty};
 
         stubSource
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {stub1, stub2, stub3, stub4, stub5});
 
         _stubSources.Add(stubSource.Object);
