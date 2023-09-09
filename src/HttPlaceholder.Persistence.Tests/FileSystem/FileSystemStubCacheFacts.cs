@@ -95,12 +95,29 @@ public class FileSystemStubCacheFacts
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(CancellationToken.None);
+        var result = await cache.GetOrUpdateStubCacheAsync(false, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
         Assert.IsNotNull(cache.StubCache);
         Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
+    }
+
+    [TestMethod]
+    public async Task GetOrUpdateStubCacheAsync_DontCache()
+    {
+        // Arrange
+        SetupStubs();
+
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
+        // Act
+        var result = await cache.GetOrUpdateStubCacheAsync(true, CancellationToken.None);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.IsFalse(cache.StubCache.Any());
+        Assert.IsNull(cache.StubUpdateTrackingId);
     }
 
     [TestMethod]
@@ -116,7 +133,7 @@ public class FileSystemStubCacheFacts
         cache.StubUpdateTrackingId = Guid.NewGuid().ToString();
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(CancellationToken.None);
+        var result = await cache.GetOrUpdateStubCacheAsync(false, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -138,7 +155,7 @@ public class FileSystemStubCacheFacts
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act
-        var result = (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).ToArray();
+        var result = (await cache.GetOrUpdateStubCacheAsync(false, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -161,8 +178,8 @@ public class FileSystemStubCacheFacts
 
         // Act / Assert
         Assert.IsTrue(
-            (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).SequenceEqual(
-                await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)));
+            (await cache.GetOrUpdateStubCacheAsync(false, CancellationToken.None)).SequenceEqual(
+                await cache.GetOrUpdateStubCacheAsync(false, CancellationToken.None)));
     }
 
     [TestMethod]

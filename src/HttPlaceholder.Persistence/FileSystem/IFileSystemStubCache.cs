@@ -14,8 +14,10 @@ public interface IFileSystemStubCache
     ///     Loads the stub cache to memory if it has not been done yet, returns the current cache or updates the current cache
     ///     if something has changed.
     /// </summary>
+    /// <param name="shouldNotCache">If set to true, will never cache stubs and will always return what's on the disk.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of <see cref="StubModel" />.</returns>
-    Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(bool shouldNotCache, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Adds or updates a stub in the cache.

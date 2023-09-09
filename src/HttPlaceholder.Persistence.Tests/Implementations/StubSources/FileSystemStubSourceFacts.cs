@@ -13,6 +13,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 [TestClass]
 public class FileSystemStubSourceFacts
 {
+    private const string DistrubutionKey = "username";
     private const string StorageFolder = @"C:\storage";
 
     private readonly AutoMocker _mocker = new();
@@ -29,12 +30,18 @@ public class FileSystemStubSourceFacts
     [TestCleanup]
     public void Cleanup() => _mocker.VerifyAll();
 
-    [TestMethod]
-    public async Task AddRequestResultAsync_HappyFlow_NoResponse()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task AddRequestResultAsync_HappyFlow_NoResponse(bool withDistributionKey)
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
-        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
+            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var request = new RequestResultModel {CorrelationId = "bla123"};
         var millis = 1234;
         var requestFilePath = Path.Combine(requestsFolder, $"{millis}-{request.CorrelationId}.json");
@@ -48,7 +55,8 @@ public class FileSystemStubSourceFacts
             .Returns(millis);
 
         // Act
-        await source.AddRequestResultAsync(request, null, CancellationToken.None);
+        await source.AddRequestResultAsync(request, null, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         fileServiceMock
@@ -60,12 +68,18 @@ public class FileSystemStubSourceFacts
         Assert.IsFalse(request.HasResponse);
     }
 
-    [TestMethod]
-    public async Task AddRequestResultAsync_HappyFlow_WithResponse()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task AddRequestResultAsync_HappyFlow_WithResponse(bool withDistributionKey)
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
-        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
+            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var request = new RequestResultModel {CorrelationId = "bla123"};
         var response = new ResponseModel {StatusCode = 200};
         var millis = 1234;
@@ -80,7 +94,8 @@ public class FileSystemStubSourceFacts
             .Returns(millis);
 
         // Act
-        await source.AddRequestResultAsync(request, response, CancellationToken.None);
+        await source.AddRequestResultAsync(request, response, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         fileServiceMock
@@ -92,11 +107,15 @@ public class FileSystemStubSourceFacts
         Assert.IsTrue(request.HasResponse);
     }
 
-    [TestMethod]
-    public async Task AddStubAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task AddStubAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, FileNames.StubsFolderName);
+        var stubsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.StubsFolderName)
+            : Path.Combine(StorageFolder, FileNames.StubsFolderName);
         var stub = new StubModel {Id = "situation-01"};
         var filePath = Path.Combine(stubsFolder, $"{stub.Id}.json");
 
@@ -109,16 +128,20 @@ public class FileSystemStubSourceFacts
                 It.IsAny<CancellationToken>()));
 
         // Act / assert
-        await source.AddStubAsync(stub, CancellationToken.None);
+        await source.AddStubAsync(stub, withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
         fileSystemStubCacheMock.Verify(m => m.AddOrReplaceStub(stub));
     }
 
-    [TestMethod]
-    public async Task GetRequestAsync_RequestNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetRequestAsync_RequestNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -129,18 +152,23 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.GetRequestAsync(correlationId, CancellationToken.None);
+        var result = await source.GetRequestAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
     }
 
-    [TestMethod]
-    public async Task GetRequestAsync_RequestFound_ShouldReturnRequest()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetRequestAsync_RequestFound_ShouldReturnRequest(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -154,18 +182,23 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = correlationId}));
 
         // Act
-        var result = await source.GetRequestAsync(correlationId, CancellationToken.None);
+        var result = await source.GetRequestAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.AreEqual(correlationId, result.CorrelationId);
     }
 
-    [TestMethod]
-    public async Task GetResponseAsync_ResponseNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetResponseAsync_ResponseNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
+        var responsesFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
+            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var expectedPath = Path.Combine(responsesFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -176,18 +209,23 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.GetResponseAsync(correlationId, CancellationToken.None);
+        var result = await source.GetResponseAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
     }
 
-    [TestMethod]
-    public async Task GetResponseAsync_ResponseFound_ShouldReturnResponse()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetResponseAsync_ResponseFound_ShouldReturnResponse(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
+        var responsesFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
+            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var expectedPath = Path.Combine(responsesFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -201,18 +239,25 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(JsonConvert.SerializeObject(new ResponseModel {StatusCode = 200}));
 
         // Act
-        var result = await source.GetResponseAsync(correlationId, CancellationToken.None);
+        var result = await source.GetResponseAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.AreEqual(200, result.StatusCode);
     }
 
-    [TestMethod]
-    public async Task DeleteAllRequestResultsAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task DeleteAllRequestResultsAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
-        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
+            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -239,7 +284,7 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(true);
 
         // Act
-        await source.DeleteAllRequestResultsAsync(CancellationToken.None);
+        await source.DeleteAllRequestResultsAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
         fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
@@ -248,14 +293,17 @@ public class FileSystemStubSourceFacts
         fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2, It.IsAny<CancellationToken>()));
     }
 
-    [TestMethod]
-    public async Task DeleteRequestAsync_RequestDoesntExist_ShouldReturnFalse()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task DeleteRequestAsync_RequestDoesntExist_ShouldReturnFalse(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath =
-            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
-        var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var expectedRequestPath = Path.Combine(requestsFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -265,22 +313,28 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.DeleteRequestAsync(correlationId, CancellationToken.None);
+        var result = await source.DeleteRequestAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
         fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
-    [TestMethod]
-    public async Task DeleteRequestAsync_RequestExists_ResponseDoesntExist_ShouldDeleteFileAndReturnTrue()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task DeleteRequestAsync_RequestExists_ResponseDoesntExist_ShouldDeleteFileAndReturnTrue(
+        bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath =
-            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
-        var responsesPath =
-            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
+        var requestsPath = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesPath = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
+            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
         var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 
@@ -295,7 +349,8 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.DeleteRequestAsync(correlationId, CancellationToken.None);
+        var result = await source.DeleteRequestAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -304,15 +359,20 @@ public class FileSystemStubSourceFacts
             Times.Never);
     }
 
-    [TestMethod]
-    public async Task DeleteRequestAsync_RequestExists_ResponseExists_ShouldDeleteFileAndReturnTrue()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task DeleteRequestAsync_RequestExists_ResponseExists_ShouldDeleteFileAndReturnTrue(
+        bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath =
-            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
-        var responsesPath =
-            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
+        var requestsPath = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesPath = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
+            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
         var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 
@@ -327,7 +387,8 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(true);
 
         // Act
-        var result = await source.DeleteRequestAsync(correlationId, CancellationToken.None);
+        var result = await source.DeleteRequestAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -335,11 +396,15 @@ public class FileSystemStubSourceFacts
         fileServiceMock.Verify(m => m.DeleteFileAsync(expectedResponsePath, It.IsAny<CancellationToken>()));
     }
 
-    [TestMethod]
-    public async Task DeleteStubAsync_StubDoesntExist_ShouldReturnFalse()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task DeleteStubAsync_StubDoesntExist_ShouldReturnFalse(bool withDistributionKey)
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, FileNames.StubsFolderName);
+        var stubsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.StubsFolderName)
+            : Path.Combine(StorageFolder, FileNames.StubsFolderName);
         const string stubId = "situation-01";
         var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
 
@@ -352,18 +417,23 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.DeleteStubAsync(stubId, CancellationToken.None);
+        var result = await source.DeleteStubAsync(stubId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
         fileSystemStubCacheMock.Verify(m => m.DeleteStub(It.IsAny<string>()), Times.Never);
     }
 
-    [TestMethod]
-    public async Task DeleteStubAsync_RequestExist_ShouldDeleteRequestAndReturnTrue()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task DeleteStubAsync_RequestExist_ShouldDeleteRequestAndReturnTrue(bool withDistributionKey)
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, FileNames.StubsFolderName);
+        var stubsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.StubsFolderName)
+            : Path.Combine(StorageFolder, FileNames.StubsFolderName);
         const string stubId = "situation-01";
         var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
 
@@ -376,18 +446,23 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(true);
 
         // Act
-        var result = await source.DeleteStubAsync(stubId, CancellationToken.None);
+        var result = await source.DeleteStubAsync(stubId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
         fileSystemStubCacheMock.Verify(m => m.DeleteStub(stubId));
     }
 
-    [TestMethod]
-    public async Task DeleteStubAsync_StubExists_ShouldReturnTrueAndDeleteStub()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task DeleteStubAsync_StubExists_ShouldReturnTrueAndDeleteStub(bool withDistributionKey)
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, "stubs");
+        var stubsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.StubsFolderName)
+            : Path.Combine(StorageFolder, FileNames.StubsFolderName);
         const string stubId = "situation-01";
         var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
 
@@ -402,18 +477,23 @@ public class FileSystemStubSourceFacts
             .Setup(m => m.DeleteFileAsync(filePath, It.IsAny<CancellationToken>()));
 
         // Act
-        var result = await source.DeleteStubAsync(stubId, CancellationToken.None);
+        var result = await source.DeleteStubAsync(stubId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
         fileSystemStubCacheMock.Verify(m => m.DeleteStub(stubId));
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetRequestResultsAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -442,7 +522,9 @@ public class FileSystemStubSourceFacts
         }
 
         // Act
-        var result = (await source.GetRequestResultsAsync(null, CancellationToken.None)).ToArray();
+        var result =
+            (await source.GetRequestResultsAsync(null, withDistributionKey ? DistrubutionKey : null,
+                CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -450,11 +532,15 @@ public class FileSystemStubSourceFacts
         Assert.AreEqual("request-01", result[1].CorrelationId);
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_FromIdentifierSet_HappyFlow()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetRequestResultsAsync_FromIdentifierSet_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -474,6 +560,7 @@ public class FileSystemStubSourceFacts
         // Act
         var result =
             (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = "request-01"},
+                withDistributionKey ? DistrubutionKey : null,
                 CancellationToken.None)).ToArray();
 
         // Assert
@@ -481,11 +568,15 @@ public class FileSystemStubSourceFacts
         Assert.AreEqual("request-02", result[0].CorrelationId);
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_HappyFlow()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
@@ -518,6 +609,7 @@ public class FileSystemStubSourceFacts
         // Act
         var result =
             (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = "request-02", ItemsPerPage = 2},
+                withDistributionKey ? DistrubutionKey : null,
                 CancellationToken.None)).ToArray();
 
         // Assert
@@ -526,12 +618,18 @@ public class FileSystemStubSourceFacts
         Assert.AreEqual("request-01", result[1].CorrelationId);
     }
 
-    [TestMethod]
-    public async Task CleanOldRequestResultsAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task CleanOldRequestResultsAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
-        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
+        var requestsFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = withDistributionKey
+            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
+            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
@@ -563,7 +661,7 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(true);
 
         // Act
-        await source.CleanOldRequestResultsAsync(CancellationToken.None);
+        await source.CleanOldRequestResultsAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
         fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
@@ -572,8 +670,10 @@ public class FileSystemStubSourceFacts
         fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2, It.IsAny<CancellationToken>()));
     }
 
-    [TestMethod]
-    public async Task GetStubsAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetStubsAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var stubs = new[] {new StubModel {Id = "stub1"}};
@@ -582,18 +682,20 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs, result);
     }
 
-    [TestMethod]
-    public async Task GetStubAsync_StubFound_ShouldReturnStub()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetStubAsync_StubFound_ShouldReturnStub(bool withDistributionKey)
     {
         // Arrange
         var stubs = new[] {new StubModel {Id = "stub1"}, new StubModel {Id = "stub2"}};
@@ -602,18 +704,20 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
-        var result = await source.GetStubAsync("stub2", CancellationToken.None);
+        var result = await source.GetStubAsync("stub2", withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs[1], result);
     }
 
-    [TestMethod]
-    public async Task GetStubAsync_StubNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetStubAsync_StubNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         var stubs = new[] {new StubModel {Id = "stub1"}, new StubModel {Id = "stub2"}};
@@ -622,18 +726,20 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
-        var result = await source.GetStubAsync("stub3", CancellationToken.None);
+        var result = await source.GetStubAsync("stub3", withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
     }
 
-    [TestMethod]
-    public async Task GetStubsOverviewAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task GetStubsOverviewAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var stubs = new[]
@@ -646,11 +752,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
-        var result = (await source.GetStubsOverviewAsync(CancellationToken.None)).ToArray();
+        var result = (await source.GetStubsOverviewAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -680,7 +786,7 @@ public class FileSystemStubSourceFacts
             Times.Exactly(4));
         fileServiceMock.Verify(m => m.CreateDirectoryAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Exactly(4));
-        fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()));
+        fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCacheAsync(false, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -695,35 +801,41 @@ public class FileSystemStubSourceFacts
             source.PrepareStubSourceAsync(CancellationToken.None));
     }
 
-    [TestMethod]
-    public async Task FindRequestFilenameAsync_OldRequestPathFound()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task FindRequestFilenameAsync_OldRequestPathFound(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
-        var expectedPath = Path.Join(StorageFolder, "requests", $"{correlationId}.json");
+        var requestsPath = withDistributionKey ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName) : Path.Join(StorageFolder, FileNames.RequestsFolderName);
+        var expectedPath = Path.Join(requestsPath, $"{correlationId}.json");
         fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
-        var result = await source.FindRequestFilenameAsync(correlationId, CancellationToken.None);
+        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedPath, result);
     }
 
-    [TestMethod]
-    public async Task FindRequestFilenameAsync_NewRequestPathFound()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task FindRequestFilenameAsync_NewRequestPathFound(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
-        var expectedPath = Path.Join(StorageFolder, "requests", $"{correlationId}.json");
+        var requestsPath = withDistributionKey ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName) : Path.Join(StorageFolder, FileNames.RequestsFolderName);
+        var expectedPath = Path.Join(requestsPath, $"{correlationId}.json");
         fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
@@ -731,37 +843,40 @@ public class FileSystemStubSourceFacts
         var expectedFile = $"1-{correlationId}.json";
         var files = new[] {expectedFile};
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(Path.Join(StorageFolder, "requests"), $"*-{correlationId}.json",
+            .Setup(m => m.GetFilesAsync(requestsPath, $"*-{correlationId}.json",
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
 
         // Act
-        var result = await source.FindRequestFilenameAsync(correlationId, CancellationToken.None);
+        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedFile, result);
     }
 
-    [TestMethod]
-    public async Task FindRequestFilenameAsync_NewRequestPathNotFound()
+    [DataTestMethod]
+    [DataRow(false)]
+    [DataRow(true)]
+    public async Task FindRequestFilenameAsync_NewRequestPathNotFound(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
-        var expectedPath = Path.Join(StorageFolder, "requests", $"{correlationId}.json");
+        var requestsPath = withDistributionKey ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName) : Path.Join(StorageFolder, FileNames.RequestsFolderName);
+        var expectedPath = Path.Join(requestsPath, $"{correlationId}.json");
         fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(Path.Join(StorageFolder, "requests"), $"*-{correlationId}.json",
+            .Setup(m => m.GetFilesAsync(requestsPath, $"*-{correlationId}.json",
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<string>());
 
         // Act
-        var result = await source.FindRequestFilenameAsync(correlationId, CancellationToken.None);
+        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
