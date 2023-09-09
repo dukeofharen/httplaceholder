@@ -207,10 +207,19 @@ internal class FileSystemStubSource : BaseWritableStubSource
         .ToArray();
 
     /// <inheritdoc />
-    public override async Task CleanOldRequestResultsAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default)
+    public override async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default)
     {
-        var path = GetRequestsFolder(distributionKey);
+        var path = GetRequestsFolder();
+        var folders = await _fileService.GetDirectoriesAsync(path, cancellationToken);
+        await HandleCleaningOfOldRequests(path, null, cancellationToken);
+        foreach (var folder in folders)
+        {
+            await HandleCleaningOfOldRequests(folder, new DirectoryInfo(folder).Name, cancellationToken);
+        }
+    }
+
+    private async Task HandleCleaningOfOldRequests(string path, string distributionKey, CancellationToken cancellationToken)
+    {
         var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
         var filePaths = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
         var filePathsAndDates = filePaths

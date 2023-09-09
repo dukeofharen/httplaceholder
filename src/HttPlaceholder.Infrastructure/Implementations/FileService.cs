@@ -81,4 +81,8 @@ internal class FileService : IFileService, ISingletonService
 
     /// <inheritdoc />
     public string GetCurrentDirectory() => Directory.GetCurrentDirectory();
+
+    /// <inheritdoc />
+    public Task<string[]> GetDirectoriesAsync(string path, CancellationToken cancellationToken) =>
+        Task.Run(() => Directory.GetDirectories(path), cancellationToken);
 }

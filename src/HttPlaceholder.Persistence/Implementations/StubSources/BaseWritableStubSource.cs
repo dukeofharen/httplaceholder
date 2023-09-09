@@ -79,6 +79,5 @@ public abstract class BaseWritableStubSource : IWritableStubSource
         CancellationToken cancellationToken = default);
 
     /// <inheritdoc />
-    public abstract Task CleanOldRequestResultsAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default);
+    public abstract Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default);
 }

@@ -97,8 +97,7 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override async Task CleanOldRequestResultsAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default)
+    public override async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default)
     {
         var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
         using var ctx = _databaseContextFactory.CreateDatabaseContext();

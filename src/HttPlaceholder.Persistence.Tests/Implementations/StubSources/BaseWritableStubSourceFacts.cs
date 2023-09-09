@@ -82,19 +82,26 @@ public class BaseWritableStubSourceFacts
 
         public void SetRequests(IEnumerable<RequestResultModel> requests) => _requests = requests;
 
-        public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<StubModel> GetStubAsync(string stubId, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) => throw new NotImplementedException();
+        public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>
+            throw new NotImplementedException();
 
-        public override Task AddStubAsync(StubModel stub, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task AddStubAsync(StubModel stub, string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<bool> DeleteStubAsync(string stubId, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task<bool> DeleteStubAsync(string stubId, string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel, string distributionKey = null,
+        public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
+            string distributionKey = null,
             CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
@@ -111,12 +118,14 @@ public class BaseWritableStubSourceFacts
             CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
-        public override Task DeleteAllRequestResultsAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task DeleteAllRequestResultsAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
         public override Task<bool> DeleteRequestAsync(string correlationId, string distributionKey = null,
             CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
-        public override Task CleanOldRequestResultsAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default) =>
+            throw new NotImplementedException();
     }
 }

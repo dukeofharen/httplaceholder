@@ -618,23 +618,23 @@ public class FileSystemStubSourceFacts
         Assert.AreEqual("request-01", result[1].CorrelationId);
     }
 
-    [DataTestMethod]
-    [DataRow(false)]
-    [DataRow(true)]
-    public async Task CleanOldRequestResultsAsync_HappyFlow(bool withDistributionKey)
+    [TestMethod]
+    public async Task CleanOldRequestResultsAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = withDistributionKey
-            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
-            : Path.Combine(StorageFolder, FileNames.RequestsFolderName);
-        var responsesFolder = withDistributionKey
-            ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
-            : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
             Path.Combine(requestsFolder, "request-03.json")
         };
+        var folder1Files = new[]
+        {
+            Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
+            Path.Combine(requestsFolder, "request-03.json")
+        };
+        var folders = new[] {Path.Combine(requestsFolder, "folder1"), Path.Combine(requestsFolder, "folder2")};
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -642,11 +642,21 @@ public class FileSystemStubSourceFacts
         fileServiceMock
             .Setup(m => m.GetFilesAsync(requestsFolder, "*.json", It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
+        fileServiceMock
+            .Setup(m => m.GetFilesAsync(Path.Join(requestsFolder, "folder1"), "*.json", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(folder1Files);
+        fileServiceMock
+            .Setup(m => m.GetFilesAsync(Path.Join(requestsFolder, "folder2"), "*.json", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<string>());
+        fileServiceMock
+            .Setup(m => m.GetDirectoriesAsync(requestsFolder, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(folders);
 
         var fileDateTimeMapping = new[]
         {
             (files[0], DateTime.Now.AddSeconds(-2)), (files[1], DateTime.Now.AddSeconds(-3)),
-            (files[2], DateTime.Now.AddSeconds(-1))
+            (files[2], DateTime.Now.AddSeconds(-1)), (folder1Files[0], DateTime.Now.AddSeconds(-2)),
+            (folder1Files[1], DateTime.Now.AddSeconds(-3)), (folder1Files[2], DateTime.Now.AddSeconds(-1))
         };
         foreach (var (path, lastWriteDateTime) in fileDateTimeMapping)
         {
@@ -661,11 +671,11 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(true);
 
         // Act
-        await source.CleanOldRequestResultsAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
+        await source.CleanOldRequestResultsAsync(CancellationToken.None);
 
         // Assert
         fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
-            Times.Exactly(2));
+            Times.Exactly(3));
         fileServiceMock.Verify(m => m.DeleteFileAsync(files[1], It.IsAny<CancellationToken>()));
         fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2, It.IsAny<CancellationToken>()));
     }
@@ -708,7 +718,8 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(stubs);
 
         // Act
-        var result = await source.GetStubAsync("stub2", withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
+        var result = await source.GetStubAsync("stub2", withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs[1], result);
@@ -730,7 +741,8 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(stubs);
 
         // Act
-        var result = await source.GetStubAsync("stub3", withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
+        var result = await source.GetStubAsync("stub3", withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -756,7 +768,9 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(stubs);
 
         // Act
-        var result = (await source.GetStubsOverviewAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None)).ToArray();
+        var result =
+            (await source.GetStubsOverviewAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -811,14 +825,17 @@ public class FileSystemStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
-        var requestsPath = withDistributionKey ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName) : Path.Join(StorageFolder, FileNames.RequestsFolderName);
+        var requestsPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Join(StorageFolder, FileNames.RequestsFolderName);
         var expectedPath = Path.Join(requestsPath, $"{correlationId}.json");
         fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
-        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
+        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedPath, result);
@@ -834,7 +851,9 @@ public class FileSystemStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
-        var requestsPath = withDistributionKey ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName) : Path.Join(StorageFolder, FileNames.RequestsFolderName);
+        var requestsPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Join(StorageFolder, FileNames.RequestsFolderName);
         var expectedPath = Path.Join(requestsPath, $"{correlationId}.json");
         fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
@@ -848,7 +867,8 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(files);
 
         // Act
-        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
+        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedFile, result);
@@ -864,7 +884,9 @@ public class FileSystemStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
-        var requestsPath = withDistributionKey ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName) : Path.Join(StorageFolder, FileNames.RequestsFolderName);
+        var requestsPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.RequestsFolderName)
+            : Path.Join(StorageFolder, FileNames.RequestsFolderName);
         var expectedPath = Path.Join(requestsPath, $"{correlationId}.json");
         fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
@@ -876,7 +898,8 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(Array.Empty<string>());
 
         // Act
-        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
+        var result = await source.FindRequestFilenameAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);

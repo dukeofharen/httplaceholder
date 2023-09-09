@@ -10,6 +10,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 [TestClass]
 public class InMemoryStubSourceFacts
 {
+    private const string DistributionKey = "username";
     private static readonly Faker _faker = new();
     private readonly AutoMocker _mocker = new();
     private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
@@ -20,263 +21,325 @@ public class InMemoryStubSourceFacts
     [TestCleanup]
     public void Cleanup() => _mocker.VerifyAll();
 
-    [TestMethod]
-    public async Task AddRequestResultAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddRequestResultAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request = CreateRequestResultModel();
         var response = CreateResponseModel();
+        var key = withDistributionKey ? DistributionKey : null;
 
         // Act
-        await source.AddRequestResultAsync(request, response, CancellationToken.None);
+        await source.AddRequestResultAsync(request, response, key, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(request, source.RequestResultModels.Single());
-        Assert.AreEqual(response, source.StubResponses.Single());
-        Assert.AreEqual(response, source.RequestResponseMap[request]);
+        var item = source.GetCollection(key);
+        Assert.AreEqual(request, item.RequestResultModels.Single());
+        Assert.AreEqual(response, item.StubResponses.Single());
+        Assert.AreEqual(response, item.RequestResponseMap[request]);
         Assert.IsTrue(request.HasResponse);
     }
 
-    [TestMethod]
-    public async Task AddRequestResultAsync_HappyFlow_ResponseNotSet()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddRequestResultAsync_HappyFlow_ResponseNotSet(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request = CreateRequestResultModel();
+        var key = withDistributionKey ? DistributionKey : null;
 
         // Act
-        await source.AddRequestResultAsync(request, null, CancellationToken.None);
+        await source.AddRequestResultAsync(request, null, key, CancellationToken.None);
 
         // Assert
-        Assert.IsFalse(source.StubResponses.Any());
-        Assert.IsFalse(source.RequestResponseMap.Any());
+        var item = source.GetCollection(key);
+        Assert.IsFalse(item.StubResponses.Any());
+        Assert.IsFalse(item.RequestResponseMap.Any());
         Assert.IsFalse(request.HasResponse);
     }
 
-    [TestMethod]
-    public async Task AddStubAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddStubAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var stub = new StubModel();
+        var key = withDistributionKey ? DistributionKey : null;
 
         // Act
-        await source.AddStubAsync(stub, CancellationToken.None);
+        await source.AddStubAsync(stub, key, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(stub, source.StubModels.Single());
+        var item = source.GetCollection(key);
+        Assert.AreEqual(stub, item.StubModels.Single());
     }
 
-    [TestMethod]
-    public async Task GetRequestAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request1 = CreateRequestResultModel();
         var request2 = CreateRequestResultModel();
-        source.RequestResultModels.Add(request1);
-        source.RequestResultModels.Add(request2);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request1);
+        item.RequestResultModels.Add(request2);
 
         // Act
-        var result = await source.GetRequestAsync(request2.CorrelationId, CancellationToken.None);
+        var result = await source.GetRequestAsync(request2.CorrelationId, key, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(request2, result);
     }
 
-    [TestMethod]
-    public async Task GetResponseAsync_RequestNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetResponseAsync_RequestNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request = CreateRequestResultModel();
-        source.RequestResultModels.Add(request);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.GetResponseAsync(request.CorrelationId + "1", CancellationToken.None);
+        var result = await source.GetResponseAsync(request.CorrelationId + "1", key, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
     }
 
-    [TestMethod]
-    public async Task GetResponseAsync_ResponseNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetResponseAsync_ResponseNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request = CreateRequestResultModel();
-        source.RequestResultModels.Add(request);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.GetResponseAsync(request.CorrelationId, CancellationToken.None);
+        var result = await source.GetResponseAsync(request.CorrelationId, key, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
     }
 
-    [TestMethod]
-    public async Task GetResponseAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetResponseAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
 
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+
         var request = CreateRequestResultModel();
-        source.RequestResultModels.Add(request);
+        item.RequestResultModels.Add(request);
 
         var response = CreateResponseModel();
-        source.StubResponses.Add(response);
-        source.RequestResponseMap.Add(request, response);
+        item.StubResponses.Add(response);
+        item.RequestResponseMap.Add(request, response);
 
         // Act
-        var result = await source.GetResponseAsync(request.CorrelationId, CancellationToken.None);
+        var result = await source.GetResponseAsync(request.CorrelationId, key, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(response, result);
     }
 
-    [TestMethod]
-    public async Task DeleteAllRequestResultsAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteAllRequestResultsAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
-        source.RequestResultModels.Add(CreateRequestResultModel());
-        source.StubResponses.Add(CreateResponseModel());
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(CreateRequestResultModel());
+        item.StubResponses.Add(CreateResponseModel());
 
         // Act
-        await source.DeleteAllRequestResultsAsync(CancellationToken.None);
+        await source.DeleteAllRequestResultsAsync(key, CancellationToken.None);
 
         // Assert
-        Assert.IsFalse(source.RequestResultModels.Any());
-        Assert.IsFalse(source.StubResponses.Any());
-        Assert.IsFalse(source.RequestResponseMap.Any());
+        Assert.IsFalse(item.RequestResultModels.Any());
+        Assert.IsFalse(item.StubResponses.Any());
+        Assert.IsFalse(item.RequestResponseMap.Any());
     }
 
-    [TestMethod]
-    public async Task DeleteRequestAsync_RequestNotFound_ShouldReturnFalse()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteRequestAsync_RequestNotFound_ShouldReturnFalse(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request = CreateRequestResultModel();
-        source.RequestResultModels.Add(request);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.DeleteRequestAsync(request.CorrelationId + "1", CancellationToken.None);
+        var result = await source.DeleteRequestAsync(request.CorrelationId + "1", key, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
-        Assert.IsTrue(source.RequestResultModels.Any());
+        Assert.IsTrue(item.RequestResultModels.Any());
     }
 
-    [TestMethod]
-    public async Task DeleteRequestAsync_RequestFound_ShouldReturnTrue_NoResponse()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteRequestAsync_RequestFound_ShouldReturnTrue_NoResponse(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request1 = CreateRequestResultModel();
         var request2 = CreateRequestResultModel();
-        source.RequestResultModels.Add(request1);
-        source.RequestResultModels.Add(request2);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request1);
+        item.RequestResultModels.Add(request2);
 
         var response2 = CreateResponseModel();
-        source.StubResponses.Add(response2);
-        source.RequestResponseMap.Add(request2, response2);
+        item.StubResponses.Add(response2);
+        item.RequestResponseMap.Add(request2, response2);
 
         // Act
-        var result = await source.DeleteRequestAsync(request1.CorrelationId, CancellationToken.None);
+        var result = await source.DeleteRequestAsync(request1.CorrelationId, key, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsFalse(source.RequestResultModels.Any(r => r == request1));
-        Assert.IsTrue(source.StubResponses.All(r => r == response2));
-        Assert.IsTrue(source.RequestResponseMap.All(r => r.Key == request2));
+        Assert.IsFalse(item.RequestResultModels.Any(r => r == request1));
+        Assert.IsTrue(item.StubResponses.All(r => r == response2));
+        Assert.IsTrue(item.RequestResponseMap.All(r => r.Key == request2));
     }
 
-    [TestMethod]
-    public async Task DeleteRequestAsync_RequestFound_ShouldReturnTrue_WithResponse()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteRequestAsync_RequestFound_ShouldReturnTrue_WithResponse(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request1 = CreateRequestResultModel();
         var request2 = CreateRequestResultModel();
-        source.RequestResultModels.Add(request1);
-        source.RequestResultModels.Add(request2);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request1);
+        item.RequestResultModels.Add(request2);
 
         var response2 = CreateResponseModel();
-        source.StubResponses.Add(response2);
-        source.RequestResponseMap.Add(request2, response2);
+        item.StubResponses.Add(response2);
+        item.RequestResponseMap.Add(request2, response2);
 
         // Act
-        var result = await source.DeleteRequestAsync(request2.CorrelationId, CancellationToken.None);
+        var result = await source.DeleteRequestAsync(request2.CorrelationId, key, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsFalse(source.RequestResultModels.Any(r => r == request2));
-        Assert.IsFalse(source.StubResponses.Any(r => r == response2));
-        Assert.IsFalse(source.RequestResponseMap.Any(r => r.Key == request2));
+        Assert.IsFalse(item.RequestResultModels.Any(r => r == request2));
+        Assert.IsFalse(item.StubResponses.Any(r => r == response2));
+        Assert.IsFalse(item.RequestResponseMap.Any(r => r.Key == request2));
     }
 
-    [TestMethod]
-    public async Task DeleteStubAsync_StubNotFound_ShouldReturnFalse()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteStubAsync_StubNotFound_ShouldReturnFalse(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var stub = CreateStubModel();
-        source.StubModels.Add(stub);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.StubModels.Add(stub);
 
         // Act
-        var result = await source.DeleteStubAsync(stub.Id + "1", CancellationToken.None);
+        var result = await source.DeleteStubAsync(stub.Id + "1", key, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
-        Assert.IsTrue(source.StubModels.Any());
+        Assert.IsTrue(item.StubModels.Any());
     }
 
-    [TestMethod]
-    public async Task DeleteStubAsync_StubFound_ShouldReturnTrue()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteStubAsync_StubFound_ShouldReturnTrue(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var stub = CreateStubModel();
-        source.StubModels.Add(stub);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.StubModels.Add(stub);
 
         // Act
-        var result = await source.DeleteStubAsync(stub.Id, CancellationToken.None);
+        var result = await source.DeleteStubAsync(stub.Id, key, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsFalse(source.StubModels.Any());
+        Assert.IsFalse(item.StubModels.Any());
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestResultsAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request = CreateRequestResultModel();
-        source.RequestResultModels.Add(request);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.GetRequestResultsAsync(null, CancellationToken.None);
+        var result = await source.GetRequestResultsAsync(null, key, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(request, result.Single());
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_FromIdentifierSet_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestResultsAsync_FromIdentifierSet_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request1 = CreateRequestResultModel();
         var request2 = CreateRequestResultModel();
         var request3 = CreateRequestResultModel();
-        source.RequestResultModels.Add(request1);
-        source.RequestResultModels.Add(request2);
-        source.RequestResultModels.Add(request3);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request1);
+        item.RequestResultModels.Add(request2);
+        item.RequestResultModels.Add(request3);
 
         // Act
         var result = (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = request2.CorrelationId},
+            key,
             CancellationToken.None)).ToArray();
 
         // Assert
@@ -285,8 +348,10 @@ public class InMemoryStubSourceFacts
         Assert.AreEqual(request1, result[1]);
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
@@ -294,15 +359,17 @@ public class InMemoryStubSourceFacts
         var request2 = CreateRequestResultModel();
         var request3 = CreateRequestResultModel();
         var request4 = CreateRequestResultModel();
-        source.RequestResultModels.Add(request1);
-        source.RequestResultModels.Add(request2);
-        source.RequestResultModels.Add(request3);
-        source.RequestResultModels.Add(request4);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.RequestResultModels.Add(request1);
+        item.RequestResultModels.Add(request2);
+        item.RequestResultModels.Add(request3);
+        item.RequestResultModels.Add(request4);
 
         // Act
         var result =
             (await source.GetRequestResultsAsync(
-                new PagingModel {FromIdentifier = request3.CorrelationId, ItemsPerPage = 2}, CancellationToken.None))
+                new PagingModel {FromIdentifier = request3.CorrelationId, ItemsPerPage = 2}, key, CancellationToken.None))
             .ToArray();
 
         // Assert
@@ -311,31 +378,39 @@ public class InMemoryStubSourceFacts
         Assert.AreEqual(request2, result[1]);
     }
 
-    [TestMethod]
-    public async Task GetStubsAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetStubsAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var stub = CreateStubModel();
-        source.StubModels.Add(stub);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.StubModels.Add(stub);
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(key, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stub, result.Single());
     }
 
-    [TestMethod]
-    public async Task GetStubsOverviewAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetStubsOverviewAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var stub = CreateStubModel();
-        source.StubModels.Add(stub);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.StubModels.Add(stub);
 
         // Act
-        var result = (await source.GetStubsOverviewAsync(CancellationToken.None)).ToArray();
+        var result = (await source.GetStubsOverviewAsync(key, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -346,31 +421,39 @@ public class InMemoryStubSourceFacts
         Assert.AreEqual(stub.Enabled, overviewStub.Enabled);
     }
 
-    [TestMethod]
-    public async Task GetStubAsync_StubNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetStubAsync_StubNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var stub = CreateStubModel();
-        source.StubModels.Add(stub);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.StubModels.Add(stub);
 
         // Act
-        var result = await source.GetStubAsync(stub.Id + "1", CancellationToken.None);
+        var result = await source.GetStubAsync(stub.Id + "1", key, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
     }
 
-    [TestMethod]
-    public async Task GetStubAsync_StubFound_ShouldReturnStub()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetStubAsync_StubFound_ShouldReturnStub(bool withDistributionKey)
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var stub = CreateStubModel();
-        source.StubModels.Add(stub);
+        var key = withDistributionKey ? DistributionKey : null;
+        var item = source.GetCollection(key);
+        item.StubModels.Add(stub);
 
         // Act
-        var result = await source.GetStubAsync(stub.Id, CancellationToken.None);
+        var result = await source.GetStubAsync(stub.Id,key, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stub, result);
@@ -382,20 +465,21 @@ public class InMemoryStubSourceFacts
         // Arrange
         _settings.Storage.OldRequestsQueueLength = 2;
         var source = _mocker.CreateInstance<InMemoryStubSource>();
+        var item = source.GetCollection(null);
 
         RequestResultModel CreateAndAddRequestResultModel(DateTime requestEndDate)
         {
             var request = CreateRequestResultModel();
             request.RequestEndTime = requestEndDate;
-            source.RequestResultModels.Add(request);
+            item.RequestResultModels.Add(request);
             return request;
         }
 
         ResponseModel CreateAndAddResponseModel(RequestResultModel request)
         {
             var response = CreateResponseModel();
-            source.StubResponses.Add(response);
-            source.RequestResponseMap.Add(request, response);
+            item.StubResponses.Add(response);
+            item.RequestResponseMap.Add(request, response);
             return response;
         }
 
@@ -412,17 +496,17 @@ public class InMemoryStubSourceFacts
         await source.CleanOldRequestResultsAsync(CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(2, source.RequestResultModels.Count);
-        Assert.IsTrue(source.RequestResultModels.Contains(request1));
-        Assert.IsTrue(source.StubResponses.Any(r => r == response1));
-        Assert.IsTrue(source.RequestResponseMap.Any(r => r.Key == request1));
+        Assert.AreEqual(2, item.RequestResultModels.Count);
+        Assert.IsTrue(item.RequestResultModels.Contains(request1));
+        Assert.IsTrue(item.StubResponses.Any(r => r == response1));
+        Assert.IsTrue(item.RequestResponseMap.Any(r => r.Key == request1));
 
-        Assert.IsFalse(source.RequestResultModels.Contains(request2));
-        Assert.IsFalse(source.StubResponses.Any(r => r == response2));
-        Assert.IsFalse(source.RequestResponseMap.Any(r => r.Key == request2));
+        Assert.IsFalse(item.RequestResultModels.Contains(request2));
+        Assert.IsFalse(item.StubResponses.Any(r => r == response2));
+        Assert.IsFalse(item.RequestResponseMap.Any(r => r.Key == request2));
 
-        Assert.IsTrue(source.RequestResultModels.Contains(request3));
-        Assert.IsFalse(source.RequestResponseMap.Any(r => r.Key == request3));
+        Assert.IsTrue(item.RequestResultModels.Contains(request3));
+        Assert.IsFalse(item.RequestResponseMap.Any(r => r.Key == request3));
     }
 
     private static RequestResultModel CreateRequestResultModel()
