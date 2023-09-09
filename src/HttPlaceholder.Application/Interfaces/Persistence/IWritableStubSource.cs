@@ -102,7 +102,6 @@ public interface IWritableStubSource : IStubSource
     /// <summary>
     ///     Clean all old requests.
     /// </summary>
-    /// <param name="distributionKey">The distribution key the requests should be cleaned for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task CleanOldRequestResultsAsync(string distributionKey = null, CancellationToken cancellationToken = default);
+    Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default);
 }

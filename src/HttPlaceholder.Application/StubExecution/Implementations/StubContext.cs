@@ -190,7 +190,7 @@ internal class StubContext : IStubContext, ISingletonService
         if (settings.Storage?.CleanOldRequestsInBackgroundJob == false)
         {
             // Clean up old requests here.
-            await source.CleanOldRequestResultsAsync(_stubRequestContext.DistributionKey, cancellationToken);
+            await source.CleanOldRequestResultsAsync(cancellationToken);
         }
 
         var stub = !string.IsNullOrWhiteSpace(requestResult.ExecutingStubId)
@@ -252,7 +252,7 @@ internal class StubContext : IStubContext, ISingletonService
     /// <inheritdoc />
     public async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken) =>
         await GetWritableStubSource()
-            .CleanOldRequestResultsAsync(_stubRequestContext.DistributionKey, cancellationToken);
+            .CleanOldRequestResultsAsync(cancellationToken);
 
     /// <inheritdoc />
     public async Task<IEnumerable<string>> GetTenantNamesAsync(CancellationToken cancellationToken) =>

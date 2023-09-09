@@ -272,7 +272,7 @@ public class StubContextFacts
         stubSource.Verify(
             m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()),
             Times.Once);
-        stubSource.Verify(m => m.CleanOldRequestResultsAsync(DistrubutionKey, It.IsAny<CancellationToken>()),
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(It.IsAny<CancellationToken>()),
             Times.Once);
 
         Assert.AreEqual(stub.Tenant, request.StubTenant);
@@ -340,7 +340,7 @@ public class StubContextFacts
         stubSource.Verify(
             m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()),
             Times.Once);
-        stubSource.Verify(m => m.CleanOldRequestResultsAsync(DistrubutionKey, It.IsAny<CancellationToken>()),
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(It.IsAny<CancellationToken>()),
             Times.Never);
         requestNotifyMock.Verify(m => m.NewRequestReceivedAsync(request, It.IsAny<CancellationToken>()), Times.Once);
     }
@@ -358,7 +358,7 @@ public class StubContextFacts
         await context.CleanOldRequestResultsAsync(CancellationToken.None);
 
         // assert
-        stubSource.Verify(m => m.CleanOldRequestResultsAsync(DistrubutionKey, It.IsAny<CancellationToken>()),
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(It.IsAny<CancellationToken>()),
             Times.Once);
     }
 
