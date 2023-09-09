@@ -195,7 +195,7 @@ response:
 
         var existingStub = new StubModel {Id = "situation-01"};
         ReadOnlyStubSource
-            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubsAsync(null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {existingStub});
 
         // Act
