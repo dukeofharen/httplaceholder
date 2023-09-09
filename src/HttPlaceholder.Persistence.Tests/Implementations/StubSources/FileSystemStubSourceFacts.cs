@@ -129,7 +129,7 @@ public class FileSystemStubSourceFacts
 
         // Act / assert
         await source.AddStubAsync(stub, withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
-        fileSystemStubCacheMock.Verify(m => m.AddOrReplaceStub(stub));
+        fileSystemStubCacheMock.Verify(m => m.AddOrReplaceStub(stub), withDistributionKey ? Times.Never : Times.Once);
     }
 
     [DataTestMethod]
@@ -451,7 +451,7 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsTrue(result);
-        fileSystemStubCacheMock.Verify(m => m.DeleteStub(stubId));
+        fileSystemStubCacheMock.Verify(m => m.DeleteStub(stubId), withDistributionKey ? Times.Never : Times.Once);
     }
 
     [DataTestMethod]
@@ -482,7 +482,7 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsTrue(result);
-        fileSystemStubCacheMock.Verify(m => m.DeleteStub(stubId));
+        fileSystemStubCacheMock.Verify(m => m.DeleteStub(stubId), withDistributionKey ? Times.Never : Times.Once);
     }
 
     [DataTestMethod]

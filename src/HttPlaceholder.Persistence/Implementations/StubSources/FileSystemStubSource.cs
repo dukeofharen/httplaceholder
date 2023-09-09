@@ -62,7 +62,10 @@ internal class FileSystemStubSource : BaseWritableStubSource
         var filePath = Path.Combine(path, ConstructStubFilename(stub.Id));
         var contents = JsonConvert.SerializeObject(stub);
         await _fileService.WriteAllTextAsync(filePath, contents, cancellationToken);
-        _fileSystemStubCache.AddOrReplaceStub(stub);
+        if (string.IsNullOrWhiteSpace(distributionKey))
+        {
+            _fileSystemStubCache.AddOrReplaceStub(stub);
+        }
     }
 
     /// <inheritdoc />
@@ -134,7 +137,11 @@ internal class FileSystemStubSource : BaseWritableStubSource
         }
 
         await _fileService.DeleteFileAsync(filePath, cancellationToken);
-        _fileSystemStubCache.DeleteStub(stubId);
+        if (string.IsNullOrWhiteSpace(distributionKey))
+        {
+            _fileSystemStubCache.DeleteStub(stubId);
+        }
+
         return true;
     }
 
@@ -180,13 +187,15 @@ internal class FileSystemStubSource : BaseWritableStubSource
     /// <inheritdoc />
     public override async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
         CancellationToken cancellationToken = default) =>
-        await _fileSystemStubCache.GetOrUpdateStubCacheAsync(!string.IsNullOrWhiteSpace(distributionKey), cancellationToken);
+        await _fileSystemStubCache.GetOrUpdateStubCacheAsync(!string.IsNullOrWhiteSpace(distributionKey),
+            cancellationToken);
 
     /// <inheritdoc />
     public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
-        var stubs = await _fileSystemStubCache.GetOrUpdateStubCacheAsync(!string.IsNullOrWhiteSpace(distributionKey), cancellationToken);
+        var stubs = await _fileSystemStubCache.GetOrUpdateStubCacheAsync(!string.IsNullOrWhiteSpace(distributionKey),
+            cancellationToken);
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
 
@@ -223,7 +232,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
         await _fileSystemStubCache.GetOrUpdateStubCacheAsync(false, cancellationToken);
     }
 
-    private async Task EnsureDirectoriesExist(string distributionKey = null, CancellationToken cancellationToken = default)
+    private async Task EnsureDirectoriesExist(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         await CreateDirectoryIfNotExistsAsync(GetRequestsFolder(distributionKey), cancellationToken);
         await CreateDirectoryIfNotExistsAsync(GetResponsesFolder(distributionKey), cancellationToken);
@@ -301,7 +311,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
         return $"{unix}-{correlationId}.json";
     }
 
-    internal async Task<string> FindRequestFilenameAsync(string correlationId, string distributionKey, CancellationToken cancellationToken)
+    internal async Task<string> FindRequestFilenameAsync(string correlationId, string distributionKey,
+        CancellationToken cancellationToken)
     {
         var requestsFolder = GetRequestsFolder(distributionKey);
         var oldRequestFilename = ConstructOldRequestFilename(correlationId);
