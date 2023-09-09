@@ -54,8 +54,8 @@ response:
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsTrue(content.Contains("situation-01"));
         Assert.IsTrue(response.IsSuccessStatusCode);
-        Assert.AreEqual(1, StubSource.StubModels.Count);
-        Assert.AreEqual("situation-01", StubSource.StubModels.Single().Id);
+        Assert.AreEqual(1, StubSource.GetCollection(null).StubModels.Count);
+        Assert.AreEqual("situation-01", StubSource.GetCollection(null).StubModels.Single().Id);
     }
 
     [TestMethod]
@@ -95,8 +95,8 @@ response:
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsTrue(content.Contains("situation-01"));
         Assert.IsTrue(response.IsSuccessStatusCode);
-        Assert.AreEqual(1, StubSource.StubModels.Count);
-        Assert.AreEqual("situation-01", StubSource.StubModels.First().Id);
+        Assert.AreEqual(1, StubSource.GetCollection(null).StubModels.Count);
+        Assert.AreEqual("situation-01", StubSource.GetCollection(null).StubModels.First().Id);
     }
 
     [TestMethod]
@@ -151,9 +151,9 @@ response:
         Assert.IsTrue(content.Contains("test-situation1"));
         Assert.IsTrue(content.Contains("test-situation2"));
         Assert.IsTrue(response.IsSuccessStatusCode);
-        Assert.AreEqual(2, StubSource.StubModels.Count);
-        Assert.AreEqual("test-situation1", StubSource.StubModels.ElementAt(0).Id);
-        Assert.AreEqual("test-situation2", StubSource.StubModels.ElementAt(1).Id);
+        Assert.AreEqual(2, StubSource.GetCollection(null).StubModels.Count);
+        Assert.AreEqual("test-situation1", StubSource.GetCollection(null).StubModels.ElementAt(0).Id);
+        Assert.AreEqual("test-situation2", StubSource.GetCollection(null).StubModels.ElementAt(1).Id);
     }
 
     [TestMethod]
@@ -214,7 +214,7 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -239,7 +239,7 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -262,7 +262,7 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs/overview";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -285,7 +285,7 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -309,7 +309,7 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -330,7 +330,7 @@ response:
     public async Task RestApiIntegration_Stub_Get_StubNotFound_ShouldReturn404()
     {
         // arrange
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-124", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -346,7 +346,7 @@ response:
     public async Task RestApiIntegration_Stub_Delete()
     {
         // Arrange
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -355,14 +355,14 @@ response:
         using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/stubs/test-123");
 
         // Assert
-        Assert.AreEqual(0, StubSource.StubModels.Count);
+        Assert.AreEqual(0, StubSource.GetCollection(null).StubModels.Count);
     }
 
     [TestMethod]
     public async Task RestApiIntegration_Stub_Delete_NotFound_ShouldReturn404()
     {
         // Arrange
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-124", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -408,8 +408,8 @@ response:
         using (var response = await Client.SendAsync(request))
         {
             Assert.IsTrue(response.IsSuccessStatusCode);
-            Assert.AreEqual(1, StubSource.StubModels.Count);
-            Assert.AreEqual("situation-01", StubSource.StubModels.Single().Id);
+            Assert.AreEqual(1, StubSource.GetCollection(null).StubModels.Count);
+            Assert.AreEqual("situation-01", StubSource.GetCollection(null).StubModels.Single().Id);
         }
 
         // Update
@@ -443,8 +443,8 @@ response:
         using (var response = await Client.SendAsync(request))
         {
             Assert.IsTrue(response.IsSuccessStatusCode);
-            Assert.AreEqual(1, StubSource.StubModels.Count);
-            Assert.AreEqual("NEW-STUB-ID", StubSource.StubModels.Single().Id);
+            Assert.AreEqual(1, StubSource.GetCollection(null).StubModels.Count);
+            Assert.AreEqual("NEW-STUB-ID", StubSource.GetCollection(null).StubModels.Single().Id);
         }
     }
 
@@ -484,8 +484,8 @@ response:
         using (var response = await Client.SendAsync(request))
         {
             Assert.IsTrue(response.IsSuccessStatusCode);
-            Assert.AreEqual(1, StubSource.StubModels.Count);
-            Assert.AreEqual("situation-01", StubSource.StubModels.First().Id);
+            Assert.AreEqual(1, StubSource.GetCollection(null).StubModels.Count);
+            Assert.AreEqual("situation-01", StubSource.GetCollection(null).StubModels.First().Id);
         }
 
         // Update
@@ -522,8 +522,8 @@ response:
         using (var response = await Client.SendAsync(request))
         {
             Assert.IsTrue(response.IsSuccessStatusCode);
-            Assert.AreEqual(1, StubSource.StubModels.Count);
-            Assert.AreEqual("NEW-STUB-ID", StubSource.StubModels.Single().Id);
+            Assert.AreEqual(1, StubSource.GetCollection(null).StubModels.Count);
+            Assert.AreEqual("NEW-STUB-ID", StubSource.GetCollection(null).StubModels.Single().Id);
         }
     }
 
@@ -531,11 +531,11 @@ response:
     public async Task RestApiIntegration_Stub_DeleteAll()
     {
         // Arrange
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-456", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
@@ -546,6 +546,6 @@ response:
         // Act / Assert
         using var response = await Client.SendAsync(request);
         Assert.IsTrue(response.IsSuccessStatusCode);
-        Assert.IsFalse(StubSource.StubModels.Any());
+        Assert.IsFalse(StubSource.GetCollection(null).StubModels.Any());
     }
 }

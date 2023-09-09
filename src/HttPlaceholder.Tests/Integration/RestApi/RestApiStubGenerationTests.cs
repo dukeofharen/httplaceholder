@@ -49,7 +49,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         response.EnsureSuccessStatusCode();
 
         // Check the actual added stub
-        var addedStub = StubSource.StubModels.Single();
+        var addedStub = StubSource.GetCollection(null).StubModels.Single();
         Assert.AreEqual("/test123", ((StubConditionStringCheckingModel)addedStub.Conditions.Url.Path).StringEquals);
 
         Assert.AreEqual("val1",
@@ -106,7 +106,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         response.EnsureSuccessStatusCode();
 
         // Check that the stub is not added to the stub source.
-        Assert.AreEqual(0, StubSource.StubModels.Count);
+        Assert.AreEqual(0, StubSource.GetCollection(null).StubModels.Count);
     }
 
     [TestMethod]
@@ -133,8 +133,8 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
             HasResponse = true,
             ExecutingStubId = "x"
         };
-        StubSource.RequestResultModels.Add(requestResult);
-        StubSource.RequestResponseMap.Add(requestResult, new ResponseModel {Body = "the content"u8.ToArray()});
+        StubSource.GetCollection(null).RequestResultModels.Add(requestResult);
+        StubSource.GetCollection(null).RequestResponseMap.Add(requestResult, new ResponseModel {Body = "the content"u8.ToArray()});
 
         // Register a new stub for the request
         var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";

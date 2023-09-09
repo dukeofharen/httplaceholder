@@ -66,7 +66,7 @@ public class RestApiImportOpenApiTests : RestApiIntegrationTestBase
         }
 
         // Get and check the stubs.
-        var stubs = StubSource.StubModels.ToArray();
+        var stubs = StubSource.GetCollection(null).StubModels.ToArray();
 
         // Assert stubs.
         Assert.AreEqual(expectedNumberOfStubs, stubs.Length);
