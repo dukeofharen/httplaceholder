@@ -1,6 +1,8 @@
 ALTER TABLE stubs
-    ADD distribution_key VARCHAR(300);
+    ADD distribution_key VARCHAR(300) NOT NULL DEFAULT '';
+DROP INDEX ix_stub_id ON stubs;
 CREATE INDEX stubs_dist_key ON stubs (distribution_key);
+CREATE UNIQUE INDEX stubs_stub_id_dist_key ON stubs (stub_id, distribution_key);
 
 ALTER TABLE requests
     ADD distribution_key VARCHAR(300);
