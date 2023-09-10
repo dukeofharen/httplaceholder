@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Client;
+using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.IntegrationTests.Clients;
 using HttPlaceholder.IntegrationTests.Config;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +10,7 @@ namespace HttPlaceholder.IntegrationTests;
 
 public abstract class IntegrationTestBase
 {
+    protected const string DistributionKeyHeaderKey = "X-HttPlaceholder-DistributionKey";
     private const string EnvironmentKey = "ASPNETCORE_ENVIRONMENT";
 
     public IServiceProvider Provider { get; private set; }
@@ -42,12 +44,6 @@ public abstract class IntegrationTestBase
         var settings = configSection.Get<HttPlaceholderSettings>();
         Assert.IsNotNull(settings);
         services
-            .AddHttPlaceholderClient(c =>
-            {
-                c.RootUrl = settings.HttpUrl;
-                // c.Username = "";
-                // c.Password = "";
-            })
             .AddClientsModule();
         Provider = services.BuildServiceProvider();
         AfterInitialize();
@@ -56,6 +52,15 @@ public abstract class IntegrationTestBase
     public virtual void AfterInitialize()
     {
     }
+
+    public IHttPlaceholderClient GetHttplClient(IDictionary<string, string> defaultRequestHeaders = null) =>
+        HttPlaceholderClientFactory.CreateHttPlaceholderClient(new HttPlaceholderClientConfiguration
+        {
+            RootUrl = Settings.HttpUrl, DefaultHttpHeaders = defaultRequestHeaders
+        }, true);
+
+    public IHttPlaceholderClient GetHttplClient(string distributionKey) =>
+        GetHttplClient(new Dictionary<string, string> {{DistributionKeyHeaderKey, distributionKey}});
 
     public TService GetService<TService>() => Provider.GetRequiredService<TService>();
 

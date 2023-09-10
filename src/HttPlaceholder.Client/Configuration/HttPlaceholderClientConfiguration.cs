@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HttPlaceholder.Client.Configuration;
 
@@ -33,6 +34,11 @@ public class HttPlaceholderClientConfiguration
     ///     The password of the HttPlaceholder instance.
     /// </summary>
     public string Password { get; set; }
+
+    /// <summary>
+    ///     Sets a set of default request headers that should be sent with every request through the client.
+    /// </summary>
+    public IDictionary<string, string> DefaultHttpHeaders { get; set; }
 
     /// <summary>
     ///     Validates the HttPlaceholder configuration.
