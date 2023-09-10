@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Client;
+using HttPlaceholder.IntegrationTests.Clients;
 using HttPlaceholder.IntegrationTests.Config;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,16 +14,6 @@ public abstract class IntegrationTestBase
     public IServiceProvider Provider { get; private set; }
 
     public HttPlaceholderSettings Settings => Provider.GetRequiredService<IOptions<HttPlaceholderSettings>>().Value;
-
-    public HttpClient HttpClient
-    {
-        get
-        {
-            var httpClient = Provider.GetRequiredService<IHttpClientFactory>().CreateClient();
-            httpClient.BaseAddress = new Uri(Settings.HttpUrl);
-            return httpClient;
-        }
-    }
 
     [TestInitialize]
     public void Initialize()
@@ -50,12 +41,14 @@ public abstract class IntegrationTestBase
 
         var settings = configSection.Get<HttPlaceholderSettings>();
         Assert.IsNotNull(settings);
-        services.AddHttPlaceholderClient(c =>
-        {
-            c.RootUrl = settings.HttpUrl;
-            // c.Username = "";
-            // c.Password = "";
-        });
+        services
+            .AddHttPlaceholderClient(c =>
+            {
+                c.RootUrl = settings.HttpUrl;
+                // c.Username = "";
+                // c.Password = "";
+            })
+            .AddClientsModule();
         Provider = services.BuildServiceProvider();
     }
 }
