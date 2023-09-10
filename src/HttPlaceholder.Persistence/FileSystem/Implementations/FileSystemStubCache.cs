@@ -37,10 +37,10 @@ internal class FileSystemStubCache : IFileSystemStubCache
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(bool shouldNotCache, CancellationToken cancellationToken)
+    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey, CancellationToken cancellationToken)
     {
-        var path = GetStubsFolder();
-        if (shouldNotCache)
+        var path = GetStubsFolder(distributionKey);
+        if (!string.IsNullOrWhiteSpace(distributionKey))
         {
             return await GetStubsAsync(path, cancellationToken);
         }
@@ -167,6 +167,12 @@ internal class FileSystemStubCache : IFileSystemStubCache
         }
     }
 
-    private string GetStubsFolder() =>
-        Path.Combine(_options?.CurrentValue?.Storage?.FileStorageLocation, FileNames.StubsFolderName);
+    private string GetStubsFolder(string distributionKey)
+    {
+        var rootFolder = _options?.CurrentValue?.Storage?.FileStorageLocation;
+        return string.IsNullOrWhiteSpace(distributionKey)
+            ? Path.Combine(rootFolder, FileNames.StubsFolderName)
+            : Path.Combine(rootFolder, distributionKey, FileNames.StubsFolderName);
+    }
+
 }

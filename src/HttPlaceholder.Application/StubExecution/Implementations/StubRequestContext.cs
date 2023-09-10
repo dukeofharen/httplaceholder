@@ -8,6 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 /// </summary>
 public class StubRequestContext : IStubRequestContext, ISingletonService
 {
+    private static string _distributionKey = "";
     private const string DistributionKeyKey = "distributionKey";
     private readonly IHttpContextService _httpContextService;
 
@@ -19,10 +20,18 @@ public class StubRequestContext : IStubRequestContext, ISingletonService
         _httpContextService = httpContextService;
     }
 
+    // /// <inheritdoc />
+    // public string DistributionKey
+    // {
+    //     get => _httpContextService.GetItem<string>(DistributionKeyKey);
+    //     set => _httpContextService.SetItem(DistributionKeyKey, value);
+    // }
+
     /// <inheritdoc />
     public string DistributionKey
     {
-        get => _httpContextService.GetItem<string>(DistributionKeyKey);
-        set => _httpContextService.SetItem(DistributionKeyKey, value);
+        get => _distributionKey;
+
+        set => _distributionKey = value;
     }
 }

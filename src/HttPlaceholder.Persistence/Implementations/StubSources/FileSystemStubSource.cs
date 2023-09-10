@@ -186,15 +186,19 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
     /// <inheritdoc />
     public override async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        await _fileSystemStubCache.GetOrUpdateStubCacheAsync(!string.IsNullOrWhiteSpace(distributionKey),
+        CancellationToken cancellationToken = default)
+    {
+        await EnsureDirectoriesExist(distributionKey, cancellationToken);
+        return await _fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
             cancellationToken);
+    }
 
     /// <inheritdoc />
     public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
-        var stubs = await _fileSystemStubCache.GetOrUpdateStubCacheAsync(!string.IsNullOrWhiteSpace(distributionKey),
+        await EnsureDirectoriesExist(distributionKey, cancellationToken);
+        var stubs = await _fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
             cancellationToken);
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
@@ -218,7 +222,8 @@ internal class FileSystemStubSource : BaseWritableStubSource
         }
     }
 
-    private async Task HandleCleaningOfOldRequests(string path, string distributionKey, CancellationToken cancellationToken)
+    private async Task HandleCleaningOfOldRequests(string path, string distributionKey,
+        CancellationToken cancellationToken)
     {
         var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
         var filePaths = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
@@ -238,7 +243,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
     {
         await CreateDirectoryIfNotExistsAsync(GetRootFolder(), cancellationToken);
         await EnsureDirectoriesExist(null, cancellationToken);
-        await _fileSystemStubCache.GetOrUpdateStubCacheAsync(false, cancellationToken);
+        await _fileSystemStubCache.GetOrUpdateStubCacheAsync(null, cancellationToken);
     }
 
     private async Task EnsureDirectoriesExist(string distributionKey = null,

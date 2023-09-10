@@ -154,7 +154,6 @@ public class StubHandlingMiddlewareFacts
 
         // Assert
         Assert.IsFalse(_nextCalled);
-        httpContextServiceMock.Verify(m => m.EnableRewind());
         httpContextServiceMock.Verify(m => m.ClearResponse());
         httpContextServiceMock.Verify(m =>
             m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));

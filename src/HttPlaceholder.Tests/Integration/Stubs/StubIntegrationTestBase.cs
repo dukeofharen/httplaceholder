@@ -60,7 +60,7 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
         _writableStubSourceMock = new Mock<IWritableStubSource>();
         _writableStubSourceMock
             .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>(),
-                null, It.IsAny<CancellationToken>()))
+                It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Callback<RequestResultModel, ResponseModel, string, CancellationToken>((req, res, _, _) =>
             {
                 Requests.Add(req);

@@ -27,7 +27,7 @@ public abstract class IntegrationTestBase
 
         var config = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json")
-            .AddJsonFile($"appsettings.{env}.json")
+            .AddJsonFile($"appsettings.{env}.json", optional: true)
             .AddEnvironmentVariables()
             .Build();
 
@@ -50,5 +50,14 @@ public abstract class IntegrationTestBase
             })
             .AddClientsModule();
         Provider = services.BuildServiceProvider();
+        AfterInitialize();
     }
+
+    public virtual void AfterInitialize()
+    {
+    }
+
+    public TService GetService<TService>() => Provider.GetRequiredService<TService>();
+
+    public string RootUrl => Settings.HttpUrl;
 }

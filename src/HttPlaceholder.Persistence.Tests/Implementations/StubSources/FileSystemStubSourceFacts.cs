@@ -692,7 +692,7 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
@@ -714,7 +714,7 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
@@ -737,7 +737,7 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
@@ -764,7 +764,7 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
@@ -800,7 +800,7 @@ public class FileSystemStubSourceFacts
             Times.Exactly(4));
         fileServiceMock.Verify(m => m.CreateDirectoryAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Exactly(4));
-        fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCacheAsync(false, It.IsAny<CancellationToken>()));
+        fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCacheAsync(null, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
