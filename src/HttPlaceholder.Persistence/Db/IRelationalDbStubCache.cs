@@ -14,10 +14,11 @@ public interface IRelationalDbStubCache
     ///     Loads the stub cache to memory if it has not been done yet, returns the current cache or updates the current cache
     ///     if something has changed.
     /// </summary>
+    /// <param name="distributionKey">The distribution key the stubs should be added for. Leave it null if there is no user.</param>
     /// <param name="ctx">The database context.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of <see cref="StubModel" />.</returns>
-    Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx, CancellationToken cancellationToken);
+    Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey, IDatabaseContext ctx, CancellationToken cancellationToken);
 
     /// <summary>
     ///     Adds or updates a stub in the cache.

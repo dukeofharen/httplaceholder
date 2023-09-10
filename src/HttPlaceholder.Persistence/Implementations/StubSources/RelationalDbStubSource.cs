@@ -57,7 +57,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
                 requestResult.RequestBeginTime,
                 requestResult.RequestEndTime,
                 Json = json,
-                HasResponse = hasResponse
+                HasResponse = hasResponse,
+                DistributionKey = CleanDistKey(distributionKey)
             });
         if (hasResponse)
         {
@@ -69,7 +70,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
                     responseModel.StatusCode,
                     Headers = JsonConvert.SerializeObject(responseModel.Headers),
                     Body = responseModel.Body != null ? Convert.ToBase64String(responseModel.Body) : string.Empty,
-                    responseModel.BodyIsBinary
+                    responseModel.BodyIsBinary,
+                    DistributionKey = CleanDistKey(distributionKey)
                 });
         }
     }
@@ -82,8 +84,17 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         var json = JsonConvert.SerializeObject(stub);
         await ctx.ExecuteAsync(_queryStore.AddStubQuery,
             cancellationToken,
-            new {StubId = stub.Id, Stub = json, StubType = StubTypes.StubJsonType});
-        await _relationalDbStubCache.AddOrReplaceStubAsync(ctx, stub, cancellationToken);
+            new
+            {
+                StubId = stub.Id,
+                Stub = json,
+                StubType = StubTypes.StubJsonType,
+                DistributionKey = CleanDistKey(distributionKey)
+            });
+        if (string.IsNullOrWhiteSpace(distributionKey))
+        {
+            await _relationalDbStubCache.AddOrReplaceStubAsync(ctx, stub, cancellationToken);
+        }
     }
 
     /// <inheritdoc />
@@ -92,7 +103,7 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, cancellationToken,
-            new {CorrelationId = correlationId});
+            new {CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey)});
         return updatedRows > 0;
     }
 
@@ -101,7 +112,11 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     {
         var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, cancellationToken, new {Limit = maxLength});
+        var keys = await ctx.QueryAsync<string>(_queryStore.GetDistinctRequestDistributionKeysQuery, cancellationToken);
+        foreach (var key in keys)
+        {
+            await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, cancellationToken, new {Limit = maxLength, DistributionKey = key});
+        }
     }
 
     /// <inheritdoc />
@@ -112,7 +127,7 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(
             _queryStore.GetRequestQuery,
             cancellationToken,
-            new {CorrelationId = correlationId});
+            new {CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey)});
         return result == null ? null : JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
     }
 
@@ -124,7 +139,7 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         var result = await ctx.QueryFirstOrDefaultAsync<DbResponseModel>(
             _queryStore.GetResponseQuery,
             cancellationToken,
-            new {CorrelationId = correlationId});
+            new {CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey)});
         if (result == null)
         {
             return null;
@@ -144,7 +159,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        await ctx.ExecuteAsync(_queryStore.DeleteAllRequestsQuery, cancellationToken);
+        await ctx.ExecuteAsync(_queryStore.DeleteAllRequestsQuery, cancellationToken,
+            new {DistributionKey = CleanDistKey(distributionKey)});
     }
 
     /// <inheritdoc />
@@ -152,8 +168,13 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, cancellationToken, new {StubId = stubId});
-        await _relationalDbStubCache.DeleteStubAsync(ctx, stubId, cancellationToken);
+        var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, cancellationToken,
+            new {StubId = stubId, DistributionKey = CleanDistKey(distributionKey)});
+        if (string.IsNullOrWhiteSpace(distributionKey))
+        {
+            await _relationalDbStubCache.DeleteStubAsync(ctx, stubId, cancellationToken);
+        }
+
         return updated > 0;
     }
 
@@ -167,7 +188,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         if (pagingModel != null)
         {
             IEnumerable<string> correlationIds =
-                (await ctx.QueryAsync<string>(_queryStore.GetPagedRequestCorrelationIdsQuery, cancellationToken))
+                (await ctx.QueryAsync<string>(_queryStore.GetPagedRequestCorrelationIdsQuery, cancellationToken,
+                    new {DistributionKey = CleanDistKey(distributionKey)}))
                 .ToArray();
             if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
             {
@@ -185,11 +207,13 @@ internal class RelationalDbStubSource : BaseWritableStubSource
             }
 
             result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsByCorrelationIdsQuery,
-                cancellationToken, new {CorrelationIds = correlationIds.ToArray()});
+                cancellationToken,
+                new {CorrelationIds = correlationIds.ToArray(), DistributionKey = CleanDistKey(distributionKey)});
         }
         else
         {
-            result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery, cancellationToken);
+            result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery, cancellationToken,
+                new {DistributionKey = CleanDistKey(distributionKey)});
         }
 
         return result
@@ -201,13 +225,13 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        return await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx, cancellationToken);
+        return await _relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx, cancellationToken);
     }
 
     /// <inheritdoc />
     public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
         CancellationToken cancellationToken = default) =>
-        (await GetStubsAsync(distributionKey, cancellationToken))
+        (await GetStubsAsync(CleanDistKey(distributionKey), cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled});
 
     /// <inheritdoc />
@@ -215,7 +239,7 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var stubs = await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx, cancellationToken);
+        var stubs = await _relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx, cancellationToken);
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
 
@@ -226,6 +250,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         await _relationalDbMigrator.MigrateAsync(ctx, cancellationToken);
 
         // Also initialize the cache at startup.
-        await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx, cancellationToken);
+        await _relationalDbStubCache.GetOrUpdateStubCacheAsync(string.Empty, ctx, cancellationToken);
     }
+
+    private static string CleanDistKey(string distributionKey) => distributionKey ?? string.Empty;
 }

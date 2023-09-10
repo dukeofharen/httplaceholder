@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
@@ -57,9 +58,14 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx,
+    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey, IDatabaseContext ctx,
         CancellationToken cancellationToken)
     {
+        if (!string.IsNullOrWhiteSpace(distributionKey))
+        {
+            return GetStubs(ctx, distributionKey);
+        }
+
         var shouldUpdateCache = false;
 
         // Check if the "stub_update_tracking_id" field in the database has a new value.
@@ -104,18 +110,10 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
             return StubCache.Values;
         }
 
-        var queryResults = ctx.Query<DbStubModel>(_queryStore.GetStubsQuery);
         StubCache.Clear();
-        foreach (var queryResult in queryResults)
+        var stubs = GetStubs(ctx, string.Empty);
+        foreach (var stub in stubs)
         {
-            var stub = queryResult.StubType switch
-            {
-                StubTypes.StubJsonType => JsonConvert.DeserializeObject<StubModel>(queryResult.Stub),
-                StubTypes.StubYamlType => YamlUtilities.Parse<StubModel>(queryResult.Stub),
-                _ => throw new NotImplementedException(
-                    $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.")
-            };
-
             if (!StubCache.TryAdd(stub.Id, stub))
             {
                 _logger.LogWarning($"Could not add stub with ID '{stub.Id}' to cache.");
@@ -123,6 +121,20 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         }
 
         return StubCache.Values;
+    }
+
+    private IList<StubModel> GetStubs(IDatabaseContext ctx, string distributionKey)
+    {
+        var queryResults = ctx.Query<DbStubModel>(_queryStore.GetStubsQuery, new {DistributionKey = distributionKey});
+
+        return queryResults.Select(queryResult => queryResult.StubType switch
+            {
+                StubTypes.StubJsonType => JsonConvert.DeserializeObject<StubModel>(queryResult.Stub),
+                StubTypes.StubYamlType => YamlUtilities.Parse<StubModel>(queryResult.Stub),
+                _ => throw new NotImplementedException(
+                    $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.")
+            })
+            .ToList();
     }
 
     private void UpdateLocalStubUpdateTrackingId(string trackingId)

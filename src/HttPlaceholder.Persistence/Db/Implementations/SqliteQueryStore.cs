@@ -102,7 +102,7 @@ AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string CleanOldRequestsQuery =>
-        @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
+        @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests WHERE distribution_key = @DistributionKey ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
 
     /// <inheritdoc />
     public string GetStubUpdateTrackingIdQuery => "SELECT stub_update_tracking_id FROM metadata";
