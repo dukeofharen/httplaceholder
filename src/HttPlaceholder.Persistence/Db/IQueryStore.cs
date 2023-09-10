@@ -89,4 +89,9 @@ public interface IQueryStore
     ///     Returns the query for updating the "stub update tracking ID".
     /// </summary>
     string UpdateStubUpdateTrackingIdQuery { get; }
+
+    /// <summary>
+    ///     Returns the query for retrieving a list of unique distribution keys in the requests table.
+    /// </summary>
+    string GetDistinctRequestDistributionKeysQuery { get; }
 }

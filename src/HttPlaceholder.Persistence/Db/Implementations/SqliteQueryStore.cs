@@ -114,4 +114,7 @@ AND distribution_key = @DistributionKey";
     /// <inheritdoc />
     public string UpdateStubUpdateTrackingIdQuery =>
         "UPDATE metadata SET stub_update_tracking_id = @StubUpdateTrackingId";
+
+    /// <inheritdoc />
+    public string GetDistinctRequestDistributionKeysQuery => "SELECT DISTINCT(distribution_key) FROM requests;";
 }
