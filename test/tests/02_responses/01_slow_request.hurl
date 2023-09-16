@@ -10,7 +10,7 @@ conditions:
     path:
       equals: /slow-request
 response:
-  extraDuration: 1000
+  extraDuration: 100
   text: OK SLOW REQUEST
 ```
 
@@ -29,8 +29,8 @@ conditions:
       equals: /slow-request-model
 response:
   extraDuration:
-    min: 1000
-    max: 1500
+    min: 100
+    max: 160
   text: OK SLOW REQUEST MODEL
 ```
 
@@ -42,7 +42,7 @@ GET {{rootUrl}}/slow-request
 HTTP 200
 [Asserts]
 body == "OK SLOW REQUEST"
-duration > 1000
+duration > 100
 
 # Check the request: min/max
 GET {{rootUrl}}/slow-request-model
@@ -50,5 +50,5 @@ GET {{rootUrl}}/slow-request-model
 HTTP 200
 [Asserts]
 body == "OK SLOW REQUEST MODEL"
-duration > 1000
-duration < 1600
+duration > 100
+duration < 200
