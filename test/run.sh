@@ -25,4 +25,3 @@ if [ "$VERBOSE" = "verbose" ]; then
 fi
 
 eval "$COMMAND"
-# echo "$COMMAND"
