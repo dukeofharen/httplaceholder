@@ -16,4 +16,4 @@ GET {{rootUrl}}/urlthatisnotmapped
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

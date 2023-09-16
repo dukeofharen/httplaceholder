@@ -85,7 +85,7 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK POST WITH JSON OBJECT CHECKER"
+body == "OK POST WITH JSON OBJECT CHECKER"
 
 # Check the request: JSON object check and JSON incorrect
 POST {{rootUrl}}/post-with-json-object-checker
@@ -113,7 +113,7 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"
 
 # Check the request: JSON array check
 POST {{rootUrl}}/post-with-json-array-checker
@@ -140,7 +140,7 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK POST WITH JSON ARRAY CHECKER"
+body == "OK POST WITH JSON ARRAY CHECKER"
 
 # Check the request: JSON array check and JSON invalid
 POST {{rootUrl}}/post-with-json-array-checker
@@ -167,4 +167,4 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

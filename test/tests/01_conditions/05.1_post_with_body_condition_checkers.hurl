@@ -27,7 +27,7 @@ value2
 
 HTTP 200
 [Asserts]
-body equals "OK POST AND CHECK BODY"
+body == "OK POST AND CHECK BODY"
 
 # Check the request: posted value incorrect
 POST {{rootUrl}}/post
@@ -38,7 +38,7 @@ value2
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"
 
 # Check the request: method is incorrect
 PUT {{rootUrl}}/post
@@ -49,4 +49,4 @@ value2
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

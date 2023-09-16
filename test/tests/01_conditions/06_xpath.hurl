@@ -61,7 +61,7 @@ Content-Type: application/soap+xml; charset=utf-8
 
 HTTP 200
 [Asserts]
-body equals "OK XML WITH NAMESPACES SPECIFIED"
+body == "OK XML WITH NAMESPACES SPECIFIED"
 
 # Check the request: with namespaces and XPath incorrect
 POST {{rootUrl}}/post-xml-with-namespaces
@@ -81,7 +81,7 @@ Content-Type: application/soap+xml; charset=utf-8
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"
 
 # Check the request: without namespaces
 POST {{rootUrl}}/post-xml-without-namespaces
@@ -101,7 +101,7 @@ Content-Type: application/soap+xml; charset=utf-8
 
 HTTP 200
 [Asserts]
-body equals "OK XML WITHOUT NAMESPACES SPECIFIED"
+body == "OK XML WITHOUT NAMESPACES SPECIFIED"
 
 # Check the request: without namespaces and XPath incorrect
 POST {{rootUrl}}/post-xml-without-namespaces
@@ -121,4 +121,4 @@ Content-Type: application/soap+xml; charset=utf-8
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

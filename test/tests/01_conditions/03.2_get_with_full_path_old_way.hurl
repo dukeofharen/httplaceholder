@@ -19,4 +19,4 @@ GET {{rootUrl}}/get-full-path-old-way?q1=v1&q2=v2
 
 HTTP 200
 [Asserts]
-body equals "OK FULL PATH OLD WAY"
+body == "OK FULL PATH OLD WAY"

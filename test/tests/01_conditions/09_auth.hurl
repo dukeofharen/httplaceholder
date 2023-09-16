@@ -25,7 +25,7 @@ user1: Secret1!
 
 HTTP 200
 [Asserts]
-body equals "OK BASIC AUTH"
+body == "OK BASIC AUTH"
 
 # Check the request: incorrect credentials
 GET {{rootUrl}}/basic-auth
@@ -34,4 +34,4 @@ user1: Secret1@
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

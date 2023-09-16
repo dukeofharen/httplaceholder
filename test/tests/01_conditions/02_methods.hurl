@@ -22,18 +22,18 @@ GET {{rootUrl}}/multiple-methods
 
 HTTP 200
 [Asserts]
-body equals "OK MULTIPLE METHODS"
+body == "OK MULTIPLE METHODS"
 
 # Check POST method
 POST {{rootUrl}}/multiple-methods
 
 HTTP 200
 [Asserts]
-body equals "OK MULTIPLE METHODS"
+body == "OK MULTIPLE METHODS"
 
 # Check PUT method
 PUT {{rootUrl}}/multiple-methods
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

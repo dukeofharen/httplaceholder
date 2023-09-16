@@ -60,7 +60,7 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK WITH JSONPATH TEXT CHECKER"
+body == "OK WITH JSONPATH TEXT CHECKER"
 
 # Check the request: text JSONPath check and JSON invalid
 POST {{rootUrl}}/post-with-text-jsonpath-checker
@@ -80,7 +80,7 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"
 
 # Check the request: text and object JSONPath check
 POST {{rootUrl}}/post-with-text-and-object-jsonpath-checker
@@ -101,7 +101,7 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK WITH JSONPATH TEXT AND OBJECT CHECKER"
+body == "OK WITH JSONPATH TEXT AND OBJECT CHECKER"
 
 # Check the request: text and object JSONPath check and text checker invalid
 POST {{rootUrl}}/post-with-text-and-object-jsonpath-checker
@@ -121,7 +121,7 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"
 
 # Check the request: text and object JSONPath check and object checker invalid
 POST {{rootUrl}}/post-with-text-and-object-jsonpath-checker
@@ -142,4 +142,4 @@ Content-Type: application/json
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

@@ -27,11 +27,11 @@ GET {{rootUrl}}/get-presence-check?q1=val1&q2=val3
 
 HTTP 200
 [Asserts]
-body equals "OK GET PRESENCE CHECK"
+body == "OK GET PRESENCE CHECK"
 
 # Check the request: check fails
 GET {{rootUrl}}/get-presence-check?q1=val1&q2=val2&q3=val3
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

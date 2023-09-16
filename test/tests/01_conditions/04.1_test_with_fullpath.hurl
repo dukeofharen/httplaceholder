@@ -20,11 +20,11 @@ GET {{rootUrl}}/fullPath?q1=val1&q2=val2
 
 HTTP 200
 [Asserts]
-body equals "OK FULL PATH"
+body == "OK FULL PATH"
 
 # Check the request: path incorrect
 GET {{rootUrl}}/fullPath?q1=val1&q2=val3
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

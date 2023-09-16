@@ -22,4 +22,4 @@ GET {{rootUrl}}/get-query-old-way?q1=val1&q2=val2
 
 HTTP 200
 [Asserts]
-body equals "OK QUERY OLD WAY"
+body == "OK QUERY OLD WAY"

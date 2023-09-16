@@ -27,4 +27,4 @@ value2
 
 HTTP 200
 [Asserts]
-body equals "OK POST AND CHECK BODY OLD WAY"
+body == "OK POST AND CHECK BODY OLD WAY"

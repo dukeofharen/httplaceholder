@@ -37,7 +37,7 @@ X-Header-3: somevalue
 
 HTTP 200
 [Asserts]
-body equals "OK PATH, QUERY AND HEADERS"
+body == "OK PATH, QUERY AND HEADERS"
 
 # Check the request: path is incorrect
 GET {{rootUrl}}/post?q1=val1&q2=val2
@@ -47,7 +47,7 @@ X-Header-3: somevalue
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"
 
 # Check the request: query is incorrect
 GET {{rootUrl}}/get?q1=val1&q2=val3
@@ -57,7 +57,7 @@ X-Header-3: somevalue
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"
 
 # Check the request: header is incorrect
 GET {{rootUrl}}/get?q1=val1&q2=val2
@@ -69,7 +69,7 @@ X-Header-5: some other unused value
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"
 
 # Check the request: header presence check fails
 GET {{rootUrl}}/get?q1=val1&q2=val2
@@ -78,4 +78,4 @@ X-Header-2: value2
 
 HTTP 200
 [Asserts]
-body equals "OK FALLBACK"
+body == "OK FALLBACK"

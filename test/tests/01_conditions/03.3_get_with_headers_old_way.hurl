@@ -24,4 +24,4 @@ Header-2: val2
 
 HTTP 200
 [Asserts]
-body equals "OK HEADERS OLD WAY"
+body == "OK HEADERS OLD WAY"
