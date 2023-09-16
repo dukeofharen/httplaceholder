@@ -11,6 +11,7 @@ response:
 
 HTTP 200
 
+# Check the request
 GET {{rootUrl}}/urlthatisnotmapped
 
 HTTP 200
