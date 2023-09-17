@@ -13,3 +13,19 @@ HTTP 200
 [Asserts]
 jsonpath "$[0].stub.conditions.basicAuthentication.username" == "user"
 jsonpath "$[0].stub.conditions.basicAuthentication.password" == "pass"
+
+# Import cURL: basic auth flag
+POST {{rootUrl}}/ph-api/import/curl
+Content-Type: text/plain
+```
+curl 'https://api.site.com/api/v1/users/authenticate' \
+  -u 'user:pass' \
+  --data-raw '{}' \
+  --compressed
+```
+
+HTTP 200
+
+[Asserts]
+jsonpath "$[0].stub.conditions.basicAuthentication.username" == "user"
+jsonpath "$[0].stub.conditions.basicAuthentication.password" == "pass"
