@@ -1,10 +1,8 @@
 #!/bin/bash
-# Execute this script for performing Postman integration tests against HttPlaceholder.
-# Make sure to run "npm install" first in this folder.
+# Execute this script for performing Hurl integration tests against HttPlaceholder.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
 HTTPL_ROOT_DIR="$DIR/../src/HttPlaceholder"
-POSTMAN_PATH="$DIR/HttPlaceholderIntegration.postman_collection.json"
 LOGS_DIR="$DIR/logs"
 if [ ! -d "$LOGS_DIR" ]; then
   mkdir "$LOGS_DIR"
@@ -26,7 +24,7 @@ docker-compose -f "$DEVENV_SCRIPT_PATH" up -d
 echo "Testing HttPlaceholder with in memory configuration"
 dotnet run --project $HTTPL_ROOT_DIR --useInMemoryStorage --storeResponses > $DIR/logs/httplaceholder-in-memory.txt 2>&1 &
 sleep 5
-npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-in-memory.txt
+bash ./run.sh > $DIR/logs/test-in-memory.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
@@ -40,12 +38,12 @@ fi
 
 dotnet run --project $HTTPL_ROOT_DIR --fileStorageLocation $FILE_STORAGE_PATH  --storeResponses > $DIR/logs/httplaceholder-file-storage.txt 2>&1 &
 sleep 5
-npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-file-storage.txt
+bash ./run.sh > $DIR/logs/test-file-storage.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
-# Run HttPlaceholder tests for in SQLite configuration.
-echo "Testing HttPlaceholder with in SQLite configuration"
+# Run HttPlaceholder tests for SQLite configuration.
+echo "Testing HttPlaceholder with SQLite configuration"
 SQLITE_PATH="/tmp/httplaceholder_stubs.db"
 if [ -f "$SQLITE_PATH" ]; then
   sudo rm $SQLITE_PATH
@@ -53,7 +51,7 @@ fi
 
 dotnet run --project $HTTPL_ROOT_DIR --sqliteConnectionString "Data Source=$SQLITE_PATH;Foreign Keys=True" --storeResponses > $DIR/logs/httplaceholder-sqlite.txt 2>&1 &
 sleep 5
-npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-sqlite.txt
+bash ./run.sh > $DIR/logs/test-sqlite.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
@@ -61,7 +59,7 @@ sudo killall HttPlaceholder
 echo "Testing HttPlaceholder with in MySQL 5 configuration"
 dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true;SSL Mode=None" --storeResponses > $DIR/logs/httplaceholder-mysql5.txt 2>&1 &
 sleep 5
-npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-mysql5.txt
+bash ./run.sh > $DIR/logs/test-mysql5.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
@@ -69,7 +67,7 @@ sudo killall HttPlaceholder
 echo "Testing HttPlaceholder with in MySQL 8 configuration"
 dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Port=3307;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mysql8.txt 2>&1 &
 sleep 5
-npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-mysql8.txt
+bash ./run.sh > $DIR/logs/test-mysql8.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
@@ -77,7 +75,7 @@ sudo killall HttPlaceholder
 echo "Testing HttPlaceholder with in MariaDB configuration"
 dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Port=3308;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mariadb.txt 2>&1 &
 sleep 5
-npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-mariadb.txt
+bash ./run.sh > $DIR/logs/test-mariadb.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
@@ -85,7 +83,7 @@ sudo killall HttPlaceholder
 echo "Testing HttPlaceholder with in MSSQL configuration"
 dotnet run --project $HTTPL_ROOT_DIR --sqlServerConnectionString "Server=localhost,1433;Database=httplaceholder;User Id=sa;Password=Password123!" --storeResponses > $DIR/logs/httplaceholder-mssql.txt 2>&1 &
 sleep 5
-npm run newman -- run $POSTMAN_PATH --insecure > $DIR/logs/test-mssql.txt
+bash ./run.sh > $DIR/logs/test-mssql.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
