@@ -43,7 +43,7 @@ internal class YamlFileStubSource : IStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null, CancellationToken cancellationToken = default)
     {
         var fileLocations = (await GetYamlFileLocationsAsync(cancellationToken)).ToArray();
         if (fileLocations.Length == 0)
@@ -67,19 +67,19 @@ internal class YamlFileStubSource : IStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken) =>
-        (await GetStubsAsync(cancellationToken))
+    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null, CancellationToken cancellationToken = default) =>
+        (await GetStubsAsync(distributionKey, cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />
-    public async Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken) =>
-        (await GetStubsAsync(cancellationToken)).FirstOrDefault(s => s.Id == stubId);
+    public async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null, CancellationToken cancellationToken = default) =>
+        (await GetStubsAsync(distributionKey, cancellationToken)).FirstOrDefault(s => s.Id == stubId);
 
     /// <inheritdoc />
     public async Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>
         // Check if the .yml files could be loaded.
-        await GetStubsAsync(cancellationToken);
+        await GetStubsAsync(null, cancellationToken);
 
     private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
         files.Max(f => _fileService.GetLastWriteTime(f));

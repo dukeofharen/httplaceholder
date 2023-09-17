@@ -27,4 +27,10 @@ public interface IEnvService
     /// <param name="platform">The OS to check for.</param>
     /// <returns>True if the current OS is the provided OS, false otherwise.</returns>
     bool IsOs(OSPlatform platform);
+
+    /// <summary>
+    ///     A shorthand method for retrieving the ASPNETCORE_ENVIRONMENT environment variable.
+    /// </summary>
+    /// <returns>The value of ASPNETCORE_ENVIRONMENT or null if it was not found.</returns>
+    string GetAspNetCoreEnvironment();
 }

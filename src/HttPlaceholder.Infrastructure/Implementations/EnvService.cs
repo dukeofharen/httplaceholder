@@ -21,4 +21,7 @@ internal class EnvService : IEnvService, ISingletonService
 
     /// <inheritdoc />
     public bool IsOs(OSPlatform platform) => RuntimeInformation.IsOSPlatform(platform);
+
+    /// <inheritdoc />
+    public string GetAspNetCoreEnvironment() => GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 }

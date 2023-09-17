@@ -153,4 +153,12 @@ public interface IFileService
     /// </summary>
     /// <returns>The current directory.</returns>
     string GetCurrentDirectory();
+
+    /// <summary>
+    ///     Returns a list of directories in the given path.
+    /// </summary>
+    /// <param name="path">The directory path.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A list of directories.</returns>
+    Task<string[]> GetDirectoriesAsync(string path, CancellationToken cancellationToken);
 }

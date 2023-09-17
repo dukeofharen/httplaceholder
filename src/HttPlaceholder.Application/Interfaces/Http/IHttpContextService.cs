@@ -150,7 +150,6 @@ public interface IHttpContextService
     /// </summary>
     void AbortConnection();
 
-
     /// <summary>
     ///     Appends a cookie to the current HttpContext.
     /// </summary>

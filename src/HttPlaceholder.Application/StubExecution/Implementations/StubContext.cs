@@ -19,17 +19,20 @@ internal class StubContext : IStubContext, ISingletonService
     private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IRequestNotify _requestNotify;
     private readonly IStubNotify _stubNotify;
+    private readonly IStubRequestContext _stubRequestContext;
     private readonly IEnumerable<IStubSource> _stubSources;
 
     public StubContext(
         IEnumerable<IStubSource> stubSources,
         IOptionsMonitor<SettingsModel> options,
         IRequestNotify requestNotify,
+        IStubRequestContext stubRequestContext,
         IStubNotify stubNotify)
     {
         _stubSources = stubSources;
         _requestNotify = requestNotify;
         _stubNotify = stubNotify;
+        _stubRequestContext = stubRequestContext;
         _options = options;
     }
 
@@ -54,7 +57,8 @@ internal class StubContext : IStubContext, ISingletonService
         foreach (var source in _stubSources)
         {
             var stubSourceIsReadOnly = source is not IWritableStubSource;
-            var fullStubModels = (await source.GetStubsOverviewAsync(cancellationToken))
+            var fullStubModels =
+                (await source.GetStubsOverviewAsync(_stubRequestContext.DistributionKey, cancellationToken))
                 .Select(s => new FullStubOverviewModel
                 {
                     Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
@@ -76,7 +80,7 @@ internal class StubContext : IStubContext, ISingletonService
         }
 
         var source = GetWritableStubSource();
-        await source.AddStubAsync(stub, cancellationToken);
+        await source.AddStubAsync(stub, _stubRequestContext.DistributionKey, cancellationToken);
         var result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
         var overviewModel = new FullStubOverviewModel
         {
@@ -90,7 +94,8 @@ internal class StubContext : IStubContext, ISingletonService
     /// <inheritdoc />
     public async Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
     {
-        var result = await GetWritableStubSource().DeleteStubAsync(stubId, cancellationToken);
+        var result = await GetWritableStubSource()
+            .DeleteStubAsync(stubId, _stubRequestContext.DistributionKey, cancellationToken);
         await _stubNotify.StubDeletedAsync(stubId, cancellationToken);
         return result;
     }
@@ -99,11 +104,11 @@ internal class StubContext : IStubContext, ISingletonService
     public async Task DeleteAllStubsAsync(string tenant, CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
-        var stubs = (await source.GetStubsAsync(cancellationToken))
+        var stubs = (await source.GetStubsAsync(_stubRequestContext.DistributionKey, cancellationToken))
             .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
         foreach (var stub in stubs)
         {
-            await source.DeleteStubAsync(stub.Id, cancellationToken);
+            await source.DeleteStubAsync(stub.Id, _stubRequestContext.DistributionKey, cancellationToken);
             await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
         }
     }
@@ -112,10 +117,10 @@ internal class StubContext : IStubContext, ISingletonService
     public async Task DeleteAllStubsAsync(CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
-        var stubs = await source.GetStubsAsync(cancellationToken);
+        var stubs = await source.GetStubsAsync(_stubRequestContext.DistributionKey, cancellationToken);
         foreach (var stub in stubs)
         {
-            await source.DeleteStubAsync(stub.Id, cancellationToken);
+            await source.DeleteStubAsync(stub.Id, _stubRequestContext.DistributionKey, cancellationToken);
             await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
         }
     }
@@ -128,14 +133,14 @@ internal class StubContext : IStubContext, ISingletonService
         var stubIds = stubArray
             .Select(s => s.Id)
             .Distinct();
-        var existingStubs = (await source.GetStubsAsync(cancellationToken))
+        var existingStubs = (await source.GetStubsAsync(_stubRequestContext.DistributionKey, cancellationToken))
             .Where(s => stubIds.Any(sid => string.Equals(sid, s.Id, StringComparison.OrdinalIgnoreCase)) ||
                         string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
 
         // First, delete the existing stubs.
         foreach (var stub in existingStubs)
         {
-            await source.DeleteStubAsync(stub.Id, cancellationToken);
+            await source.DeleteStubAsync(stub.Id, _stubRequestContext.DistributionKey, cancellationToken);
             await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
         }
 
@@ -143,7 +148,7 @@ internal class StubContext : IStubContext, ISingletonService
         foreach (var stub in stubArray)
         {
             stub.Tenant = tenant;
-            await source.AddStubAsync(stub, cancellationToken);
+            await source.AddStubAsync(stub, _stubRequestContext.DistributionKey, cancellationToken);
             var overviewModel = new FullStubOverviewModel
             {
                 Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
@@ -159,7 +164,7 @@ internal class StubContext : IStubContext, ISingletonService
         FullStubModel result = null;
         foreach (var source in _stubSources)
         {
-            var stub = await source.GetStubAsync(stubId, cancellationToken);
+            var stub = await source.GetStubAsync(stubId, _stubRequestContext.DistributionKey, cancellationToken);
             if (stub == null)
             {
                 continue;
@@ -193,7 +198,7 @@ internal class StubContext : IStubContext, ISingletonService
             : null;
         requestResult.StubTenant = stub?.Stub?.Tenant;
         await source.AddRequestResultAsync(requestResult, settings.Storage?.StoreResponses == true ? response : null,
-            cancellationToken);
+            _stubRequestContext.DistributionKey, cancellationToken);
         await _requestNotify.NewRequestReceivedAsync(requestResult, cancellationToken);
     }
 
@@ -201,20 +206,22 @@ internal class StubContext : IStubContext, ISingletonService
     public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
         PagingModel pagingModel,
         CancellationToken cancellationToken) =>
-        await GetWritableStubSource().GetRequestResultsAsync(pagingModel, cancellationToken);
+        await GetWritableStubSource()
+            .GetRequestResultsAsync(pagingModel, _stubRequestContext.DistributionKey, cancellationToken);
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
         PagingModel pagingModel,
         CancellationToken cancellationToken) =>
-        await GetWritableStubSource().GetRequestResultsOverviewAsync(pagingModel, cancellationToken);
+        await GetWritableStubSource()
+            .GetRequestResultsOverviewAsync(pagingModel, _stubRequestContext.DistributionKey, cancellationToken);
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId,
         CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
-        var results = await source.GetRequestResultsAsync(null, cancellationToken);
+        var results = await source.GetRequestResultsAsync(null, _stubRequestContext.DistributionKey, cancellationToken);
         results = results
             .Where(r => r.ExecutingStubId == stubId)
             .OrderByDescending(s => s.RequestBeginTime);
@@ -224,23 +231,28 @@ internal class StubContext : IStubContext, ISingletonService
     /// <inheritdoc />
     public async Task<RequestResultModel> GetRequestResultAsync(string correlationId,
         CancellationToken cancellationToken) =>
-        await GetWritableStubSource().GetRequestAsync(correlationId, cancellationToken);
+        await GetWritableStubSource()
+            .GetRequestAsync(correlationId, _stubRequestContext.DistributionKey, cancellationToken);
 
     /// <inheritdoc />
     public async Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken) =>
-        await GetWritableStubSource().GetResponseAsync(correlationId, cancellationToken);
+        await GetWritableStubSource()
+            .GetResponseAsync(correlationId, _stubRequestContext.DistributionKey, cancellationToken);
 
     /// <inheritdoc />
     public async Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken) =>
-        await GetWritableStubSource().DeleteAllRequestResultsAsync(cancellationToken);
+        await GetWritableStubSource()
+            .DeleteAllRequestResultsAsync(_stubRequestContext.DistributionKey, cancellationToken);
 
     /// <inheritdoc />
     public async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken) =>
-        await GetWritableStubSource().DeleteRequestAsync(correlationId, cancellationToken);
+        await GetWritableStubSource()
+            .DeleteRequestAsync(correlationId, _stubRequestContext.DistributionKey, cancellationToken);
 
     /// <inheritdoc />
     public async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken) =>
-        await GetWritableStubSource().CleanOldRequestResultsAsync(cancellationToken);
+        await GetWritableStubSource()
+            .CleanOldRequestResultsAsync(cancellationToken);
 
     /// <inheritdoc />
     public async Task<IEnumerable<string>> GetTenantNamesAsync(CancellationToken cancellationToken) =>
@@ -266,7 +278,7 @@ internal class StubContext : IStubContext, ISingletonService
         foreach (var source in readOnly ? GetReadOnlyStubSources() : _stubSources)
         {
             var stubSourceIsReadOnly = source is not IWritableStubSource;
-            var stubs = await source.GetStubsAsync(cancellationToken);
+            var stubs = await source.GetStubsAsync(_stubRequestContext.DistributionKey, cancellationToken);
             var fullStubModels = stubs.Select(s => new FullStubModel
             {
                 Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}

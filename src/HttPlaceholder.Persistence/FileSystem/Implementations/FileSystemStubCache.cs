@@ -37,8 +37,14 @@ internal class FileSystemStubCache : IFileSystemStubCache
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey, CancellationToken cancellationToken)
     {
+        var path = GetStubsFolder(distributionKey);
+        if (!string.IsNullOrWhiteSpace(distributionKey))
+        {
+            return await GetStubsAsync(path, cancellationToken);
+        }
+
         var shouldUpdateCache = false;
 
         // Check if the "stub update tracking ID" variable has a new value.
@@ -64,13 +70,8 @@ internal class FileSystemStubCache : IFileSystemStubCache
             return StubCache.Values;
         }
 
-        var path = GetStubsFolder();
-        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
         StubCache.Clear();
-        var newCache = (await Task.WhenAll(files
-                .Select(filePath => _fileService
-                    .ReadAllTextAsync(filePath, cancellationToken))))
-            .Select(JsonConvert.DeserializeObject<StubModel>);
+        var newCache = await GetStubsAsync(path, cancellationToken);
         foreach (var item in newCache)
         {
             if (!StubCache.TryAdd(item.Id, item))
@@ -80,6 +81,15 @@ internal class FileSystemStubCache : IFileSystemStubCache
         }
 
         return StubCache.Values;
+    }
+
+    private async Task<IEnumerable<StubModel>> GetStubsAsync(string path, CancellationToken cancellationToken)
+    {
+        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        return (await Task.WhenAll(files
+                .Select(filePath => _fileService
+                    .ReadAllTextAsync(filePath, cancellationToken))))
+            .Select(JsonConvert.DeserializeObject<StubModel>);
     }
 
     /// <inheritdoc />
@@ -157,6 +167,12 @@ internal class FileSystemStubCache : IFileSystemStubCache
         }
     }
 
-    private string GetStubsFolder() =>
-        Path.Combine(_options?.CurrentValue?.Storage?.FileStorageLocation, FileNames.StubsFolderName);
+    private string GetStubsFolder(string distributionKey)
+    {
+        var rootFolder = _options?.CurrentValue?.Storage?.FileStorageLocation;
+        return string.IsNullOrWhiteSpace(distributionKey)
+            ? Path.Combine(rootFolder, FileNames.StubsFolderName)
+            : Path.Combine(rootFolder, distributionKey, FileNames.StubsFolderName);
+    }
+
 }

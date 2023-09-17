@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,15 +16,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 internal class InMemoryStubSource : BaseWritableStubSource
 {
     private static readonly object _lock = new();
-
     private readonly IOptionsMonitor<SettingsModel> _options;
-
-    internal readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
-        new Dictionary<RequestResultModel, ResponseModel>();
-
-    internal readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
-    internal readonly IList<StubModel> StubModels = new List<StubModel>();
-    internal readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
+    internal readonly ConcurrentDictionary<string, StubRequestCollectionItem> CollectionItems = new();
 
     public InMemoryStubSource(IOptionsMonitor<SettingsModel> options)
     {
@@ -32,110 +26,126 @@ internal class InMemoryStubSource : BaseWritableStubSource
 
     /// <inheritdoc />
     public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
-        CancellationToken cancellationToken)
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
+            var item = GetCollection(distributionKey);
             if (responseModel != null)
             {
                 requestResult.HasResponse = true;
-                StubResponses.Add(responseModel);
-                RequestResponseMap.Add(requestResult, responseModel);
+                item.StubResponses.Add(responseModel);
+                item.RequestResponseMap.Add(requestResult, responseModel);
             }
 
-            RequestResultModels.Add(requestResult);
+            item.RequestResultModels.Add(requestResult);
             return Task.CompletedTask;
         }
     }
 
     /// <inheritdoc />
-    public override Task AddStubAsync(StubModel stub, CancellationToken cancellationToken)
+    public override Task AddStubAsync(StubModel stub, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
-            StubModels.Add(stub);
+            var item = GetCollection(distributionKey);
+            item.StubModels.Add(stub);
             return Task.CompletedTask;
         }
     }
 
     /// <inheritdoc />
-    public override Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
-            return Task.FromResult(GetRequest(correlationId));
+            return Task.FromResult(GetRequest(correlationId, distributionKey));
         }
     }
 
     /// <inheritdoc />
-    public override Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken)
+    public override Task<ResponseModel> GetResponseAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
             var nullValue = Task.FromResult((ResponseModel)null);
-            var request = GetRequest(correlationId);
+            var request = GetRequest(correlationId, distributionKey);
             if (request == null)
             {
                 return nullValue;
             }
 
-            return !RequestResponseMap.ContainsKey(request) ? nullValue : Task.FromResult(RequestResponseMap[request]);
+            var item = GetCollection(distributionKey);
+            return !item.RequestResponseMap.ContainsKey(request)
+                ? nullValue
+                : Task.FromResult(item.RequestResponseMap[request]);
         }
     }
 
     /// <inheritdoc />
-    public override Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken)
+    public override Task DeleteAllRequestResultsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
-            RequestResultModels.Clear();
-            StubResponses.Clear();
-            RequestResponseMap.Clear();
+            var item = GetCollection(distributionKey);
+            item.RequestResultModels.Clear();
+            item.StubResponses.Clear();
+            item.RequestResponseMap.Clear();
             return Task.CompletedTask;
         }
     }
 
     /// <inheritdoc />
-    public override Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override Task<bool> DeleteRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
-            var request = RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId);
+            var item = GetCollection(distributionKey);
+            var request = item.RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId);
             if (request == null)
             {
                 return Task.FromResult(false);
             }
 
-            RequestResultModels.Remove(request);
-            RemoveResponse(request);
+            item.RequestResultModels.Remove(request);
+            RemoveResponse(request, distributionKey);
             return Task.FromResult(true);
         }
     }
 
     /// <inheritdoc />
-    public override Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
+    public override Task<bool> DeleteStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
-            var stub = StubModels.FirstOrDefault(s => s.Id == stubId);
+            var item = GetCollection(distributionKey);
+            var stub = item.StubModels.FirstOrDefault(s => s.Id == stubId);
             if (stub == null)
             {
                 return Task.FromResult(false);
             }
 
-            StubModels.Remove(stub);
+            item.StubModels.Remove(stub);
             return Task.FromResult(true);
         }
     }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
-        PagingModel pagingModel,
-        CancellationToken cancellationToken)
+    public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(PagingModel pagingModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
-            var result = RequestResultModels.OrderByDescending(r => r.RequestBeginTime).ToArray();
+            var item = GetCollection(distributionKey);
+            var result = item.RequestResultModels.OrderByDescending(r => r.RequestBeginTime).ToArray();
             if (pagingModel != null)
             {
                 IEnumerable<RequestResultModel> resultQuery = result;
@@ -163,39 +173,48 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken)
+    public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
             // We need to convert the list to an array here, or else we can get errors when deleting the stubs.
-            return Task.FromResult(StubModels.ToArray().AsEnumerable());
+            var item = GetCollection(distributionKey);
+            return Task.FromResult(item.StubModels.ToArray().AsEnumerable());
         }
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(
-        CancellationToken cancellationToken) =>
-        (await GetStubsAsync(cancellationToken))
+    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        (await GetStubsAsync(distributionKey, cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />
-    public override Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken) =>
-        Task.FromResult(StubModels.FirstOrDefault(s => s.Id == stubId));
+    public override Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var item = GetCollection(distributionKey);
+        return Task.FromResult(item.StubModels.FirstOrDefault(s => s.Id == stubId));
+    }
 
     /// <inheritdoc />
-    public override Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
+    public override Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
-            var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
-            var requests = RequestResultModels
-                .OrderByDescending(r => r.RequestEndTime)
-                .Skip(maxLength);
-            foreach (var request in requests)
+            foreach (var item in CollectionItems)
             {
-                RequestResultModels.Remove(request);
-                RemoveResponse(request);
+                var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
+                var requests = item.Value.RequestResultModels
+                    .OrderByDescending(r => r.RequestEndTime)
+                    .Skip(maxLength);
+                foreach (var request in requests)
+                {
+                    item.Value.RequestResultModels.Remove(request);
+                    RemoveResponse(request, null);
+                }
             }
 
             return Task.CompletedTask;
@@ -205,18 +224,43 @@ internal class InMemoryStubSource : BaseWritableStubSource
     /// <inheritdoc />
     public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
-    private void RemoveResponse(RequestResultModel request)
+    private void RemoveResponse(RequestResultModel request, string distributionKey)
     {
-        if (!RequestResponseMap.ContainsKey(request))
+        var item = GetCollection(distributionKey);
+        if (!item.RequestResponseMap.ContainsKey(request))
         {
             return;
         }
 
-        var response = RequestResponseMap[request];
-        StubResponses.Remove(response);
-        RequestResponseMap.Remove(request);
+        var response = item.RequestResponseMap[request];
+        item.StubResponses.Remove(response);
+        item.RequestResponseMap.Remove(request);
     }
 
-    private RequestResultModel GetRequest(string correlationId) =>
-        RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId);
+    private RequestResultModel GetRequest(string correlationId, string distributionKey)
+    {
+        var item = GetCollection(distributionKey);
+        return item.RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId);
+    }
+
+    internal StubRequestCollectionItem GetCollection(string distributionKey) =>
+        CollectionItems.GetOrAdd(distributionKey ?? string.Empty,
+            key => new StubRequestCollectionItem(key));
+}
+
+internal class StubRequestCollectionItem
+{
+    internal StubRequestCollectionItem(string key)
+    {
+        Key = key;
+    }
+
+    public string Key { get; set; }
+
+    public readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
+        new Dictionary<RequestResultModel, ResponseModel>();
+
+    public readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
+    public readonly IList<StubModel> StubModels = new List<StubModel>();
+    public readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
 }

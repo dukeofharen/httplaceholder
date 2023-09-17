@@ -11,6 +11,11 @@ public class DbStubModel
     public long Id { get; set; }
 
     /// <summary>
+    ///     Gets or sets the distribution key.
+    /// </summary>
+    public string DistributionKey { get; set; }
+
+    /// <summary>
     ///     Gets or sets the stub ID.
     /// </summary>
     public string StubId { get; set; }

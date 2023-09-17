@@ -139,8 +139,6 @@ public class StubHandlingMiddleware
     private async Task<ResponseModel> HandleRequest(string correlation, CancellationToken cancellationToken)
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
-        // Enable rewind here to be able to read the posted body multiple times.
-        _httpContextService.EnableRewind();
 
         // Log the request here.
         requestLogger.LogRequestParameters(

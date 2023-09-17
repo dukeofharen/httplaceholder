@@ -53,7 +53,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -82,7 +82,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync(Array.Empty<string>());
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(0, result.Count());
@@ -111,7 +111,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -141,7 +141,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync("THIS IS INVALID YAML!");
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -182,7 +182,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -219,7 +219,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync(TestResources.YamlFile3);
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -256,7 +256,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync(TestResources.YamlFile4);
 
         // Act
-        var result = await source.GetStubsAsync(CancellationToken.None);
+        var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -284,7 +284,7 @@ public class YamlFileStubSourceFacts
             .Returns(new[] {"validation error"});
 
         // Act
-        var result = (await source.GetStubsAsync(CancellationToken.None)).ToArray();
+        var result = (await source.GetStubsAsync(null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -313,7 +313,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync(TestResources.YamlFile1);
 
         // Act
-        var result = (await source.GetStubsOverviewAsync(CancellationToken.None)).ToArray();
+        var result = (await source.GetStubsOverviewAsync(null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);

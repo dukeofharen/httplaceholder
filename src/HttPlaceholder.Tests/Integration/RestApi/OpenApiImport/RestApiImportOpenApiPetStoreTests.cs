@@ -34,7 +34,7 @@ public class RestApiImportOpenApiPetStoreTests : RestApiIntegrationTestBase
         response.EnsureSuccessStatusCode();
 
         // Get and check the stubs.
-        var stubs = StubSource.StubModels.ToArray();
+        var stubs = StubSource.GetCollection(null).StubModels.ToArray();
 
         // Assert stubs.
         Assert.AreEqual(6, stubs.Length);

@@ -25,14 +25,14 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
         // arrange
         const string tenant = "tenant1";
         var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
             Response = new StubResponseModel(),
             Tenant = "otherTenant"
         });
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-456",
             Conditions = new StubConditionsModel(),
@@ -61,14 +61,14 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
         // arrange
         const string tenant = "tenant1";
         var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
             Response = new StubResponseModel(),
             Tenant = "otherTenant"
         });
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-456",
             Conditions = new StubConditionsModel(),
@@ -94,14 +94,14 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
     {
         // arrange
         const string tenant = "tenant1";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
             Response = new StubResponseModel(),
             Tenant = "otherTenant"
         });
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-456",
             Conditions = new StubConditionsModel(),
@@ -113,8 +113,8 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
         using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs");
 
         // Assert
-        Assert.AreEqual(1, StubSource.StubModels.Count);
-        Assert.AreEqual("test-123", StubSource.StubModels.Single().Id);
+        Assert.AreEqual(1, StubSource.GetCollection(null).StubModels.Count);
+        Assert.AreEqual("test-123", StubSource.GetCollection(null).StubModels.Single().Id);
     }
 
     [TestMethod]
@@ -122,14 +122,14 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         const string tenant = "tenant1";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
             Response = new StubResponseModel(),
             Tenant = tenant
         });
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-456",
             Conditions = new StubConditionsModel(),
@@ -165,9 +165,9 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
         using var response = await Client.SendAsync(request);
 
         // Assert
-        Assert.AreEqual(2, StubSource.StubModels.Count);
-        Assert.AreEqual("test-123", StubSource.StubModels[0].Id);
-        Assert.AreEqual("test-789", StubSource.StubModels[1].Id);
+        Assert.AreEqual(2, StubSource.GetCollection(null).StubModels.Count);
+        Assert.AreEqual("test-123", StubSource.GetCollection(null).StubModels[0].Id);
+        Assert.AreEqual("test-789", StubSource.GetCollection(null).StubModels[1].Id);
     }
 
     [TestMethod]
@@ -175,14 +175,14 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/tenants";
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
             Response = new StubResponseModel(),
             Tenant = "otherTenant"
         });
-        StubSource.StubModels.Add(new StubModel
+        StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
             Id = "test-456",
             Conditions = new StubConditionsModel(),

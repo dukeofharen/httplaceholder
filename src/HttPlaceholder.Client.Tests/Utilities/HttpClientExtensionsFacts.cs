@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using HttPlaceholder.Client.Configuration;
@@ -47,5 +48,27 @@ public class HttpClientExtensionsFacts
         var parts = base64Decoded.Split(':');
         Assert.AreEqual("username", parts[0]);
         Assert.AreEqual("password", parts[1]);
+    }
+
+    [TestMethod]
+    public void ApplyConfiguration_DefaultHttpHeadersSet_ShouldAddHeaders()
+    {
+        // Arrange
+        var config = new HttPlaceholderClientConfiguration
+        {
+            RootUrl = "http://localhost:5000",
+            DefaultHttpHeaders = new Dictionary<string, string>
+            {
+                {"Header1", "Value1"}
+            }
+        };
+        var httpClient = new HttpClient();
+
+        // Act
+        httpClient.ApplyConfiguration(config);
+
+        // Assert
+        Assert.AreEqual("http://localhost:5000/", httpClient.BaseAddress.OriginalString);
+        Assert.AreEqual("Value1", httpClient.DefaultRequestHeaders.Single(h => h.Key == "Header1").Value.Single());
     }
 }

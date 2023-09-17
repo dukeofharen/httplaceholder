@@ -13,6 +13,11 @@ public class DbRequestModel
     public long Id { get; set; }
 
     /// <summary>
+    ///     Gets or sets the distribution key.
+    /// </summary>
+    public string DistributionKey { get; set; }
+
+    /// <summary>
     ///     Gets or sets the request correlation ID.
     /// </summary>
     public string CorrelationId { get; set; }

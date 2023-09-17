@@ -14,6 +14,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 [TestClass]
 public class RelationalDbStubSourceFacts
 {
+    private const string DistributionKey = "username";
     private readonly Mock<IDatabaseContext> _mockDatabaseContext = new();
     private readonly AutoMocker _mocker = new();
 
@@ -32,11 +33,13 @@ public class RelationalDbStubSourceFacts
         _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
-    [TestCleanup]
-    public void Cleanup() => _mockDatabaseContext.VerifyAll();
+    // [TestCleanup]
+    // public void Cleanup() => _mockDatabaseContext.VerifyAll();
 
-    [TestMethod]
-    public async Task AddRequestResultAsync_ShouldAddRequestSuccessfully_NoResponse()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddRequestResultAsync_ShouldAddRequestSuccessfully_NoResponse(bool withDistributionKey)
     {
         // Arrange
         const string query = "ADD REQUEST QUERY";
@@ -62,13 +65,16 @@ public class RelationalDbStubSourceFacts
         };
 
         // Act
-        await stubSource.AddRequestResultAsync(requestResult, null, CancellationToken.None);
+        await stubSource.AddRequestResultAsync(requestResult, null, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedParam);
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual(requestResult.CorrelationId, parsedParam["CorrelationId"].ToString());
         Assert.AreEqual(requestResult.ExecutingStubId, parsedParam["ExecutingStubId"].ToString());
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
         Assert.AreEqual(requestResult.RequestBeginTime, DateTime.Parse(parsedParam["RequestBeginTime"].ToString()));
         Assert.AreEqual(requestResult.RequestEndTime, DateTime.Parse(parsedParam["RequestEndTime"].ToString()));
         Assert.AreEqual(JsonConvert.SerializeObject(requestResult), parsedParam["Json"].ToString());
@@ -77,8 +83,10 @@ public class RelationalDbStubSourceFacts
             m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Once());
     }
 
-    [TestMethod]
-    public async Task AddRequestResultAsync_ShouldAddRequestSuccessfully_WithResponse()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddRequestResultAsync_ShouldAddRequestSuccessfully_WithResponse(bool withDistributionKey)
     {
         // Arrange
         var mockQueryStore = _mocker.GetMock<IQueryStore>();
@@ -89,7 +97,7 @@ public class RelationalDbStubSourceFacts
             .Setup(m => m.AddRequestQuery)
             .Returns(addRequestQuery);
 
-        const string addResponseQuery = "ADD REQUEST QUERY";
+        const string addResponseQuery = "ADD RESPONSE QUERY";
         mockQueryStore
             .Setup(m => m.AddResponseQuery)
             .Returns(addResponseQuery);
@@ -121,7 +129,8 @@ public class RelationalDbStubSourceFacts
         };
 
         // Act
-        await stubSource.AddRequestResultAsync(requestResult, responseModel, CancellationToken.None);
+        await stubSource.AddRequestResultAsync(requestResult, responseModel,
+            withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedAddResponseParam);
@@ -132,10 +141,14 @@ public class RelationalDbStubSourceFacts
         Assert.IsTrue(parsedParam["Headers"].ToString().Contains("text/plain"));
         Assert.AreEqual("AQID", parsedParam["Body"].ToString());
         Assert.IsTrue((bool)parsedParam["BodyIsBinary"]);
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
-    [TestMethod]
-    public async Task AddStubAsync_ShouldAddStubSuccessfully()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddStubAsync_ShouldAddStubSuccessfully(bool withDistributionKey)
     {
         // Arrange
         const string query = "ADD STUB QUERY";
@@ -155,7 +168,7 @@ public class RelationalDbStubSourceFacts
         var stub = new StubModel {Id = "stub-id"};
 
         // Act
-        await stubSource.AddStubAsync(stub, CancellationToken.None);
+        await stubSource.AddStubAsync(stub, withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedParam);
@@ -163,22 +176,36 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual(stub.Id, parsedParam["StubId"].ToString());
         Assert.AreEqual(JsonConvert.SerializeObject(stub), parsedParam["Stub"].ToString());
         Assert.AreEqual("json", parsedParam["StubType"].ToString());
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
 
         _mocker.GetMock<IRelationalDbStubCache>()
-            .Verify(m => m.AddOrReplaceStubAsync(_mockDatabaseContext.Object, stub, It.IsAny<CancellationToken>()));
+            .Verify(m => m.AddOrReplaceStubAsync(_mockDatabaseContext.Object, stub, It.IsAny<CancellationToken>()),
+                withDistributionKey ? Times.Never : Times.Once);
     }
 
     [TestMethod]
     public async Task CleanOldRequestResultsAsync_ShouldCleanOldRequests()
     {
         // Arrange
-        const string query = "CLEAN REQUESTS QUERY";
         var mockQueryStore = _mocker.GetMock<IQueryStore>();
+
+        const string distinctKeysQuery = "GET DISTINCT KEYS";
+        mockQueryStore
+            .Setup(m => m.GetDistinctRequestDistributionKeysQuery)
+            .Returns(distinctKeysQuery);
+
+        const string query = "CLEAN REQUESTS QUERY";
         mockQueryStore
             .Setup(m => m.CleanOldRequestsQuery)
             .Returns(query);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        var keys = new[] {"", "key1"};
+        _mockDatabaseContext
+            .Setup(m => m.QueryAsync<string>(distinctKeysQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .ReturnsAsync(keys);
 
         object capturedParam = null;
         _mockDatabaseContext
@@ -193,10 +220,13 @@ public class RelationalDbStubSourceFacts
         Assert.IsNotNull(capturedParam);
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual("100", parsedParam["Limit"].ToString());
+        Assert.IsTrue(keys.Contains(parsedParam["DistributionKey"].ToString()));
     }
 
-    [TestMethod]
-    public async Task GetRequestAsync_RequestFound_ShouldReturnRequestSuccessfully()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestAsync_RequestFound_ShouldReturnRequestSuccessfully(bool withDistributionKey)
     {
         // Arrange
         const string query = "GET REQUEST QUERY";
@@ -217,17 +247,22 @@ public class RelationalDbStubSourceFacts
             .ReturnsAsync(request);
 
         // Act
-        var result = await stubSource.GetRequestAsync(correlationIdInput, CancellationToken.None);
+        var result = await stubSource.GetRequestAsync(correlationIdInput, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.AreEqual(correlationIdInput, result.CorrelationId);
 
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual(correlationIdInput, parsedParam["CorrelationId"].ToString());
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
-    [TestMethod]
-    public async Task GetRequestAsync_RequestNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestAsync_RequestNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         const string query = "GET REQUEST QUERY";
@@ -247,17 +282,22 @@ public class RelationalDbStubSourceFacts
             .ReturnsAsync((DbRequestModel)null);
 
         // Act
-        var result = await stubSource.GetRequestAsync(correlationIdInput, CancellationToken.None);
+        var result = await stubSource.GetRequestAsync(correlationIdInput, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
 
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual(correlationIdInput, parsedParam["CorrelationId"].ToString());
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
-    [TestMethod]
-    public async Task GetResponseAsync_ResponseNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetResponseAsync_ResponseNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         const string query = "GET RESPONSE QUERY";
@@ -274,14 +314,17 @@ public class RelationalDbStubSourceFacts
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetResponseAsync("123", CancellationToken.None);
+        var result = await stubSource.GetResponseAsync("123", withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
     }
 
-    [TestMethod]
-    public async Task GetResponseAsync_ResponseFound_ShouldReturnResponse()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetResponseAsync_ResponseFound_ShouldReturnResponse(bool withDistributionKey)
     {
         // Arrange
         const string query = "GET RESPONSE QUERY";
@@ -310,7 +353,8 @@ public class RelationalDbStubSourceFacts
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetResponseAsync("123", CancellationToken.None);
+        var result = await stubSource.GetResponseAsync("123", withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -324,10 +368,14 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual("text/plain", result.Headers[HeaderKeys.ContentType]);
         Assert.IsFalse(result.BodyIsBinary);
         Assert.AreEqual("555", Encoding.UTF8.GetString(result.Body));
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
-    [TestMethod]
-    public async Task DeleteAllRequestResultsAsync_ShouldDeleteRequestsSuccessfully()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteAllRequestResultsAsync_ShouldDeleteRequestsSuccessfully(bool withDistributionKey)
     {
         // Arrange
         const string query = "DELETE REQUESTS QUERY";
@@ -336,17 +384,28 @@ public class RelationalDbStubSourceFacts
             .Setup(m => m.DeleteAllRequestsQuery)
             .Returns(query);
 
+        object capturedParam = null;
+        _mockDatabaseContext
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(),
+                It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param);
+
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        await stubSource.DeleteAllRequestResultsAsync(CancellationToken.None);
+        await stubSource.DeleteAllRequestResultsAsync(withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
-        _mockDatabaseContext.Verify(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(), null));
+        var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
-    [TestMethod]
-    public async Task DeleteRequestAsync_NoRecordsUpdated_ShouldReturnFalse()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteRequestAsync_NoRecordsUpdated_ShouldReturnFalse(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
@@ -365,17 +424,22 @@ public class RelationalDbStubSourceFacts
             .ReturnsAsync(0);
 
         // Act
-        var result = await stubSource.DeleteRequestAsync(correlationId, CancellationToken.None);
+        var result = await stubSource.DeleteRequestAsync(correlationId, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
 
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual(correlationId, parsedParam["CorrelationId"].ToString());
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
-    [TestMethod]
-    public async Task DeleteRequestAsync_RecordsUpdated_ShouldReturnTrue()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteRequestAsync_RecordsUpdated_ShouldReturnTrue(bool withDistributionKey)
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
@@ -394,19 +458,25 @@ public class RelationalDbStubSourceFacts
             .ReturnsAsync(1);
 
         // Act
-        var result = await stubSource.DeleteRequestAsync(correlationId, CancellationToken.None);
+        var result = await stubSource.DeleteRequestAsync(correlationId, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
 
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual(correlationId, parsedParam["CorrelationId"].ToString());
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
     [DataTestMethod]
-    [DataRow(1, true)]
-    [DataRow(0, false)]
-    public async Task DeleteStubAsync_ShouldDeleteStub(int numberOfRecordsUpdated, bool expectedResult)
+    [DataRow(1, true, true)]
+    [DataRow(0, true, false)]
+    [DataRow(1, false, true)]
+    [DataRow(0, false, false)]
+    public async Task DeleteStubAsync_ShouldDeleteStub(int numberOfRecordsUpdated, bool withDistributionKey,
+        bool expectedResult)
     {
         // Arrange
         const string query = "DELETE STUB QUERY";
@@ -426,20 +496,26 @@ public class RelationalDbStubSourceFacts
         const string stubId = "stub";
 
         // Act
-        var result = await stubSource.DeleteStubAsync(stubId, CancellationToken.None);
+        var result = await stubSource.DeleteStubAsync(stubId, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedResult, result);
 
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
 
         _mocker.GetMock<IRelationalDbStubCache>()
-            .Verify(m => m.DeleteStubAsync(_mockDatabaseContext.Object, stubId, It.IsAny<CancellationToken>()));
+            .Verify(m => m.DeleteStubAsync(_mockDatabaseContext.Object, stubId, It.IsAny<CancellationToken>()),
+                withDistributionKey ? Times.Never : Times.Once);
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_ShouldReturnRequestsSuccessfully()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestResultsAsync_ShouldReturnRequestsSuccessfully(bool withDistributionKey)
     {
         // Arrange
         const string query = "GET REQUESTS QUERY";
@@ -463,19 +539,24 @@ public class RelationalDbStubSourceFacts
             }
         };
         _mockDatabaseContext
-            .Setup(m => m.QueryAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(), null))
+            .Setup(m => m.QueryAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(), It.IsAny<object>()))
             .ReturnsAsync(requests);
 
         // Act
-        var result = (await stubSource.GetRequestResultsAsync(null, CancellationToken.None)).ToArray();
+        var result =
+            (await stubSource.GetRequestResultsAsync(null, withDistributionKey ? DistributionKey : null,
+                CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
         Assert.AreEqual("12345", result.Single().CorrelationId);
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_FromIdentifierSet_ShouldReturnRequestsSuccessfully()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestResultsAsync_FromIdentifierSet_ShouldReturnRequestsSuccessfully(
+        bool withDistributionKey)
     {
         // Arrange
         const string correlationIdsQuery = "GET CORRELATION IDS QUERY";
@@ -493,7 +574,7 @@ public class RelationalDbStubSourceFacts
 
         var ids = new[] {Guid.NewGuid().ToString(), Guid.NewGuid().ToString()};
         _mockDatabaseContext
-            .Setup(m => m.QueryAsync<string>(correlationIdsQuery, It.IsAny<CancellationToken>(), null))
+            .Setup(m => m.QueryAsync<string>(correlationIdsQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
             .ReturnsAsync(ids);
 
         var requests = new[]
@@ -517,7 +598,8 @@ public class RelationalDbStubSourceFacts
 
         // Act
         var result =
-            (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1]}, CancellationToken.None))
+            (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1]},
+                withDistributionKey ? DistributionKey : null, CancellationToken.None))
             .ToArray();
 
         // Assert
@@ -529,10 +611,15 @@ public class RelationalDbStubSourceFacts
 
         Assert.AreEqual(1, capturedCorrelationIds.Length);
         Assert.AreEqual(ids[1], capturedCorrelationIds[0]);
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
-    [TestMethod]
-    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_ShouldReturnRequestsSuccessfully()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetRequestResultsAsync_FromIdentifierAndItemsPerPageSet_ShouldReturnRequestsSuccessfully(
+        bool withDistributionKey)
     {
         // Arrange
         const string correlationIdsQuery = "GET CORRELATION IDS QUERY";
@@ -554,7 +641,7 @@ public class RelationalDbStubSourceFacts
             Guid.NewGuid().ToString()
         };
         _mockDatabaseContext
-            .Setup(m => m.QueryAsync<string>(correlationIdsQuery, It.IsAny<CancellationToken>(), null))
+            .Setup(m => m.QueryAsync<string>(correlationIdsQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
             .ReturnsAsync(ids);
 
         var requests = new[]
@@ -588,6 +675,7 @@ public class RelationalDbStubSourceFacts
         // Act
         var result =
             (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1], ItemsPerPage = 2},
+                withDistributionKey ? DistributionKey : null,
                 CancellationToken.None))
             .ToArray();
 
@@ -600,30 +688,36 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual(2, capturedCorrelationIds.Length);
         Assert.AreEqual(ids[1], capturedCorrelationIds[0]);
         Assert.AreEqual(ids[2], capturedCorrelationIds[1]);
+        Assert.AreEqual(withDistributionKey ? DistributionKey : string.Empty,
+            parsedParam["DistributionKey"].ToString());
     }
 
-    [TestMethod]
-    public async Task GetStubsAsync_ShouldReturnStubsCorrectly()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetStubsAsync_ShouldReturnStubsCorrectly(bool withDistributionKey)
     {
         // Arrange
         var stubs = new[] {new StubModel {Id = "stub-id"}};
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubsAsync(CancellationToken.None);
+        var result = await stubSource.GetStubsAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs, result);
     }
 
-    [TestMethod]
-    public async Task GetStubsOverviewAsync_ShouldReturnStubsCorrectly()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetStubsOverviewAsync_ShouldReturnStubsCorrectly(bool withDistributionKey)
     {
         // Arrange
         var stubs = new[]
@@ -634,13 +728,13 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = (await stubSource.GetStubsOverviewAsync(CancellationToken.None)).ToArray();
+        var result = (await stubSource.GetStubsOverviewAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -654,8 +748,10 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual(stubs[1].Enabled, result[1].Enabled);
     }
 
-    [TestMethod]
-    public async Task GetStubAsync_StubFound_ShouldReturnStub()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetStubAsync_StubFound_ShouldReturnStub(bool withDistributionKey)
     {
         // Arrange
         const string stubId = "stub-id";
@@ -663,33 +759,35 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(cachedStubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubAsync(stubId, CancellationToken.None);
+        var result = await stubSource.GetStubAsync(stubId, withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(cachedStubs[1], result);
     }
 
-    [TestMethod]
-    public async Task GetStubAsync_StubNotFound_ShouldReturnNull()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetStubAsync_StubNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
         var stubs = new[] {new StubModel {Id = "stub-id"}};
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubsAsync(CancellationToken.None);
+        var result = await stubSource.GetStubsAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs, result);
@@ -708,6 +806,6 @@ public class RelationalDbStubSourceFacts
         _mocker.GetMock<IRelationalDbMigrator>()
             .Verify(m => m.MigrateAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()));
         _mocker.GetMock<IRelationalDbStubCache>().Verify(m =>
-            m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()));
+            m.GetOrUpdateStubCacheAsync(string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()));
     }
 }

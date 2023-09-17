@@ -1,6 +1,7 @@
 ﻿using HttPlaceholder.Application;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure;
@@ -109,8 +110,12 @@ public static class StartupUtilities
                 syncIoFeature.AllowSynchronousIO = true;
             }
 
+            // Enable rewind here to be able to read the posted body multiple times.
+            context.RequestServices.GetRequiredService<IHttpContextService>().EnableRewind();
+
             await next.Invoke();
         })
+        .UseMiddleware<DevelopmentMiddleware>()
         .UseMiddleware<ApiExceptionHandlingMiddleware>()
         .UseMiddleware<StubHandlingMiddleware>();
 

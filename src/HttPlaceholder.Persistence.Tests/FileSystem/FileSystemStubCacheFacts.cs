@@ -90,12 +90,12 @@ public class FileSystemStubCacheFacts
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
         SetupMetadata(trackingId);
-        SetupStubs();
+        SetupStubs(null);
 
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(CancellationToken.None);
+        var result = await cache.GetOrUpdateStubCacheAsync(null, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -104,19 +104,36 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
+    public async Task GetOrUpdateStubCacheAsync_DontCache()
+    {
+        // Arrange
+        SetupStubs("key");
+
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
+        // Act
+        var result = await cache.GetOrUpdateStubCacheAsync("key", CancellationToken.None);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.IsFalse(cache.StubCache.Any());
+        Assert.IsNull(cache.StubUpdateTrackingId);
+    }
+
+    [TestMethod]
     public async Task GetOrUpdateStubCacheAsync_TrackingIdHasChanged_ShouldInitializeCache()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
         SetupMetadata(trackingId);
-        SetupStubs();
+        SetupStubs(null);
 
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         cache.StubUpdateTrackingId = Guid.NewGuid().ToString();
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(CancellationToken.None);
+        var result = await cache.GetOrUpdateStubCacheAsync(null, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -133,12 +150,12 @@ public class FileSystemStubCacheFacts
 
         var stub1 = new StubModel {Id = "stub1"};
         var stub2 = new StubModel {Id = "stub2"};
-        SetupStubs(stub1, stub2);
+        SetupStubs(null, stub1, stub2);
 
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act
-        var result = (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).ToArray();
+        var result = (await cache.GetOrUpdateStubCacheAsync(null, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -155,14 +172,14 @@ public class FileSystemStubCacheFacts
 
         var stub1 = new StubModel {Id = "stub1"};
         var stub2 = new StubModel {Id = "stub2"};
-        SetupStubs(stub1, stub2);
+        SetupStubs(null, stub1, stub2);
 
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act / Assert
         Assert.IsTrue(
-            (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).SequenceEqual(
-                await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)));
+            (await cache.GetOrUpdateStubCacheAsync(null, CancellationToken.None)).SequenceEqual(
+                await cache.GetOrUpdateStubCacheAsync(null, CancellationToken.None)));
     }
 
     [TestMethod]
@@ -298,9 +315,12 @@ public class FileSystemStubCacheFacts
             .Returns(metadataContents);
     }
 
-    private void SetupStubs(params StubModel[] stubs)
+    private void SetupStubs(string distributionKey, params StubModel[] stubs)
     {
-        var expectedPath = Path.Combine(_settings.Storage?.FileStorageLocation, FileNames.StubsFolderName);
+        var rootFolder = _settings.Storage?.FileStorageLocation;
+        var expectedPath = distributionKey == null
+            ? Path.Combine(rootFolder, FileNames.StubsFolderName)
+            : Path.Combine(rootFolder, distributionKey, FileNames.StubsFolderName);
 
         var mockFileService = _mocker.GetMock<IFileService>();
 

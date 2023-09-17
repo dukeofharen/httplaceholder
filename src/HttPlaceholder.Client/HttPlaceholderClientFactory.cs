@@ -32,11 +32,12 @@ public static class HttPlaceholderClientFactory
     ///     Method for creating the <see cref="IHttPlaceholderClient" />.
     /// </summary>
     /// <param name="config">The configuration of the client.</param>
+    /// <param name="forceCreateNew">When set to true, will always create a new HttpClient.</param>
     /// <returns>The <see cref="IHttPlaceholderClient" />.</returns>
-    public static IHttPlaceholderClient CreateHttPlaceholderClient(HttPlaceholderClientConfiguration config)
+    public static IHttPlaceholderClient CreateHttPlaceholderClient(HttPlaceholderClientConfiguration config, bool forceCreateNew = false)
     {
         config.Validate();
-        if (_httpClient == null)
+        if (_httpClient == null || forceCreateNew)
         {
             _httpClient = new HttpClient();
             _httpClient.ApplyConfiguration(config);

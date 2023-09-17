@@ -66,7 +66,8 @@ internal class FileService : IFileService, ISingletonService
         (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory, cancellationToken);
 
     /// <inheritdoc />
-    public string[] GetFiles(string path, string searchPattern) => Directory.GetFiles(path, searchPattern);
+    public string[] GetFiles(string path, string searchPattern) =>
+        !DirectoryExists(path) ? Array.Empty<string>() : Directory.GetFiles(path, searchPattern);
 
     /// <inheritdoc />
     public Task<string[]> GetFilesAsync(string path, string searchPattern, CancellationToken cancellationToken) =>
@@ -81,4 +82,8 @@ internal class FileService : IFileService, ISingletonService
 
     /// <inheritdoc />
     public string GetCurrentDirectory() => Directory.GetCurrentDirectory();
+
+    /// <inheritdoc />
+    public Task<string[]> GetDirectoriesAsync(string path, CancellationToken cancellationToken) =>
+        Task.Run(() => Directory.GetDirectories(path), cancellationToken);
 }

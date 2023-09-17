@@ -362,3 +362,4 @@ dist/
 !**/sonar-scanner-*/bin/
 version.txt
 .build/
+.vscode/
