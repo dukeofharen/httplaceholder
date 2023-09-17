@@ -38,31 +38,13 @@ public class DevelopmentMiddleware
             return;
         }
 
-        var path = httpContextService.Path;
-        if (!path.StartsWith("/ph-development"))
+        var distKeyHeader = httpContextService.GetHeaders().FirstOrDefault(h =>
+            h.Key.Equals("x-httplaceholder-distkey", StringComparison.OrdinalIgnoreCase));
+        if (!string.IsNullOrWhiteSpace(distKeyHeader.Value))
         {
-            await _next(context);
-            return;
+            stubRequestContext.DistributionKey = distKeyHeader.Value;
         }
 
-        var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
-        var method = httpContextService.Method;
-        if (method.Equals("POST", StringComparison.OrdinalIgnoreCase) &&
-            path.EndsWith("/set-distribution-key", StringComparison.OrdinalIgnoreCase))
-        {
-            // Set the distribution key globally for dev purposes.
-            var body = await httpContextService.GetBodyAsync(cancellationToken);
-            var json = JObject.Parse(body);
-            var key = json.SelectToken("$.key")?.ToObject<string>();
-            if (key != null)
-            {
-                stubRequestContext.DistributionKey = key;
-                httpContextService.SetStatusCode(HttpStatusCode.NoContent);
-            }
-            else
-            {
-                httpContextService.SetStatusCode(HttpStatusCode.BadRequest);
-            }
-        }
+        await _next(context);
     }
 }
