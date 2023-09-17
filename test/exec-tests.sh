@@ -1,5 +1,6 @@
 #!/bin/bash
 # Execute this script for performing Hurl integration tests against HttPlaceholder.
+export ASPNETCORE_ENVIRONMENT="Development"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd $DIR
 HTTPL_ROOT_DIR="$DIR/../src/HttPlaceholder"

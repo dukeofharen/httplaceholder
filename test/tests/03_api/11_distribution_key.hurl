@@ -56,12 +56,27 @@ HTTP 200
 jsonpath "$.requestParameters.url" contains "/request1"
 jsonpath "$.executingStubId" == "request-1"
 
+# Check response
+GET {{rootUrl}}/ph-api/requests/{{corr_id2}}/response
+
+HTTP 200
+
+[Asserts]
+jsonpath "$.statusCode" == 200
+jsonpath "$.body" == "T0sgTk8gRElTVFJJQlVUSU9OIEtFWQ=="
+
 # With distribution key
 
 ## Delete all stubs
 DELETE {{rootUrl}}/ph-api/stubs
 X-HttPlaceholder-DistKey: dist1
 HTTP 204
+
+## Check response: not found
+GET {{rootUrl}}/ph-api/requests/{{corr_id2}}/response
+X-HttPlaceholder-DistKey: dist1
+
+HTTP 404
 
 ## Make request
 GET {{rootUrl}}/request1
@@ -101,6 +116,16 @@ corr_id2: header "X-HttPlaceholder-Correlation"
 
 [Asserts]
 body == "OK WITH DISTRIBUTION KEY"
+
+## Check response
+GET {{rootUrl}}/ph-api/requests/{{corr_id2}}/response
+X-HttPlaceholder-DistKey: dist1
+
+HTTP 200
+
+[Asserts]
+jsonpath "$.statusCode" == 200
+jsonpath "$.body" == "T0sgV0lUSCBESVNUUklCVVRJT04gS0VZ"
 
 ## Check requests
 GET {{rootUrl}}/ph-api/requests/{{corr_id1}}

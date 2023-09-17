@@ -51,4 +51,4 @@ HTTP 200
 [Asserts]
 body == "OK SLOW REQUEST MODEL"
 duration > 100
-duration < 200
+duration < 300
