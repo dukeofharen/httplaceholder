@@ -1,5 +1,6 @@
 # Delete all stubs
 DELETE {{rootUrl}}/ph-api/stubs
+HTTP 204
 
 # Import HAR
 POST {{rootUrl}}/ph-api/import/har?tenant=tenant1
