@@ -1,7 +1,7 @@
 #!/bin/bash
 # JSONPath 1
-curl --location --request PUT 'http://localhost:5000/users' \
---header 'Content-Type: application/json' \
+curl --location --request PUT "http://localhost:5000/users" \
+--header "Content-Type: application/json' \
 --data-raw '{
     "firstName": "John",
     "lastName": "doe",
