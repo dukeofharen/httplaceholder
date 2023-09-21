@@ -1,6 +1,8 @@
 #!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. $DIR/setup.sh
 # JSONPath 1
-curl --location --request PUT "http://localhost:5000/users" \
+curl --location --request PUT "$HTTPL_ROOT_URL/users" \
 --header "Content-Type: application/json' \
 --data-raw '{
     "firstName": "John",
@@ -20,7 +22,7 @@ curl --location --request PUT "http://localhost:5000/users" \
 }' -D-
 
 # JSONPath 2
-curl --location --request PUT 'http://localhost:5000/users' \
+curl --location --request PUT '$HTTPL_ROOT_URL/users' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "firstName": "John",
@@ -40,7 +42,7 @@ curl --location --request PUT 'http://localhost:5000/users' \
 }' -D-
 
 # JSONPath 3
-curl --location --request PUT 'http://localhost:5000/users' \
+curl --location --request PUT '$HTTPL_ROOT_URL/users' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "firstName": "John",
@@ -60,7 +62,7 @@ curl --location --request PUT 'http://localhost:5000/users' \
 }' -D-
 
 # JSON array
-curl --location --request POST 'http://localhost:5000/json' \
+curl --location --request POST '$HTTPL_ROOT_URL/json' \
 --header 'Content-Type: application/json' \
 --data-raw '[
     "val1",
@@ -74,7 +76,7 @@ curl --location --request POST 'http://localhost:5000/json' \
 ]' -D-
 
 # JSON object
-curl --location --request POST 'http://localhost:5000/json' \
+curl --location --request POST '$HTTPL_ROOT_URL/json' \
 --header 'Content-Type: application/json' \
 --data-raw '{
   "username": "username",

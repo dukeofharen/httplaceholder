@@ -1,6 +1,8 @@
 #!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. $DIR/setup.sh
 # SOAP XML
-curl --location --request POST "http://localhost:5000/InStock" \
+curl --location --request POST "$HTTPL_ROOT_URL/InStock" \
 --header "Content-Type: application/soap+xml; charset=utf-8" \
 --data-raw '<?xml version="1.0"?>
 <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" 
@@ -14,6 +16,6 @@ curl --location --request POST "http://localhost:5000/InStock" \
 </soap:Envelope>' -D-
 
 # Regular XML
-curl --location --request POST "http://localhost:5000/thingy" \
+curl --location --request POST "$HTTPL_ROOT_URL/thingy" \
 --header "Content-Type: application/soap+xml; charset=utf-8" \
 --data-raw '<?xml version="1.0"?><object><a>TEST</a><b>TEST2</b></object>' -D-

@@ -1,6 +1,8 @@
 #!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. $DIR/setup.sh
 # Set scenario
-curl --location --request PUT 'http://localhost:5000/ph-api/scenarios/scenario123' \
+curl --location --request PUT '$HTTPL_ROOT_URL/ph-api/scenarios/scenario123' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "state": "cool_state_1",
@@ -8,7 +10,7 @@ curl --location --request PUT 'http://localhost:5000/ph-api/scenarios/scenario12
 }'
 
 # State
-curl --location --request GET 'http://localhost:5000/dynamic-mode-scenario-state.txt' -D-
+curl --location --request GET '$HTTPL_ROOT_URL/dynamic-mode-scenario-state.txt' -D-
 
 # Hit count
-curl --location --request GET 'http://localhost:5000/dynamic-mode-scenario-hitcount.txt' -D-
+curl --location --request GET '$HTTPL_ROOT_URL/dynamic-mode-scenario-hitcount.txt' -D-
