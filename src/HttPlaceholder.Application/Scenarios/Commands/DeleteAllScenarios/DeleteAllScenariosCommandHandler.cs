@@ -10,20 +10,20 @@ namespace HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
 /// </summary>
 public class DeleteAllScenariosCommandHandler : IRequestHandler<DeleteAllScenariosCommand, Unit>
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
     /// <summary>
     ///     Constructs a <see cref="DeleteAllScenariosCommandHandler" /> instance.
     /// </summary>
-    public DeleteAllScenariosCommandHandler(IScenarioService scenarioService)
+    public DeleteAllScenariosCommandHandler(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteAllScenariosCommand request, CancellationToken cancellationToken)
     {
-        await _scenarioService.DeleteAllScenariosAsync(cancellationToken);
+        await _stubContext.DeleteAllScenariosAsync(cancellationToken);
         return Unit.Value;
     }
 }

@@ -33,8 +33,8 @@ public class ScenarioMinHitCounterConditionCheckerFacts
         var stub = CreateStub(1, "min-hits");
         var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync((int?)null);
 
@@ -53,8 +53,8 @@ public class ScenarioMinHitCounterConditionCheckerFacts
         var stub = CreateStub(3, "min-hits");
         var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(1);
 
@@ -74,8 +74,8 @@ public class ScenarioMinHitCounterConditionCheckerFacts
         var stub = CreateStub(3, "min-hits");
         var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(2);
 

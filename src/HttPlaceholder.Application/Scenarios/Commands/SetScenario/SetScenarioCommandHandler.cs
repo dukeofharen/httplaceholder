@@ -10,20 +10,20 @@ namespace HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 /// </summary>
 public class SetScenarioCommandHandler : IRequestHandler<SetScenarioCommand, Unit>
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
     /// <summary>
     ///     Constructs a <see cref="SetScenarioCommandHandler" /> instance.
     /// </summary>
-    public SetScenarioCommandHandler(IScenarioService scenarioService)
+    public SetScenarioCommandHandler(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
     public async Task<Unit> Handle(SetScenarioCommand request, CancellationToken cancellationToken)
     {
-        await _scenarioService.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel, cancellationToken);
+        await _stubContext.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel, cancellationToken);
         return Unit.Value;
     }
 }

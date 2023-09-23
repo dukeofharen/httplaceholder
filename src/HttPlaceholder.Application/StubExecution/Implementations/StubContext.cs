@@ -10,6 +10,7 @@ using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
@@ -265,6 +266,27 @@ internal class StubContext : IStubContext, ISingletonService
     /// <inheritdoc />
     public async Task PrepareAsync(CancellationToken cancellationToken) =>
         await Task.WhenAll(_stubSources.Select(s => s.PrepareStubSourceAsync(cancellationToken)));
+
+    /// <inheritdoc />
+    public Task IncreaseHitCountAsync(string scenario, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public Task<int?> GetHitCountAsync(string scenario, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public Task<ScenarioStateModel> GetScenarioAsync(string scenario, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public Task<bool> DeleteScenarioAsync(string scenario, CancellationToken cancellationToken) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public Task DeleteAllScenariosAsync(CancellationToken cancellationToken) => throw new NotImplementedException();
 
     private IWritableStubSource GetWritableStubSource() =>
         (IWritableStubSource)_stubSources.Single(s => s is IWritableStubSource);

@@ -17,15 +17,15 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
-    private readonly IScenarioStateStore _scenarioStateStore;
+    private readonly IStubContext _stubContext;
 
     public ScenarioHitCountVariableParsingHandler(
-        IScenarioStateStore scenarioStateStore,
+        IStubContext stubContext,
         IFileService fileService,
         IHttpContextService httpContextService) :
         base(fileService)
     {
-        _scenarioStateStore = scenarioStateStore;
+        _stubContext = stubContext;
         _httpContextService = httpContextService;
     }
 
@@ -38,13 +38,23 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken) =>
-        Task.FromResult(matches
-            .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertHitCount(current, match, stub)));
+    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var result = input;
+        var filteredMatches = matches
+            .Where(match => match.Groups.Count >= 2);
+        foreach (var filteredMatch in filteredMatches)
+        {
+            result = await InsertHitCountAsync(result, filteredMatch, stub, cancellationToken);
+        }
 
-    private string InsertHitCount(string current, Match match, StubModel stub)
+        return result;
+    }
+
+
+    private async Task<string> InsertHitCountAsync(string current, Match match, StubModel stub,
+        CancellationToken cancellationToken)
     {
         int? hitCount = null;
         var customScenarioNameSet = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value);
@@ -60,7 +70,7 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
             var scenarioName = StringHelper.GetFirstNonWhitespaceString(match.Groups[2].Value, stub.Scenario);
             if (!string.IsNullOrWhiteSpace(scenarioName))
             {
-                var scenario = _scenarioStateStore.GetScenario(scenarioName);
+                var scenario = await _stubContext.GetScenarioAsync(scenarioName, cancellationToken);
                 hitCount = scenario?.HitCount;
             }
         }

@@ -16,15 +16,15 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
-    private readonly IScenarioStateStore _scenarioStateStore;
+    private readonly IStubContext _stubContext;
 
     public ScenarioStateVariableParsingHandler(
-        IScenarioStateStore scenarioStateStore,
+        IStubContext stubContext,
         IFileService fileService,
         IHttpContextService httpContextService) :
         base(fileService)
     {
-        _scenarioStateStore = scenarioStateStore;
+        _stubContext = stubContext;
         _httpContextService = httpContextService;
     }
 
@@ -38,13 +38,21 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler,
     public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken) =>
-        Task.FromResult(matches
-            .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertState(current, match, stub)));
+    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var result = input;
+        var filteredMatches = matches
+            .Where(match => match.Groups.Count >= 2);
+        foreach (var filteredMatch in filteredMatches)
+        {
+            result = await InsertStateAsync(result, filteredMatch, stub, cancellationToken);
+        }
 
-    private string InsertState(string current, Match match, StubModel stub)
+        return result;
+    }
+
+    private async Task<string> InsertStateAsync(string current, Match match, StubModel stub, CancellationToken cancellationToken)
     {
         var state = string.Empty;
         var customScenarioNameSet = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value);
@@ -62,7 +70,7 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler,
                 : stub.Scenario ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(scenarioName))
             {
-                var scenario = _scenarioStateStore.GetScenario(scenarioName);
+                var scenario = await _stubContext.GetScenarioAsync(scenarioName, cancellationToken);
                 state = scenario?.State;
             }
         }

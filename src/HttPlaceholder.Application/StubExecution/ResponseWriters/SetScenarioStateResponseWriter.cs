@@ -11,29 +11,29 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// </summary>
 internal class SetScenarioStateResponseWriter : IResponseWriter, ISingletonService
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
-    public SetScenarioStateResponseWriter(IScenarioService scenarioService)
+    public SetScenarioStateResponseWriter(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(stub.Response.Scenario?.SetScenarioState) ||
             string.IsNullOrWhiteSpace(stub.Scenario))
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
         var scenario = stub.Scenario;
-        var scenarioState = _scenarioService.GetScenario(scenario) ?? new ScenarioStateModel(scenario);
+        var scenarioState = await _stubContext.GetScenarioAsync(scenario, cancellationToken) ?? new ScenarioStateModel(scenario);
 
         scenarioState.State = stub.Response.Scenario.SetScenarioState;
-        _scenarioService.SetScenarioAsync(scenario, scenarioState, cancellationToken);
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        await _stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);
+        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 
     /// <inheritdoc />

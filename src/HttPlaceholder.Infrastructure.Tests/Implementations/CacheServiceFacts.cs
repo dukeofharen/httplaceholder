@@ -63,7 +63,7 @@ public class CacheServiceFacts
             .Returns(true);
 
         // Act
-        var result = instance.GetScopedItem<StubModel>(key);
+        var result = instance.DeleteScopedItem(key);
 
         // Assert
         Assert.IsTrue(result);

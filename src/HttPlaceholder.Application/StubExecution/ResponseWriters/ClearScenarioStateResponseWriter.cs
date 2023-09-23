@@ -10,11 +10,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// </summary>
 internal class ClearScenarioStateResponseWriter : IResponseWriter, ISingletonService
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
-    public ClearScenarioStateResponseWriter(IScenarioService scenarioService)
+    public ClearScenarioStateResponseWriter(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
@@ -26,7 +26,7 @@ internal class ClearScenarioStateResponseWriter : IResponseWriter, ISingletonSer
             return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
-        await _scenarioService.DeleteScenarioAsync(stub.Scenario, cancellationToken);
+        await _stubContext.DeleteScenarioAsync(stub.Scenario, cancellationToken);
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 

@@ -18,7 +18,7 @@ public class SetScenarioStateResponseWriterFacts
         // Arrange
         var stub = CreateStub("scenario-1", string.Empty);
         var writer = _mocker.CreateInstance<SetScenarioStateResponseWriter>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
 
         // Act
         var result = await writer.WriteToResponseAsync(stub, new ResponseModel(), CancellationToken.None);
@@ -26,8 +26,8 @@ public class SetScenarioStateResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("SetScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.GetScenario(It.IsAny<string>()), Times.Never);
-        scenarioServiceMock.Verify(
+        stubContextMock.Verify(m => m.GetScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        stubContextMock.Verify(
             m => m.SetScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
@@ -38,7 +38,7 @@ public class SetScenarioStateResponseWriterFacts
         // Arrange
         var stub = CreateStub(string.Empty, "new-state");
         var writer = _mocker.CreateInstance<SetScenarioStateResponseWriter>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
 
         // Act
         var result = await writer.WriteToResponseAsync(stub, new ResponseModel(), CancellationToken.None);
@@ -46,8 +46,8 @@ public class SetScenarioStateResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("SetScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.GetScenario(It.IsAny<string>()), Times.Never);
-        scenarioServiceMock.Verify(
+        stubContextMock.Verify(m => m.GetScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        stubContextMock.Verify(
             m => m.SetScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
@@ -60,13 +60,13 @@ public class SetScenarioStateResponseWriterFacts
         const string state = "new-state";
         var stub = CreateStub(scenario, state);
         var writer = _mocker.CreateInstance<SetScenarioStateResponseWriter>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
 
-        scenarioServiceMock
-            .Setup(m => m.GetScenario(scenario))
-            .Returns((ScenarioStateModel)null);
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ScenarioStateModel)null);
         ScenarioStateModel actualScenarioStateModel = null;
-        scenarioServiceMock
+        stubContextMock
             .Setup(m => m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()))
             .Callback<string, ScenarioStateModel, CancellationToken>((_, m, _) => actualScenarioStateModel = m);
 
@@ -90,13 +90,13 @@ public class SetScenarioStateResponseWriterFacts
         const string state = "new-state";
         var stub = CreateStub(scenario, state);
         var writer = _mocker.CreateInstance<SetScenarioStateResponseWriter>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
 
         var currentScenarioState = new ScenarioStateModel(scenario) {State = Constants.DefaultScenarioState};
-        scenarioServiceMock
-            .Setup(m => m.GetScenario(scenario))
-            .Returns(currentScenarioState);
-        scenarioServiceMock
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(currentScenarioState);
+        stubContextMock
             .Setup(m => m.SetScenarioAsync(scenario, currentScenarioState, It.IsAny<CancellationToken>()));
 
         // Act

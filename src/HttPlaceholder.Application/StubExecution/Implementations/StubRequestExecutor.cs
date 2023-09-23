@@ -21,7 +21,6 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
     private readonly ILogger<StubRequestExecutor> _logger;
     private readonly IMediator _mediator;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
-    private readonly IScenarioService _scenarioService;
     private readonly IStubContext _stubContext;
     private readonly IStubResponseGenerator _stubResponseGenerator;
 
@@ -32,7 +31,6 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         IRequestLoggerFactory requestLoggerFactory,
         IStubContext stubContext,
         IStubResponseGenerator stubResponseGenerator,
-        IScenarioService scenarioService,
         IMediator mediator)
     {
         _conditionCheckers = conditionCheckers;
@@ -41,7 +39,6 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         _requestLoggerFactory = requestLoggerFactory;
         _stubContext = stubContext;
         _stubResponseGenerator = stubResponseGenerator;
-        _scenarioService = scenarioService;
         _mediator = mediator;
     }
 
@@ -103,7 +100,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         }
 
         var finalStub = _finalStubDeterminer.DetermineFinalStub(foundStubs);
-        await _scenarioService.IncreaseHitCountAsync(finalStub.Scenario, cancellationToken);
+        await _stubContext.IncreaseHitCountAsync(finalStub.Scenario, cancellationToken);
         requestLogger.SetExecutingStubId(finalStub.Id);
         var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub, cancellationToken);
         await _mediator.Publish(new BeforeStubResponseReturnedNotification {Response = response}, cancellationToken);

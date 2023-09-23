@@ -34,22 +34,22 @@ public class ScenarioStateVariableParsingHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<ScenarioStateVariableParsingHandler>();
-        var mockScenarioStateStore = _mocker.GetMock<IScenarioStateStore>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         const string input =
             "((scenario_state)) ((scenario_state:scenario_exists)) ((scenario_state:scenario_doesnt_exist))";
         const string expectedResult = "state_from_stub state_from_other_scenario ";
 
         var stubModel = new StubModel {Scenario = "stub-scenario"};
 
-        mockScenarioStateStore
-            .Setup(m => m.GetScenario(stubModel.Scenario))
-            .Returns(new ScenarioStateModel {State = "state_from_stub"});
-        mockScenarioStateStore
-            .Setup(m => m.GetScenario("scenario_exists"))
-            .Returns(new ScenarioStateModel {State = "state_from_other_scenario"});
-        mockScenarioStateStore
-            .Setup(m => m.GetScenario("scenario_doesnt_exist"))
-            .Returns((ScenarioStateModel)null);
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(stubModel.Scenario, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ScenarioStateModel {State = "state_from_stub"});
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync("scenario_exists", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ScenarioStateModel {State = "state_from_other_scenario"});
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync("scenario_doesnt_exist", It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ScenarioStateModel)null);
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);

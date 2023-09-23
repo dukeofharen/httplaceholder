@@ -15,13 +15,13 @@ public class DeleteAllScenariosCommandHandlerFacts
     public async Task Handle_HappyFlow()
     {
         // Arrange
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<DeleteAllScenariosCommandHandler>();
 
         // Act
         await handler.Handle(new DeleteAllScenariosCommand(), CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m => m.DeleteAllScenariosAsync(It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m => m.DeleteAllScenariosAsync(It.IsAny<CancellationToken>()));
     }
 }

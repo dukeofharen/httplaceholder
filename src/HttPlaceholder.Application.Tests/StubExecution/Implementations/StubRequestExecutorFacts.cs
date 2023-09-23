@@ -197,7 +197,7 @@ public class StubRequestExecutorFacts
         // Assert
         Assert.AreEqual(expectedResponseModel, response);
 
-        _mocker.GetMock<IScenarioService>()
+        _mocker.GetMock<IStubContext>()
             .Verify(m => m.IncreaseHitCountAsync(_stub2.Stub.Scenario, It.IsAny<CancellationToken>()));
         _mocker.GetMock<IMediator>()
             .Verify(m => m.Publish(It.Is<BeforeStubResponseReturnedNotification>(n => n.Response == response),
