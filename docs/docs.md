@@ -2272,9 +2272,7 @@ When you call the url `http://localhost:5000/response-abort-connection`, the con
 
 Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, scheduled job collection, import collection, configuration collection and users collection.
 
-Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest)).
-
-The [Postman collection](samples/requests.json) also contains REST API examples.
+Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest)). Also, by running HttPlaceholder and going to the path `/swagger` (e.g. http://localhost:5000/swagger/) you go to the Swagger UI where you can play around with the API.
 
 The REST API accepts both JSON and YAML strings (when doing a POST or PUT). If you want to post a YAML string, set the `Content-Type` header to `application/x-yaml`, if you want to post a JSON string, set the `Content-Type` header to `application/json`. If you do a request where you expect a textual response, set the `Accept` header to `application/x-yaml` if you want to get YAML or `application/json` if you want to get JSON.
 
@@ -2636,44 +2634,44 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 
 ## Links to samples
 
-* HTTP GET examples: [.yml](samples/01-get.yml)
-* HTTP POST examples: [.yml](samples/02-post.yml)
-* XML Xpath examples: [.yml](samples/03-xml.yml)
-* JSON examples: [.yml](samples/04.1-json.yml)
-* JSONPath examples: [.yml](samples/04.2-json-path.yml)
-* File examples: [.yml](samples/05-base64-file.yml)
-* Basic authentication examples: [.yml](samples/06-basic-auth.yml)
-* Slow response examples: [.yml](samples/07-slow-response.yml)
+* HTTP GET examples: [.yml](samples/01-get.yml) | [cURL](samples/01-get.sh)
+* HTTP POST examples: [.yml](samples/02-post.yml) | [cURL](samples/02-post.sh)
+* XML Xpath examples: [.yml](samples/03-xml.yml) | [cURL](samples/03-xml.sh)
+* JSON examples: [.yml](samples/04.1-json.yml) | [cURL](samples/04-json.sh)
+* JSONPath examples: [.yml](samples/04.2-json-path.yml) | [cURL](samples/04-json.sh)
+* File examples: [.yml](samples/05-base64-file.yml) | [cURL](samples/05-base64-file.sh)
+* Basic authentication examples: [.yml](samples/06-basic-auth.yml) | [cURL](samples/06-basic-auth.sh)
+* Slow response examples: [.yml](samples/07-slow-response.yml) | [cURL](samples/07-slow-response.sh)
 * Simple website example: [.yml](samples/simple-site.yml)
-* Temporary and permanent redirects: [.yml](samples/08-redirect.yml)
-* Validation on client IP: [.yml](samples/09-client-ip.yml)
-* Check on hostname: [.yml](samples/10-hostname.yml)
-* Check HTTP(S): [.yml](samples/11-ishttps.yml)
-* Priority: [.yml](samples/12-priority.yml)
-* Form values: [.yml](samples/13-form.yml)
-* Reverse proxy: [.yml](samples/15-reverse-proxy.yml)
-* Enforce line endings: [.yml](samples/16-line-endings.yml)
-* Enable / disable stub: [.yml](samples/17-disabled.yml)
-* Set response content type: [.yml](samples/18-content-type.yml)
-* Stub images: [.yml](samples/19-stub-image.yml)
-* Abort connection: [.yml](samples/21-abort-connection.yml)
-* String / regex replace: [.yml](samples/22-string-regex-replace.yml)
+* Temporary and permanent redirects: [.yml](samples/08-redirect.yml) | [cURL](samples/08-redirect.sh)
+* Validation on client IP: [.yml](samples/09-client-ip.yml) | [cURL](samples/09-client-ip.sh)
+* Check on hostname: [.yml](samples/10-hostname.yml) | [cURL](samples/10-hostname.sh)
+* Check HTTP(S): [.yml](samples/11-ishttps.yml) | [cURL](samples/11-ishttps.sh)
+* Priority: [.yml](samples/12-priority.yml) | [cURL](samples/12-priority.sh)
+* Form values: [.yml](samples/13-form.yml) | [cURL](samples/13-form.sh)
+* Reverse proxy: [.yml](samples/15-reverse-proxy.yml) | [cURL](samples/15-reverse-proxy.sh)
+* Enforce line endings: [.yml](samples/16-line-endings.yml) | [cURL](samples/16-line-endings.sh)
+* Enable / disable stub: [.yml](samples/17-disabled.yml) | [cURL](samples/17-disabled.sh)
+* Set response content type: [.yml](samples/18-content-type.yml) | [cURL](samples/18-content-type.sh)
+* Stub images: [.yml](samples/19-stub-image.yml) | [cURL](samples/19-stub-image.sh)
+* Abort connection: [.yml](samples/21-abort-connection.yml) | [cURL](samples/21-abort-connection.sh)
+* String / regex replace: [.yml](samples/22-string-regex-replace.yml) | [cURL](samples/22-string-regex-replace.sh)
 * Dynamic mode:
-    * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
-    * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)
-    * Dynamic mode - request headers: [.yml](samples/14.3-dynamic-mode-request-header.yml)
-    * Dynamic mode - form post: [.yml](samples/14.4-dynamic-mode-form-post.yml)
-    * Dynamic mode - request body: [.yml](samples/14.5-dynamic-mode-request-body.yml)
-    * Dynamic mode - display URL: [.yml](samples/14.6-dynamic-mode-display-url.yml)
-    * Dynamic mode - root URL: [.yml](samples/14.7-dynamic-mode-root-url.yml)
-    * Dynamic mode - client IP: [.yml](samples/14.8-dynamic-mode-client-ip.yml)
-    * Dynamic mode - current local or UTC date and time: [.yml](samples/14.9-dynamic-mode-datetime-now.yml)
-    * Dynamic mode - JSONPath: [.yml](samples/14.10-dynamic-mode-jsonpath.yml)
-    * Dynamic mode - scenario state / hit count: [.yml](samples/14.11-dynamic-mode-scenario-state-hitcount.yml)
-    * Dynamic mode - fake data: [.yml](samples/14.12-dynamic-mode-fake-data.yml)
+    * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml) | [cURL](samples/14.1-dynamic-mode-query.sh)
+    * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml) | [cURL](samples/14.2-dynamic-mode-uuid.sh)
+    * Dynamic mode - request headers: [.yml](samples/14.3-dynamic-mode-request-header.yml) | [cURL](samples/14.3-dynamic-mode-request-header.sh)
+    * Dynamic mode - form post: [.yml](samples/14.4-dynamic-mode-form-post.yml) | [cURL](samples/14.4-dynamic-mode-form-post.sh)
+    * Dynamic mode - request body: [.yml](samples/14.5-dynamic-mode-request-body.yml) | [cURL](samples/14.5-dynamic-mode-request-body.sh)
+    * Dynamic mode - display URL: [.yml](samples/14.6-dynamic-mode-display-url.yml) | [cURL](samples/14.6-dynamic-mode-display-url.sh)
+    * Dynamic mode - root URL: [.yml](samples/14.7-dynamic-mode-root-url.yml) | [cURL](samples/14.7-dynamic-mode-root-url.sh)
+    * Dynamic mode - client IP: [.yml](samples/14.8-dynamic-mode-client-ip.yml) | [cURL](samples/14.8-dynamic-mode-client-ip.sh)
+    * Dynamic mode - current local or UTC date and time: [.yml](samples/14.9-dynamic-mode-datetime-now.yml) | [cURL](samples/14.9-dynamic-mode-datetime-now.sh)
+    * Dynamic mode - JSONPath: [.yml](samples/14.10-dynamic-mode-jsonpath.yml) | [cURL](samples/14.10-dynamic-mode-jsonpath.sh)
+    * Dynamic mode - scenario state / hit count: [.yml](samples/14.11-dynamic-mode-scenario-state-hitcount.yml) | [cURL](samples/14.11-dynamic-mode-scenario-state-hitcount.sh)
+    * Dynamic mode - fake data: [.yml](samples/14.12-dynamic-mode-fake-data.yml) | [cURL](samples/14.12-dynamic-mode-fake-data.sh)
 * Scenarios:
-    * Scenarios - hit counter: [.yml](samples/20.1-scenario-hit-counter.yml)
-    * Scenarios - state checking and setting: [.yml](samples/20.2-state-checking.yml)
+    * Scenarios - hit counter: [.yml](samples/20.1-scenario-hit-counter.yml) | [cURL](samples/20.1-scenario-hit-counter.sh)
+    * Scenarios - state checking and setting: [.yml](samples/20.2-state-checking.yml) | [cURL](samples/20.2-state-checking.sh)
 
 # Management interface
 
