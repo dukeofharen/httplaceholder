@@ -1,10 +1,12 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using Microsoft.Extensions.Options;
@@ -18,11 +20,13 @@ internal class InMemoryStubSource : BaseWritableStubSource
 {
     private static readonly object _lock = new();
     private readonly IOptionsMonitor<SettingsModel> _options;
+    private readonly ICacheService _cacheService;
     internal readonly ConcurrentDictionary<string, StubRequestCollectionItem> CollectionItems = new();
 
-    public InMemoryStubSource(IOptionsMonitor<SettingsModel> options)
+    public InMemoryStubSource(IOptionsMonitor<SettingsModel> options, ICacheService cacheService)
     {
         _options = options;
+        _cacheService = cacheService;
     }
 
     /// <inheritdoc />
@@ -223,26 +227,92 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
-    public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new System.NotImplementedException();
+    public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return null;
+        }
+
+        var lookupKey = scenario.ToLower();
+        var item = GetCollection(distributionKey);
+        var result = !item.Scenarios.ContainsKey(lookupKey) ? null : CopyScenarioStateModel(item.Scenarios[lookupKey]);
+        return Task.FromResult(result);
+    }
 
     /// <inheritdoc />
-    public override Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        throw new System.NotImplementedException();
+    public override Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var lookupKey = scenario.ToLower();
+        var scenarioToAdd = CopyScenarioStateModel(scenarioStateModel);
+        var item = GetCollection(distributionKey);
+        if (!item.Scenarios.TryAdd(lookupKey, scenarioToAdd))
+        {
+            throw new InvalidOperationException($"Scenario state with key '{lookupKey}' already exists.");
+        }
+
+        _cacheService.SetScopedItem(CachingKeys.ScenarioState, CopyScenarioStateModel(scenarioStateModel));
+        return Task.FromResult(scenarioToAdd);
+    }
 
     /// <inheritdoc />
-    public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        throw new System.NotImplementedException();
+    public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var lookupKey = scenario.ToLower();
+        var item = GetCollection(distributionKey);
+        if (!item.Scenarios.ContainsKey(lookupKey))
+        {
+            return Task.CompletedTask;
+        }
+
+        var existingScenarioState = item.Scenarios[lookupKey];
+        var newScenarioState = CopyScenarioStateModel(scenarioStateModel);
+        if (!item.Scenarios.TryUpdate(lookupKey, newScenarioState, existingScenarioState))
+        {
+            throw new InvalidOperationException(
+                $"Something went wrong with updating scenario with key '{lookupKey}'.");
+        }
+
+        _cacheService.SetScopedItem(CachingKeys.ScenarioState, CopyScenarioStateModel(scenarioStateModel));
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new System.NotImplementedException();
+    public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var item = GetCollection(distributionKey);
+        return Task.FromResult(item.Scenarios.Values.Select(CopyScenarioStateModel));
+    }
 
     /// <inheritdoc />
-    public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new System.NotImplementedException();
+    public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return Task.FromResult(false);
+        }
+
+        var lookupKey = scenario.ToLower();
+        _cacheService.DeleteScopedItem(CachingKeys.ScenarioState);
+        var item = GetCollection(distributionKey);
+        return Task.FromResult(item.Scenarios.TryRemove(lookupKey, out _));
+    }
 
     /// <inheritdoc />
-    public override Task DeleteAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new System.NotImplementedException();
+    public override Task DeleteAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var item = GetCollection(distributionKey);
+        item.Scenarios.Clear();
+        return Task.CompletedTask;
+    }
 
     /// <inheritdoc />
     public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) => Task.CompletedTask;
@@ -269,6 +339,11 @@ internal class InMemoryStubSource : BaseWritableStubSource
     internal StubRequestCollectionItem GetCollection(string distributionKey) =>
         CollectionItems.GetOrAdd(distributionKey ?? string.Empty,
             key => new StubRequestCollectionItem(key));
+
+    private static ScenarioStateModel CopyScenarioStateModel(ScenarioStateModel input) => new()
+    {
+        Scenario = input.Scenario, State = input.State, HitCount = input.HitCount
+    };
 }
 
 internal class StubRequestCollectionItem
@@ -286,5 +361,5 @@ internal class StubRequestCollectionItem
     public readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
     public readonly IList<StubModel> StubModels = new List<StubModel>();
     public readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
-    public readonly IList<ScenarioStateModel> ScenarioStateModels = new List<ScenarioStateModel>();
+    public readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
 }
