@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
@@ -80,4 +82,22 @@ public abstract class BaseWritableStubSource : IWritableStubSource
 
     /// <inheritdoc />
     public abstract Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<ScenarioStateModel> GetScenarioAsync(string scenario);
+
+    /// <inheritdoc />
+    public abstract Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel);
+
+    /// <inheritdoc />
+    public abstract Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel);
+
+    /// <inheritdoc />
+    public abstract Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync();
+
+    /// <inheritdoc />
+    public abstract Task<bool> DeleteScenarioAsync(string scenario);
+
+    /// <inheritdoc />
+    public abstract Task DeleteAllScenariosAsync();
 }
