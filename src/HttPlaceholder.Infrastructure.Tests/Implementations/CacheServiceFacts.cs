@@ -49,4 +49,23 @@ public class CacheServiceFacts
         // Assert
         mock.Verify(m => m.SetItem(key, input));
     }
+
+    [TestMethod]
+    public void DeleteScopedItem_HappyFlow()
+    {
+        // Arrange
+        var mock = _mocker.GetMock<IHttpContextService>();
+        var instance = _mocker.CreateInstance<CacheService>();
+
+        const string key = "stub";
+        mock
+            .Setup(m => m.DeleteItem(key))
+            .Returns(true);
+
+        // Act
+        var result = instance.GetScopedItem<StubModel>(key);
+
+        // Assert
+        Assert.IsTrue(result);
+    }
 }

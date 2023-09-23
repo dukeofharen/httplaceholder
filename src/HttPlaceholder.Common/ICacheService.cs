@@ -19,4 +19,11 @@ public interface ICacheService
     /// <param name="key">The item key.</param>
     /// <param name="item">The item to store.</param>
     void SetScopedItem(string key, object item);
+
+    /// <summary>
+    ///     Deletes an item on the current scope (e.g. HttpContext).
+    /// </summary>
+    /// <param name="key">The item key.</param>
+    /// <returns>True if the item was found and deleted; false otherwise.</returns>
+    bool DeleteScopedItem(string key);
 }

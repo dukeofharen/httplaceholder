@@ -16,4 +16,6 @@ internal class CacheService : ICacheService, ISingletonService
     public TObject GetScopedItem<TObject>(string key) => _httpContextService.GetItem<TObject>(key);
 
     public void SetScopedItem(string key, object item) => _httpContextService.SetItem(key, item);
+
+    public bool DeleteScopedItem(string key) => _httpContextService.DeleteItem(key);
 }
