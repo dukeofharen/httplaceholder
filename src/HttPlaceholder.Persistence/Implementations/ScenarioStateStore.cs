@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 

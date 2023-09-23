@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
@@ -222,6 +223,28 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
+    public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new System.NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        throw new System.NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        throw new System.NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new System.NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new System.NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task DeleteAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new System.NotImplementedException();
+
+    /// <inheritdoc />
     public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     private void RemoveResponse(RequestResultModel request, string distributionKey)
@@ -263,4 +286,5 @@ internal class StubRequestCollectionItem
     public readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
     public readonly IList<StubModel> StubModels = new List<StubModel>();
     public readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
+    public readonly IList<ScenarioStateModel> ScenarioStateModels = new List<ScenarioStateModel>();
 }

@@ -120,6 +120,28 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
+    public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task DeleteAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+    /// <inheritdoc />
     public override async Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
         CancellationToken cancellationToken = default)
     {

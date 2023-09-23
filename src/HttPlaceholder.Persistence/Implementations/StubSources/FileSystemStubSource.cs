@@ -8,6 +8,7 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.FileSystem;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -221,6 +222,28 @@ internal class FileSystemStubSource : BaseWritableStubSource
             await HandleCleaningOfOldRequests(folder, new DirectoryInfo(folder).Name, cancellationToken);
         }
     }
+
+    /// <inheritdoc />
+    public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public override Task DeleteAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
     private async Task HandleCleaningOfOldRequests(string path, string distributionKey,
         CancellationToken cancellationToken)
