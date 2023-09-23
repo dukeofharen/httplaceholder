@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.Interfaces.Persistence;
 
@@ -104,4 +106,44 @@ public interface IWritableStubSource : IStubSource
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Retrieves a scenario. When the scenario has not been found, null will be returned.
+    /// </summary>
+    /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+    /// <returns>The <see cref="ScenarioStateModel" /> or null.</returns>
+    Task<ScenarioStateModel> GetScenarioAsync(string scenario);
+
+    /// <summary>
+    ///     Adds a scenario. Throws <see cref="InvalidOperationException" /> if scenario is already present.
+    /// </summary>
+    /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+    /// <param name="scenarioStateModel">The scenario to add.</param>
+    /// <returns>The added <see cref="ScenarioStateModel" />.</returns>
+    Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel);
+
+    /// <summary>
+    ///     Updates a scenario.
+    /// </summary>
+    /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+    /// <param name="scenarioStateModel">The new scenario contents.</param>
+    Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel);
+
+    /// <summary>
+    ///     Retrieves a list of all scenarios.
+    /// </summary>
+    /// <returns>A list of <see cref="ScenarioStateModel" />.</returns>
+    Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync();
+
+    /// <summary>
+    ///     Deletes a given scenario.
+    /// </summary>
+    /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+    /// <returns>True if scenario was found and deleted; false otherwise.</returns>
+    Task<bool> DeleteScenarioAsync(string scenario);
+
+    /// <summary>
+    ///     Deletes all scenarios.
+    /// </summary>
+    Task DeleteAllScenariosAsync();
 }
