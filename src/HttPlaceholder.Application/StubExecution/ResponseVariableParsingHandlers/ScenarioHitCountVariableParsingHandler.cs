@@ -16,17 +16,17 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
     private readonly IStubContext _stubContext;
+    private readonly ICacheService _cacheService;
 
     public ScenarioHitCountVariableParsingHandler(
         IStubContext stubContext,
         IFileService fileService,
-        IHttpContextService httpContextService) :
+        ICacheService cacheService) :
         base(fileService)
     {
         _stubContext = stubContext;
-        _httpContextService = httpContextService;
+        _cacheService = cacheService;
     }
 
     /// <inheritdoc />
@@ -61,7 +61,7 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
         if (!customScenarioNameSet)
         {
             // Try to read the scenario state from the HttpContext as it contains the correct state of the moment the state was set.
-            var state = _httpContextService.GetItem<ScenarioStateModel>(CachingKeys.ScenarioState);
+            var state = _cacheService.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState);
             hitCount = state?.HitCount;
         }
 

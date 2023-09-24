@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;
@@ -12,7 +13,7 @@ public abstract class RestApiIntegrationTestBase : IntegrationTestBase
 
     protected void InitializeRestApiIntegrationTest()
     {
-        StubSource = new InMemoryStubSource(Options);
+        StubSource = new InMemoryStubSource(Options, new Mock<ICacheService>().Object);
         ReadOnlyStubSource = new Mock<IStubSource>();
 
         InitializeIntegrationTest(

@@ -20,13 +20,11 @@ internal class InMemoryStubSource : BaseWritableStubSource
 {
     private static readonly object _lock = new();
     private readonly IOptionsMonitor<SettingsModel> _options;
-    private readonly ICacheService _cacheService;
     internal readonly ConcurrentDictionary<string, StubRequestCollectionItem> CollectionItems = new();
 
-    public InMemoryStubSource(IOptionsMonitor<SettingsModel> options, ICacheService cacheService)
+    public InMemoryStubSource(IOptionsMonitor<SettingsModel> options)
     {
         _options = options;
-        _cacheService = cacheService;
     }
 
     /// <inheritdoc />
@@ -254,7 +252,6 @@ internal class InMemoryStubSource : BaseWritableStubSource
             throw new InvalidOperationException($"Scenario state with key '{lookupKey}' already exists.");
         }
 
-        _cacheService.SetScopedItem(CachingKeys.ScenarioState, CopyScenarioStateModel(scenarioStateModel));
         return Task.FromResult(scenarioToAdd);
     }
 
@@ -278,7 +275,6 @@ internal class InMemoryStubSource : BaseWritableStubSource
                 $"Something went wrong with updating scenario with key '{lookupKey}'.");
         }
 
-        _cacheService.SetScopedItem(CachingKeys.ScenarioState, CopyScenarioStateModel(scenarioStateModel));
         return Task.CompletedTask;
     }
 
@@ -300,7 +296,6 @@ internal class InMemoryStubSource : BaseWritableStubSource
         }
 
         var lookupKey = scenario.ToLower();
-        _cacheService.DeleteScopedItem(CachingKeys.ScenarioState);
         var item = GetCollection(distributionKey);
         return Task.FromResult(item.Scenarios.TryRemove(lookupKey, out _));
     }

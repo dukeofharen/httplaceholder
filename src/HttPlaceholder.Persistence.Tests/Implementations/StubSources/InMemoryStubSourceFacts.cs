@@ -611,9 +611,6 @@ public class InMemoryStubSourceFacts
         Assert.AreEqual(input.Scenario, result.Scenario);
         Assert.AreEqual(input.HitCount, result.HitCount);
         Assert.AreEqual(input.State, result.State);
-        _mocker.GetMock<ICacheService>()
-            .Verify(m =>
-                m.SetScopedItem(CachingKeys.ScenarioState, It.Is<ScenarioStateModel>(s => s.Scenario == scenario)));
     }
 
     [DataTestMethod]
@@ -626,12 +623,8 @@ public class InMemoryStubSourceFacts
         const string scenario = "scenario-1";
         var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
 
-        // Act
+        // Act / Assert
         await source.UpdateScenarioAsync(scenario, new ScenarioStateModel(scenario), key, CancellationToken.None);
-
-        // Assert
-        _mocker.GetMock<ICacheService>()
-            .Verify(m => m.SetScopedItem(CachingKeys.ScenarioState, It.IsAny<ScenarioStateModel>()), Times.Never);
     }
 
     [DataTestMethod]
@@ -654,10 +647,6 @@ public class InMemoryStubSourceFacts
         await source.UpdateScenarioAsync(scenario, newStateModel, key, CancellationToken.None);
 
         // Assert
-        _mocker.GetMock<ICacheService>()
-            .Verify(m => m.SetScopedItem(CachingKeys.ScenarioState,
-                It.Is<ScenarioStateModel>(s => s.State == newStateModel.State)));
-
         Assert.IsTrue(collection.Scenarios.TryGetValue(scenario, out var result));
         Assert.AreEqual(newStateModel.Scenario, result.Scenario);
         Assert.AreEqual(newStateModel.HitCount, result.HitCount);
@@ -719,7 +708,6 @@ public class InMemoryStubSourceFacts
 
         // Assert
         Assert.IsFalse(result);
-        _mocker.GetMock<ICacheService>().Verify(m => m.DeleteScopedItem(CachingKeys.ScenarioState));
         Assert.AreEqual(1, collection.Scenarios.Count);
     }
 
@@ -741,7 +729,6 @@ public class InMemoryStubSourceFacts
 
         // Assert
         Assert.IsTrue(result);
-        _mocker.GetMock<ICacheService>().Verify(m => m.DeleteScopedItem(CachingKeys.ScenarioState));
         Assert.AreEqual(0, collection.Scenarios.Count);
     }
 

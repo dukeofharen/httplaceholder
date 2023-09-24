@@ -2,6 +2,7 @@
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain.Entities;
 using Match = System.Text.RegularExpressions.Match;
 
@@ -64,7 +65,7 @@ public class ScenarioHitCountVariableParsingHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<ScenarioHitCountVariableParsingHandler>();
-        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var cacheServiceMock = _mocker.GetMock<ICacheService>();
 
         const string input =
             "((scenario_hitcount))";
@@ -72,8 +73,8 @@ public class ScenarioHitCountVariableParsingHandlerFacts
 
         var stubModel = new StubModel {Scenario = "stub-scenario"};
 
-        mockHttpContextService
-            .Setup(m => m.GetItem<ScenarioStateModel>(CachingKeys.ScenarioState))
+        cacheServiceMock
+            .Setup(m => m.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState))
             .Returns(new ScenarioStateModel {HitCount = 18});
 
         // Act
