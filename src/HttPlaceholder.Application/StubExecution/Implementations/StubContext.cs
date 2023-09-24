@@ -10,6 +10,7 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using Microsoft.Extensions.Options;
@@ -25,6 +26,7 @@ internal class StubContext : IStubContext, ISingletonService
     private readonly IScenarioNotify _scenarioNotify;
     private readonly IStubRequestContext _stubRequestContext;
     private readonly IEnumerable<IStubSource> _stubSources;
+    private readonly ICacheService _cacheService;
 
     public StubContext(
         IEnumerable<IStubSource> stubSources,
@@ -32,12 +34,14 @@ internal class StubContext : IStubContext, ISingletonService
         IRequestNotify requestNotify,
         IStubRequestContext stubRequestContext,
         IStubNotify stubNotify,
-        IScenarioNotify scenarioNotify)
+        IScenarioNotify scenarioNotify,
+        ICacheService cacheService)
     {
         _stubSources = stubSources;
         _requestNotify = requestNotify;
         _stubNotify = stubNotify;
         _scenarioNotify = scenarioNotify;
+        _cacheService = cacheService;
         _stubRequestContext = stubRequestContext;
         _options = options;
     }
@@ -287,6 +291,8 @@ internal class StubContext : IStubContext, ISingletonService
             var (scenarioStateModel, _) = await GetOrAddScenarioState(scenario, key, cancellationToken);
             scenarioStateModel.HitCount++;
             await stubSource.UpdateScenarioAsync(scenario, scenarioStateModel, key, cancellationToken);
+            _cacheService.SetScopedItem(CachingKeys.ScenarioState, scenarioStateModel.Copy());
+
             await _scenarioNotify.ScenarioSetAsync(scenarioStateModel, cancellationToken);
             return scenarioStateModel;
         });
@@ -353,6 +359,7 @@ internal class StubContext : IStubContext, ISingletonService
                 }
 
                 await stubSource.AddScenarioAsync(scenario, scenarioState, key, cancellationToken);
+                _cacheService.SetScopedItem(CachingKeys.ScenarioState, scenarioState.Copy());
             }
             else
             {
@@ -367,6 +374,7 @@ internal class StubContext : IStubContext, ISingletonService
                 }
 
                 await stubSource.UpdateScenarioAsync(scenario, scenarioState, key, cancellationToken);
+                _cacheService.SetScopedItem(CachingKeys.ScenarioState, scenarioState.Copy());
             }
 
             return scenarioState;
@@ -389,6 +397,7 @@ internal class StubContext : IStubContext, ISingletonService
         await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
         {
             result = await stubSource.DeleteScenarioAsync(scenario, key, cancellationToken);
+            _cacheService.DeleteScopedItem(CachingKeys.ScenarioState);
             return null;
         });
 
@@ -434,6 +443,8 @@ internal class StubContext : IStubContext, ISingletonService
             scenarioModel = await stubSource.AddScenarioAsync(scenario, new ScenarioStateModel(scenario),
                 distributionKey,
                 cancellationToken);
+            _cacheService.SetScopedItem(CachingKeys.ScenarioState, scenarioModel.Copy());
+
             scenarioAdded = true;
         }
 
