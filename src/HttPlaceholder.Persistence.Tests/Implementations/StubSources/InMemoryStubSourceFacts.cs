@@ -3,6 +3,8 @@ using System.Linq;
 using Bogus;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common;
+using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
@@ -369,7 +371,8 @@ public class InMemoryStubSourceFacts
         // Act
         var result =
             (await source.GetRequestResultsAsync(
-                new PagingModel {FromIdentifier = request3.CorrelationId, ItemsPerPage = 2}, key, CancellationToken.None))
+                new PagingModel {FromIdentifier = request3.CorrelationId, ItemsPerPage = 2}, key,
+                CancellationToken.None))
             .ToArray();
 
         // Assert
@@ -453,7 +456,7 @@ public class InMemoryStubSourceFacts
         item.StubModels.Add(stub);
 
         // Act
-        var result = await source.GetStubAsync(stub.Id,key, CancellationToken.None);
+        var result = await source.GetStubAsync(stub.Id, key, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stub, result);
@@ -507,6 +510,259 @@ public class InMemoryStubSourceFacts
 
         Assert.IsTrue(item.RequestResultModels.Contains(request3));
         Assert.IsFalse(item.RequestResponseMap.Any(r => r.Key == request3));
+    }
+
+    [TestMethod]
+    public async Task GetScenarioAsync_ScenarioNotSet_ShouldReturnNull()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+
+        // Act
+        var result = await source.GetScenarioAsync(null, null, CancellationToken.None);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetScenarioAsync_ScenarioSetAndFound_ShouldReturnScenario(bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+        var item = source.GetCollection(key);
+        var scenarioStateModel = new ScenarioStateModel(scenario)
+        {
+            State = Guid.NewGuid().ToString(), Scenario = scenario, HitCount = 11
+        };
+        Assert.IsTrue(item.Scenarios.TryAdd(scenario, scenarioStateModel));
+
+        // Act
+        var result = await source.GetScenarioAsync(scenario, key, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(scenarioStateModel.State, result.State);
+        Assert.AreEqual(scenarioStateModel.Scenario, result.Scenario);
+        Assert.AreEqual(scenarioStateModel.HitCount, result.HitCount);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetScenarioAsync_ScenarioSetButNotFound_ShouldReturnNull(bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+
+        // Act
+        var result = await source.GetScenarioAsync(scenario, key, CancellationToken.None);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddScenarioAsync_ScenarioAlreadyAdded_ShouldThrowInvalidOperationException(
+        bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+        var item = source.GetCollection(key);
+        Assert.IsTrue(item.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+
+        // Act
+        var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+            source.AddScenarioAsync(scenario, new ScenarioStateModel(scenario), key, CancellationToken.None));
+
+        // Assert
+        Assert.AreEqual($"Scenario state with key '{scenario}' already exists.", exception.Message);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddScenarioAsync_ScenarioNotAddedYet_HappyFlow(
+        bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+        var input = new ScenarioStateModel(scenario)
+        {
+            Scenario = scenario, HitCount = 11, State = Guid.NewGuid().ToString()
+        };
+
+        // Act
+        var result =
+            await source.AddScenarioAsync(scenario, input, key, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(input.Scenario, result.Scenario);
+        Assert.AreEqual(input.HitCount, result.HitCount);
+        Assert.AreEqual(input.State, result.State);
+        _mocker.GetMock<ICacheService>()
+            .Verify(m =>
+                m.SetScopedItem(CachingKeys.ScenarioState, It.Is<ScenarioStateModel>(s => s.Scenario == scenario)));
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task UpdateScenarioAsync_ScenarioNotFound_ShouldDoNothing(bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+
+        // Act
+        await source.UpdateScenarioAsync(scenario, new ScenarioStateModel(scenario), key, CancellationToken.None);
+
+        // Assert
+        _mocker.GetMock<ICacheService>()
+            .Verify(m => m.SetScopedItem(CachingKeys.ScenarioState, It.IsAny<ScenarioStateModel>()), Times.Never);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task UpdateScenarioAsync_ScenarioFound_ShouldUpdate(bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+
+        var currentStateModel = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        var collection = source.GetCollection(key);
+        Assert.IsTrue(collection.Scenarios.TryAdd(scenario, currentStateModel));
+
+        var newStateModel = new ScenarioStateModel(scenario) {HitCount = 12, State = Guid.NewGuid().ToString()};
+
+        // Act
+        await source.UpdateScenarioAsync(scenario, newStateModel, key, CancellationToken.None);
+
+        // Assert
+        _mocker.GetMock<ICacheService>()
+            .Verify(m => m.SetScopedItem(CachingKeys.ScenarioState,
+                It.Is<ScenarioStateModel>(s => s.State == newStateModel.State)));
+
+        Assert.IsTrue(collection.Scenarios.TryGetValue(scenario, out var result));
+        Assert.AreEqual(newStateModel.Scenario, result.Scenario);
+        Assert.AreEqual(newStateModel.HitCount, result.HitCount);
+        Assert.AreEqual(newStateModel.State, result.State);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetAllScenariosAsync_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+
+        var currentStateModel = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        var collection = source.GetCollection(key);
+        Assert.IsTrue(collection.Scenarios.TryAdd(scenario, currentStateModel));
+
+        // Act
+        var result = (await source.GetAllScenariosAsync(key, CancellationToken.None)).ToArray();
+
+        // Assert
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual(currentStateModel.Scenario, result[0].Scenario);
+        Assert.AreEqual(currentStateModel.HitCount, result[0].HitCount);
+        Assert.AreEqual(currentStateModel.State, result[0].State);
+    }
+
+    [TestMethod]
+    public async Task DeleteScenarioAsync_ScenarioNotSet_ShouldReturnFalse()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+
+        // Act
+        var result = await source.DeleteScenarioAsync(null, null, CancellationToken.None);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteScenarioAsync_ScenarioNotFound_ShouldReturnFalse(bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+
+        var collection = source.GetCollection(key);
+        Assert.IsTrue(collection.Scenarios.TryAdd(scenario + "1", new ScenarioStateModel(scenario + "1")));
+
+        // Act
+        var result = await source.DeleteScenarioAsync(scenario, key, CancellationToken.None);
+
+        // Assert
+        Assert.IsFalse(result);
+        _mocker.GetMock<ICacheService>().Verify(m => m.DeleteScopedItem(CachingKeys.ScenarioState));
+        Assert.AreEqual(1, collection.Scenarios.Count);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteScenarioAsync_ScenarioFound_ShouldReturnTrue(bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+
+        var collection = source.GetCollection(key);
+        Assert.IsTrue(collection.Scenarios.TryAdd(scenario, new ScenarioStateModel(scenario)));
+
+        // Act
+        var result = await source.DeleteScenarioAsync(scenario, key, CancellationToken.None);
+
+        // Assert
+        Assert.IsTrue(result);
+        _mocker.GetMock<ICacheService>().Verify(m => m.DeleteScopedItem(CachingKeys.ScenarioState));
+        Assert.AreEqual(0, collection.Scenarios.Count);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteAllScenariosAsync_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        const string scenario = "scenario-1";
+        var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
+
+        var collection = source.GetCollection(key);
+        Assert.IsTrue(collection.Scenarios.TryAdd(scenario, new ScenarioStateModel(scenario)));
+
+        // Act
+        await source.DeleteAllScenariosAsync(key, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(0, collection.Scenarios.Count);
     }
 
     private static RequestResultModel CreateRequestResultModel()

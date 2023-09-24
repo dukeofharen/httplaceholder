@@ -232,7 +232,7 @@ internal class InMemoryStubSource : BaseWritableStubSource
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
-            return null;
+            return Task.FromResult((ScenarioStateModel)null);
         }
 
         var lookupKey = scenario.ToLower();
