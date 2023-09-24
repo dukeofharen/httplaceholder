@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -17,9 +18,11 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class StubContext : IStubContext, ISingletonService
 {
+    private static ConcurrentDictionary<string, SemaphoreSlim> _scenarioLocks = new();
     private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IRequestNotify _requestNotify;
     private readonly IStubNotify _stubNotify;
+    private readonly IScenarioNotify _scenarioNotify;
     private readonly IStubRequestContext _stubRequestContext;
     private readonly IEnumerable<IStubSource> _stubSources;
 
@@ -28,11 +31,13 @@ internal class StubContext : IStubContext, ISingletonService
         IOptionsMonitor<SettingsModel> options,
         IRequestNotify requestNotify,
         IStubRequestContext stubRequestContext,
-        IStubNotify stubNotify)
+        IStubNotify stubNotify,
+        IScenarioNotify scenarioNotify)
     {
         _stubSources = stubSources;
         _requestNotify = requestNotify;
         _stubNotify = stubNotify;
+        _scenarioNotify = scenarioNotify;
         _stubRequestContext = stubRequestContext;
         _options = options;
     }
@@ -268,25 +273,172 @@ internal class StubContext : IStubContext, ISingletonService
         await Task.WhenAll(_stubSources.Select(s => s.PrepareStubSourceAsync(cancellationToken)));
 
     /// <inheritdoc />
-    public Task IncreaseHitCountAsync(string scenario, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task IncreaseHitCountAsync(string scenario, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return;
+        }
+
+        var key = _stubRequestContext.DistributionKey ?? string.Empty;
+        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        {
+            var stubSource = GetWritableStubSource();
+            var (scenarioStateModel, _) = await GetOrAddScenarioState(scenario, key, cancellationToken);
+            scenarioStateModel.HitCount++;
+            await stubSource.UpdateScenarioAsync(scenario, scenarioStateModel, key, cancellationToken);
+            await _scenarioNotify.ScenarioSetAsync(scenarioStateModel, cancellationToken);
+            return scenarioStateModel;
+        });
+    }
 
     /// <inheritdoc />
-    public Task<int?> GetHitCountAsync(string scenario, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task<int?> GetHitCountAsync(string scenario, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return null;
+        }
+
+        var key = _stubRequestContext.DistributionKey ?? string.Empty;
+        var result = await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        {
+            var (scenarioStateModel, scenarioAdded) = await GetOrAddScenarioState(scenario, key, cancellationToken);
+            if (scenarioAdded)
+            {
+                await _scenarioNotify.ScenarioSetAsync(scenarioStateModel, cancellationToken);
+            }
+
+            return scenarioStateModel;
+        });
+
+        return result.HitCount;
+    }
 
     /// <inheritdoc />
-    public Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(CancellationToken cancellationToken)
+    {
+        var key = _stubRequestContext.DistributionKey ?? string.Empty;
+        var stubSource = GetWritableStubSource();
+        return await stubSource.GetAllScenariosAsync(key, cancellationToken);
+    }
 
     /// <inheritdoc />
-    public Task<ScenarioStateModel> GetScenarioAsync(string scenario, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task<ScenarioStateModel> GetScenarioAsync(string scenario, CancellationToken cancellationToken)
+    {
+        var key = _stubRequestContext.DistributionKey ?? string.Empty;
+        var stubSource = GetWritableStubSource();
+        return await stubSource.GetScenarioAsync(scenario, key, cancellationToken);
+    }
 
     /// <inheritdoc />
-    public Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(scenario) || scenarioState == null)
+        {
+            return;
+        }
+
+        var key = _stubRequestContext.DistributionKey ?? string.Empty;
+        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        {
+            var stubSource = GetWritableStubSource();
+            var existingScenario = await stubSource.GetScenarioAsync(scenario, key, cancellationToken);
+            if (existingScenario == null)
+            {
+                if (string.IsNullOrWhiteSpace(scenarioState.State))
+                {
+                    scenarioState.State = Constants.DefaultScenarioState;
+                }
+
+                await stubSource.AddScenarioAsync(scenario, scenarioState, key, cancellationToken);
+            }
+            else
+            {
+                if (scenarioState.HitCount == -1)
+                {
+                    scenarioState.HitCount = existingScenario.HitCount;
+                }
+
+                if (string.IsNullOrWhiteSpace(scenarioState.State))
+                {
+                    scenarioState.State = existingScenario.State;
+                }
+
+                await stubSource.UpdateScenarioAsync(scenario, scenarioState, key, cancellationToken);
+            }
+
+            return scenarioState;
+        });
+
+        await _scenarioNotify.ScenarioSetAsync(scenarioState, cancellationToken);
+    }
 
     /// <inheritdoc />
-    public Task<bool> DeleteScenarioAsync(string scenario, CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task<bool> DeleteScenarioAsync(string scenario, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return false;
+        }
+
+        var result = false;
+        var stubSource = GetWritableStubSource();
+        var key = _stubRequestContext.DistributionKey ?? string.Empty;
+        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        {
+            result = await stubSource.DeleteScenarioAsync(scenario, key, cancellationToken);
+            return null;
+        });
+
+        await _scenarioNotify.ScenarioDeletedAsync(scenario, cancellationToken);
+        return result;
+    }
 
     /// <inheritdoc />
-    public Task DeleteAllScenariosAsync(CancellationToken cancellationToken) => throw new NotImplementedException();
+    public async Task DeleteAllScenariosAsync(CancellationToken cancellationToken)
+    {
+        var stubSource = GetWritableStubSource();
+        var key = _stubRequestContext.DistributionKey ?? string.Empty;
+        await stubSource.DeleteAllScenariosAsync(key, cancellationToken);
+        await _scenarioNotify.AllScenariosDeletedAsync(cancellationToken);
+    }
+
+    private async Task<ScenarioStateModel> ExecuteLockedScenarioAction(string scenario, string distributionKey,
+        CancellationToken cancellationToken,
+        Func<Task<ScenarioStateModel>> func)
+    {
+        var semaphore = _scenarioLocks.GetOrAdd(distributionKey, k => new SemaphoreSlim(1, 1));
+        await semaphore.WaitAsync(cancellationToken);
+        try
+        {
+            return await func();
+        }
+        finally
+        {
+            semaphore.Release();
+        }
+    }
+
+    private async Task<(ScenarioStateModel ScenarioStateModel, bool ScenarioAdded)> GetOrAddScenarioState(
+        string scenario,
+        string distributionKey,
+        CancellationToken cancellationToken)
+    {
+        var scenarioAdded = false;
+        var stubSource = GetWritableStubSource();
+        var scenarioModel = await stubSource.GetScenarioAsync(scenario, distributionKey, cancellationToken);
+        if (scenarioModel == null)
+        {
+            scenarioModel = await stubSource.AddScenarioAsync(scenario, new ScenarioStateModel(scenario),
+                distributionKey,
+                cancellationToken);
+            scenarioAdded = true;
+        }
+
+        return (scenarioModel, scenarioAdded);
+    }
 
     private IWritableStubSource GetWritableStubSource() =>
         (IWritableStubSource)_stubSources.Single(s => s is IWritableStubSource);
