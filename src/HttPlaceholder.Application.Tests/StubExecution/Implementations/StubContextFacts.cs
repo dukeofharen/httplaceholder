@@ -6,6 +6,8 @@ using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Common;
+using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.TestUtilities.Options;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
@@ -705,5 +707,384 @@ public class StubContextFacts
         // assert
         stubSource1.Verify(m => m.PrepareStubSourceAsync(It.IsAny<CancellationToken>()), Times.Once);
         stubSource2.Verify(m => m.PrepareStubSourceAsync(It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task IncreaseHitCountAsync_ScenarioNotSet_ShouldDoNothing()
+    {
+        // Arrange
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // Act
+        await context.IncreaseHitCountAsync(null, CancellationToken.None);
+
+        // Assert
+        stubSource.Verify(
+            m => m.UpdateScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>(), It.IsAny<string>(),
+                It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [TestMethod]
+    public async Task IncreaseHitCountAsync_ScenarioSet_ShouldUpdateHitCount()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        var currentState = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        stubSource
+            .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, CancellationToken.None))
+            .ReturnsAsync(currentState);
+
+        // Act
+        await context.IncreaseHitCountAsync(scenario, CancellationToken.None);
+
+        // Assert
+        stubSource.Verify(
+            m => m.UpdateScenarioAsync(scenario, It.Is<ScenarioStateModel>(s => s.HitCount == 12), DistrubutionKey,
+                It.IsAny<CancellationToken>()));
+        _mocker.GetMock<ICacheService>().Verify(s => s.SetScopedItem(CachingKeys.ScenarioState,
+            It.Is<ScenarioStateModel>(m => m.State == currentState.State && m.HitCount == currentState.HitCount)));
+        _mocker.GetMock<IScenarioNotify>().Verify(m =>
+            m.ScenarioSetAsync(
+                It.Is<ScenarioStateModel>(s => s.State == currentState.State && s.HitCount == currentState.HitCount),
+                CancellationToken.None));
+    }
+
+    [TestMethod]
+    public async Task GetHitCountAsync_ScenarioNotSet_ShouldReturnNull()
+    {
+        // Arrange
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // Act
+        var result = await context.GetHitCountAsync(null, CancellationToken.None);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public async Task GetHitCountAsync_ScenarioSet_ShouldReturnHitCount()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        var currentState = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        stubSource
+            .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, CancellationToken.None))
+            .ReturnsAsync(currentState);
+
+        // Act
+        var result = await context.GetHitCountAsync(scenario, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(11, result);
+    }
+
+    [TestMethod]
+    public async Task GetAllScenariosAsync_HappyFlow()
+    {
+        // Arrange
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        var allScenarios = new[] {new ScenarioStateModel("scenario-1"), new ScenarioStateModel("scenario-2")};
+        stubSource
+            .Setup(m => m.GetAllScenariosAsync(DistrubutionKey, CancellationToken.None))
+            .ReturnsAsync(allScenarios);
+
+        // Act
+        var result = await context.GetAllScenariosAsync(CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(allScenarios, result);
+    }
+
+    [TestMethod]
+    public async Task GetScenarioAsync_HappyFlow()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        var scenarioState = new ScenarioStateModel(scenario);
+        stubSource
+            .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, CancellationToken.None))
+            .ReturnsAsync(scenarioState);
+
+        // Act
+        var result = await context.GetScenarioAsync(scenario, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(scenarioState, result);
+    }
+
+    [TestMethod]
+    public async Task SetScenarioAsync_ScenarioNotSet_ShouldDoNothing()
+    {
+        // Arrange
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // Act
+        await context.SetScenarioAsync(null, null, CancellationToken.None);
+
+        // Assert
+        _mocker.GetMock<IScenarioNotify>().Verify(
+            m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
+            Times.Never);
+    }
+
+    [TestMethod]
+    public async Task SetScenarioAsync_ScenarioStateNotSet_ShouldDoNothing()
+    {
+        // Arrange
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // Act
+        await context.SetScenarioAsync("scenario-1", null, CancellationToken.None);
+
+        // Assert
+        _mocker.GetMock<IScenarioNotify>().Verify(
+            m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
+            Times.Never);
+    }
+
+    [TestMethod]
+    public async Task SetScenarioAsync_ScenarioNotFound_NewStateNotSet_ShouldAddAndSetStateToDefault()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        var newState = new ScenarioStateModel(scenario) {State = string.Empty};
+
+        // Act
+        await context.SetScenarioAsync(scenario, newState, CancellationToken.None);
+
+        // Assert
+        stubSource.Verify(m => m.AddScenarioAsync(scenario,
+            It.Is<ScenarioStateModel>(s => s.State == Constants.DefaultScenarioState),
+            DistrubutionKey, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IScenarioNotify>().Verify(
+            m => m.ScenarioSetAsync(newState, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState,
+            It.Is<ScenarioStateModel>(s => s.State == Constants.DefaultScenarioState)));
+    }
+
+    [TestMethod]
+    public async Task SetScenarioAsync_ScenarioNotFound_NewStateSet_ShouldAddAndSetState()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        var newState = new ScenarioStateModel(scenario) {State = Guid.NewGuid().ToString()};
+
+        // Act
+        await context.SetScenarioAsync(scenario, newState, CancellationToken.None);
+
+        // Assert
+        stubSource.Verify(m => m.AddScenarioAsync(scenario,
+            It.Is<ScenarioStateModel>(s => s.State == newState.State),
+            DistrubutionKey, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IScenarioNotify>().Verify(
+            m => m.ScenarioSetAsync(newState, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState,
+            It.Is<ScenarioStateModel>(s => s.State == newState.State)));
+    }
+
+    [TestMethod]
+    public async Task SetScenarioAsync_ScenarioFound_HitCountAndStateNotSet_ShouldSetNewValuesToCurrentValues()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        var currentScenario = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        stubSource
+            .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(currentScenario);
+
+        var newState = new ScenarioStateModel(scenario) {HitCount = -1, State = string.Empty};
+
+        // Act
+        await context.SetScenarioAsync(scenario, newState, CancellationToken.None);
+
+        // Assert
+        stubSource.Verify(m => m.UpdateScenarioAsync(scenario,
+            It.Is<ScenarioStateModel>(s => s.State == currentScenario.State && s.HitCount == currentScenario.HitCount),
+            DistrubutionKey, CancellationToken.None));
+        _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState,
+            It.Is<ScenarioStateModel>(s =>
+                s.State == currentScenario.State && s.HitCount == currentScenario.HitCount)));
+        _mocker.GetMock<IScenarioNotify>().Verify(m =>
+            m.ScenarioSetAsync(
+                It.Is<ScenarioStateModel>(s =>
+                    s.State == currentScenario.State && s.HitCount == currentScenario.HitCount),
+                It.IsAny<CancellationToken>()));
+    }
+
+    [TestMethod]
+    public async Task SetScenarioAsync_ScenarioFound_HitCountAndStateSet_ShouldSetNewValues()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        var currentScenario = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        stubSource
+            .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(currentScenario);
+
+        var newState = new ScenarioStateModel(scenario) {HitCount = 13, State = Guid.NewGuid().ToString()};
+
+        // Act
+        await context.SetScenarioAsync(scenario, newState, CancellationToken.None);
+
+        // Assert
+        stubSource.Verify(m => m.UpdateScenarioAsync(scenario,
+            It.Is<ScenarioStateModel>(s => s.State == newState.State && s.HitCount == newState.HitCount),
+            DistrubutionKey, CancellationToken.None));
+        _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState,
+            It.Is<ScenarioStateModel>(s => s.State == newState.State && s.HitCount == newState.HitCount)));
+        _mocker.GetMock<IScenarioNotify>().Verify(m =>
+            m.ScenarioSetAsync(
+                It.Is<ScenarioStateModel>(s => s.State == newState.State && s.HitCount == newState.HitCount),
+                It.IsAny<CancellationToken>()));
+    }
+
+    [TestMethod]
+    public async Task DeleteScenarioAsync_ScenarioNotSet_ShouldReturnFalse()
+    {
+        // Arrange
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // Act
+        var result = await context.DeleteScenarioAsync(null, CancellationToken.None);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    [TestMethod]
+    public async Task DeleteScenarioAsync_ScenarioSet_ScenarioNotDeleted_ShouldReturnFalse()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        stubSource
+            .Setup(m => m.DeleteScenarioAsync(scenario, DistrubutionKey, CancellationToken.None))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await context.DeleteScenarioAsync(scenario, CancellationToken.None);
+
+        // Assert
+        Assert.IsFalse(result);
+        _mocker.GetMock<ICacheService>().Verify(m => m.DeleteScopedItem(CachingKeys.ScenarioState));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(scenario, It.IsAny<CancellationToken>()));
+    }
+
+    [TestMethod]
+    public async Task DeleteScenarioAsync_ScenarioSet_ScenarioDeleted_ShouldReturnTrue()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        stubSource
+            .Setup(m => m.DeleteScenarioAsync(scenario, DistrubutionKey, CancellationToken.None))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await context.DeleteScenarioAsync(scenario, CancellationToken.None);
+
+        // Assert
+        Assert.IsTrue(result);
+        _mocker.GetMock<ICacheService>().Verify(m => m.DeleteScopedItem(CachingKeys.ScenarioState));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(scenario, It.IsAny<CancellationToken>()));
+    }
+
+    [TestMethod]
+    public async Task DeleteAllScenariosAsync_HappyFlow()
+    {
+        // Arrange
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // Act
+        await context.DeleteAllScenariosAsync(CancellationToken.None);
+
+        // Assert
+        stubSource.Verify(m => m.DeleteAllScenariosAsync(DistrubutionKey, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.AllScenariosDeletedAsync(It.IsAny<CancellationToken>()));
+    }
+
+    [TestMethod]
+    public async Task GetOrAddScenarioState_ScenarioNotFound_ShouldAddScenario()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+        stubSource
+            .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ScenarioStateModel)null);
+
+        var newState = new ScenarioStateModel(scenario);
+        stubSource
+            .Setup(m => m.AddScenarioAsync(scenario, It.Is<ScenarioStateModel>(s => s.Scenario == scenario),
+                DistrubutionKey, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(newState);
+
+        // Act
+        var result = await context.GetOrAddScenarioState(scenario, DistrubutionKey, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(newState, result);
+        _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState, It.Is<ScenarioStateModel>(s => s.Scenario == scenario)));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.Is<ScenarioStateModel>(s => s.Scenario == scenario), It.IsAny<CancellationToken>()));
+    }
+
+    [TestMethod]
+    public async Task GetOrAddScenarioState_ScenarioFound_ShouldGetScenario()
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var stubSource = InitializeWritableStubSource();
+        var context = _mocker.CreateInstance<StubContext>();
+        var currentState = new ScenarioStateModel(scenario);
+        stubSource
+            .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(currentState);
+
+        // Act
+        var result = await context.GetOrAddScenarioState(scenario, DistrubutionKey, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(currentState, result);
+        stubSource.Verify(m => m.AddScenarioAsync(scenario, It.IsAny<ScenarioStateModel>(), DistrubutionKey, It.IsAny<CancellationToken>()), Times.Never);
+        _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState, It.IsAny<ScenarioStateModel>()), Times.Never);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    private Mock<IWritableStubSource> InitializeWritableStubSource()
+    {
+        var writableStubSource = new Mock<IWritableStubSource>();
+        _stubSources.Add(writableStubSource.Object);
+        return writableStubSource;
     }
 }

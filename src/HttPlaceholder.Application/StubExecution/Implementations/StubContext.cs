@@ -288,7 +288,7 @@ internal class StubContext : IStubContext, ISingletonService
         await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
         {
             var stubSource = GetWritableStubSource();
-            var (scenarioStateModel, _) = await GetOrAddScenarioState(scenario, key, cancellationToken);
+            var scenarioStateModel = await GetOrAddScenarioState(scenario, key, cancellationToken);
             scenarioStateModel.HitCount++;
             await stubSource.UpdateScenarioAsync(scenario, scenarioStateModel, key, cancellationToken);
             _cacheService.SetScopedItem(CachingKeys.ScenarioState, scenarioStateModel.Copy());
@@ -307,17 +307,8 @@ internal class StubContext : IStubContext, ISingletonService
         }
 
         var key = _stubRequestContext.DistributionKey ?? string.Empty;
-        var result = await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
-        {
-            var (scenarioStateModel, scenarioAdded) = await GetOrAddScenarioState(scenario, key, cancellationToken);
-            if (scenarioAdded)
-            {
-                await _scenarioNotify.ScenarioSetAsync(scenarioStateModel, cancellationToken);
-            }
-
-            return scenarioStateModel;
-        });
-
+        var result = await ExecuteLockedScenarioAction(scenario, key, cancellationToken,
+            async () => await GetOrAddScenarioState(scenario, key, cancellationToken));
         return result.HitCount;
     }
 
@@ -430,12 +421,11 @@ internal class StubContext : IStubContext, ISingletonService
         }
     }
 
-    private async Task<(ScenarioStateModel ScenarioStateModel, bool ScenarioAdded)> GetOrAddScenarioState(
+    internal async Task<ScenarioStateModel> GetOrAddScenarioState(
         string scenario,
         string distributionKey,
         CancellationToken cancellationToken)
     {
-        var scenarioAdded = false;
         var stubSource = GetWritableStubSource();
         var scenarioModel = await stubSource.GetScenarioAsync(scenario, distributionKey, cancellationToken);
         if (scenarioModel == null)
@@ -444,11 +434,10 @@ internal class StubContext : IStubContext, ISingletonService
                 distributionKey,
                 cancellationToken);
             _cacheService.SetScopedItem(CachingKeys.ScenarioState, scenarioModel.Copy());
-
-            scenarioAdded = true;
+            await _scenarioNotify.ScenarioSetAsync(scenarioModel, cancellationToken);
         }
 
-        return (scenarioModel, scenarioAdded);
+        return scenarioModel;
     }
 
     private IWritableStubSource GetWritableStubSource() =>
