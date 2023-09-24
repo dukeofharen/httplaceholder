@@ -343,9 +343,9 @@ key3=value3";
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         Assert.AreEqual(MimeTypes.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual(expectedResult, response.Headers.Single(h => h.Key == "X-Value").Value.Single());

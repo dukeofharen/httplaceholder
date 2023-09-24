@@ -30,7 +30,9 @@ public class HealthcheckOnRootUrlTests : StubIntegrationTestBase
 
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("OK", content);
-        Assert.IsFalse(Requests.Any());
+
+        var requests = await GetRequestsAsync();
+        Assert.IsFalse(requests.Any());
     }
 
     [TestMethod]
@@ -44,6 +46,8 @@ public class HealthcheckOnRootUrlTests : StubIntegrationTestBase
 
         // Assert
         Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-        Assert.IsTrue(Requests.Any());
+
+        var requests = await GetRequestsAsync();
+        Assert.IsTrue(requests.Any());
     }
 }

@@ -13,7 +13,7 @@ public abstract class RestApiIntegrationTestBase : IntegrationTestBase
 
     protected void InitializeRestApiIntegrationTest()
     {
-        StubSource = new InMemoryStubSource(Options, new Mock<ICacheService>().Object);
+        StubSource = new InMemoryStubSource(Options);
         ReadOnlyStubSource = new Mock<IStubSource>();
 
         InitializeIntegrationTest(

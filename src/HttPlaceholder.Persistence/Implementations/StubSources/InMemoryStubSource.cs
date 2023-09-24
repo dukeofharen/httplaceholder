@@ -235,7 +235,7 @@ internal class InMemoryStubSource : BaseWritableStubSource
 
         var lookupKey = scenario.ToLower();
         var item = GetCollection(distributionKey);
-        var result = !item.Scenarios.ContainsKey(lookupKey) ? null : CopyScenarioStateModel(item.Scenarios[lookupKey]);
+        var result = !item.Scenarios.ContainsKey(lookupKey) ? null : item.Scenarios[lookupKey].Copy();
         return Task.FromResult(result);
     }
 
@@ -245,7 +245,7 @@ internal class InMemoryStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         var lookupKey = scenario.ToLower();
-        var scenarioToAdd = CopyScenarioStateModel(scenarioStateModel);
+        var scenarioToAdd = scenarioStateModel.Copy();
         var item = GetCollection(distributionKey);
         if (!item.Scenarios.TryAdd(lookupKey, scenarioToAdd))
         {
@@ -268,7 +268,7 @@ internal class InMemoryStubSource : BaseWritableStubSource
         }
 
         var existingScenarioState = item.Scenarios[lookupKey];
-        var newScenarioState = CopyScenarioStateModel(scenarioStateModel);
+        var newScenarioState = scenarioStateModel.Copy();
         if (!item.Scenarios.TryUpdate(lookupKey, newScenarioState, existingScenarioState))
         {
             throw new InvalidOperationException(
@@ -283,7 +283,7 @@ internal class InMemoryStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         var item = GetCollection(distributionKey);
-        return Task.FromResult(item.Scenarios.Values.Select(CopyScenarioStateModel));
+        return Task.FromResult(item.Scenarios.Values.Select(i => i.Copy()));
     }
 
     /// <inheritdoc />
@@ -334,11 +334,6 @@ internal class InMemoryStubSource : BaseWritableStubSource
     internal StubRequestCollectionItem GetCollection(string distributionKey) =>
         CollectionItems.GetOrAdd(distributionKey ?? string.Empty,
             key => new StubRequestCollectionItem(key));
-
-    private static ScenarioStateModel CopyScenarioStateModel(ScenarioStateModel input) => new()
-    {
-        Scenario = input.Scenario, State = input.State, HitCount = input.HitCount
-    };
 }
 
 internal class StubRequestCollectionItem

@@ -30,8 +30,9 @@ public class StubConditionCheckerPriorityTests : StubIntegrationTestBase
         // Assert
         Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
 
-        Assert.AreEqual(1, Requests.Count);
-        var executedRequest = Requests.Single();
+        var requests = (await GetRequestsAsync()).ToArray();
+        Assert.AreEqual(1, requests.Length);
+        var executedRequest = requests.Single();
 
         var stubExecution =
             executedRequest.StubExecutionResults.Single(r => r.StubId == "condition-priority-check");
@@ -54,8 +55,9 @@ public class StubConditionCheckerPriorityTests : StubIntegrationTestBase
         // Assert
         response.EnsureSuccessStatusCode();
 
-        Assert.AreEqual(1, Requests.Count);
-        var executedRequest = Requests.Single();
+        var requests = (await GetRequestsAsync()).ToArray();
+        Assert.AreEqual(1, requests.Length);
+        var executedRequest = requests.Single();
 
         var stubExecution =
             executedRequest.StubExecutionResults.Single(r => r.StubId == "condition-priority-check");

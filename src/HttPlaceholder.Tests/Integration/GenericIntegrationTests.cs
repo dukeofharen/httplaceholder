@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.OpenApi.Readers;
 
@@ -16,7 +15,7 @@ public class GenericIntegrationTests : IntegrationTestBase
     [TestInitialize]
     public void Initialize()
     {
-        _stubSource = new InMemoryStubSource(Options, new Mock<ICacheService>().Object);
+        _stubSource = new InMemoryStubSource(Options);
         InitializeIntegrationTest(new (Type, object)[] {(typeof(IStubSource), _stubSource)});
     }
 
