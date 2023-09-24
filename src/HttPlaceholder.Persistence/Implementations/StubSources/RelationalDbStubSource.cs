@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -115,31 +116,97 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         var keys = await ctx.QueryAsync<string>(_queryStore.GetDistinctRequestDistributionKeysQuery, cancellationToken);
         foreach (var key in keys)
         {
-            await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, cancellationToken, new {Limit = maxLength, DistributionKey = key});
+            await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, cancellationToken,
+                new {Limit = maxLength, DistributionKey = key});
         }
     }
 
     /// <inheritdoc />
-    public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+    public override async Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var ctx = _databaseContextFactory.CreateDatabaseContext();
+        return await GetScenarioInternalAsync(ctx, scenario, distributionKey, cancellationToken);
+    }
 
     /// <inheritdoc />
-    public override Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        throw new NotImplementedException();
+    public override async Task<ScenarioStateModel> AddScenarioAsync(string scenario,
+        ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var ctx = _databaseContextFactory.CreateDatabaseContext();
+        var existingScenario = await GetScenarioInternalAsync(ctx, scenario, distributionKey, cancellationToken);
+        if (existingScenario != null)
+        {
+            throw new InvalidOperationException($"Scenario state with key '{scenario}' already exists.");
+        }
+
+        await ctx.ExecuteAsync(_queryStore.AddScenarioQuery, cancellationToken,
+            new
+            {
+                DistributionKey = CleanDistKey(distributionKey),
+                Scenario = scenario,
+                scenarioStateModel.State,
+                scenarioStateModel.HitCount
+            });
+        return scenarioStateModel;
+    }
 
     /// <inheritdoc />
-    public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        throw new NotImplementedException();
+    public override async Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var ctx = _databaseContextFactory.CreateDatabaseContext();
+        var existingScenario = await GetScenarioInternalAsync(ctx, scenario, distributionKey, cancellationToken);
+        if (existingScenario == null)
+        {
+            throw new InvalidOperationException($"Scenario state with key '{scenario}' not found.");
+        }
+
+        await ctx.ExecuteAsync(_queryStore.UpdateScenarioQuery, cancellationToken,
+            new
+            {
+                scenarioStateModel.State,
+                scenarioStateModel.HitCount,
+                Scenario = scenario,
+                DistributionKey = CleanDistKey(distributionKey)
+            });
+    }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+    public override async Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var ctx = _databaseContextFactory.CreateDatabaseContext();
+        return await ctx.QueryAsync<ScenarioStateModel>(_queryStore.GetAllScenariosQuery, cancellationToken,
+            new {DistributionKey = CleanDistKey(distributionKey)});
+    }
 
     /// <inheritdoc />
-    public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+    public override async Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return false;
+        }
+
+        using var ctx = _databaseContextFactory.CreateDatabaseContext();
+        var count = await ctx.ExecuteAsync(_queryStore.DeleteScenarioQuery, cancellationToken,
+            new {Scenario = scenario, DistributionKey = CleanDistKey(distributionKey)});
+        return count >= 1;
+    }
 
     /// <inheritdoc />
-    public override Task DeleteAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+    public override async Task DeleteAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var ctx = _databaseContextFactory.CreateDatabaseContext();
+        await ctx.ExecuteAsync(_queryStore.DeleteAllScenariosQuery, cancellationToken,
+            new {DistributionKey = CleanDistKey(distributionKey)});
+    }
 
     /// <inheritdoc />
     public override async Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
@@ -247,7 +314,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        return await _relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx, cancellationToken);
+        return await _relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx,
+            cancellationToken);
     }
 
     /// <inheritdoc />
@@ -261,7 +329,8 @@ internal class RelationalDbStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var stubs = await _relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx, cancellationToken);
+        var stubs = await _relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx,
+            cancellationToken);
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
 
@@ -276,4 +345,9 @@ internal class RelationalDbStubSource : BaseWritableStubSource
     }
 
     private static string CleanDistKey(string distributionKey) => distributionKey ?? string.Empty;
+
+    private async Task<ScenarioStateModel> GetScenarioInternalAsync(IDatabaseContext ctx, string scenario,
+        string distributionKey, CancellationToken cancellationToken) =>
+        await ctx.QueryFirstOrDefaultAsync<ScenarioStateModel>(_queryStore.GetScenarioQuery,
+            cancellationToken, new {Scenario = scenario, DistributionKey = CleanDistKey(distributionKey)});
 }

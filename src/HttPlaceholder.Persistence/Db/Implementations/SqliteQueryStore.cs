@@ -117,4 +117,22 @@ AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string GetDistinctRequestDistributionKeysQuery => "SELECT DISTINCT(distribution_key) FROM requests;";
+
+    /// <inheritdoc />
+    public string GetScenarioQuery { get; }
+
+    /// <inheritdoc />
+    public string AddScenarioQuery { get; }
+
+    /// <inheritdoc />
+    public string UpdateScenarioQuery { get; }
+
+    /// <inheritdoc />
+    public string GetAllScenariosQuery { get; }
+
+    /// <inheritdoc />
+    public string DeleteScenarioQuery { get; }
+
+    /// <inheritdoc />
+    public string DeleteAllScenariosQuery { get; }
 }
