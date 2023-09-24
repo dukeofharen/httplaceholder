@@ -63,6 +63,11 @@ public static class FileNames
     public const string ResponsesFolderName = "responses";
 
     /// <summary>
+    ///     The scenarios folder name.
+    /// </summary>
+    public const string ScenariosFolderName = "scenarios";
+
+    /// <summary>
     ///     The metadata file name.
     /// </summary>
     public const string MetadataFileName = "metadata.json";
