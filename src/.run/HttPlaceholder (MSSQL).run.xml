@@ -5,6 +5,7 @@
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
+      <env name="ASPNETCORE_ENVIRONMENT" value="Development" />
       <env name="sqlServerConnectionString" value="Server=localhost,1433;Database=httplaceholder;User Id=sa;Password=Password123!" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />

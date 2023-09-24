@@ -5,6 +5,7 @@
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
+      <env name="ASPNETCORE_ENVIRONMENT" value="Development" />
       <env name="mysqlConnectionString" value="Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true;SSL Mode=None" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
