@@ -245,6 +245,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
         string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
+        await EnsureDirectoriesExist(distributionKey, cancellationToken);
         var path = GetScenariosFolder(distributionKey);
         var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
         if (await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
