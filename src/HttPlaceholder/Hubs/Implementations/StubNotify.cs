@@ -4,6 +4,7 @@ using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Web.Shared.Dto.v1.Stubs;
+using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HttPlaceholder.Hubs.Implementations;
@@ -24,22 +25,15 @@ public class StubNotify : IStubNotify
     }
 
     /// <inheritdoc />
-    public async Task StubAddedAsync(FullStubOverviewModel stub, string distributionKey = null, CancellationToken cancellationToken = default)
+    public async Task StubAddedAsync(FullStubOverviewModel stub, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var input = _mapper.Map<FullStubOverviewDto>(stub);
-        var channel = string.IsNullOrWhiteSpace(distributionKey)
-            ? _hubContext.Clients.All
-            : _hubContext.Clients.Group(distributionKey);
-        await channel.SendAsync("StubAdded", input, cancellationToken);
+        await _hubContext.GetChannel(distributionKey).SendAsync("StubAdded", input, cancellationToken);
     }
 
     /// <inheritdoc />
     public async Task StubDeletedAsync(string stubId, string distributionKey = null,
-        CancellationToken cancellationToken = default)
-    {
-        var channel = string.IsNullOrWhiteSpace(distributionKey)
-            ? _hubContext.Clients.All
-            : _hubContext.Clients.Group(distributionKey);
-        await channel.SendAsync("StubDeleted", stubId, cancellationToken);
-    }
+        CancellationToken cancellationToken = default) =>
+        await _hubContext.GetChannel(distributionKey).SendAsync("StubDeleted", stubId, cancellationToken);
 }

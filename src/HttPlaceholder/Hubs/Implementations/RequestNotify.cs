@@ -4,6 +4,7 @@ using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Web.Shared.Dto.v1.Requests;
+using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HttPlaceholder.Hubs.Implementations;
@@ -28,10 +29,6 @@ public class RequestNotify : IRequestNotify
         CancellationToken cancellationToken = default)
     {
         var input = _mapper.Map<RequestOverviewDto>(request);
-        var channel = string.IsNullOrWhiteSpace(distributionKey)
-            ? _hubContext.Clients.All
-            : _hubContext.Clients.Group(distributionKey);
-
-        await channel.SendAsync("RequestReceived", input, cancellationToken);
+        await _hubContext.GetChannel(distributionKey).SendAsync("RequestReceived", input, cancellationToken);
     }
 }
