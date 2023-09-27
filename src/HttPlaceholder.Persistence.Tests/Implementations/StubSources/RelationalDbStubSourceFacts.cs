@@ -33,8 +33,8 @@ public class RelationalDbStubSourceFacts
         _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
-    // [TestCleanup]
-    // public void Cleanup() => _mockDatabaseContext.VerifyAll();
+    [TestCleanup]
+    public void Cleanup() => _mockDatabaseContext.VerifyAll();
 
     [DataTestMethod]
     [DataRow(true)]
@@ -702,13 +702,15 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty,
+                _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubsAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
+        var result =
+            await stubSource.GetStubsAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs, result);
@@ -728,13 +730,16 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty,
+                _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = (await stubSource.GetStubsOverviewAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None)).ToArray();
+        var result =
+            (await stubSource.GetStubsOverviewAsync(withDistributionKey ? DistributionKey : null,
+                CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -759,13 +764,15 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty,
+                _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(cachedStubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubAsync(stubId, withDistributionKey ? DistributionKey : null, CancellationToken.None);
+        var result = await stubSource.GetStubAsync(stubId, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
 
         // Assert
         Assert.AreEqual(cachedStubs[1], result);
@@ -781,13 +788,15 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistributionKey : string.Empty,
+                _mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubsAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
+        var result =
+            await stubSource.GetStubsAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs, result);
@@ -807,5 +816,332 @@ public class RelationalDbStubSourceFacts
             .Verify(m => m.MigrateAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()));
         _mocker.GetMock<IRelationalDbStubCache>().Verify(m =>
             m.GetOrUpdateStubCacheAsync(string.Empty, _mockDatabaseContext.Object, It.IsAny<CancellationToken>()));
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetScenarioAsync_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        const string scenario = "scenario-1";
+
+        const string query = "GET SCENARIO QUERY";
+        mockQueryStore
+            .Setup(m => m.GetScenarioQuery)
+            .Returns(query);
+
+        var expectedResult = new ScenarioStateModel();
+        var captured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.QueryFirstOrDefaultAsync<ScenarioStateModel>(query, It.IsAny<CancellationToken>(),
+                Capture.In(captured)))
+            .ReturnsAsync(expectedResult);
+
+        // Act
+        var result = await source.GetScenarioAsync(scenario, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+
+        var input = captured.Single();
+        CheckDbParam(input, "$.Scenario", scenario);
+        CheckDbParam(input, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddScenarioAsync_ScenarioExists_ShouldThrowInvalidOperationException(bool withDistributionKey)
+    {
+        // Arrange
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        const string scenario = "scenario-1";
+
+        const string query = "GET SCENARIO QUERY";
+        mockQueryStore
+            .Setup(m => m.GetScenarioQuery)
+            .Returns(query);
+
+        var expectedResult = new ScenarioStateModel();
+        var captured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.QueryFirstOrDefaultAsync<ScenarioStateModel>(query, It.IsAny<CancellationToken>(),
+                Capture.In(captured)))
+            .ReturnsAsync(expectedResult);
+
+        // Act
+        var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+            source.AddScenarioAsync(scenario, new ScenarioStateModel(), withDistributionKey ? DistributionKey : null,
+                CancellationToken.None));
+
+        // Assert
+        Assert.AreEqual($"Scenario state with key '{scenario}' already exists.", exception.Message);
+
+        var input = captured.Single();
+        CheckDbParam(input, "$.Scenario", scenario);
+        CheckDbParam(input, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddScenarioAsync_ScenarioDoesntExist_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        const string scenario = "scenario-1";
+
+        const string getQuery = "GET SCENARIO QUERY";
+        mockQueryStore
+            .Setup(m => m.GetScenarioQuery)
+            .Returns(getQuery);
+
+        const string addQuery = "ADD SCENARIO QUERY";
+        mockQueryStore
+            .Setup(m => m.AddScenarioQuery)
+            .Returns(addQuery);
+
+        var getCaptured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.QueryFirstOrDefaultAsync<ScenarioStateModel>(getQuery, It.IsAny<CancellationToken>(),
+                Capture.In(getCaptured)))
+            .ReturnsAsync((ScenarioStateModel)null);
+
+        var addCaptured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.ExecuteAsync(addQuery, It.IsAny<CancellationToken>(), Capture.In(addCaptured)))
+            .ReturnsAsync(1);
+
+        var input = new ScenarioStateModel(scenario) {State = Guid.NewGuid().ToString(), HitCount = 11};
+
+        // Act
+        var result = await source.AddScenarioAsync(scenario, input,
+            withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(input, result);
+
+        var getInput = getCaptured.Single();
+        CheckDbParam(getInput, "$.Scenario", scenario);
+        CheckDbParam(getInput, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+
+        var addInput = addCaptured.Single();
+        CheckDbParam(addInput, "$.Scenario", scenario);
+        CheckDbParam(addInput, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+        CheckDbParam(addInput, "$.State", input.State);
+        CheckDbParam(addInput, "$.HitCount", input.HitCount);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task UpdateScenarioAsync_ScenarioDoesntExist_ShouldThrowInvalidOperationException(
+        bool withDistributionKey)
+    {
+        // Arrange
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        const string scenario = "scenario-1";
+
+        const string query = "GET SCENARIO QUERY";
+        mockQueryStore
+            .Setup(m => m.GetScenarioQuery)
+            .Returns(query);
+
+        var captured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.QueryFirstOrDefaultAsync<ScenarioStateModel>(query, It.IsAny<CancellationToken>(),
+                Capture.In(captured)))
+            .ReturnsAsync((ScenarioStateModel)null);
+
+        // Act
+        var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+            source.UpdateScenarioAsync(scenario, new ScenarioStateModel(), withDistributionKey ? DistributionKey : null,
+                CancellationToken.None));
+
+        // Assert
+        Assert.AreEqual($"Scenario state with key '{scenario}' not found.", exception.Message);
+
+        var input = captured.Single();
+        CheckDbParam(input, "$.Scenario", scenario);
+        CheckDbParam(input, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task UpdateScenarioAsync_ScenarioExists_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        const string scenario = "scenario-1";
+
+        const string getQuery = "GET SCENARIO QUERY";
+        mockQueryStore
+            .Setup(m => m.GetScenarioQuery)
+            .Returns(getQuery);
+
+        const string updateQuery = "UPDATE SCENARIO QUERY";
+        mockQueryStore
+            .Setup(m => m.UpdateScenarioQuery)
+            .Returns(updateQuery);
+
+        var getCaptured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.QueryFirstOrDefaultAsync<ScenarioStateModel>(getQuery, It.IsAny<CancellationToken>(),
+                Capture.In(getCaptured)))
+            .ReturnsAsync(new ScenarioStateModel());
+
+        var updateCaptured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.ExecuteAsync(updateQuery, It.IsAny<CancellationToken>(), Capture.In(updateCaptured)))
+            .ReturnsAsync(1);
+
+        var input = new ScenarioStateModel(scenario) {State = Guid.NewGuid().ToString(), HitCount = 11};
+
+        // Act
+        await source.UpdateScenarioAsync(scenario, input,
+            withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        var getInput = getCaptured.Single();
+        CheckDbParam(getInput, "$.Scenario", scenario);
+        CheckDbParam(getInput, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+
+        var addInput = updateCaptured.Single();
+        CheckDbParam(addInput, "$.Scenario", scenario);
+        CheckDbParam(addInput, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+        CheckDbParam(addInput, "$.State", input.State);
+        CheckDbParam(addInput, "$.HitCount", input.HitCount);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetAllScenariosAsync_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        const string query = "GET ALL SCENARIOS QUERY";
+        mockQueryStore
+            .Setup(m => m.GetAllScenariosQuery)
+            .Returns(query);
+
+        var expectedResult = new List<ScenarioStateModel>();
+        var captured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.QueryAsync<ScenarioStateModel>(query, It.IsAny<CancellationToken>(),
+                Capture.In(captured)))
+            .ReturnsAsync(expectedResult);
+
+        // Act
+        var result =
+            await source.GetAllScenariosAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+
+        var addInput = captured.Single();
+        CheckDbParam(addInput, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+    }
+
+    [TestMethod]
+    public async Task DeleteScenarioAsync_ScenarioNotSet_ShouldReturnFalse()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        // Act
+        var result = await source.DeleteScenarioAsync(null, null, CancellationToken.None);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    [DataTestMethod]
+    [DataRow(true, 1, true)]
+    [DataRow(true, 0, false)]
+    [DataRow(false, 1, true)]
+    [DataRow(false, 0, false)]
+    public async Task DeleteScenarioAsync_HappyFlow(bool withDistributionKey, int deleteCount, bool expectedResult)
+    {
+        // Arrange
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        const string scenario = "scenario-1";
+        const string query = "DELETE SCENARIO QUERY";
+        mockQueryStore
+            .Setup(m => m.DeleteScenarioQuery)
+            .Returns(query);
+
+        var captured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(),
+                Capture.In(captured)))
+            .ReturnsAsync(deleteCount);
+
+        // Act
+        var result = await source.DeleteScenarioAsync(scenario, withDistributionKey ? DistributionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+
+        var deleteInput = captured.Single();
+        CheckDbParam(deleteInput, "$.Scenario", scenario);
+        CheckDbParam(deleteInput, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteAllScenariosAsync_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var mockQueryStore = _mocker.GetMock<IQueryStore>();
+        var source = _mocker.CreateInstance<RelationalDbStubSource>();
+
+        const string query = "DELETE ALL SCENARIOS QUERY";
+        mockQueryStore
+            .Setup(m => m.DeleteAllScenariosQuery)
+            .Returns(query);
+
+        var captured = new List<object>();
+        _mockDatabaseContext
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(),
+                Capture.In(captured)))
+            .ReturnsAsync(1);
+
+        // Act
+        await source.DeleteAllScenariosAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
+
+        // Assert
+        var addInput = captured.Single();
+        CheckDbParam(addInput, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
+    }
+
+    private void CheckDbParam<TResultType>(object input, string jsonPath, TResultType expectedValue)
+    {
+        var parsedParam = JObject.Parse(JsonConvert.SerializeObject(input));
+        var result = parsedParam.SelectToken(jsonPath);
+        Assert.IsNotNull(result);
+        Assert.AreEqual(expectedValue, result.Value<TResultType>());
     }
 }
