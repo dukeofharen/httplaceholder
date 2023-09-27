@@ -190,7 +190,7 @@ public class StubContextFacts
         stubSource.Verify(m => m.AddStubAsync(stubToBeAdded, DistrubutionKey, It.IsAny<CancellationToken>()),
             Times.Once);
         stubNotifyMock.Verify(m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stubToBeAdded.Id),
-            It.IsAny<CancellationToken>()));
+            DistrubutionKey, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -213,7 +213,7 @@ public class StubContextFacts
 
         // assert
         Assert.IsTrue(result);
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stubId, It.IsAny<CancellationToken>()));
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stubId, DistrubutionKey, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -344,7 +344,7 @@ public class StubContextFacts
             Times.Once);
         stubSource.Verify(m => m.CleanOldRequestResultsAsync(It.IsAny<CancellationToken>()),
             Times.Never);
-        requestNotifyMock.Verify(m => m.NewRequestReceivedAsync(request, It.IsAny<CancellationToken>()), Times.Once);
+        requestNotifyMock.Verify(m => m.NewRequestReceivedAsync(request, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -562,9 +562,9 @@ public class StubContextFacts
         stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, DistrubutionKey, It.IsAny<CancellationToken>()),
             Times.Never);
         stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id, It.IsAny<CancellationToken>()), Times.Once);
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id, It.IsAny<CancellationToken>()), Times.Never);
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id, It.IsAny<CancellationToken>()), Times.Once);
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id,DistrubutionKey,  It.IsAny<CancellationToken>()), Times.Once);
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id,DistrubutionKey,  It.IsAny<CancellationToken>()), Times.Never);
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id,DistrubutionKey,  It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -593,9 +593,9 @@ public class StubContextFacts
         stubSource.Verify(m => m.DeleteStubAsync(stub1.Id, DistrubutionKey, It.IsAny<CancellationToken>()));
         stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, DistrubutionKey, It.IsAny<CancellationToken>()));
         stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, DistrubutionKey, It.IsAny<CancellationToken>()));
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id, It.IsAny<CancellationToken>()));
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id, It.IsAny<CancellationToken>()));
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id, It.IsAny<CancellationToken>()));
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id,DistrubutionKey,  It.IsAny<CancellationToken>()));
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id,DistrubutionKey,  It.IsAny<CancellationToken>()));
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id,DistrubutionKey,  It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -628,9 +628,9 @@ public class StubContextFacts
         stubSource.Verify(m => m.DeleteStubAsync(stub1.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
         stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
         stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, DistrubutionKey, It.IsAny<CancellationToken>()), Times.Once);
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id, It.IsAny<CancellationToken>()), Times.Once);
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id, It.IsAny<CancellationToken>()), Times.Once);
-        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id, It.IsAny<CancellationToken>()), Times.Once);
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub1.Id,DistrubutionKey,  It.IsAny<CancellationToken>()), Times.Once);
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub2.Id,DistrubutionKey,  It.IsAny<CancellationToken>()), Times.Once);
+        stubNotifyMock.Verify(m => m.StubDeletedAsync(stub3.Id,DistrubutionKey,  It.IsAny<CancellationToken>()), Times.Once);
 
         stubSource.Verify(
             m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub1.Id), DistrubutionKey,
@@ -646,15 +646,15 @@ public class StubContextFacts
             Times.Once);
         stubNotifyMock.Verify(
             m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stub1.Id),
-                It.IsAny<CancellationToken>()),
+                DistrubutionKey, It.IsAny<CancellationToken>()),
             Times.Never);
         stubNotifyMock.Verify(
             m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stub2.Id),
-                It.IsAny<CancellationToken>()),
+                DistrubutionKey, It.IsAny<CancellationToken>()),
             Times.Once);
         stubNotifyMock.Verify(
             m => m.StubAddedAsync(It.Is<FullStubOverviewModel>(s => s.Stub.Id == stub3.Id),
-                It.IsAny<CancellationToken>()),
+                DistrubutionKey, It.IsAny<CancellationToken>()),
             Times.Once);
 
         Assert.IsTrue(newStubs.All(s => s.Tenant == tenant1));
@@ -750,7 +750,7 @@ public class StubContextFacts
         _mocker.GetMock<IScenarioNotify>().Verify(m =>
             m.ScenarioSetAsync(
                 It.Is<ScenarioStateModel>(s => s.State == currentState.State && s.HitCount == currentState.HitCount),
-                CancellationToken.None));
+                DistrubutionKey, CancellationToken.None));
     }
 
     [TestMethod]
@@ -836,7 +836,7 @@ public class StubContextFacts
 
         // Assert
         _mocker.GetMock<IScenarioNotify>().Verify(
-            m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
+            m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(),DistrubutionKey,  It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -851,7 +851,7 @@ public class StubContextFacts
 
         // Assert
         _mocker.GetMock<IScenarioNotify>().Verify(
-            m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
+            m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(),DistrubutionKey,  It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -873,7 +873,7 @@ public class StubContextFacts
             It.Is<ScenarioStateModel>(s => s.State == Constants.DefaultScenarioState),
             DistrubutionKey, It.IsAny<CancellationToken>()));
         _mocker.GetMock<IScenarioNotify>().Verify(
-            m => m.ScenarioSetAsync(newState, It.IsAny<CancellationToken>()));
+            m => m.ScenarioSetAsync(newState, DistrubutionKey, It.IsAny<CancellationToken>()));
         _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState,
             It.Is<ScenarioStateModel>(s => s.State == Constants.DefaultScenarioState)));
     }
@@ -896,7 +896,7 @@ public class StubContextFacts
             It.Is<ScenarioStateModel>(s => s.State == newState.State),
             DistrubutionKey, It.IsAny<CancellationToken>()));
         _mocker.GetMock<IScenarioNotify>().Verify(
-            m => m.ScenarioSetAsync(newState, It.IsAny<CancellationToken>()));
+            m => m.ScenarioSetAsync(newState, DistrubutionKey, It.IsAny<CancellationToken>()));
         _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState,
             It.Is<ScenarioStateModel>(s => s.State == newState.State)));
     }
@@ -930,7 +930,7 @@ public class StubContextFacts
             m.ScenarioSetAsync(
                 It.Is<ScenarioStateModel>(s =>
                     s.State == currentScenario.State && s.HitCount == currentScenario.HitCount),
-                It.IsAny<CancellationToken>()));
+                DistrubutionKey, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -960,7 +960,7 @@ public class StubContextFacts
         _mocker.GetMock<IScenarioNotify>().Verify(m =>
             m.ScenarioSetAsync(
                 It.Is<ScenarioStateModel>(s => s.State == newState.State && s.HitCount == newState.HitCount),
-                It.IsAny<CancellationToken>()));
+                DistrubutionKey, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -994,7 +994,7 @@ public class StubContextFacts
         // Assert
         Assert.IsFalse(result);
         _mocker.GetMock<ICacheService>().Verify(m => m.DeleteScopedItem(CachingKeys.ScenarioState));
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(scenario, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(scenario,DistrubutionKey,  It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -1015,7 +1015,7 @@ public class StubContextFacts
         // Assert
         Assert.IsTrue(result);
         _mocker.GetMock<ICacheService>().Verify(m => m.DeleteScopedItem(CachingKeys.ScenarioState));
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(scenario, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(scenario, DistrubutionKey, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -1030,7 +1030,7 @@ public class StubContextFacts
 
         // Assert
         stubSource.Verify(m => m.DeleteAllScenariosAsync(DistrubutionKey, It.IsAny<CancellationToken>()));
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.AllScenariosDeletedAsync(It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.AllScenariosDeletedAsync(DistrubutionKey, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -1056,7 +1056,7 @@ public class StubContextFacts
         // Assert
         Assert.AreEqual(newState, result);
         _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState, It.Is<ScenarioStateModel>(s => s.Scenario == scenario)));
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.Is<ScenarioStateModel>(s => s.Scenario == scenario), It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.Is<ScenarioStateModel>(s => s.Scenario == scenario), DistrubutionKey, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -1078,7 +1078,7 @@ public class StubContextFacts
         Assert.AreEqual(currentState, result);
         stubSource.Verify(m => m.AddScenarioAsync(scenario, It.IsAny<ScenarioStateModel>(), DistrubutionKey, It.IsAny<CancellationToken>()), Times.Never);
         _mocker.GetMock<ICacheService>().Verify(m => m.SetScopedItem(CachingKeys.ScenarioState, It.IsAny<ScenarioStateModel>()), Times.Never);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Never);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), DistrubutionKey, It.IsAny<CancellationToken>()), Times.Never);
     }
 
     private Mock<IWritableStubSource> InitializeWritableStubSource()

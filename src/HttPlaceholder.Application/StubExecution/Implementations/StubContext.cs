@@ -90,23 +90,25 @@ internal class StubContext : IStubContext, ISingletonService
         }
 
         var source = GetWritableStubSource();
-        await source.AddStubAsync(stub, _stubRequestContext.DistributionKey, cancellationToken);
+        var distKey = _stubRequestContext.DistributionKey;
+        await source.AddStubAsync(stub, distKey, cancellationToken);
         var result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
         var overviewModel = new FullStubOverviewModel
         {
             Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
             Metadata = result.Metadata
         };
-        await _stubNotify.StubAddedAsync(overviewModel, cancellationToken);
+        await _stubNotify.StubAddedAsync(overviewModel, distKey, cancellationToken);
         return result;
     }
 
     /// <inheritdoc />
     public async Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
     {
+        var distKey = _stubRequestContext.DistributionKey;
         var result = await GetWritableStubSource()
-            .DeleteStubAsync(stubId, _stubRequestContext.DistributionKey, cancellationToken);
-        await _stubNotify.StubDeletedAsync(stubId, cancellationToken);
+            .DeleteStubAsync(stubId, distKey, cancellationToken);
+        await _stubNotify.StubDeletedAsync(stubId, distKey, cancellationToken);
         return result;
     }
 
@@ -114,12 +116,13 @@ internal class StubContext : IStubContext, ISingletonService
     public async Task DeleteAllStubsAsync(string tenant, CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
-        var stubs = (await source.GetStubsAsync(_stubRequestContext.DistributionKey, cancellationToken))
+        var distKey = _stubRequestContext.DistributionKey;
+        var stubs = (await source.GetStubsAsync(distKey, cancellationToken))
             .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
         foreach (var stub in stubs)
         {
-            await source.DeleteStubAsync(stub.Id, _stubRequestContext.DistributionKey, cancellationToken);
-            await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
+            await source.DeleteStubAsync(stub.Id, distKey, cancellationToken);
+            await _stubNotify.StubDeletedAsync(stub.Id, distKey, cancellationToken);
         }
     }
 
@@ -127,11 +130,12 @@ internal class StubContext : IStubContext, ISingletonService
     public async Task DeleteAllStubsAsync(CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
-        var stubs = await source.GetStubsAsync(_stubRequestContext.DistributionKey, cancellationToken);
+        var distKey = _stubRequestContext.DistributionKey;
+        var stubs = await source.GetStubsAsync(distKey, cancellationToken);
         foreach (var stub in stubs)
         {
-            await source.DeleteStubAsync(stub.Id, _stubRequestContext.DistributionKey, cancellationToken);
-            await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
+            await source.DeleteStubAsync(stub.Id, distKey, cancellationToken);
+            await _stubNotify.StubDeletedAsync(stub.Id, distKey, cancellationToken);
         }
     }
 
@@ -143,28 +147,29 @@ internal class StubContext : IStubContext, ISingletonService
         var stubIds = stubArray
             .Select(s => s.Id)
             .Distinct();
-        var existingStubs = (await source.GetStubsAsync(_stubRequestContext.DistributionKey, cancellationToken))
+        var distKey = _stubRequestContext.DistributionKey;
+        var existingStubs = (await source.GetStubsAsync(distKey, cancellationToken))
             .Where(s => stubIds.Any(sid => string.Equals(sid, s.Id, StringComparison.OrdinalIgnoreCase)) ||
                         string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
 
         // First, delete the existing stubs.
         foreach (var stub in existingStubs)
         {
-            await source.DeleteStubAsync(stub.Id, _stubRequestContext.DistributionKey, cancellationToken);
-            await _stubNotify.StubDeletedAsync(stub.Id, cancellationToken);
+            await source.DeleteStubAsync(stub.Id, distKey, cancellationToken);
+            await _stubNotify.StubDeletedAsync(stub.Id, distKey, cancellationToken);
         }
 
         // Make sure the new selection of stubs all have the new tenant and add them to the stub source.
         foreach (var stub in stubArray)
         {
             stub.Tenant = tenant;
-            await source.AddStubAsync(stub, _stubRequestContext.DistributionKey, cancellationToken);
+            await source.AddStubAsync(stub, distKey, cancellationToken);
             var overviewModel = new FullStubOverviewModel
             {
                 Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
                 Metadata = new StubMetadataModel {ReadOnly = false}
             };
-            await _stubNotify.StubAddedAsync(overviewModel, cancellationToken);
+            await _stubNotify.StubAddedAsync(overviewModel, distKey, cancellationToken);
         }
     }
 
@@ -203,13 +208,14 @@ internal class StubContext : IStubContext, ISingletonService
             await source.CleanOldRequestResultsAsync(cancellationToken);
         }
 
+        var distKey = _stubRequestContext.DistributionKey;
         var stub = !string.IsNullOrWhiteSpace(requestResult.ExecutingStubId)
             ? await GetStubAsync(requestResult.ExecutingStubId, cancellationToken)
             : null;
         requestResult.StubTenant = stub?.Stub?.Tenant;
         await source.AddRequestResultAsync(requestResult, settings.Storage?.StoreResponses == true ? response : null,
-            _stubRequestContext.DistributionKey, cancellationToken);
-        await _requestNotify.NewRequestReceivedAsync(requestResult, cancellationToken);
+            distKey, cancellationToken);
+        await _requestNotify.NewRequestReceivedAsync(requestResult, distKey, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -293,7 +299,7 @@ internal class StubContext : IStubContext, ISingletonService
             await stubSource.UpdateScenarioAsync(scenario, scenarioStateModel, key, cancellationToken);
             _cacheService.SetScopedItem(CachingKeys.ScenarioState, scenarioStateModel.Copy());
 
-            await _scenarioNotify.ScenarioSetAsync(scenarioStateModel, cancellationToken);
+            await _scenarioNotify.ScenarioSetAsync(scenarioStateModel, key, cancellationToken);
             return scenarioStateModel;
         });
     }
@@ -371,7 +377,7 @@ internal class StubContext : IStubContext, ISingletonService
             return scenarioState;
         });
 
-        await _scenarioNotify.ScenarioSetAsync(scenarioState, cancellationToken);
+        await _scenarioNotify.ScenarioSetAsync(scenarioState, key, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -392,7 +398,7 @@ internal class StubContext : IStubContext, ISingletonService
             return null;
         });
 
-        await _scenarioNotify.ScenarioDeletedAsync(scenario, cancellationToken);
+        await _scenarioNotify.ScenarioDeletedAsync(scenario, key, cancellationToken);
         return result;
     }
 
@@ -402,7 +408,7 @@ internal class StubContext : IStubContext, ISingletonService
         var stubSource = GetWritableStubSource();
         var key = _stubRequestContext.DistributionKey ?? string.Empty;
         await stubSource.DeleteAllScenariosAsync(key, cancellationToken);
-        await _scenarioNotify.AllScenariosDeletedAsync(cancellationToken);
+        await _scenarioNotify.AllScenariosDeletedAsync(key, cancellationToken);
     }
 
     private async Task<ScenarioStateModel> ExecuteLockedScenarioAction(string scenario, string distributionKey,
@@ -434,7 +440,7 @@ internal class StubContext : IStubContext, ISingletonService
                 distributionKey,
                 cancellationToken);
             _cacheService.SetScopedItem(CachingKeys.ScenarioState, scenarioModel.Copy());
-            await _scenarioNotify.ScenarioSetAsync(scenarioModel, cancellationToken);
+            await _scenarioNotify.ScenarioSetAsync(scenarioModel, distributionKey, cancellationToken);
         }
 
         return scenarioModel;

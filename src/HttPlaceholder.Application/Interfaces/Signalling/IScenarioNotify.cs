@@ -13,19 +13,22 @@ public interface IScenarioNotify
     ///     A method to call after a scenario has been set.
     /// </summary>
     /// <param name="scenario">The scenario.</param>
+    /// <param name="distributionKey">The distribution key.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task ScenarioSetAsync(ScenarioStateModel scenario, CancellationToken cancellationToken);
+    Task ScenarioSetAsync(ScenarioStateModel scenario, string distributionKey = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     A method to call after a scenario has been deleted.
     /// </summary>
     /// <param name="scenarioName">The scenario name.</param>
+    /// <param name="distributionKey">The distribution key.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task ScenarioDeletedAsync(string scenarioName, CancellationToken cancellationToken);
+    Task ScenarioDeletedAsync(string scenarioName, string distributionKey = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     A method to call after all scenarios have been deleted.
     /// </summary>
+    /// <param name="distributionKey">The distribution key.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task AllScenariosDeletedAsync(CancellationToken cancellationToken);
+    Task AllScenariosDeletedAsync(string distributionKey = null, CancellationToken cancellationToken = default);
 }

@@ -29,7 +29,7 @@ public static class TestObjectFactory
     public static Dictionary<object, object> CreateStringCheckingModel(bool? present = null) =>
         Convert(new StubConditionStringCheckingModel {Present = present});
 
-    public static (IHubContext<T> hubContext, Mock<IClientProxy> clientProxyMock) CreateHubMock<T>() where T : Hub
+    public static (IHubContext<T> hubContext, Mock<IClientProxy> clientProxyMock) CreateHubMock<T>(string group = null) where T : Hub
     {
         var hubContextMock = new Mock<IHubContext<T>>();
         var hubClientsMock = new Mock<IHubClients>();
@@ -39,9 +39,18 @@ public static class TestObjectFactory
             .Setup(m => m.Clients)
             .Returns(hubClientsMock.Object);
 
-        hubClientsMock
-            .Setup(m => m.All)
-            .Returns(clientProxyMock.Object);
+        if (string.IsNullOrWhiteSpace(group))
+        {
+            hubClientsMock
+                .Setup(m => m.All)
+                .Returns(clientProxyMock.Object);
+        }
+        else
+        {
+            hubClientsMock
+                .Setup(m => m.Group(group))
+                .Returns(clientProxyMock.Object);
+        }
 
         return (hubContextMock.Object, clientProxyMock);
     }

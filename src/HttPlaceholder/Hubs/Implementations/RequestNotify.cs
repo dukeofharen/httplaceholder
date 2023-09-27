@@ -24,9 +24,14 @@ public class RequestNotify : IRequestNotify
     }
 
     /// <inheritdoc />
-    public async Task NewRequestReceivedAsync(RequestResultModel request, CancellationToken cancellationToken)
+    public async Task NewRequestReceivedAsync(RequestResultModel request, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var input = _mapper.Map<RequestOverviewDto>(request);
-        await _hubContext.Clients.All.SendAsync("RequestReceived", input, cancellationToken);
+        var channel = string.IsNullOrWhiteSpace(distributionKey)
+            ? _hubContext.Clients.All
+            : _hubContext.Clients.Group(distributionKey);
+
+        await channel.SendAsync("RequestReceived", input, cancellationToken);
     }
 }

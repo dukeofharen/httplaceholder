@@ -12,23 +12,18 @@ public class StubNotifyFacts
     private readonly AutoMocker _mocker = new();
     private Mock<IClientProxy> _clientProxyMock;
 
-    [TestInitialize]
-    public void Initialize()
-    {
-        var mocks = TestObjectFactory.CreateHubMock<StubHub>();
-        _mocker.Use(mocks.hubContext);
-        _clientProxyMock = mocks.clientProxyMock;
-    }
-
     [TestCleanup]
     public void Cleanup() => _mocker.VerifyAll();
 
-    [TestMethod]
-    public async Task StubAddedAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task StubAddedAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var mapperMock = _mocker.GetMock<IMapper>();
-        var notify = _mocker.CreateInstance<StubNotify>();
+        var key = withDistributionKey ? "dist-key" : null;
+        var notify = CreateNotify(key);
 
         var input = new FullStubOverviewModel();
         var mappedDto = new FullStubOverviewDto();
@@ -37,26 +32,37 @@ public class StubNotifyFacts
             .Returns(mappedDto);
 
         // Act
-        await notify.StubAddedAsync(input, CancellationToken.None);
+        await notify.StubAddedAsync(input, key, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("StubAdded", It.Is<object[]>(o => o.Single() == mappedDto),
             It.IsAny<CancellationToken>()));
     }
 
-    [TestMethod]
-    public async Task StubDeletedAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task StubDeletedAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var notify = _mocker.CreateInstance<StubNotify>();
+        var key = withDistributionKey ? "dist-key" : null;
+        var notify = CreateNotify(key);
 
         var stubId = "stub-id";
 
         // Act
-        await notify.StubDeletedAsync(stubId, CancellationToken.None);
+        await notify.StubDeletedAsync(stubId, key, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("StubDeleted", It.Is<object[]>(o => o.Single() == stubId),
             It.IsAny<CancellationToken>()));
+    }
+
+    private StubNotify CreateNotify(string group)
+    {
+        var mocks = TestObjectFactory.CreateHubMock<StubHub>(group);
+        _mocker.Use(mocks.hubContext);
+        _clientProxyMock = mocks.clientProxyMock;
+        return _mocker.CreateInstance<StubNotify>();
     }
 }

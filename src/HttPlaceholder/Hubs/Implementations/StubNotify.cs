@@ -24,13 +24,22 @@ public class StubNotify : IStubNotify
     }
 
     /// <inheritdoc />
-    public async Task StubAddedAsync(FullStubOverviewModel stub, CancellationToken cancellationToken)
+    public async Task StubAddedAsync(FullStubOverviewModel stub, string distributionKey = null, CancellationToken cancellationToken = default)
     {
         var input = _mapper.Map<FullStubOverviewDto>(stub);
-        await _hubContext.Clients.All.SendAsync("StubAdded", input, cancellationToken);
+        var channel = string.IsNullOrWhiteSpace(distributionKey)
+            ? _hubContext.Clients.All
+            : _hubContext.Clients.Group(distributionKey);
+        await channel.SendAsync("StubAdded", input, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task StubDeletedAsync(string stubId, CancellationToken cancellationToken) =>
-        await _hubContext.Clients.All.SendAsync("StubDeleted", stubId, cancellationToken);
+    public async Task StubDeletedAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var channel = string.IsNullOrWhiteSpace(distributionKey)
+            ? _hubContext.Clients.All
+            : _hubContext.Clients.Group(distributionKey);
+        await channel.SendAsync("StubDeleted", stubId, cancellationToken);
+    }
 }
