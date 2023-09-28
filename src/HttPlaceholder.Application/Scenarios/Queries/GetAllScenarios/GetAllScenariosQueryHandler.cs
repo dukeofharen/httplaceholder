@@ -12,18 +12,18 @@ namespace HttPlaceholder.Application.Scenarios.Queries.GetAllScenarios;
 /// </summary>
 public class GetAllScenariosQueryHandler : IRequestHandler<GetAllScenariosQuery, IEnumerable<ScenarioStateModel>>
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
     /// <summary>
     ///     Constructs a <see cref="GetAllScenariosQueryHandler" /> instance.
     /// </summary>
-    public GetAllScenariosQueryHandler(IScenarioService scenarioService)
+    public GetAllScenariosQueryHandler(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<ScenarioStateModel>> Handle(GetAllScenariosQuery request,
+    public async Task<IEnumerable<ScenarioStateModel>> Handle(GetAllScenariosQuery request,
         CancellationToken cancellationToken) =>
-        Task.FromResult(_scenarioService.GetAllScenarios());
+        await _stubContext.GetAllScenariosAsync(cancellationToken);
 }

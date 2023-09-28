@@ -4,6 +4,7 @@ using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Web.Shared.Dto.v1.Scenarios;
+using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HttPlaceholder.Hubs.Implementations;
@@ -24,17 +25,20 @@ public class ScenarioNotify : IScenarioNotify
     }
 
     /// <inheritdoc />
-    public async Task ScenarioSetAsync(ScenarioStateModel scenario, CancellationToken cancellationToken)
+    public async Task ScenarioSetAsync(ScenarioStateModel scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var input = _mapper.Map<ScenarioStateDto>(scenario);
-        await _hubContext.Clients.All.SendAsync("ScenarioSet", input, cancellationToken);
+        await _hubContext.GetChannel(distributionKey).SendAsync("ScenarioSet", input, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task ScenarioDeletedAsync(string scenarioName, CancellationToken cancellationToken) =>
-        await _hubContext.Clients.All.SendAsync("ScenarioDeleted", scenarioName, cancellationToken);
+    public async Task ScenarioDeletedAsync(string scenarioName, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        await _hubContext.GetChannel(distributionKey).SendAsync("ScenarioDeleted", scenarioName, cancellationToken);
 
     /// <inheritdoc />
-    public async Task AllScenariosDeletedAsync(CancellationToken cancellationToken) =>
-        await _hubContext.Clients.All.SendAsync("AllScenariosDeleted", cancellationToken);
+    public async Task AllScenariosDeletedAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        await _hubContext.GetChannel(distributionKey).SendAsync("AllScenariosDeleted", cancellationToken);
 }

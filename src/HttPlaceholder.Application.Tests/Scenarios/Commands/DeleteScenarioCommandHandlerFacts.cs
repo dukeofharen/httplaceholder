@@ -16,11 +16,11 @@ public class DeleteScenarioCommandHandlerFacts
     public async Task Handle_ScenarioNotFound_ShouldThrowNotFoundException()
     {
         // Arrange
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<DeleteScenarioCommandHandler>();
 
         const string scenarioName = "scenario-1";
-        scenarioServiceMock
+        stubContextMock
             .Setup(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
@@ -33,11 +33,11 @@ public class DeleteScenarioCommandHandlerFacts
     public async Task Handle_ScenarioFound_ShouldDeleteScenario()
     {
         // Arrange
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<DeleteScenarioCommandHandler>();
 
         const string scenarioName = "scenario-1";
-        scenarioServiceMock
+        stubContextMock
             .Setup(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
@@ -45,6 +45,6 @@ public class DeleteScenarioCommandHandlerFacts
         await handler.Handle(new DeleteScenarioCommand(scenarioName), CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()));
     }
 }

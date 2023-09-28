@@ -60,7 +60,7 @@ public class ScenarioController : BaseApiController
         [FromRoute] string scenario,
         CancellationToken cancellationToken)
     {
-        var input = Mapper.MapAndSet<ScenarioStateModel>(scenarioState, _ => _.Scenario = scenario);
+        var input = Mapper.MapAndSet<ScenarioStateModel>(scenarioState, s => s.Scenario = scenario);
         await Mediator.Send(new SetScenarioCommand(input, scenario), cancellationToken);
         return NoContent();
     }

@@ -1080,7 +1080,7 @@ The following keywords can be used:
 
 ## Request scenario
 
-Scenarios make it possible to make stubs stateful. When you assign a scenario to a stub, a hit counter will be kept for the scenario and it is also possible to assign a state to a scenario. The default state of a scenario is "Start". Right now, the scenario state is only kept in memory, which means that when the application is restarted, all the scenarios will be reset.
+Scenarios make it possible to make stubs stateful. When you assign a scenario to a stub, a hit counter will be kept for the scenario and it is also possible to assign a state to a scenario. The default state of a scenario is "Start". The scenario is saved next to the stubs and requests, so it will survive an application restart.
 
 The scenario state can be set either to response writers (see [response](#scenario)) or by calling the [REST API](#rest-api).
 

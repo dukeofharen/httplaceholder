@@ -12,23 +12,18 @@ public class RequestNotifyFacts
     private readonly AutoMocker _mocker = new();
     private Mock<IClientProxy> _clientProxyMock;
 
-    [TestInitialize]
-    public void Initialize()
-    {
-        var mocks = TestObjectFactory.CreateHubMock<RequestHub>();
-        _mocker.Use(mocks.hubContext);
-        _clientProxyMock = mocks.clientProxyMock;
-    }
-
     [TestCleanup]
     public void Cleanup() => _mocker.VerifyAll();
 
-    [TestMethod]
-    public async Task NewRequestReceivedAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task NewRequestReceivedAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var mapperMock = _mocker.GetMock<IMapper>();
-        var notify = _mocker.CreateInstance<RequestNotify>();
+        var key = withDistributionKey ? "dist-key" : null;
+        var notify = CreateNotify(key);
 
         var input = new RequestResultModel();
         var mappedDto = new RequestOverviewDto();
@@ -37,10 +32,18 @@ public class RequestNotifyFacts
             .Returns(mappedDto);
 
         // Act
-        await notify.NewRequestReceivedAsync(input, CancellationToken.None);
+        await notify.NewRequestReceivedAsync(input, key, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("RequestReceived", It.Is<object[]>(o => o.Single() == mappedDto),
             It.IsAny<CancellationToken>()));
+    }
+
+    private RequestNotify CreateNotify(string group)
+    {
+        var mocks = TestObjectFactory.CreateHubMock<RequestHub>(group);
+        _mocker.Use(mocks.hubContext);
+        _clientProxyMock = mocks.clientProxyMock;
+        return _mocker.CreateInstance<RequestNotify>();
     }
 }

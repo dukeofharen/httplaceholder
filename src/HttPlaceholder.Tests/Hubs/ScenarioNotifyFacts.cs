@@ -13,23 +13,18 @@ public class ScenarioNotifyFacts
     private readonly AutoMocker _mocker = new();
     private Mock<IClientProxy> _clientProxyMock;
 
-    [TestInitialize]
-    public void Initialize()
-    {
-        var mocks = TestObjectFactory.CreateHubMock<ScenarioHub>();
-        _mocker.Use(mocks.hubContext);
-        _clientProxyMock = mocks.clientProxyMock;
-    }
-
     [TestCleanup]
     public void Cleanup() => _mocker.VerifyAll();
 
-    [TestMethod]
-    public async Task ScenarioSetAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task ScenarioSetAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
         var mapperMock = _mocker.GetMock<IMapper>();
-        var notify = _mocker.CreateInstance<ScenarioNotify>();
+        var key = withDistributionKey ? "dist-key" : null;
+        var notify = CreateNotify(key);
 
         var input = new ScenarioStateModel();
         var mappedDto = new ScenarioStateDto();
@@ -38,23 +33,26 @@ public class ScenarioNotifyFacts
             .Returns(mappedDto);
 
         // Act
-        await notify.ScenarioSetAsync(input, CancellationToken.None);
+        await notify.ScenarioSetAsync(input, key, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("ScenarioSet", It.Is<object[]>(o => o.Single() == mappedDto),
             It.IsAny<CancellationToken>()));
     }
 
-    [TestMethod]
-    public async Task ScenarioDeletedAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task ScenarioDeletedAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var notify = _mocker.CreateInstance<ScenarioNotify>();
+        var key = withDistributionKey ? "dist-key" : null;
+        var notify = CreateNotify(key);
 
         const string scenarioName = "scenario";
 
         // Act
-        await notify.ScenarioDeletedAsync(scenarioName, CancellationToken.None);
+        await notify.ScenarioDeletedAsync(scenarioName, key, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("ScenarioDeleted",
@@ -62,17 +60,28 @@ public class ScenarioNotifyFacts
             It.IsAny<CancellationToken>()));
     }
 
-    [TestMethod]
-    public async Task AllScenariosDeletedAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AllScenariosDeletedAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var notify = _mocker.CreateInstance<ScenarioNotify>();
+        var key = withDistributionKey ? "dist-key" : null;
+        var notify = CreateNotify(key);
 
         // Act
-        await notify.AllScenariosDeletedAsync(CancellationToken.None);
+        await notify.AllScenariosDeletedAsync(key, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("AllScenariosDeleted", It.IsAny<object[]>(),
             It.IsAny<CancellationToken>()));
+    }
+
+    private ScenarioNotify CreateNotify(string group)
+    {
+        var mocks = TestObjectFactory.CreateHubMock<ScenarioHub>(group);
+        _mocker.Use(mocks.hubContext);
+        _clientProxyMock = mocks.clientProxyMock;
+        return _mocker.CreateInstance<ScenarioNotify>();
     }
 }

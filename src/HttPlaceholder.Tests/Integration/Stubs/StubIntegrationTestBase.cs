@@ -18,10 +18,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs;
 public abstract class StubIntegrationTestBase : IntegrationTestBase
 {
     private const string InputFilePath = @"D:\tmp\input.yml";
-    protected readonly IList<RequestResultModel> Requests = new List<RequestResultModel>();
-    protected readonly IList<ResponseModel> Responses = new List<ResponseModel>();
+    internal InMemoryStubSource InMemoryStubSource;
     private YamlFileStubSource _stubSource;
-    private Mock<IWritableStubSource> _writableStubSourceMock;
     protected Mock<IClientDataResolver> ClientDataResolverMock;
     protected Mock<IDateTime> DateTimeMock;
     protected Mock<IFileService> FileServiceMock;
@@ -57,15 +55,6 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             new Mock<ILogger<YamlFileStubSource>>().Object,
             Options,
             new Mock<IStubModelValidator>().Object);
-        _writableStubSourceMock = new Mock<IWritableStubSource>();
-        _writableStubSourceMock
-            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>(),
-                It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .Callback<RequestResultModel, ResponseModel, string, CancellationToken>((req, res, _, _) =>
-            {
-                Requests.Add(req);
-                Responses.Add(res);
-            });
 
         MockHttp = new MockHttpMessageHandler();
         var mockHttpClientFactory = new Mock<IHttpClientFactory>();
@@ -73,13 +62,14 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             .Setup(m => m.CreateClient("proxy"))
             .Returns(() => MockHttp.ToHttpClient());
 
+        InMemoryStubSource = new InMemoryStubSource(Options);
         InitializeIntegrationTest(
             new (Type, object)[]
             {
                 (typeof(IClientDataResolver), ClientDataResolverMock.Object),
                 (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object),
                 (typeof(IHttpClientFactory), mockHttpClientFactory.Object)
-            }, new IStubSource[] {_stubSource, _writableStubSourceMock.Object});
+            }, new IStubSource[] {_stubSource, InMemoryStubSource});
     }
 
     protected async Task SetScenario(string scenarioName, ScenarioStateInputDto scenario)
@@ -93,4 +83,7 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
         var response = await Client.SendAsync(request);
         response.EnsureSuccessStatusCode();
     }
+
+    protected async Task<IEnumerable<RequestResultModel>> GetRequestsAsync() =>
+        await InMemoryStubSource.GetRequestResultsAsync(null, null, CancellationToken.None);
 }

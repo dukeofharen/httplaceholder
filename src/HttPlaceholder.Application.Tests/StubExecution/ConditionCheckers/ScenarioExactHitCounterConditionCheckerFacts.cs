@@ -33,8 +33,8 @@ public class ScenarioExactHitCounterConditionCheckerFacts
         var stub = CreateStub(1, "exact-hits");
         var checker = _mocker.CreateInstance<ScenarioExactHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextmock = _mocker.GetMock<IStubContext>();
+        stubContextmock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync((int?)null);
 
@@ -53,8 +53,8 @@ public class ScenarioExactHitCounterConditionCheckerFacts
         var stub = CreateStub(3, "exact-hits");
         var checker = _mocker.CreateInstance<ScenarioExactHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(3);
 
@@ -73,8 +73,8 @@ public class ScenarioExactHitCounterConditionCheckerFacts
         var stub = CreateStub(3, "exact-hits");
         var checker = _mocker.CreateInstance<ScenarioExactHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextmock = _mocker.GetMock<IStubContext>();
+        stubContextmock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(2);
 

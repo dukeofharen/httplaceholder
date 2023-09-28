@@ -16,7 +16,7 @@ public class SetScenarioCommandHandlerFacts
     public async Task Handle_HappyFlow()
     {
         // Arrange
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<SetScenarioCommandHandler>();
         var request = new SetScenarioCommand(new ScenarioStateModel(), "scenario-1");
 
@@ -24,7 +24,7 @@ public class SetScenarioCommandHandlerFacts
         await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m =>
+        stubContextMock.Verify(m =>
             m.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel, It.IsAny<CancellationToken>()));
     }
 }

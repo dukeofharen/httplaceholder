@@ -65,7 +65,8 @@ AND req.distribution_key = @DistributionKey;";
     public string DeleteAllRequestsQuery => @"DELETE FROM requests WHERE distribution_key = @DistributionKey";
 
     /// <inheritdoc />
-    public string DeleteRequestQuery => @"DELETE FROM requests WHERE correlation_id = @CorrelationId AND distribution_key = @DistributionKey";
+    public string DeleteRequestQuery =>
+        @"DELETE FROM requests WHERE correlation_id = @CorrelationId AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string AddRequestQuery => @"INSERT INTO requests
@@ -73,7 +74,8 @@ AND req.distribution_key = @DistributionKey;";
 VALUES (@CorrelationId, @ExecutingStubId, @RequestBeginTime, @RequestEndTime, @Json, @HasResponse, @DistributionKey)";
 
     /// <inheritdoc />
-    public string AddResponseQuery => @"INSERT INTO responses (id, status_code, headers, body, body_is_binary, distribution_key)
+    public string AddResponseQuery =>
+        @"INSERT INTO responses (id, status_code, headers, body, body_is_binary, distribution_key)
 VALUES ((SELECT id FROM requests WHERE correlation_id = @CorrelationId), @StatusCode, @Headers, @Body, @BodyIsBinary, @DistributionKey);";
 
     /// <inheritdoc />
@@ -82,7 +84,8 @@ VALUES ((SELECT id FROM requests WHERE correlation_id = @CorrelationId), @Status
 VALUES (@StubId, @Stub, @StubType, @DistributionKey)";
 
     /// <inheritdoc />
-    public string DeleteStubQuery => @"DELETE FROM stubs WHERE stub_id = @StubId AND distribution_key = @DistributionKey";
+    public string DeleteStubQuery =>
+        @"DELETE FROM stubs WHERE stub_id = @StubId AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string GetStubsQuery => @"SELECT
@@ -118,4 +121,45 @@ AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string GetDistinctRequestDistributionKeysQuery => "SELECT DISTINCT(distribution_key) FROM requests;";
+
+   /// <inheritdoc />
+    public string GetScenarioQuery => """
+                                      SELECT scenario AS Scenario, state AS State, hit_count AS HitCount
+                                      FROM scenarios
+                                      WHERE scenario = @Scenario
+                                      AND distribution_key = @DistributionKey
+                                      """;
+
+    /// <inheritdoc />
+    public string AddScenarioQuery => """
+                                      INSERT INTO scenarios
+                                      (distribution_key, scenario, state, hit_count)
+                                      VALUES (@DistributionKey, @Scenario, @State, @HitCount)
+                                      """;
+
+    /// <inheritdoc />
+    public string UpdateScenarioQuery => """
+                                         UPDATE scenarios SET state = @State, hit_count = @HitCount
+                                         WHERE scenario = @Scenario
+                                         AND distribution_key = @DistributionKey
+                                         """;
+
+    /// <inheritdoc />
+    public string GetAllScenariosQuery => """
+                                          SELECT scenario AS Scenario, state AS State, hit_count AS HitCount
+                                          FROM scenarios
+                                          WHERE distribution_key = @DistributionKey
+                                          """;
+
+    /// <inheritdoc />
+    public string DeleteScenarioQuery => """
+                                         DELETE FROM scenarios
+                                         WHERE scenario = @Scenario
+                                         AND distribution_key = @DistributionKey
+                                         """;
+
+    public string DeleteAllScenariosQuery => """
+                                             DELETE FROM scenarios
+                                             WHERE distribution_key = @DistributionKey
+                                             """;
 }

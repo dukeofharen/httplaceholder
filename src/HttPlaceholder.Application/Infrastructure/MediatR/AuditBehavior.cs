@@ -65,7 +65,6 @@ public class AuditBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TR
             stopwatch.Start();
             var result = await next();
             stopwatch.Stop();
-            builder.AppendLine($"Result: {JsonConvert.SerializeObject(result)}");
             builder.AppendLine($"Duration: {stopwatch.Elapsed.Milliseconds} ms");
             return result;
         }

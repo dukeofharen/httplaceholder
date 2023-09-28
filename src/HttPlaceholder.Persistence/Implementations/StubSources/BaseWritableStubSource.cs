@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
@@ -29,7 +31,8 @@ public abstract class BaseWritableStubSource : IWritableStubSource
     public abstract Task PrepareStubSourceAsync(CancellationToken cancellationToken);
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(PagingModel pagingModel, string distributionKey = null,
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(PagingModel pagingModel,
+        string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         (await GetRequestResultsAsync(pagingModel, distributionKey, cancellationToken))
         .Select(r => new RequestOverviewModel
@@ -80,4 +83,30 @@ public abstract class BaseWritableStubSource : IWritableStubSource
 
     /// <inheritdoc />
     public abstract Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <inheritdoc />
+    public abstract Task DeleteAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default);
 }

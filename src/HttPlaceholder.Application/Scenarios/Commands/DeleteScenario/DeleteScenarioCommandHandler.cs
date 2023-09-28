@@ -11,20 +11,20 @@ namespace HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 /// </summary>
 public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioCommand, Unit>
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
     /// <summary>
     ///     Constructs a <see cref="DeleteScenarioCommandHandler" /> instance.
     /// </summary>
-    public DeleteScenarioCommandHandler(IScenarioService scenarioService)
+    public DeleteScenarioCommandHandler(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
     {
-        if (!await _scenarioService.DeleteScenarioAsync(request.ScenarioName, cancellationToken))
+        if (!await _stubContext.DeleteScenarioAsync(request.ScenarioName, cancellationToken))
         {
             throw new NotFoundException($"Scenario '{request.ScenarioName}' not found.");
         }

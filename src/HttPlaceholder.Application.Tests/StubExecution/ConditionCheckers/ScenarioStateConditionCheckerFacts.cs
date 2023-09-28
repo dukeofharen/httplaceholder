@@ -52,17 +52,17 @@ public class ScenarioStateConditionCheckerFacts
         var stub = CreateStub(scenario, state);
 
         var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
-            .Setup(m => m.GetScenario(scenario))
-            .Returns((ScenarioStateModel)null);
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ScenarioStateModel)null);
 
         // Act
         var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        scenarioServiceMock.Verify(m =>
+        stubContextMock.Verify(m =>
             m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()));
     }
 
@@ -75,10 +75,10 @@ public class ScenarioStateConditionCheckerFacts
         var stub = CreateStub(scenario, state);
 
         var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
-            .Setup(m => m.GetScenario(scenario))
-            .Returns((ScenarioStateModel)null);
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ScenarioStateModel)null);
 
         // Act
         var result = await checker.ValidateAsync(stub, CancellationToken.None);
@@ -86,7 +86,7 @@ public class ScenarioStateConditionCheckerFacts
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
         Assert.AreEqual("Scenario 'scenario-1' is in state 'Start', but 'state-1' was expected.", result.Log);
-        scenarioServiceMock.Verify(m =>
+        stubContextMock.Verify(m =>
             m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()));
     }
 
@@ -99,10 +99,10 @@ public class ScenarioStateConditionCheckerFacts
         var stub = CreateStub(scenario, state);
 
         var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
-            .Setup(m => m.GetScenario(scenario))
-            .Returns(new ScenarioStateModel {State = "state-2"});
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ScenarioStateModel {State = "state-2"});
 
         // Act
         var result = await checker.ValidateAsync(stub, CancellationToken.None);
@@ -127,10 +127,10 @@ public class ScenarioStateConditionCheckerFacts
         var stub = CreateStub(scenario, state);
 
         var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
-            .Setup(m => m.GetScenario(scenario))
-            .Returns(new ScenarioStateModel {State = currentState});
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ScenarioStateModel {State = currentState});
 
         // Act
         var result = await checker.ValidateAsync(stub, CancellationToken.None);

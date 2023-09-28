@@ -13,14 +13,14 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// </summary>
 public class ScenarioStateConditionChecker : IConditionChecker, ISingletonService
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
     /// <summary>
     ///     Constructs a <see cref="ScenarioStateConditionChecker" /> instance.
     /// </summary>
-    public ScenarioStateConditionChecker(IScenarioService scenarioService)
+    public ScenarioStateConditionChecker(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
@@ -34,11 +34,11 @@ public class ScenarioStateConditionChecker : IConditionChecker, ISingletonServic
             return result;
         }
 
-        var scenarioState = _scenarioService.GetScenario(scenario);
+        var scenarioState = await _stubContext.GetScenarioAsync(scenario, cancellationToken);
         if (scenarioState == null)
         {
             scenarioState = new ScenarioStateModel(scenario);
-            await _scenarioService.SetScenarioAsync(scenario, scenarioState, cancellationToken);
+            await _stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);
         }
 
         if (!string.Equals(scenarioState.State.Trim(), state.Trim(), StringComparison.OrdinalIgnoreCase))

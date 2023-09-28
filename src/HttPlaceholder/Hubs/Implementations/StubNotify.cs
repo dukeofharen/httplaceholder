@@ -4,6 +4,7 @@ using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Web.Shared.Dto.v1.Stubs;
+using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HttPlaceholder.Hubs.Implementations;
@@ -24,13 +25,15 @@ public class StubNotify : IStubNotify
     }
 
     /// <inheritdoc />
-    public async Task StubAddedAsync(FullStubOverviewModel stub, CancellationToken cancellationToken)
+    public async Task StubAddedAsync(FullStubOverviewModel stub, string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var input = _mapper.Map<FullStubOverviewDto>(stub);
-        await _hubContext.Clients.All.SendAsync("StubAdded", input, cancellationToken);
+        await _hubContext.GetChannel(distributionKey).SendAsync("StubAdded", input, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task StubDeletedAsync(string stubId, CancellationToken cancellationToken) =>
-        await _hubContext.Clients.All.SendAsync("StubDeleted", stubId, cancellationToken);
+    public async Task StubDeletedAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        await _hubContext.GetChannel(distributionKey).SendAsync("StubDeleted", stubId, cancellationToken);
 }

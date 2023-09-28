@@ -17,13 +17,13 @@ public class GetScenarioQueryHandlerFacts
     public async Task Handle_ScenarioNotFound_ShouldThrowNotFoundException()
     {
         // Arrange
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<GetScenarioQueryHandler>();
 
         const string scenarioName = "scenario-1";
-        scenarioServiceMock
-            .Setup(m => m.GetScenario(scenarioName))
-            .Returns((ScenarioStateModel)null);
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(scenarioName, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ScenarioStateModel)null);
 
         // Act / Assert
         await Assert.ThrowsExceptionAsync<NotFoundException>(() =>
@@ -34,14 +34,14 @@ public class GetScenarioQueryHandlerFacts
     public async Task Handle_ScenarioFound_ShouldReturnScenario()
     {
         // Arrange
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<GetScenarioQueryHandler>();
 
         const string scenarioName = "scenario-1";
         var scenario = new ScenarioStateModel(scenarioName);
-        scenarioServiceMock
-            .Setup(m => m.GetScenario(scenarioName))
-            .Returns(scenario);
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(scenarioName, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(scenario);
 
         // Act
         var result = await handler.Handle(new GetScenarioQuery(scenarioName), CancellationToken.None);

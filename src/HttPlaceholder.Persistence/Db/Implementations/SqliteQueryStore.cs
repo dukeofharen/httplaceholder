@@ -117,4 +117,46 @@ AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string GetDistinctRequestDistributionKeysQuery => "SELECT DISTINCT(distribution_key) FROM requests;";
+
+    /// <inheritdoc />
+    public string GetScenarioQuery => """
+                                      SELECT scenario AS Scenario, state AS State, hit_count AS HitCount
+                                      FROM scenarios
+                                      WHERE scenario = @Scenario
+                                      AND distribution_key = @DistributionKey
+                                      """;
+
+    /// <inheritdoc />
+    public string AddScenarioQuery => """
+                                      INSERT INTO scenarios
+                                      (distribution_key, scenario, state, hit_count)
+                                      VALUES (@DistributionKey, @Scenario, @State, @HitCount)
+                                      """;
+
+    /// <inheritdoc />
+    public string UpdateScenarioQuery => """
+                                         UPDATE scenarios SET state = @State, hit_count = @HitCount
+                                         WHERE scenario = @Scenario
+                                         AND distribution_key = @DistributionKey
+                                         """;
+
+    /// <inheritdoc />
+    public string GetAllScenariosQuery => """
+                                          SELECT scenario AS Scenario, state AS State, hit_count AS HitCount
+                                          FROM scenarios
+                                          WHERE distribution_key = @DistributionKey
+                                          """;
+
+    /// <inheritdoc />
+    public string DeleteScenarioQuery => """
+                                         DELETE FROM scenarios
+                                         WHERE scenario = @Scenario
+                                         AND distribution_key = @DistributionKey
+                                         """;
+
+    /// <inheritdoc />
+    public string DeleteAllScenariosQuery => """
+                                             DELETE FROM scenarios
+                                             WHERE distribution_key = @DistributionKey
+                                             """;
 }

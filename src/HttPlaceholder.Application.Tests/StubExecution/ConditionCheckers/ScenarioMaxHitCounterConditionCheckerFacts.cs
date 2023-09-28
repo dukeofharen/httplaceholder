@@ -33,8 +33,8 @@ public class ScenarioMaxHitCounterConditionCheckerFacts
         var stub = CreateStub(1, "max-hits");
         var checker = _mocker.CreateInstance<ScenarioMaxHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync((int?)null);
 
@@ -53,8 +53,8 @@ public class ScenarioMaxHitCounterConditionCheckerFacts
         var stub = CreateStub(3, "max-hits");
         var checker = _mocker.CreateInstance<ScenarioMaxHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(2);
 
@@ -73,8 +73,8 @@ public class ScenarioMaxHitCounterConditionCheckerFacts
         var stub = CreateStub(3, "max-hits");
         var checker = _mocker.CreateInstance<ScenarioMaxHitCounterConditionChecker>();
 
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
-        scenarioServiceMock
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        stubContextMock
             .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(1);
 

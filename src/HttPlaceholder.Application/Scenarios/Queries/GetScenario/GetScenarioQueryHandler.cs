@@ -13,18 +13,18 @@ namespace HttPlaceholder.Application.Scenarios.Queries.GetScenario;
 /// </summary>
 public class GetScenarioQueryHandler : IRequestHandler<GetScenarioQuery, ScenarioStateModel>
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
     /// <summary>
     ///     Constructs a <see cref="GetScenarioQueryHandler" /> instance.
     /// </summary>
-    public GetScenarioQueryHandler(IScenarioService scenarioService)
+    public GetScenarioQueryHandler(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
-    public Task<ScenarioStateModel> Handle(GetScenarioQuery request, CancellationToken cancellationToken) =>
-        Task.FromResult(_scenarioService.GetScenario(request.Scenario)
-            .IfNull(() => throw new NotFoundException($"Scenario with name '{request.Scenario}'.")));
+    public async Task<ScenarioStateModel> Handle(GetScenarioQuery request, CancellationToken cancellationToken) =>
+        await _stubContext.GetScenarioAsync(request.Scenario, cancellationToken)
+            .IfNull(() => throw new NotFoundException($"Scenario with name '{request.Scenario}'."));
 }

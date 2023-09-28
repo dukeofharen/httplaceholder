@@ -94,4 +94,34 @@ public interface IQueryStore
     ///     Returns the query for retrieving a list of unique distribution keys in the requests table.
     /// </summary>
     string GetDistinctRequestDistributionKeysQuery { get; }
+
+    /// <summary>
+    ///     Returns the query for retrieving a scenario.
+    /// </summary>
+    string GetScenarioQuery { get; }
+
+    /// <summary>
+    ///     Returns the query for adding a scenario.
+    /// </summary>
+    string AddScenarioQuery { get; }
+
+    /// <summary>
+    ///     Returns the query for updating a scenario.
+    /// </summary>
+    string UpdateScenarioQuery { get; }
+
+    /// <summary>
+    ///     Returns the query for retrieving all scenarios.
+    /// </summary>
+    string GetAllScenariosQuery { get; }
+
+    /// <summary>
+    ///     Returns the query for deleting a scenario.
+    /// </summary>
+    string DeleteScenarioQuery { get; }
+
+    /// <summary>
+    ///     Returns the query for deleting all scenarios.
+    /// </summary>
+    string DeleteAllScenariosQuery { get; }
 }

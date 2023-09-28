@@ -15,17 +15,17 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IScenarioStateStore _scenarioStateStore;
+    private readonly IStubContext _stubContext;
+    private readonly ICacheService _cacheService;
 
     public ScenarioStateVariableParsingHandler(
-        IScenarioStateStore scenarioStateStore,
+        IStubContext stubContext,
         IFileService fileService,
-        IHttpContextService httpContextService) :
+        ICacheService cacheService) :
         base(fileService)
     {
-        _scenarioStateStore = scenarioStateStore;
-        _httpContextService = httpContextService;
+        _stubContext = stubContext;
+        _cacheService = cacheService;
     }
 
     /// <inheritdoc />
@@ -38,20 +38,28 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler,
     public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken) =>
-        Task.FromResult(matches
-            .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertState(current, match, stub)));
+    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var result = input;
+        var filteredMatches = matches
+            .Where(match => match.Groups.Count >= 2);
+        foreach (var filteredMatch in filteredMatches)
+        {
+            result = await InsertStateAsync(result, filteredMatch, stub, cancellationToken);
+        }
 
-    private string InsertState(string current, Match match, StubModel stub)
+        return result;
+    }
+
+    private async Task<string> InsertStateAsync(string current, Match match, StubModel stub, CancellationToken cancellationToken)
     {
         var state = string.Empty;
         var customScenarioNameSet = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value);
         if (!customScenarioNameSet)
         {
             // Try to read the scenario state from the HttpContext as it contains the correct state of the moment the state was set.
-            var scenarioState = _httpContextService.GetItem<ScenarioStateModel>(CachingKeys.ScenarioState);
+            var scenarioState = _cacheService.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState);
             state = scenarioState?.State;
         }
 
@@ -62,7 +70,7 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler,
                 : stub.Scenario ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(scenarioName))
             {
-                var scenario = _scenarioStateStore.GetScenario(scenarioName);
+                var scenario = await _stubContext.GetScenarioAsync(scenarioName, cancellationToken);
                 state = scenario?.State;
             }
         }

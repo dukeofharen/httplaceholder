@@ -16,13 +16,13 @@ public class GetAllScenariosQueryHandlerFacts
     public async Task Handle_HappyFlow()
     {
         // Arrange
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<GetAllScenariosQueryHandler>();
 
         var scenarios = Array.Empty<ScenarioStateModel>();
-        scenarioServiceMock
-            .Setup(m => m.GetAllScenarios())
-            .Returns(scenarios);
+        stubContextMock
+            .Setup(m => m.GetAllScenariosAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(scenarios);
 
         // Act
         var result = await handler.Handle(new GetAllScenariosQuery(), CancellationToken.None);

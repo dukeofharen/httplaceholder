@@ -2,6 +2,7 @@
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain.Entities;
 using Match = System.Text.RegularExpressions.Match;
 
@@ -34,22 +35,22 @@ public class ScenarioHitCountVariableParsingHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<ScenarioHitCountVariableParsingHandler>();
-        var mockScenarioStateStore = _mocker.GetMock<IScenarioStateStore>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
         const string input =
             "((scenario_hitcount)) ((scenario_hitcount:scenario_exists)) ((scenario_hitcount:scenario_doesnt_exist))";
         const string expectedResult = "3 1337 ";
 
         var stubModel = new StubModel {Scenario = "stub-scenario"};
 
-        mockScenarioStateStore
-            .Setup(m => m.GetScenario(stubModel.Scenario))
-            .Returns(new ScenarioStateModel {HitCount = 3});
-        mockScenarioStateStore
-            .Setup(m => m.GetScenario("scenario_exists"))
-            .Returns(new ScenarioStateModel {HitCount = 1337});
-        mockScenarioStateStore
-            .Setup(m => m.GetScenario("scenario_doesnt_exist"))
-            .Returns((ScenarioStateModel)null);
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync(stubModel.Scenario, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ScenarioStateModel {HitCount = 3});
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync("scenario_exists", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ScenarioStateModel {HitCount = 1337});
+        stubContextMock
+            .Setup(m => m.GetScenarioAsync("scenario_doesnt_exist", It.IsAny<CancellationToken>()))
+            .ReturnsAsync((ScenarioStateModel)null);
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
@@ -64,7 +65,7 @@ public class ScenarioHitCountVariableParsingHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<ScenarioHitCountVariableParsingHandler>();
-        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var cacheServiceMock = _mocker.GetMock<ICacheService>();
 
         const string input =
             "((scenario_hitcount))";
@@ -72,8 +73,8 @@ public class ScenarioHitCountVariableParsingHandlerFacts
 
         var stubModel = new StubModel {Scenario = "stub-scenario"};
 
-        mockHttpContextService
-            .Setup(m => m.GetItem<ScenarioStateModel>(CachingKeys.ScenarioState))
+        cacheServiceMock
+            .Setup(m => m.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState))
             .Returns(new ScenarioStateModel {HitCount = 18});
 
         // Act

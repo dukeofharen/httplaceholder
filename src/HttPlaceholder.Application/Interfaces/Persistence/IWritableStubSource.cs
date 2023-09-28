@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.Interfaces.Persistence;
 
@@ -104,4 +106,62 @@ public interface IWritableStubSource : IStubSource
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Retrieves a scenario. When the scenario has not been found, null will be returned.
+    /// </summary>
+    /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+    /// <param name="distributionKey">The distribution key for the scenario. Leave null if there is no user.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The <see cref="ScenarioStateModel" /> or null.</returns>
+    Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Adds a scenario. Throws <see cref="InvalidOperationException" /> if scenario is already present.
+    /// </summary>
+    /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+    /// <param name="scenarioStateModel">The scenario to add.</param>
+    /// <param name="distributionKey">The distribution key for the scenario. Leave null if there is no user.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The added <see cref="ScenarioStateModel" />.</returns>
+    Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Updates a scenario.
+    /// </summary>
+    /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+    /// <param name="scenarioStateModel">The new scenario contents.</param>
+    /// <param name="distributionKey">The distribution key for the scenario. Leave null if there is no user.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Retrieves a list of all scenarios.
+    /// </summary>
+    /// <param name="distributionKey">The distribution key for the scenario. Leave null if there is no user.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A list of <see cref="ScenarioStateModel" />.</returns>
+    Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Deletes a given scenario.
+    /// </summary>
+    /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+    /// <param name="distributionKey">The distribution key for the scenario. Leave null if there is no user.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>True if scenario was found and deleted; false otherwise.</returns>
+    Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Deletes all scenarios.
+    /// </summary>
+    /// <param name="distributionKey">The distribution key for the scenario. Leave null if there is no user.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task DeleteAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default);
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common;
+using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.FileSystem;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Options;
@@ -692,7 +693,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
@@ -714,7 +716,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
@@ -737,7 +740,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
@@ -764,7 +768,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(withDistributionKey ? DistrubutionKey : null,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act
@@ -797,9 +802,9 @@ public class FileSystemStubSourceFacts
 
         // Assert
         fileServiceMock.Verify(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
-            Times.Exactly(4));
+            Times.Exactly(5));
         fileServiceMock.Verify(m => m.CreateDirectoryAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
-            Times.Exactly(4));
+            Times.Exactly(5));
         fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCacheAsync(null, It.IsAny<CancellationToken>()));
     }
 
@@ -903,5 +908,335 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsNull(result);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetScenarioAsync_FileNotFound_ShouldReturnNull(bool withDistributionKey)
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+        var expectedPath = Path.Join(scenariosPath, $"scenario-{scenario}.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await source.GetScenarioAsync(scenario, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetScenarioAsync_FileFound_ShouldReturnScenario(bool withDistributionKey)
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+        var expectedPath = Path.Join(scenariosPath, $"scenario-{scenario}.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        const string contents = """{"Scenario": "scenario-1", "State": "state-1", "HitCount": 12}""";
+        fileServiceMock
+            .Setup(m => m.ReadAllTextAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(contents);
+
+        // Act
+        var result = await source.GetScenarioAsync(scenario, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual("scenario-1", result.Scenario);
+        Assert.AreEqual("state-1", result.State);
+        Assert.AreEqual(12, result.HitCount);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddScenarioAsync_FileExists_ShouldThrowInvalidOperationException(bool withDistributionKey)
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+        var expectedPath = Path.Join(scenariosPath, $"scenario-{scenario}.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        // Act
+        var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+            source.AddScenarioAsync(scenario, new ScenarioStateModel(), withDistributionKey ? DistrubutionKey : null,
+                CancellationToken.None));
+
+        // Assert
+        Assert.AreEqual($"Scenario state with key '{scenario}' already exists.", exception.Message);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task AddScenarioAsync_FileDoesntExist_ShouldWriteToDisk(bool withDistributionKey)
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+        var expectedPath = Path.Join(scenariosPath, $"scenario-{scenario}.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        string capturedJsonString = null;
+        fileServiceMock
+            .Setup(m => m.WriteAllTextAsync(expectedPath, It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<string, string, CancellationToken>((_, jsonString, _) => capturedJsonString = jsonString);
+
+        var input = new ScenarioStateModel(scenario) {State = "state-1", HitCount = 12};
+
+        // Act
+        var result = await source.AddScenarioAsync(scenario, input, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(input, result);
+
+        Assert.IsNotNull(capturedJsonString);
+        var deserializedJson = JsonConvert.DeserializeObject<ScenarioStateModel>(capturedJsonString);
+        Assert.AreEqual(scenario, deserializedJson.Scenario);
+        Assert.AreEqual(input.State, deserializedJson.State);
+        Assert.AreEqual(input.HitCount, deserializedJson.HitCount);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task UpdateScenarioAsync_FileNotFound_ShouldThrowInvalidOperationException(bool withDistributionKey)
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+        var expectedPath = Path.Join(scenariosPath, $"scenario-{scenario}.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        // Act
+        var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+            source.UpdateScenarioAsync(scenario, new ScenarioStateModel(),
+                withDistributionKey ? DistrubutionKey : null, CancellationToken.None));
+
+        // Assert
+        Assert.AreEqual($"Scenario state with key '{scenario}' not found.", exception.Message);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task UpdateScenarioAsync_FileFound_ShouldUpdateScenario(bool withDistributionKey)
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+        var expectedPath = Path.Join(scenariosPath, $"scenario-{scenario}.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        var input = new ScenarioStateModel(scenario) {State = "state-1", HitCount = 12};
+        string capturedJsonString = null;
+        fileServiceMock
+            .Setup(m => m.WriteAllTextAsync(expectedPath, It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<string, string, CancellationToken>((_, jsonString, _) => capturedJsonString = jsonString);
+
+        // Act
+        await source.UpdateScenarioAsync(scenario, input, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.IsNotNull(capturedJsonString);
+        var deserializedJson = JsonConvert.DeserializeObject<ScenarioStateModel>(capturedJsonString);
+        Assert.AreEqual(scenario, deserializedJson.Scenario);
+        Assert.AreEqual(input.State, deserializedJson.State);
+        Assert.AreEqual(input.HitCount, deserializedJson.HitCount);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task GetAllScenariosAsync_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+
+        var files = new[] {Path.Join(scenariosPath, "scenario-sc1.json")};
+        fileServiceMock
+            .Setup(m => m.GetFilesAsync(scenariosPath, "*.json", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
+
+        const string contents = """{"Scenario": "scenario-1", "State": "state-1", "HitCount": 12}""";
+        fileServiceMock
+            .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(contents);
+
+        // Act
+        var result =
+            (await source.GetAllScenariosAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None))
+            .ToArray();
+
+        // Assert
+        Assert.AreEqual(1, result.Length);
+        var model = result.Single();
+        Assert.AreEqual("scenario-1", model.Scenario);
+        Assert.AreEqual("state-1", model.State);
+        Assert.AreEqual(12, model.HitCount);
+    }
+
+    [TestMethod]
+    public async Task DeleteScenarioAsync_ScenarioNotSet_ShouldReturnFalse()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        // Act
+        var result = await source.DeleteScenarioAsync(null, null, CancellationToken.None);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteScenarioAsync_ScenarioSet_FileNotFound_ShouldReturnFalse(bool withDistributionKey)
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+        var expectedPath = Path.Join(scenariosPath, $"scenario-{scenario}.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, CancellationToken.None))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = await source.DeleteScenarioAsync(scenario, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.IsFalse(result);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteScenarioAsync_ScenarioSet_FileFound_ShouldReturnDeleteFileAndReturnTrue(
+        bool withDistributionKey)
+    {
+        // Arrange
+        const string scenario = "scenario-1";
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+        var expectedPath = Path.Join(scenariosPath, $"scenario-{scenario}.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(expectedPath, CancellationToken.None))
+            .ReturnsAsync(true);
+
+        // Act
+        var result = await source.DeleteScenarioAsync(scenario, withDistributionKey ? DistrubutionKey : null,
+            CancellationToken.None);
+
+        // Assert
+        Assert.IsTrue(result);
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedPath, It.IsAny<CancellationToken>()));
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task DeleteAllScenariosAsync_HappyFlow(bool withDistributionKey)
+    {
+        // Arrange
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        var scenariosPath = withDistributionKey
+            ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
+            : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
+
+        var files = new[]
+        {
+            Path.Join(scenariosPath, "scenario-sc1.json"), Path.Join(scenariosPath, "scenario-sc2.json")
+        };
+        fileServiceMock
+            .Setup(m => m.GetFilesAsync(scenariosPath, "*.json", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
+
+        // Act
+        await source.DeleteAllScenariosAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
+
+        // Assert
+        foreach (var file in files)
+        {
+            fileServiceMock.Verify(m => m.DeleteFileAsync(file, It.IsAny<CancellationToken>()));
+        }
     }
 }

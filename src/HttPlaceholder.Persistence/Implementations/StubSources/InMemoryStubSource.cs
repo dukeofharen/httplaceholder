@@ -1,11 +1,14 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
@@ -222,6 +225,91 @@ internal class InMemoryStubSource : BaseWritableStubSource
     }
 
     /// <inheritdoc />
+    public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return Task.FromResult((ScenarioStateModel)null);
+        }
+
+        var lookupKey = scenario.ToLower();
+        var item = GetCollection(distributionKey);
+        var result = !item.Scenarios.ContainsKey(lookupKey) ? null : item.Scenarios[lookupKey].Copy();
+        return Task.FromResult(result);
+    }
+
+    /// <inheritdoc />
+    public override Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var lookupKey = scenario.ToLower();
+        var scenarioToAdd = scenarioStateModel.Copy();
+        var item = GetCollection(distributionKey);
+        if (!item.Scenarios.TryAdd(lookupKey, scenarioToAdd))
+        {
+            throw new InvalidOperationException($"Scenario state with key '{lookupKey}' already exists.");
+        }
+
+        return Task.FromResult(scenarioToAdd);
+    }
+
+    /// <inheritdoc />
+    public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var lookupKey = scenario.ToLower();
+        var item = GetCollection(distributionKey);
+        if (!item.Scenarios.ContainsKey(lookupKey))
+        {
+            return Task.CompletedTask;
+        }
+
+        var existingScenarioState = item.Scenarios[lookupKey];
+        var newScenarioState = scenarioStateModel.Copy();
+        if (!item.Scenarios.TryUpdate(lookupKey, newScenarioState, existingScenarioState))
+        {
+            throw new InvalidOperationException(
+                $"Something went wrong with updating scenario with key '{lookupKey}'.");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
+    public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var item = GetCollection(distributionKey);
+        return Task.FromResult(item.Scenarios.Values.Select(i => i.Copy()));
+    }
+
+    /// <inheritdoc />
+    public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return Task.FromResult(false);
+        }
+
+        var lookupKey = scenario.ToLower();
+        var item = GetCollection(distributionKey);
+        return Task.FromResult(item.Scenarios.TryRemove(lookupKey, out _));
+    }
+
+    /// <inheritdoc />
+    public override Task DeleteAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var item = GetCollection(distributionKey);
+        item.Scenarios.Clear();
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
     public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     private void RemoveResponse(RequestResultModel request, string distributionKey)
@@ -263,4 +351,5 @@ internal class StubRequestCollectionItem
     public readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
     public readonly IList<StubModel> StubModels = new List<StubModel>();
     public readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
+    public readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
 }

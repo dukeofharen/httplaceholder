@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.FileSystem;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -222,6 +224,104 @@ internal class FileSystemStubSource : BaseWritableStubSource
         }
     }
 
+    /// <inheritdoc />
+    public override async Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var path = GetScenariosFolder(distributionKey);
+        var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
+        if (!await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
+        {
+            return null;
+        }
+
+        var contents = await _fileService.ReadAllTextAsync(scenarioPath, cancellationToken);
+        return JsonConvert.DeserializeObject<ScenarioStateModel>(contents);
+    }
+
+    /// <inheritdoc />
+    public override async Task<ScenarioStateModel> AddScenarioAsync(string scenario,
+        ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        await EnsureDirectoriesExist(distributionKey, cancellationToken);
+        var path = GetScenariosFolder(distributionKey);
+        var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
+        if (await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
+        {
+            throw new InvalidOperationException($"Scenario state with key '{scenario}' already exists.");
+        }
+
+        await _fileService.WriteAllTextAsync(scenarioPath, JsonConvert.SerializeObject(scenarioStateModel),
+            cancellationToken);
+        return scenarioStateModel;
+    }
+
+    /// <inheritdoc />
+    public override async Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var path = GetScenariosFolder(distributionKey);
+        var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
+        if (!await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
+        {
+            throw new InvalidOperationException($"Scenario state with key '{scenario}' not found.");
+        }
+
+        await _fileService.WriteAllTextAsync(scenarioPath, JsonConvert.SerializeObject(scenarioStateModel),
+            cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public override async Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var path = GetScenariosFolder(distributionKey);
+        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        var result = new List<ScenarioStateModel>();
+        foreach (var file in files)
+        {
+            var contents = await _fileService.ReadAllTextAsync(file, cancellationToken);
+            result.Add(JsonConvert.DeserializeObject<ScenarioStateModel>(contents));
+        }
+
+        return result;
+    }
+
+    /// <inheritdoc />
+    public override async Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(scenario))
+        {
+            return false;
+        }
+
+        var path = GetScenariosFolder(distributionKey);
+        var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
+        if (!await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
+        {
+            return false;
+        }
+
+        await _fileService.DeleteFileAsync(scenarioPath, cancellationToken);
+        return true;
+    }
+
+    /// <inheritdoc />
+    public override async Task DeleteAllScenariosAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var path = GetScenariosFolder(distributionKey);
+        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        foreach (var file in files)
+        {
+            await _fileService.DeleteFileAsync(file, cancellationToken);
+        }
+    }
+
     private async Task HandleCleaningOfOldRequests(string path, string distributionKey,
         CancellationToken cancellationToken)
     {
@@ -252,6 +352,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
         await CreateDirectoryIfNotExistsAsync(GetRequestsFolder(distributionKey), cancellationToken);
         await CreateDirectoryIfNotExistsAsync(GetResponsesFolder(distributionKey), cancellationToken);
         await CreateDirectoryIfNotExistsAsync(GetStubsFolder(distributionKey), cancellationToken);
+        await CreateDirectoryIfNotExistsAsync(GetScenariosFolder(distributionKey), cancellationToken);
     }
 
     private string GetRootFolder()
@@ -273,6 +374,9 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
     private string GetResponsesFolder(string distributionKey = null) =>
         GetFolderPath(distributionKey, FileNames.ResponsesFolderName);
+
+    private string GetScenariosFolder(string distributionKey = null) =>
+        GetFolderPath(distributionKey, FileNames.ScenariosFolderName);
 
     private string GetFolderPath(string distributionKey, string folderName) =>
         !string.IsNullOrWhiteSpace(distributionKey)
@@ -315,7 +419,10 @@ internal class FileSystemStubSource : BaseWritableStubSource
         }
     }
 
-    private static string ConstructStubFilename(string stubId) => $"{stubId}.json";
+    private static string ConstructStubFilename(string stubId) => PathUtilities.CleanPath($"{stubId}.json");
+
+    private static string ConstructScenarioFilename(string scenario) =>
+        PathUtilities.CleanPath($"scenario-{scenario.ToLower()}.json");
 
     private static string ConstructOldRequestFilename(string correlationId) => $"{correlationId}.json";
 

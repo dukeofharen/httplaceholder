@@ -1,10 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HttPlaceholder (SQLite)" type="DotNetProject" factoryName=".NET Project">
-    <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net6.0/HttPlaceholder" />
+    <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net7.0/HttPlaceholder" />
     <option name="PROGRAM_PARAMETERS" value="-V --storeResponses" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
+      <env name="ASPNETCORE_ENVIRONMENT" value="Development" />
       <env name="sqliteConnectionString" value="Data Source=$USER_HOME$/CodeMetadata/httplaceholder/httplaceholder.db;Foreign Keys=True" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
@@ -15,7 +16,7 @@
     <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
     <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
     <option name="PROJECT_KIND" value="DotNetCore" />
-    <option name="PROJECT_TFM" value="net6.0" />
+    <option name="PROJECT_TFM" value="net7.0" />
     <method v="2">
       <option name="Build" />
     </method>

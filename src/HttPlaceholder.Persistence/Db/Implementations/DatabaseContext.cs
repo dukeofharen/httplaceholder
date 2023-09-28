@@ -14,6 +14,7 @@ internal class DatabaseContext : IDatabaseContext
     public DatabaseContext(IDbConnection dbConnection)
     {
         _dbConnection = dbConnection;
+        dbConnection.Open();
     }
 
     /// <inheritdoc />

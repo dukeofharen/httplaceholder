@@ -17,7 +17,7 @@ public class ClearScenarioStateResponseWriterFacts
         // Arrange
         var stub = CreateStub("scenario-1", null);
         var writer = _mocker.CreateInstance<ClearScenarioStateResponseWriter>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
 
         // Act
         var result = await writer.WriteToResponseAsync(stub, new ResponseModel(), CancellationToken.None);
@@ -25,7 +25,7 @@ public class ClearScenarioStateResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("ClearScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+        stubContextMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -35,7 +35,7 @@ public class ClearScenarioStateResponseWriterFacts
         // Arrange
         var stub = CreateStub("scenario-1", false);
         var writer = _mocker.CreateInstance<ClearScenarioStateResponseWriter>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
 
         // Act
         var result = await writer.WriteToResponseAsync(stub, new ResponseModel(), CancellationToken.None);
@@ -43,7 +43,7 @@ public class ClearScenarioStateResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("ClearScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+        stubContextMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -53,7 +53,7 @@ public class ClearScenarioStateResponseWriterFacts
         // Arrange
         var stub = CreateStub(null, true);
         var writer = _mocker.CreateInstance<ClearScenarioStateResponseWriter>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
 
         // Act
         var result = await writer.WriteToResponseAsync(stub, new ResponseModel(), CancellationToken.None);
@@ -61,7 +61,7 @@ public class ClearScenarioStateResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("ClearScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+        stubContextMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -72,7 +72,7 @@ public class ClearScenarioStateResponseWriterFacts
         const string scenario = "scenario-1";
         var stub = CreateStub(scenario, true);
         var writer = _mocker.CreateInstance<ClearScenarioStateResponseWriter>();
-        var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
 
         // Act
         var result = await writer.WriteToResponseAsync(stub, new ResponseModel(), CancellationToken.None);
@@ -80,7 +80,7 @@ public class ClearScenarioStateResponseWriterFacts
         // Assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual("ClearScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(scenario, It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m => m.DeleteScenarioAsync(scenario, It.IsAny<CancellationToken>()));
     }
 
     private static StubModel CreateStub(string scenario, bool? clearState) =>

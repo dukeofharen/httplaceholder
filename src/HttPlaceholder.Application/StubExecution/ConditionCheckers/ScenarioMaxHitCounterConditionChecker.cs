@@ -11,14 +11,14 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// </summary>
 public class ScenarioMaxHitCounterConditionChecker : IConditionChecker, ISingletonService
 {
-    private readonly IScenarioService _scenarioService;
+    private readonly IStubContext _stubContext;
 
     /// <summary>
     ///     Constructs a <see cref="ScenarioMaxHitCounterConditionChecker" /> instance.
     /// </summary>
-    public ScenarioMaxHitCounterConditionChecker(IScenarioService scenarioService)
+    public ScenarioMaxHitCounterConditionChecker(IStubContext stubContext)
     {
-        _scenarioService = scenarioService;
+        _stubContext = stubContext;
     }
 
     /// <inheritdoc />
@@ -32,7 +32,7 @@ public class ScenarioMaxHitCounterConditionChecker : IConditionChecker, ISinglet
         }
 
         var scenario = stub.Scenario;
-        var rawHitCount = await _scenarioService.GetHitCountAsync(scenario, cancellationToken);
+        var rawHitCount = await _stubContext.GetHitCountAsync(scenario, cancellationToken);
         var actualHitCount =
             rawHitCount +
             1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
