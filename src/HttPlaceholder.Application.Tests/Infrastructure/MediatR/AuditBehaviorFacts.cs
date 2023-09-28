@@ -76,7 +76,6 @@ public class AuditBehaviorFacts
 Handling request 'HttPlaceholder.Application.Tests.Infrastructure.MediatR.AuditBehaviorFacts+TestRequest'
 Input: {""Input"":""Input""}
 IP: 1.2.3.4
-Result: {""Output"":""Output""}
 Duration: 0 ms"));
     }
 
