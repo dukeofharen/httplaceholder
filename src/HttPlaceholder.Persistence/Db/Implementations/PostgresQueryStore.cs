@@ -12,7 +12,7 @@ internal class PostgresQueryStore : IQueryStore
   executing_stub_id AS ExecutingStubId,
   request_begin_time AS RequestBeginTime,
   request_end_time AS RequestEndTime,
-  `json`,
+  json,
   has_response AS HasResponse
 FROM requests
 WHERE distribution_key = @DistributionKey
@@ -25,7 +25,7 @@ ORDER BY request_begin_time DESC";
   executing_stub_id AS ExecutingStubId,
   request_begin_time AS RequestBeginTime,
   request_end_time AS RequestEndTime,
-  `json`,
+  json,
   has_response AS HasResponse
 FROM requests
 WHERE correlation_id IN @CorrelationIds
@@ -43,7 +43,7 @@ ORDER BY request_begin_time DESC";
   executing_stub_id AS ExecutingStubId,
   request_begin_time AS RequestBeginTime,
   request_end_time AS RequestEndTime,
-  `json`,
+  json,
   has_response AS HasResponse
 FROM requests
 WHERE correlation_id = @CorrelationId";
@@ -68,7 +68,7 @@ AND req.distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string AddRequestQuery => @"INSERT INTO requests
-(correlation_id, executing_stub_id, request_begin_time, request_end_time, `json`, has_response, distribution_key)
+(correlation_id, executing_stub_id, request_begin_time, request_end_time, json, has_response, distribution_key)
 VALUES (@CorrelationId, @ExecutingStubId, @RequestBeginTime, @RequestEndTime, @Json, @HasResponse, @DistributionKey)";
 
     /// <inheritdoc />
@@ -102,7 +102,7 @@ AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string CleanOldRequestsQuery =>
-        @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests WHERE distribution_key = @DistributionKey ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
+        @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC OFFSET 0 LIMIT @Limit) AS t1)";
 
     /// <inheritdoc />
     public string GetStubUpdateTrackingIdQuery => "SELECT stub_update_tracking_id FROM metadata";

@@ -23,7 +23,7 @@ create table requests
         constraint requests_pk
             primary key,
     correlation_id     varchar(100) not null,
-    executing_stub_id  varchar(255) not null,
+    executing_stub_id  varchar(255),
     request_begin_time timestamp    not null,
     request_end_time   timestamp,
     has_response       boolean,
@@ -52,7 +52,7 @@ create index responses_dist_key_index
 
 alter table responses
     add constraint responses_requests_id_fk
-        foreign key (id) references requests;
+        foreign key (id) references requests on delete CASCADE;
 
 -- Create metadata table.
 create table metadata

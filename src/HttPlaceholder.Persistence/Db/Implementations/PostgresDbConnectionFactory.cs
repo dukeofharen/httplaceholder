@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
@@ -18,9 +19,8 @@ internal class PostgresDbConnectionFactory : IDbConnectionFactory
     }
 
     /// <inheritdoc />
-    public IDbConnection GetConnection()
-    {
-        var dataSource = NpgsqlDataSource.Create(_configuration.GetConnectionString(ConnectionStringKey));
-        return dataSource.CreateConnection();
-    }
+    public IDbConnection GetConnection() => null;
+
+    public DbDataSource GetDataSource() =>
+        NpgsqlDataSource.Create(_configuration.GetConnectionString(ConnectionStringKey));
 }

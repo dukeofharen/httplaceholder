@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
@@ -20,4 +21,8 @@ internal class SqlServerDbConnectionFactory : IDbConnectionFactory
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
         new SqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
+
+
+    /// <inheritdoc />
+    public DbDataSource GetDataSource() => null;
 }

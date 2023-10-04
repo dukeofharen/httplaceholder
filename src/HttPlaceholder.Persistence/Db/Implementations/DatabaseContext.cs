@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -10,6 +11,7 @@ namespace HttPlaceholder.Persistence.Db.Implementations;
 internal class DatabaseContext : IDatabaseContext
 {
     private readonly IDbConnection _dbConnection;
+    private readonly DbDataSource _dataSource;
 
     public DatabaseContext(IDbConnection dbConnection)
     {
@@ -17,8 +19,17 @@ internal class DatabaseContext : IDatabaseContext
         dbConnection.Open();
     }
 
+    public DatabaseContext(DbDataSource dataSource) : this(dataSource.CreateConnection())
+    {
+        _dataSource = dataSource;
+    }
+
     /// <inheritdoc />
-    public void Dispose() => _dbConnection?.Dispose();
+    public void Dispose()
+    {
+        _dbConnection?.Dispose();
+        _dataSource?.Dispose();
+    }
 
     /// <inheritdoc />
     public async Task<int> ExecuteAsync(string sql, CancellationToken cancellationToken, object param = null) =>
