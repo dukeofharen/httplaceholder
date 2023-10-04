@@ -70,6 +70,7 @@ public class RelationalDbMigratorFacts
     [DataRow(MysqlDbConnectionFactory.ConnectionStringKey, "mysql")]
     [DataRow(SqliteDbConnectionFactory.ConnectionStringKey, "sqlite")]
     [DataRow(SqlServerDbConnectionFactory.ConnectionStringKey, "mssql")]
+    [DataRow(PostgresDbConnectionFactory.ConnectionStringKey, "postgres")]
     public void GetDatabaseMigrationsFolder_HappyFlow(string connectionStringKey, string expectedResult)
     {
         // Arrange
