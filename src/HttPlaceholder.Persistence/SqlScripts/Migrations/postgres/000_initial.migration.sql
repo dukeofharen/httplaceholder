@@ -26,7 +26,7 @@ create table requests
     executing_stub_id  varchar(255) not null,
     request_begin_time timestamp    not null,
     request_end_time   timestamp,
-    has_response       bit,
+    has_response       boolean,
     json               text         not null,
     distribution_key   varchar(300) not null default ''
 );
@@ -43,7 +43,7 @@ create table responses
     status_code      int          not null,
     headers          text         not null,
     body             text         not null,
-    body_is_binary   bit,
+    body_is_binary   boolean,
     distribution_key varchar(300) not null default ''
 );
 
