@@ -28,7 +28,7 @@ ORDER BY request_begin_time DESC";
   json,
   has_response AS HasResponse
 FROM requests
-WHERE correlation_id IN @CorrelationIds
+WHERE correlation_id = ANY(@CorrelationIds)
 AND distribution_key = @DistributionKey
 ORDER BY request_begin_time DESC";
 
