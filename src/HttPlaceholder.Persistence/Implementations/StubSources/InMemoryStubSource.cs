@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Models;
-using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using Microsoft.Extensions.Options;
@@ -338,18 +337,18 @@ internal class InMemoryStubSource : BaseWritableStubSource
 
 internal class StubRequestCollectionItem
 {
+    public readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
+        new Dictionary<RequestResultModel, ResponseModel>();
+
+    public readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
+    public readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
+    public readonly IList<StubModel> StubModels = new List<StubModel>();
+    public readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
+
     internal StubRequestCollectionItem(string key)
     {
         Key = key;
     }
 
     public string Key { get; set; }
-
-    public readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
-        new Dictionary<RequestResultModel, ResponseModel>();
-
-    public readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
-    public readonly IList<StubModel> StubModels = new List<StubModel>();
-    public readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
-    public readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
 }

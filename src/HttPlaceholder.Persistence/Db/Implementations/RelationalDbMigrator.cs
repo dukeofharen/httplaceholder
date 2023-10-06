@@ -71,6 +71,12 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
             return "mssql";
         }
 
+        if (!string.IsNullOrWhiteSpace(
+                _configuration.GetConnectionString(PostgresDbConnectionFactory.ConnectionStringKey)))
+        {
+            return "postgres";
+        }
+
         throw new InvalidOperationException("Could not determine migrations folder for relational DB.");
     }
 

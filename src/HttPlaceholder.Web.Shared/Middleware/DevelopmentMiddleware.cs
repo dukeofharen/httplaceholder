@@ -1,8 +1,6 @@
-﻿using System.Net;
-using HttPlaceholder.Application.Interfaces.Http;
+﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
-using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Web.Shared.Middleware;
 
@@ -15,7 +13,7 @@ public class DevelopmentMiddleware
     private readonly RequestDelegate _next;
 
     /// <summary>
-    ///     Constructs a <see cref="DevelopmentMiddleware"/> instance.
+    ///     Constructs a <see cref="DevelopmentMiddleware" /> instance.
     /// </summary>
     public DevelopmentMiddleware(RequestDelegate next)
     {

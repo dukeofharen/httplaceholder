@@ -37,8 +37,8 @@ public class ScenarioStateModel
     public int HitCount { get; set; }
 
     /// <summary>
-    /// Copies the current <see cref="ScenarioStateModel"/> instance.
+    ///     Copies the current <see cref="ScenarioStateModel" /> instance.
     /// </summary>
-    /// <returns>A copy of the current <see cref="ScenarioStateModel"/>.</returns>
+    /// <returns>A copy of the current <see cref="ScenarioStateModel" />.</returns>
     public ScenarioStateModel Copy() => new() {Scenario = Scenario, State = State, HitCount = HitCount};
 }

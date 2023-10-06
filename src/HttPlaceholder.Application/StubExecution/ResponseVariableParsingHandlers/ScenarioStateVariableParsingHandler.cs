@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
@@ -15,8 +14,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IStubContext _stubContext;
     private readonly ICacheService _cacheService;
+    private readonly IStubContext _stubContext;
 
     public ScenarioStateVariableParsingHandler(
         IStubContext stubContext,
@@ -52,7 +51,8 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler,
         return result;
     }
 
-    private async Task<string> InsertStateAsync(string current, Match match, StubModel stub, CancellationToken cancellationToken)
+    private async Task<string> InsertStateAsync(string current, Match match, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var state = string.Empty;
         var customScenarioNameSet = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value);

@@ -124,6 +124,27 @@ public class PersistenceModuleFacts
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbMigrator)));
     }
 
+    [TestMethod]
+    public void DependencyRegistration_AddStubSources_PostgresConnectionStringKeySet_ShouldRegisterStubSource()
+    {
+        // arrange
+        _args.Add("ConnectionStrings:Postgres",
+            "Host=localhost,5432;Username=postgres;Password=postgres;Database=httplaceholder;SearchPath=public");
+
+        // act
+        _services.AddStubSources(BuildConfiguration(_args));
+
+        // assert
+        Assert.AreEqual(7, _services.Count);
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(PostgresQueryStore)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(PostgresDbConnectionFactory)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(DatabaseContextFactory)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubCache)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbMigrator)));
+    }
+
     private static IConfiguration BuildConfiguration(IDictionary<string, string> dict) =>
         new ConfigurationBuilder()
             .AddInMemoryCollection(dict)

@@ -18,11 +18,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs;
 public abstract class StubIntegrationTestBase : IntegrationTestBase
 {
     private const string InputFilePath = @"D:\tmp\input.yml";
-    internal InMemoryStubSource InMemoryStubSource;
     private YamlFileStubSource _stubSource;
     protected Mock<IClientDataResolver> ClientDataResolverMock;
     protected Mock<IDateTime> DateTimeMock;
     protected Mock<IFileService> FileServiceMock;
+    internal InMemoryStubSource InMemoryStubSource;
     protected MockHttpMessageHandler MockHttp;
 
     protected void InitializeStubIntegrationTest(string yamlFileName)

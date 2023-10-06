@@ -15,7 +15,8 @@ public interface IStubNotify
     /// <param name="stub">The stub.</param>
     /// <param name="distributionKey">The distribution key.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task StubAddedAsync(FullStubOverviewModel stub, string distributionKey = null, CancellationToken cancellationToken = default);
+    Task StubAddedAsync(FullStubOverviewModel stub, string distributionKey = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Handle the deletion of a stub.

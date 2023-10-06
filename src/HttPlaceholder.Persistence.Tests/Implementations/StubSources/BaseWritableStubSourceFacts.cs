@@ -129,20 +129,26 @@ public class BaseWritableStubSourceFacts
         public override Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
-        public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task<ScenarioStateModel> GetScenarioAsync(string scenario, string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        public override Task<ScenarioStateModel> AddScenarioAsync(string scenario,
+            ScenarioStateModel scenarioStateModel, string distributionKey = null,
             CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
-        public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+        public override Task UpdateScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+            string distributionKey = null,
             CancellationToken cancellationToken = default) =>
             throw new NotImplementedException();
 
-        public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task DeleteAllScenariosAsync(string distributionKey = null, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task DeleteAllScenariosAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) => throw new NotImplementedException();
     }
 }

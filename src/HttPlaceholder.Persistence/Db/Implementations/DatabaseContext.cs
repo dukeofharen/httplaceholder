@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -9,41 +10,51 @@ namespace HttPlaceholder.Persistence.Db.Implementations;
 /// <inheritdoc />
 internal class DatabaseContext : IDatabaseContext
 {
-    private readonly IDbConnection _dbConnection;
+    internal readonly DbDataSource DataSource;
+    internal readonly IDbConnection DbConnection;
 
     public DatabaseContext(IDbConnection dbConnection)
     {
-        _dbConnection = dbConnection;
+        DbConnection = dbConnection;
         dbConnection.Open();
     }
 
+    public DatabaseContext(DbDataSource dataSource) : this(dataSource.CreateConnection())
+    {
+        DataSource = dataSource;
+    }
+
     /// <inheritdoc />
-    public void Dispose() => _dbConnection?.Dispose();
+    public void Dispose()
+    {
+        DbConnection?.Dispose();
+        DataSource?.Dispose();
+    }
 
     /// <inheritdoc />
     public async Task<int> ExecuteAsync(string sql, CancellationToken cancellationToken, object param = null) =>
-        await _dbConnection.ExecuteAsync(new CommandDefinition(sql, param, cancellationToken: cancellationToken));
+        await DbConnection.ExecuteAsync(new CommandDefinition(sql, param, cancellationToken: cancellationToken));
 
     /// <inheritdoc />
-    public int Execute(string sql, object param = null) => _dbConnection.Execute(sql, param);
+    public int Execute(string sql, object param = null) => DbConnection.Execute(sql, param);
 
     /// <inheritdoc />
     public async Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, CancellationToken cancellationToken,
         object param = null) =>
-        await _dbConnection.QueryFirstOrDefaultAsync<TResult>(new CommandDefinition(sql, param,
+        await DbConnection.QueryFirstOrDefaultAsync<TResult>(new CommandDefinition(sql, param,
             cancellationToken: cancellationToken));
 
     /// <inheritdoc />
     public async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, CancellationToken cancellationToken,
         object param = null) =>
-        await _dbConnection.QueryAsync<TResult>(new CommandDefinition(sql, param,
+        await DbConnection.QueryAsync<TResult>(new CommandDefinition(sql, param,
             cancellationToken: cancellationToken));
 
     /// <inheritdoc />
     public IEnumerable<TResult> Query<TResult>(string sql, object param = null) =>
-        _dbConnection.Query<TResult>(sql, param);
+        DbConnection.Query<TResult>(sql, param);
 
     /// <inheritdoc />
     public Task<T> ExecuteScalarAsync<T>(string sql, CancellationToken cancellationToken, object param = null) =>
-        _dbConnection.ExecuteScalarAsync<T>(new CommandDefinition(sql, param, cancellationToken: cancellationToken));
+        DbConnection.ExecuteScalarAsync<T>(new CommandDefinition(sql, param, cancellationToken: cancellationToken));
 }

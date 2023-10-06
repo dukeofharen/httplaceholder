@@ -49,7 +49,8 @@ public class RelationalDbStubCacheFacts
             .Callback<string, object>((_, param) => capturedInsertParam = param);
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None);
+        var result =
+            await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedInsertParam);
@@ -83,7 +84,8 @@ public class RelationalDbStubCacheFacts
             .ReturnsAsync(trackingId);
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None);
+        var result =
+            await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
@@ -115,7 +117,8 @@ public class RelationalDbStubCacheFacts
             .ReturnsAsync(newTrackingId);
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None);
+        var result =
+            await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(newTrackingId, cache.StubUpdateTrackingId);
@@ -177,7 +180,8 @@ public class RelationalDbStubCacheFacts
 
         // Act
         var result =
-            (await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None)).ToArray();
+            (await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -227,7 +231,8 @@ public class RelationalDbStubCacheFacts
 
         // Act
         var result =
-            (await cache.GetOrUpdateStubCacheAsync("username", mockDatabaseContext.Object, CancellationToken.None)).ToArray();
+            (await cache.GetOrUpdateStubCacheAsync("username", mockDatabaseContext.Object, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -306,7 +311,8 @@ public class RelationalDbStubCacheFacts
         // Act / Assert
         Assert.IsTrue(
             (await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None))
-            .SequenceEqual(await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object, CancellationToken.None)));
+            .SequenceEqual(await cache.GetOrUpdateStubCacheAsync(string.Empty, mockDatabaseContext.Object,
+                CancellationToken.None)));
     }
 
     [TestMethod]

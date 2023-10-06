@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
 using Microsoft.Extensions.Configuration;
 
@@ -20,4 +21,7 @@ internal class SqliteDbConnectionFactory : IDbConnectionFactory
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
         new SQLiteConnection(_configuration.GetConnectionString(ConnectionStringKey));
+
+    /// <inheritdoc />
+    public DbDataSource GetDataSource() => null;
 }

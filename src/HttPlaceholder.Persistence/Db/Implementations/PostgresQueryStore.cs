@@ -1,9 +1,9 @@
 ﻿namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
-///     A store that contains queries for working with MS SQL Server.
+///     A store that contains queries for working with Postgres.
 /// </summary>
-internal class SqlServerQueryStore : IQueryStore
+internal class PostgresQueryStore : IQueryStore
 {
     /// <inheritdoc />
     public string GetRequestsQuery => @"SELECT
@@ -28,7 +28,7 @@ ORDER BY request_begin_time DESC";
   json,
   has_response AS HasResponse
 FROM requests
-WHERE correlation_id IN @CorrelationIds
+WHERE correlation_id = ANY(@CorrelationIds)
 AND distribution_key = @DistributionKey
 ORDER BY request_begin_time DESC";
 
@@ -46,8 +46,7 @@ ORDER BY request_begin_time DESC";
   json,
   has_response AS HasResponse
 FROM requests
-WHERE correlation_id = @CorrelationId
-AND distribution_key = @DistributionKey";
+WHERE correlation_id = @CorrelationId";
 
     /// <inheritdoc />
     public string GetResponseQuery => @"
@@ -59,7 +58,7 @@ SELECT res.id             as Id,
 FROM responses res
          LEFT JOIN requests req ON req.id = res.id
 WHERE req.correlation_id = @CorrelationId
-AND req.distribution_key = @DistributionKey;";
+AND req.distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string DeleteAllRequestsQuery => @"DELETE FROM requests WHERE distribution_key = @DistributionKey";
@@ -106,7 +105,7 @@ AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string CleanOldRequestsQuery =>
-        @"DELETE FROM requests WHERE ID NOT IN (SELECT TOP (@Limit) ID FROM requests WHERE distribution_key = @DistributionKey ORDER BY ID DESC)";
+        @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC OFFSET 0 LIMIT @Limit) AS t1)";
 
     /// <inheritdoc />
     public string GetStubUpdateTrackingIdQuery => "SELECT stub_update_tracking_id FROM metadata";
@@ -158,6 +157,7 @@ AND distribution_key = @DistributionKey";
                                          AND distribution_key = @DistributionKey
                                          """;
 
+    /// <inheritdoc />
     public string DeleteAllScenariosQuery => """
                                              DELETE FROM scenarios
                                              WHERE distribution_key = @DistributionKey

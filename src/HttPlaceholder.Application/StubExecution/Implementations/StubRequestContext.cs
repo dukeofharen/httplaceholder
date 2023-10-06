@@ -12,7 +12,7 @@ public class StubRequestContext : IStubRequestContext, ISingletonService
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    ///     Constructs a <see cref="StubRequestContext"/>.
+    ///     Constructs a <see cref="StubRequestContext" />.
     /// </summary>
     public StubRequestContext(IHttpContextService httpContextService)
     {

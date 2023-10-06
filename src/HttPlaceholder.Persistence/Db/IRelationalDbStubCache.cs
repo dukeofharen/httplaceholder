@@ -18,7 +18,8 @@ public interface IRelationalDbStubCache
     /// <param name="ctx">The database context.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of <see cref="StubModel" />.</returns>
-    Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey, IDatabaseContext ctx, CancellationToken cancellationToken);
+    Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey, IDatabaseContext ctx,
+        CancellationToken cancellationToken);
 
     /// <summary>
     ///     Adds or updates a stub in the cache.

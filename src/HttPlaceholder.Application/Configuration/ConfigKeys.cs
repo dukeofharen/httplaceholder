@@ -105,9 +105,14 @@ public static class ConfigKeys
     public const string SqliteConnectionStringKey = "sqliteConnectionString";
 
     /// <summary>
-    ///     Constant for apiUsername.
+    ///     Constant for sqlServerConnectionString.
     /// </summary>
     public const string SqlServerConnectionStringKey = "sqlServerConnectionString";
+
+    /// <summary>
+    ///     Constant for sqlServerConnectionString.
+    /// </summary>
+    public const string PostgresConnectionStringKey = "postgresConnectionString";
 
     /// <summary>
     ///     Constant for enableUserInterface.
@@ -322,6 +327,15 @@ public static class ConfigKeys
             "a connection string that needs to be filled in if you want to use MSSQL",
             "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123",
             "ConnectionStrings:SqlServer",
+            ConfigKeyType.Storage,
+            null,
+            true,
+            null),
+        Create(
+            PostgresConnectionStringKey,
+            "a connection string that needs to be filled in if you want to use Postgres",
+            "Host=localhost,5432;Username=postgres;Password=postgres;Database=httplaceholder;SearchPath=public",
+            "ConnectionStrings:Postgres",
             ConfigKeyType.Storage,
             null,
             true,

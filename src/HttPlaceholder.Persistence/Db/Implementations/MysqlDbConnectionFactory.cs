@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 
@@ -20,4 +21,7 @@ internal class MysqlDbConnectionFactory : IDbConnectionFactory
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
         new MySqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
+
+    /// <inheritdoc />
+    public DbDataSource GetDataSource() => null;
 }

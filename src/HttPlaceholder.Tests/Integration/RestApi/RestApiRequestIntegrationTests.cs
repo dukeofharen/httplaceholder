@@ -240,6 +240,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
         // Assert
         response.EnsureSuccessStatusCode();
         Assert.AreEqual(1, StubSource.GetCollection(null).RequestResultModels.Count);
-        Assert.IsTrue(StubSource.GetCollection(null).RequestResultModels.Any(r => r.CorrelationId == request1.CorrelationId));
+        Assert.IsTrue(StubSource.GetCollection(null).RequestResultModels
+            .Any(r => r.CorrelationId == request1.CorrelationId));
     }
 }

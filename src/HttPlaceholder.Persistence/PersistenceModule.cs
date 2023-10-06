@@ -59,6 +59,12 @@ public static class PersistenceModule
             // If "sqlServerConnectionString" is set, the application should connect with a MS SQL Server database instance and store its stuff there.
             services.RegisterConnectionFactory<SqlServerDbConnectionFactory, SqlServerQueryStore>();
         }
+        else if (!string.IsNullOrWhiteSpace(
+                     configuration.GetConnectionString(PostgresDbConnectionFactory.ConnectionStringKey)))
+        {
+            // If "postgresConnectionString" is set, the application should connect with a MS SQL Server database instance and store its stuff there.
+            services.RegisterConnectionFactory<PostgresDbConnectionFactory, PostgresQueryStore>();
+        }
         else if (!string.IsNullOrWhiteSpace(settings?.Storage?.FileStorageLocation))
         {
             // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.

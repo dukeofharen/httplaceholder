@@ -88,5 +88,13 @@ bash ./run.sh > $DIR/logs/test-mssql.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
+# Run HttPlaceholder tests for in Postgres configuration.
+echo "Testing HttPlaceholder with in Postgres configuration"
+dotnet run --project $HTTPL_ROOT_DIR --postgresConnectionString "Host=localhost,5432;Username=postgres;Password=postgres;Database=httplaceholder;SearchPath=public" --storeResponses > $DIR/logs/httplaceholder-postgres.txt 2>&1 &
+sleep 5
+bash ./run.sh > $DIR/logs/test-postgres.txt
+assert-test-ok
+sudo killall HttPlaceholder
+
 # Stop the Docker containers.
 docker-compose -f "$DEVENV_SCRIPT_PATH" down

@@ -29,7 +29,8 @@ internal class SetScenarioStateResponseWriter : IResponseWriter, ISingletonServi
         }
 
         var scenario = stub.Scenario;
-        var scenarioState = await _stubContext.GetScenarioAsync(scenario, cancellationToken) ?? new ScenarioStateModel(scenario);
+        var scenarioState = await _stubContext.GetScenarioAsync(scenario, cancellationToken) ??
+                            new ScenarioStateModel(scenario);
 
         scenarioState.State = stub.Response.Scenario.SetScenarioState;
         await _stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);

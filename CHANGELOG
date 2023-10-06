@@ -5,6 +5,7 @@
 - HttPlaceholder can now internally make use of "distribution keys". This makes it easier in the future to split stubs, requests, responses etc. in several compartments (https://github.com/dukeofharen/httplaceholder/pull/331).
 - Replaced Postman examples with plain cURL examples in documentation, since Postman's scratchpad is being phased out (https://github.com/dukeofharen/httplaceholder/pull/332).
 - Scenarios are now saved in the stub source, so the scenarios will survive a restart now (https://github.com/dukeofharen/httplaceholder/pull/333).
+- Added Postgres stub storage (https://github.com/dukeofharen/httplaceholder/pull/334).
 
 # BREAKING CHANGES
 - The logging of the Microsoft components is set to "warning and up" so the logging is a lot cleaner when running the application. If you also want to see this logging from info and down, enable verbose logging.

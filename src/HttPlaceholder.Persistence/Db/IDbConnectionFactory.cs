@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Data.Common;
 
 namespace HttPlaceholder.Persistence.Db;
 
@@ -12,4 +13,11 @@ public interface IDbConnectionFactory
     /// </summary>
     /// <returns>An <see cref="IDbConnection" /> instance.</returns>
     IDbConnection GetConnection();
+
+
+    /// <summary>
+    ///     Creates a <see cref="DbDataSource" /> instance.
+    /// </summary>
+    /// <returns>A <see cref="DbDataSource" /> instance.</returns>
+    DbDataSource GetDataSource();
 }

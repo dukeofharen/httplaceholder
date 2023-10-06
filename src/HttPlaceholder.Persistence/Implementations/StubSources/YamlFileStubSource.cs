@@ -43,7 +43,8 @@ internal class YamlFileStubSource : IStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
         var fileLocations = (await GetYamlFileLocationsAsync(cancellationToken)).ToArray();
         if (fileLocations.Length == 0)
@@ -67,13 +68,15 @@ internal class YamlFileStubSource : IStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null, CancellationToken cancellationToken = default) =>
+    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />
-    public async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null, CancellationToken cancellationToken = default) =>
+    public async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken)).FirstOrDefault(s => s.Id == stubId);
 
     /// <inheritdoc />
