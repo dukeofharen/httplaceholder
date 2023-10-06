@@ -2362,6 +2362,8 @@ httplaceholder --help
 httplaceholder --useHttps true
 ```
 
+Whether to also use HTTPS. Possible values: `true` or `false`. Default: `true`
+
 ### HTTPS certificates (optional)
 
 ```bash
@@ -2514,7 +2516,15 @@ httplaceholder --sqlServerConnectionString "Server=localhost,2433;Database=httpl
 
 HttPlaceholder has functionality to save all requests and stubs to a Microsoft SQL Server database. You can connect to a database by providing a connection string as seen above. You already need to have an empty database created for HttPlaceholder. HttPlaceholder will create tables itself (if they aren't created yet).
 
-Whether to also use HTTPS. Possible values: `true` or `false`. Default: `true`
+### Postgres connection (optional)
+
+<img src="img/postgres.png" width="100" />
+
+```bash
+httplaceholder --postgresConnectionString "Host=localhost,5432;Username=postgres;Password=postgres;Database=httplaceholder;SearchPath=public"
+```
+
+HttPlaceholder has functionality to save all requests and stubs to a Postgres database. You can connect to a database by providing a connection string as seen above. You already need to have an empty database created for HttPlaceholder. HttPlaceholder will create tables itself (if they aren't created yet). It is important to also set the "SearchPath". This sets the Postgres schema where the tables should be created and queried for.
 
 ### Run the cleaning of requests in the background (optional)
 
