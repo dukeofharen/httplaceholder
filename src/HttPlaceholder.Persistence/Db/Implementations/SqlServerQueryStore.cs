@@ -122,7 +122,7 @@ AND distribution_key = @DistributionKey";
     /// <inheritdoc />
     public string GetDistinctRequestDistributionKeysQuery => "SELECT DISTINCT(distribution_key) FROM requests;";
 
-   /// <inheritdoc />
+    /// <inheritdoc />
     public string GetScenarioQuery => """
                                       SELECT scenario AS Scenario, state AS State, hit_count AS HitCount
                                       FROM scenarios

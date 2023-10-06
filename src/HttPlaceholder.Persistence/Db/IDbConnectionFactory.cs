@@ -16,8 +16,8 @@ public interface IDbConnectionFactory
 
 
     /// <summary>
-    ///     Creates a <see cref="DbDataSource"/> instance.
+    ///     Creates a <see cref="DbDataSource" /> instance.
     /// </summary>
-    /// <returns>A <see cref="DbDataSource"/> instance.</returns>
+    /// <returns>A <see cref="DbDataSource" /> instance.</returns>
     DbDataSource GetDataSource();
 }

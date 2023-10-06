@@ -12,7 +12,7 @@ public static class SignalRUtilities
     /// </summary>
     /// <param name="hubContext">The SignalR hub context.</param>
     /// <param name="group">The SignalR group.</param>
-    /// <returns>The <see cref="IClientProxy"/>.</returns>
+    /// <returns>The <see cref="IClientProxy" />.</returns>
     public static IClientProxy GetChannel<THub>(this IHubContext<THub> hubContext, string group = null)
         where THub : Hub =>
         string.IsNullOrWhiteSpace(group)

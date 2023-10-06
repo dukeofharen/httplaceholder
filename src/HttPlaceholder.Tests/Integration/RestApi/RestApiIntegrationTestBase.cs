@@ -1,6 +1,5 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;

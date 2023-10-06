@@ -134,7 +134,8 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
             ExecutingStubId = "x"
         };
         StubSource.GetCollection(null).RequestResultModels.Add(requestResult);
-        StubSource.GetCollection(null).RequestResponseMap.Add(requestResult, new ResponseModel {Body = "the content"u8.ToArray()});
+        StubSource.GetCollection(null).RequestResponseMap
+            .Add(requestResult, new ResponseModel {Body = "the content"u8.ToArray()});
 
         // Register a new stub for the request
         var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";

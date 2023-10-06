@@ -10,8 +10,8 @@ namespace HttPlaceholder.Persistence.Db.Implementations;
 /// <inheritdoc />
 internal class DatabaseContext : IDatabaseContext
 {
-    internal readonly IDbConnection DbConnection;
     internal readonly DbDataSource DataSource;
+    internal readonly IDbConnection DbConnection;
 
     public DatabaseContext(IDbConnection dbConnection)
     {

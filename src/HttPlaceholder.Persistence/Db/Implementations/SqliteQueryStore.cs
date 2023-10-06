@@ -64,7 +64,8 @@ AND req.distribution_key = @DistributionKey";
     public string DeleteAllRequestsQuery => @"DELETE FROM requests WHERE distribution_key = @DistributionKey";
 
     /// <inheritdoc />
-    public string DeleteRequestQuery => @"DELETE FROM requests WHERE correlation_id = @CorrelationId AND distribution_key = @DistributionKey";
+    public string DeleteRequestQuery =>
+        @"DELETE FROM requests WHERE correlation_id = @CorrelationId AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string AddRequestQuery => @"INSERT INTO requests
@@ -72,7 +73,8 @@ AND req.distribution_key = @DistributionKey";
 VALUES (@CorrelationId, @ExecutingStubId, @RequestBeginTime, @RequestEndTime, @Json, @HasResponse, @DistributionKey)";
 
     /// <inheritdoc />
-    public string AddResponseQuery => @"INSERT INTO responses (id, status_code, headers, body, body_is_binary, distribution_key)
+    public string AddResponseQuery =>
+        @"INSERT INTO responses (id, status_code, headers, body, body_is_binary, distribution_key)
 VALUES ((SELECT id FROM requests WHERE correlation_id = @CorrelationId), @StatusCode, @Headers, @Body, @BodyIsBinary, @DistributionKey);";
 
     /// <inheritdoc />
@@ -81,7 +83,8 @@ VALUES ((SELECT id FROM requests WHERE correlation_id = @CorrelationId), @Status
 VALUES (@StubId, @Stub, @StubType, @DistributionKey)";
 
     /// <inheritdoc />
-    public string DeleteStubQuery => @"DELETE FROM stubs WHERE stub_id = @StubId AND distribution_key = @DistributionKey";
+    public string DeleteStubQuery =>
+        @"DELETE FROM stubs WHERE stub_id = @StubId AND distribution_key = @DistributionKey";
 
     /// <inheritdoc />
     public string GetStubsQuery => @"SELECT

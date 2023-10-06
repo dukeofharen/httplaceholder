@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -16,8 +15,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly IStubContext _stubContext;
     private readonly ICacheService _cacheService;
+    private readonly IStubContext _stubContext;
 
     public ScenarioHitCountVariableParsingHandler(
         IStubContext stubContext,

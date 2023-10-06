@@ -15,5 +15,6 @@ public interface IRequestNotify
     /// <param name="request">The request.</param>
     /// <param name="distributionKey">The distribution key.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    Task NewRequestReceivedAsync(RequestResultModel request, string distributionKey = null, CancellationToken cancellationToken = default);
+    Task NewRequestReceivedAsync(RequestResultModel request, string distributionKey = null,
+        CancellationToken cancellationToken = default);
 }

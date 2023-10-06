@@ -37,7 +37,8 @@ internal class FileSystemStubCache : IFileSystemStubCache
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey, CancellationToken cancellationToken)
+    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey,
+        CancellationToken cancellationToken)
     {
         var path = GetStubsFolder(distributionKey);
         if (!string.IsNullOrWhiteSpace(distributionKey))
@@ -83,15 +84,6 @@ internal class FileSystemStubCache : IFileSystemStubCache
         return StubCache.Values;
     }
 
-    private async Task<IEnumerable<StubModel>> GetStubsAsync(string path, CancellationToken cancellationToken)
-    {
-        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
-        return (await Task.WhenAll(files
-                .Select(filePath => _fileService
-                    .ReadAllTextAsync(filePath, cancellationToken))))
-            .Select(JsonConvert.DeserializeObject<StubModel>);
-    }
-
     /// <inheritdoc />
     public void AddOrReplaceStub(StubModel stubModel)
     {
@@ -120,6 +112,15 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
         var metadata = UpdateMetadata(GetMetadataPath());
         UpdateLocalStubUpdateTrackingId(metadata.StubUpdateTrackingId);
+    }
+
+    private async Task<IEnumerable<StubModel>> GetStubsAsync(string path, CancellationToken cancellationToken)
+    {
+        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        return (await Task.WhenAll(files
+                .Select(filePath => _fileService
+                    .ReadAllTextAsync(filePath, cancellationToken))))
+            .Select(JsonConvert.DeserializeObject<StubModel>);
     }
 
     internal FileStorageMetadataModel EnsureAndGetMetadata()
@@ -174,5 +175,4 @@ internal class FileSystemStubCache : IFileSystemStubCache
             ? Path.Combine(rootFolder, FileNames.StubsFolderName)
             : Path.Combine(rootFolder, distributionKey, FileNames.StubsFolderName);
     }
-
 }

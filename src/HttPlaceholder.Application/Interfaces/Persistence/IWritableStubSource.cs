@@ -28,7 +28,8 @@ public interface IWritableStubSource : IStubSource
     /// <param name="distributionKey">The distribution key the stubs should be deleted for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>True if the stub was deleted, false otherwise.</returns>
-    Task<bool> DeleteStubAsync(string stubId, string distributionKey = null, CancellationToken cancellationToken = default);
+    Task<bool> DeleteStubAsync(string stubId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Add a <see cref="RequestResultModel" />.
@@ -47,7 +48,10 @@ public interface IWritableStubSource : IStubSource
     ///     Gets a list of <see cref="RequestResultModel" />.
     /// </summary>
     /// <param name="pagingModel">The paging information.</param>
-    /// <param name="distributionKey">The distribution key the requests should be retrieved for. Leave it null if there is no user.</param>
+    /// <param name="distributionKey">
+    ///     The distribution key the requests should be retrieved for. Leave it null if there is no
+    ///     user.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of requests.</returns>
     Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
@@ -59,7 +63,10 @@ public interface IWritableStubSource : IStubSource
     ///     Gets a list of <see cref="RequestOverviewModel" />.
     /// </summary>
     /// <param name="pagingModel">The paging information.</param>
-    /// <param name="distributionKey">The distribution key the requests should be retrieved for. Leave it null if there is no user.</param>
+    /// <param name="distributionKey">
+    ///     The distribution key the requests should be retrieved for. Leave it null if there is no
+    ///     user.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of overview requests.</returns>
     Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
@@ -71,24 +78,35 @@ public interface IWritableStubSource : IStubSource
     ///     Gets a <see cref="RequestResultModel" /> by correlation ID.
     /// </summary>
     /// <param name="correlationId">The request correlation ID.</param>
-    /// <param name="distributionKey">The distribution key the request should be retrieved for. Leave it null if there is no user.</param>
+    /// <param name="distributionKey">
+    ///     The distribution key the request should be retrieved for. Leave it null if there is no
+    ///     user.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The request.</returns>
-    Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null, CancellationToken cancellationToken = default);
+    Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Gets a <see cref="ResponseModel" /> by request correlation ID.
     /// </summary>
     /// <param name="correlationId">The request correlation ID.</param>
-    /// <param name="distributionKey">The distribution key the response should be retrieved for. Leave it null if there is no user.</param>
+    /// <param name="distributionKey">
+    ///     The distribution key the response should be retrieved for. Leave it null if there is no
+    ///     user.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The response.</returns>
-    Task<ResponseModel> GetResponseAsync(string correlationId, string distributionKey = null, CancellationToken cancellationToken = default);
+    Task<ResponseModel> GetResponseAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Deletes all requests.
     /// </summary>
-    /// <param name="distributionKey">The distribution key the requests should be deleted for. Leave it null if there is no user.</param>
+    /// <param name="distributionKey">
+    ///     The distribution key the requests should be deleted for. Leave it null if there is no
+    ///     user.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     Task DeleteAllRequestResultsAsync(string distributionKey = null, CancellationToken cancellationToken = default);
 
@@ -96,10 +114,14 @@ public interface IWritableStubSource : IStubSource
     ///     Deletes a specific request.
     /// </summary>
     /// <param name="correlationId">The request correlation ID.</param>
-    /// <param name="distributionKey">The distribution key the request should be deleted for. Leave it null if there is no user.</param>
+    /// <param name="distributionKey">
+    ///     The distribution key the request should be deleted for. Leave it null if there is no
+    ///     user.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>True if the request was deleted, false otherwise.</returns>
-    Task<bool> DeleteRequestAsync(string correlationId, string distributionKey = null, CancellationToken cancellationToken = default);
+    Task<bool> DeleteRequestAsync(string correlationId, string distributionKey = null,
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Clean all old requests.
@@ -125,7 +147,8 @@ public interface IWritableStubSource : IStubSource
     /// <param name="distributionKey">The distribution key for the scenario. Leave null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The added <see cref="ScenarioStateModel" />.</returns>
-    Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel, string distributionKey = null,
+    Task<ScenarioStateModel> AddScenarioAsync(string scenario, ScenarioStateModel scenarioStateModel,
+        string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>

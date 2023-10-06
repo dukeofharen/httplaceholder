@@ -19,14 +19,14 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class StubContext : IStubContext, ISingletonService
 {
-    private static ConcurrentDictionary<string, SemaphoreSlim> _scenarioLocks = new();
+    private static readonly ConcurrentDictionary<string, SemaphoreSlim> _scenarioLocks = new();
+    private readonly ICacheService _cacheService;
     private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IRequestNotify _requestNotify;
-    private readonly IStubNotify _stubNotify;
     private readonly IScenarioNotify _scenarioNotify;
+    private readonly IStubNotify _stubNotify;
     private readonly IStubRequestContext _stubRequestContext;
     private readonly IEnumerable<IStubSource> _stubSources;
-    private readonly ICacheService _cacheService;
 
     public StubContext(
         IEnumerable<IStubSource> stubSources,

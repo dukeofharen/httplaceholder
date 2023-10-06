@@ -88,8 +88,8 @@ public class DatabaseContextFactoryFacts
             _dbConnection = dbConnection;
         }
 
-        protected override DbConnection CreateDbConnection() => _dbConnection;
-
         public override string ConnectionString { get; }
+
+        protected override DbConnection CreateDbConnection() => _dbConnection;
     }
 }

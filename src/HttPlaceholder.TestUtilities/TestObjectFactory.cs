@@ -29,7 +29,8 @@ public static class TestObjectFactory
     public static Dictionary<object, object> CreateStringCheckingModel(bool? present = null) =>
         Convert(new StubConditionStringCheckingModel {Present = present});
 
-    public static (IHubContext<T> hubContext, Mock<IClientProxy> clientProxyMock) CreateHubMock<T>(string group = null) where T : Hub
+    public static (IHubContext<T> hubContext, Mock<IClientProxy> clientProxyMock) CreateHubMock<T>(string group = null)
+        where T : Hub
     {
         var hubContextMock = new Mock<IHubContext<T>>();
         var hubClientsMock = new Mock<IHubClients>();
