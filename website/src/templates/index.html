@@ -44,9 +44,8 @@
         new
         file:<br/>
         <div class="copyable-script">
-            <img class="copy-icon" src="{{rootUrl}}/img/clipboard.svg" title="Copy script"
-                 alt="Copy script"/>
-            <pre><code>- id: situation-01
+            <i class="bi bi-clipboard copy-icon"></i>
+            <pre><code class="language-yaml">- id: situation-01
   conditions:
     method: GET
     url:
@@ -89,36 +88,32 @@
 
         <div class="call call-curl">
             <div class="copyable-script">
-                <img class="copy-icon" src="{{rootUrl}}/img/clipboard.svg" title="Copy script"
-                     alt="Copy script"/>
-                <pre><code>curl "http://localhost:5000/users?id=12&filter=first_name" -D-</code></pre>
+                <i class="bi bi-clipboard copy-icon"></i>
+                <pre><code class="language-bash">curl "http://localhost:5000/users?id=12&filter=first_name" -D-</code></pre>
             </div>
             <img src="{{{rootUrl}}}/img/curl_result.png" alt="cURL call result"/>
         </div>
 
         <div class="call call-wget">
             <div class="copyable-script">
-                <img class="copy-icon" src="{{rootUrl}}/img/clipboard.svg" title="Copy script"
-                     alt="Copy script"/>
-                <pre><code>wget -qSO - "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
+                <i class="bi bi-clipboard copy-icon"></i>
+                <pre><code class="language-bash">wget -qSO - "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
             </div>
             <img src="{{{rootUrl}}}/img/wget_result.png" alt="wget call result"/>
         </div>
 
         <div class="call call-pwsh">
             <div class="copyable-script">
-                <img class="copy-icon" src="{{rootUrl}}/img/clipboard.svg" title="Copy script"
-                     alt="Copy script"/>
-                <pre><code>iwr "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
+                <i class="bi bi-clipboard copy-icon"></i>
+                <pre><code class="language-powershell">iwr "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
             </div>
             <img src="{{{rootUrl}}}/img/pwsh_result.png" alt="PowerShell call result"/>
         </div>
 
         <div class="call call-httpie">
             <div class="copyable-script">
-                <img class="copy-icon" src="{{rootUrl}}/img/clipboard.svg" title="Copy script"
-                     alt="Copy script"/>
-                <pre><code>http "localhost:5000/users?id=12&filter=first_name"</code></pre>
+                <i class="bi bi-clipboard copy-icon"></i>
+                <pre><code class="language-bash">http "localhost:5000/users?id=12&filter=first_name"</code></pre>
                 <img src="{{{rootUrl}}}/img/httpie_result.png" alt="PowerShell call result"/>
             </div>
         </div>

@@ -18,7 +18,7 @@ The code can be found [here](https://github.com/dukeofharen/httplaceholder/blob/
 
 The following code makes sure to start a Docker container with HttPlaceholder and maps the application to port `1337`.
 
-```c#
+```csharp
 var container = new TestcontainersBuilder<TestcontainersContainer>()
     .WithImage("dukeofharen/httplaceholder:2022.9.3.59")
     .WithName("httplaceholder")
@@ -33,7 +33,7 @@ await container.StartAsync();
 
 After the container has started, we can create an HttPlaceholder client.
 
-```c#
+```csharp
 var client = HttPlaceholderClientFactory.CreateHttPlaceholderClient(
     new HttPlaceholderClientConfiguration
     {
@@ -43,7 +43,7 @@ var client = HttPlaceholderClientFactory.CreateHttPlaceholderClient(
 
 ## Creating a stub
 
-```c#
+```csharp
 var stub = StubBuilder.Begin()
     .WithId("some-stub-id")
     .WithConditions(StubConditionBuilder.Begin()
@@ -63,7 +63,7 @@ The code above creates a simple stub which returns a plain text response.
 
 Now that the stub has been added, we can actually make a request to it and verify the correct response was returned.
 
-```c#
+```csharp
 var httpClient = new HttpClient();
 using var response = await httpClient.GetAsync("http://localhost:1337/someUrl?queryParam=someValue");
 response.EnsureSuccessStatusCode();
@@ -75,7 +75,7 @@ Assert.AreEqual("This is the response!", contents);
 
 By using the verification method in the HttPlaceholder client, you can verify whether a specific stub was called and with what parameters.
 
-```c#
+```csharp
 await client.VerifyStubCalledAsync("some-stub-id", TimesModel.ExactlyOnce(), DateTime.UtcNow.AddSeconds(-10));
 ```
 

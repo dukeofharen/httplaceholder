@@ -60,6 +60,10 @@ function switchTheme(theme) {
 
 function onCopyLinkClick(e) {
     const target = e.target;
+    target.className = target.className.replace("bi-clipboard", "bi-check-lg");
+    setTimeout(function() {
+        target.className = target.className.replace("bi-check-lg", "bi-clipboard");
+    }, 5000);
     const parent = target.parentNode;
     const code = parent.getElementsByTagName("code")[0];
     copyTextToClipboard(code.innerText).then(() => console.log("Copied to clipboard."));
@@ -74,6 +78,9 @@ function setupCopyableScripts() {
 
 function setupStubCallSelector() {
     const element = document.getElementById("stub-call-selector");
+    if (!element) {
+        return;
+    }
 
     function showStubCall(value) {
         const stubCalls = document.getElementsByClassName("call");
@@ -106,4 +113,5 @@ window.addEventListener('DOMContentLoaded', function () {
 
     setupCopyableScripts();
     setupStubCallSelector();
+    hljs.highlightAll();
 });
