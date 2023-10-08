@@ -74,6 +74,9 @@ function setupCopyableScripts() {
 
 function setupStubCallSelector() {
     const element = document.getElementById("stub-call-selector");
+    if (!element) {
+        return;
+    }
 
     function showStubCall(value) {
         const stubCalls = document.getElementsByClassName("call");
