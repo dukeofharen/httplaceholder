@@ -1329,7 +1329,7 @@ Instead of setting a header with the content type, you can also use the `content
 
 In some cases (e.g. when you're using the [reverse proxy](#reverse-proxy)), it might be nice if you can do a find and replace on the response body of the stub. You can, with the string replace and regex replace response writers. When using the string replace or regex response writer, all matches that are found in the response body are replaced with the provided value. The response writer can be used in combination with the [dynamic mode](#dynamic-mode).
 
-### String response writer
+### String response replace
 
 ```yml
 - id: string-replace
@@ -1352,7 +1352,7 @@ In some cases (e.g. when you're using the [reverse proxy](#reverse-proxy)), it m
 
 In the example above, two different string replacements are configured. When the stub is executed, the string `OK c7753738-e047-4ca3-b530-6c530f5ac2c6` (or any other UUID) is returned when the URI path is `/stringr-replace`. The `ignoreCase` is set to `false`, which means that the string casing is respected when looking for the string `text` in the response. If this is set to `true`, the casing will be ignored.
 
-### Regex response writer
+### Regex response replace
 
 ```yml
 - id: regex-replace
