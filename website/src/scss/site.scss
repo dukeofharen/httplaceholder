@@ -74,6 +74,10 @@ html[data-theme="light"] {
     top: 9px;
     left: 14px;
     cursor: pointer;
+    
+    &.bi-check-lg {
+      color: #007f07;
+    }
   }
 }
 
