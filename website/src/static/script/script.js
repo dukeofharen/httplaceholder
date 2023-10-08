@@ -106,4 +106,5 @@ window.addEventListener('DOMContentLoaded', function () {
 
     setupCopyableScripts();
     setupStubCallSelector();
+    hljs.highlightAll();
 });
