@@ -9,14 +9,14 @@
     "patch-docs": "node ./lib/patch-docs.js",
     "new-post": "node ./scripts/new-post.js",
     "run-http-server": "http-server dist",
-    "dev": "nodemon --watch src -e html,js,jpg,png,svg,scss --exec concurrently \"npm run run-http-server\" \"npm run run-sass\" \"npm run build-site-dev\" \"npm run watch-scss\""
+    "serve-dev": "npm run run-sass && npm run build-site-dev && npm run run-http-server",
+    "dev": "nodemon --watch src -e html,js,jpg,png,svg,scss --exec npm run serve-dev"
   },
   "author": "dukeofharen",
   "license": "ISC",
   "devDependencies": {
     "@picocss/pico": "^1.5.10",
     "cheerio": "^1.0.0-rc.12",
-    "concurrently": "^8.2.1",
     "dayjs": "^1.10.7",
     "fs-extra": "^10.0.0",
     "http-server": "^14.0.0",
