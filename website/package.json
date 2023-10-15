@@ -4,11 +4,13 @@
   "description": "HttPlaceholder site",
   "scripts": {
     "run-sass": "sass src/scss/style.scss src/static/style/style.css",
-    "build-site-dev": "npm run run-sass && node ./lib/build-site.js dev",
+    "build-site-dev": "node ./lib/build-site.js dev",
     "build-site-prod": "npm run run-sass -- --style compressed && node ./lib/build-site.js prod",
     "patch-docs": "node ./lib/patch-docs.js",
     "new-post": "node ./scripts/new-post.js",
-    "serve": "npm run build-site-dev && http-server dist"
+    "run-http-server": "http-server dist",
+    "serve-dev": "npm run run-sass && npm run build-site-dev && npm run run-http-server",
+    "dev": "nodemon --watch src -e html,js,jpg,png,svg,scss --exec npm run serve-dev"
   },
   "author": "dukeofharen",
   "license": "ISC",
@@ -20,6 +22,7 @@
     "http-server": "^14.0.0",
     "marked": "^4.0.8",
     "mustache": "^4.2.0",
+    "nodemon": "^3.0.1",
     "sass": "^1.63.3"
   }
 }
