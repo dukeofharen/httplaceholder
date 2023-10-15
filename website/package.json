@@ -9,8 +9,8 @@
     "build-site-prod": "npm run run-sass -- --style compressed && node ./lib/build-site.js prod",
     "patch-docs": "node ./lib/patch-docs.js",
     "new-post": "node ./scripts/new-post.js",
-    "serve-dev": "http-server dist",
-    "dev": "concurrently \"npm run serve-dev\" \"npm run build-site-dev\" \"npm run watch-scss\""
+    "run-http-server": "http-server dist",
+    "dev": "nodemon --watch src -e html,js,jpg,png,svg --exec concurrently \"npm run run-http-server\" \"npm run build-site-dev\" \"npm run watch-scss\""
   },
   "author": "dukeofharen",
   "license": "ISC",
