@@ -5,39 +5,17 @@ body {
 
 h1, h2 {
   font-family: Oswald, sans-serif !important;
-  margin-bottom: 10px !important;
+  margin-bottom: 15px !important;
   font-weight: 600;
 }
 
 h2 {
-  margin-top: 5px !important;
+  margin-top: 15px !important;
   font-size: 1.5em !important;
 }
 
 .logo {
   max-height: 64px;
-}
-
-html[data-theme="dark"] {
-  .home-logo.light {
-    display: none;
-  }
-
-  #stub-call-selector {
-    background-color: #eee6e0;
-    color: #415462 !important;
-  }
-}
-
-html[data-theme="light"] {
-  .home-logo.dark {
-    display: none;
-  }
-
-  #stub-call-selector {
-    background-color: #000;
-    color: #bbc6ce !important;
-  }
 }
 
 .theme-switch {
@@ -51,14 +29,6 @@ html[data-theme="light"] {
 .footer {
   margin-top: 20px;
   opacity: 0.6;
-}
-
-.mt-1 {
-  margin-top: .25rem !important
-}
-
-.mt-2 {
-  margin-top: .5rem !important
 }
 
 .mt-3 {
@@ -98,10 +68,4 @@ html[data-theme="light"] {
       font-size: 1.2em;
     }
   }
-}
-
-#stub-call-selector {
-  border: 0 !important;
-  margin-bottom: 25px !important;
-  max-width: 300px !important;
 }

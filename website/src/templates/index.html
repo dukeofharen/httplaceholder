@@ -1,53 +1,57 @@
-<div class="home-header">
-    <div>
-        <h1>HttPlaceholder - Quickly stub away any HTTP service</h1>
-    </div>
-    <img src="{{{rootUrl}}}/img/home_image.png" alt="HttPlaceholder" />
-</div>
-
-<div>
-    <p>
-        HttPlaceholder lets you stub away any HTTP webservice. HttPlaceholder:
-    </p>
-    <ul>
-        <li>can easily be <a href="{{{rootUrl}}}/download.html">installed</a> on your dev PC.</li>
-        <li>can be used to easily create stubs, either as separate <a href="{{{rootUrl}}}/docs/#stub-anatomy">YAML
-            files</a>, through the
-            <a href="{{{rootUrl}}}/docs/#rest-api">API</a> or through the <a
-                    href="{{{rootUrl}}}/docs/#management-interface">user
-                interface</a>.
-        </li>
-        <li>can easily be <a href="{{{rootUrl}}}/docs/#hosting">hosted</a> on any server.</li>
-        <li>can use many different <a href="{{{rootUrl}}}/docs/#request-conditions">HTTP condition checkers</a> and <a
-                href="{{{rootUrl}}}/docs/#response-writers">response writers</a> to make your HTTP stubs as specific
-            as
-            you need.
-        </li>
-    </ul>
-</div>
-
-<div class="getting-started">
-    <h1>Getting started</h1>
-
-    <p>
-        Let's take a look at a short demo.
-    </p>
-
-    <h2>1. Install HttPlaceholder</h2>
-
-    <div>
-        See <a href="{{{rootUrl}}}/download.html">Download</a>.
+<div class="home">
+    <div class="home-header">
+        <div>
+            <h1>HttPlaceholder - Quickly stub away any HTTP service</h1>
+        </div>
+        <img src="{{{rootUrl}}}/img/home_image.png" alt="HttPlaceholder"/>
     </div>
 
-    <h2>2. Create a stub</h2>
-
     <div>
-        Create a new .yaml file (e.g. <span><code>stub.yaml</code></span>).<br/>Copy and paste these contents in your
-        new
-        file:<br/>
-        <div class="copyable-script">
-            <i class="bi bi-clipboard copy-icon"></i>
-            <pre><code class="language-yaml">- id: situation-01
+        <p>
+            HttPlaceholder lets you stub away any HTTP webservice. HttPlaceholder:
+        </p>
+        <ul>
+            <li>can easily be <a href="{{{rootUrl}}}/download.html">installed</a> on your dev PC.</li>
+            <li>can be used to easily create stubs, either as separate <a href="{{{rootUrl}}}/docs/#stub-anatomy">YAML
+                files</a>, through the
+                <a href="{{{rootUrl}}}/docs/#rest-api">API</a> or through the <a
+                        href="{{{rootUrl}}}/docs/#management-interface">user
+                    interface</a>.
+            </li>
+            <li>can easily be <a href="{{{rootUrl}}}/docs/#hosting">hosted</a> on any server.</li>
+            <li>can use many different <a href="{{{rootUrl}}}/docs/#request-conditions">HTTP condition checkers</a> and
+                <a
+                        href="{{{rootUrl}}}/docs/#response-writers">response writers</a> to make your HTTP stubs as
+                specific
+                as
+                you need.
+            </li>
+        </ul>
+    </div>
+
+    <div class="getting-started">
+        <h1>Getting started</h1>
+
+        <p>
+            Let's take a look at a short demo.
+        </p>
+
+        <h2>1. Install HttPlaceholder</h2>
+
+        <div>
+            See <a href="{{{rootUrl}}}/download.html">Download</a>.
+        </div>
+
+        <h2>2. Create a stub</h2>
+
+        <div>
+            <p>
+                Create a new .yaml file (e.g. <span><code>stub.yaml</code></span>).<br/>Copy and paste these contents in
+                your new file:
+            </p>
+            <div class="copyable-script">
+                <i class="bi bi-clipboard copy-icon"></i>
+                <pre><code class="language-yaml">- id: situation-01
   conditions:
     method: GET
     url:
@@ -64,93 +68,98 @@
       {
         "first_name": "John"
       }</code></pre>
-        </div>
-    </div>
-
-    <h2>3. Start HttPlaceholder</h2>
-
-    <div>
-        Open the terminal in the folder you've added the <code>stub.yaml</code> file and run the following
-        command: <code>httplaceholder</code>. HttPlaceholder will now start and will load the stubs in the
-        current folder.<br/><img src="{{{rootUrl}}}/img/httplaceholder_running.png"
-                                 alt="HttPlaceholder running in terminal"/>
-    </div>
-
-    <h2>4. Perform a call to HttPlaceholder</h2>
-
-    <div>
-        <p>Perform a specific HTTP call to HttPlaceholder so your provided response will be returned.</p>
-
-        <select id="stub-call-selector">
-            <option value="curl">cURL</option>
-            <option value="wget">wget</option>
-            <option value="pwsh">PowerShell</option>
-            <option value="httpie">httpie</option>
-        </select>
-
-        <div class="call call-curl">
-            <div class="copyable-script">
-                <i class="bi bi-clipboard copy-icon"></i>
-                <pre><code class="language-bash">curl "http://localhost:5000/users?id=12&filter=first_name" -D-</code></pre>
-            </div>
-            <img src="{{{rootUrl}}}/img/curl_result.png" alt="cURL call result"/>
-        </div>
-
-        <div class="call call-wget">
-            <div class="copyable-script">
-                <i class="bi bi-clipboard copy-icon"></i>
-                <pre><code class="language-bash">wget -qSO - "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
-            </div>
-            <img src="{{{rootUrl}}}/img/wget_result.png" alt="wget call result"/>
-        </div>
-
-        <div class="call call-pwsh">
-            <div class="copyable-script">
-                <i class="bi bi-clipboard copy-icon"></i>
-                <pre><code class="language-powershell">iwr "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
-            </div>
-            <img src="{{{rootUrl}}}/img/pwsh_result.png" alt="PowerShell call result"/>
-        </div>
-
-        <div class="call call-httpie">
-            <div class="copyable-script">
-                <i class="bi bi-clipboard copy-icon"></i>
-                <pre><code class="language-bash">http "localhost:5000/users?id=12&filter=first_name"</code></pre>
-                <img src="{{{rootUrl}}}/img/httpie_result.png" alt="PowerShell call result"/>
             </div>
         </div>
+
+        <h2>3. Start HttPlaceholder</h2>
+
+        <div>
+            <p>Open the terminal in the folder you've added the <code>stub.yaml</code> file and run the following
+                command: <code>httplaceholder</code>. HttPlaceholder will now start and will load the stubs in the
+                current folder.</p>
+            <p>
+                <img src="{{{rootUrl}}}/img/httplaceholder_running.png"
+                     alt="HttPlaceholder running in terminal"/>
+            </p>
+        </div>
+
+        <h2>4. Perform a call to HttPlaceholder</h2>
+
+        <div>
+            <p>Perform a specific HTTP call to HttPlaceholder so your provided response will be returned.</p>
+
+            <select id="stub-call-selector">
+                <option value="curl">cURL</option>
+                <option value="wget">wget</option>
+                <option value="pwsh">PowerShell</option>
+                <option value="httpie">httpie</option>
+            </select>
+
+            <div class="call call-curl">
+                <div class="copyable-script">
+                    <i class="bi bi-clipboard copy-icon"></i>
+                    <pre><code
+                            class="language-bash">curl "http://localhost:5000/users?id=12&filter=first_name" -D-</code></pre>
+                </div>
+                <img src="{{{rootUrl}}}/img/curl_result.png" alt="cURL call result"/>
+            </div>
+
+            <div class="call call-wget">
+                <div class="copyable-script">
+                    <i class="bi bi-clipboard copy-icon"></i>
+                    <pre><code
+                            class="language-bash">wget -qSO - "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
+                </div>
+                <img src="{{{rootUrl}}}/img/wget_result.png" alt="wget call result"/>
+            </div>
+
+            <div class="call call-pwsh">
+                <div class="copyable-script">
+                    <i class="bi bi-clipboard copy-icon"></i>
+                    <pre><code
+                            class="language-powershell">iwr "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
+                </div>
+                <img src="{{{rootUrl}}}/img/pwsh_result.png" alt="PowerShell call result"/>
+            </div>
+
+            <div class="call call-httpie">
+                <div class="copyable-script">
+                    <i class="bi bi-clipboard copy-icon"></i>
+                    <pre><code class="language-bash">http "localhost:5000/users?id=12&filter=first_name"</code></pre>
+                    <img src="{{{rootUrl}}}/img/httpie_result.png" alt="PowerShell call result"/>
+                </div>
+            </div>
+        </div>
+
+        <h2>5. View the requests</h2>
+
+        <div>
+            You can view and inspect the performed requests in the user interface at
+            <strong>http://localhost:5000/ph-ui</strong>.
+        </div>
+
+        <h2>6. Learn more</h2>
+
+        <div>
+            <p>
+                For more sophisticated examples, go to the <a href="{{{rootUrl}}}/docs/index.html#samples">samples</a>
+                to
+                view samples for all supported HTTP condition checkers and response writers. Learn more about
+                HttPlaceholder
+                by
+                reading the <a href="{{{rootUrl}}}/docs/index.html">documentation</a>.</p>
+        </div>
     </div>
 
-    <h2>5. View the requests</h2>
-
-    <div>
-        You can view and inspect the performed requests in the user interface at
-        <strong>http://localhost:5000/ph-ui</strong>.
+    {{#hasPosts}}
+    <div class="blog-items">
+        <h2>Posts / tutorials</h2>
+        <ul>
+            {{#posts}}
+            <li><a href="{{{rootUrl}}}/posts/{{postKey}}">{{title}}</a> ({{formattedDateShort}})</li>
+            {{/posts}}
+        </ul>
+        <a href="{{rootUrl}}/posts">More posts</a>
     </div>
-
-    <h2>6. Learn more</h2>
-
-    <div>
-        <p>
-            For more sophisticated examples, go to the <a href="{{{rootUrl}}}/docs/index.html#samples">samples</a> to
-            view samples for all supported HTTP condition checkers and response writers. Learn more about HttPlaceholder
-            by
-            reading the <a href="{{{rootUrl}}}/docs/index.html">documentation</a>.</p>
-    </div>
-
-    <p>
-        <em>Command line images created with <a href="https://carbon.now.sh" target="_blank">Carbon</a>.</em>
-    </p>
+    {{/hasPosts}}
 </div>
-
-{{#hasPosts}}
-<div class="blog-items">
-    <h2>Posts / tutorials</h2>
-    <ul>
-        {{#posts}}
-        <li><a href="{{{rootUrl}}}/posts/{{postKey}}">{{title}}</a> ({{formattedDateShort}})</li>
-        {{/posts}}
-    </ul>
-    <a href="{{rootUrl}}/posts">More posts</a>
-</div>
-{{/hasPosts}}
