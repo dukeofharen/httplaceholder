@@ -4,22 +4,26 @@
   "description": "HttPlaceholder site",
   "scripts": {
     "run-sass": "sass src/scss/style.scss src/static/style/style.css",
-    "build-site-dev": "npm run run-sass && node ./lib/build-site.js dev",
+    "watch-scss": "sass src/scss/style.scss dist/style/style.css --watch",
+    "build-site-dev": "node ./lib/build-site.js dev",
     "build-site-prod": "npm run run-sass -- --style compressed && node ./lib/build-site.js prod",
     "patch-docs": "node ./lib/patch-docs.js",
     "new-post": "node ./scripts/new-post.js",
-    "serve": "npm run build-site-dev && http-server dist"
+    "serve-dev": "http-server dist",
+    "dev": "concurrently \"npm run serve-dev\" \"npm run build-site-dev\" \"npm run watch-scss\""
   },
   "author": "dukeofharen",
   "license": "ISC",
   "devDependencies": {
     "@picocss/pico": "^1.5.10",
     "cheerio": "^1.0.0-rc.12",
+    "concurrently": "^8.2.1",
     "dayjs": "^1.10.7",
     "fs-extra": "^10.0.0",
     "http-server": "^14.0.0",
     "marked": "^4.0.8",
     "mustache": "^4.2.0",
+    "nodemon": "^3.0.1",
     "sass": "^1.63.3"
   }
 }
