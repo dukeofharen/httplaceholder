@@ -7,7 +7,7 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.Tests.Export.Queries;
 
 [TestClass]
-public class ExportRequestQueryHandlerTests
+public class ExportRequestQueryHandlerFacts
 {
     private readonly AutoMocker _mocker = new();
 
