@@ -30,7 +30,8 @@ internal class RequestToCurlCommandService : IRequestToCurlCommandService, ISing
 
     private static IEnumerable<string> AddUrl(RequestParametersModel reqParams) => new[] {$"'{reqParams.Url}'"};
 
-    private static IEnumerable<string> AddHeaders(RequestParametersModel reqParams) => !reqParams.Headers.Any()
+    private static IEnumerable<string> AddHeaders(RequestParametersModel reqParams) =>
+        reqParams.Headers == null || !reqParams.Headers.Any()
         ? Array.Empty<string>()
         : reqParams.Headers
             .Where(h => !_headersToSkip.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
