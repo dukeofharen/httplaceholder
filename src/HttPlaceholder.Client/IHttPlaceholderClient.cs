@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Configuration;
 using HttPlaceholder.Client.Dto.Enums;
+using HttPlaceholder.Client.Dto.Export;
 using HttPlaceholder.Client.Dto.Import;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
@@ -378,6 +379,16 @@ public interface IHttPlaceholderClient
     /// <param name="input">The configuration input/</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     Task UpdateConfigurationValueAsync(UpdateConfigurationValueInputDto input,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Exports a request into a specific format.
+    /// </summary>
+    /// <param name="requestId">The request ID.</param>
+    /// <param name="type">The request export type.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The exported result.</returns>
+    Task<RequestExportResultDto> ExportRequestAsync(string requestId, RequestExportType type,
         CancellationToken cancellationToken = default);
 
     /// <summary>

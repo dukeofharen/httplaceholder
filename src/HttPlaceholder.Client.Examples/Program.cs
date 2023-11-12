@@ -197,6 +197,9 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
 
             // Retrieve the configuration.
             var config = await client.GetConfigurationAsync();
+
+            // Export request as cURL command.
+            var curl = await client.ExportRequestAsync("58d70a6e-f990-4161-9851-62f92da2c9a3", RequestExportType.Curl);
         }
         catch (Exception ex)
         {
