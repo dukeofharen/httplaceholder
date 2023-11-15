@@ -34,6 +34,13 @@
             Create stub
           </button>
           <button
+            class="btn btn-success btn-sm me-2"
+            @click="exportRequest"
+            title="Export the stub in a specific format"
+          >
+            Export
+          </button>
+          <button
             class="btn btn-danger btn-sm"
             @click="deleteRequest"
             title="Delete this request"
@@ -42,6 +49,10 @@
           </button>
         </div>
       </div>
+      <RequestExport
+        v-if="exportRequestOpened"
+        :request-id="request.correlationId"
+      />
       <RequestDetails :request="request" />
     </template>
   </accordion-item>
@@ -64,10 +75,11 @@ import { defineComponent } from "vue";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 import type { RequestResultModel } from "@/domain/request/request-result-model";
 import { getDefaultRequestResultModel } from "@/domain/request/request-result-model";
+import RequestExport from "@/components/request/RequestExport.vue";
 
 export default defineComponent({
   name: "Request",
-  components: { Method, RequestDetails },
+  components: { Method, RequestDetails, RequestExport },
   props: {
     overviewRequest: {
       type: Object as PropType<RequestOverviewModel>,
@@ -96,6 +108,7 @@ export default defineComponent({
     let refreshTimeFromNowInterval: any;
     const request = ref<RequestResultModel>(getDefaultRequestResultModel());
     const accordionOpened = ref(false);
+    const exportRequestOpened = ref(false);
 
     // Lifecycle
     onMounted(() => {
@@ -144,6 +157,10 @@ export default defineComponent({
       }
     };
 
+    const exportRequest = async () => {
+      exportRequestOpened.value = !exportRequestOpened.value;
+    };
+
     return {
       executed,
       requestDateTime,
@@ -155,6 +172,8 @@ export default defineComponent({
       createStub,
       deleteRequest,
       executingStubId,
+      exportRequest,
+      exportRequestOpened,
     };
   },
 });
