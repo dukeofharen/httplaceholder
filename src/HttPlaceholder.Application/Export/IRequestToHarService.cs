@@ -11,6 +11,7 @@ public interface IRequestToHarService
     ///     Converts a request to an HTTP archive (HAR) file.
     /// </summary>
     /// <param name="request">The request.</param>
+    /// <param name="response">The response.</param>
     /// <returns>The HAR JSON.</returns>
-    string Convert(RequestResultModel request);
+    string Convert(RequestResultModel request, ResponseModel response);
 }

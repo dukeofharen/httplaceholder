@@ -34,12 +34,21 @@ public class ExportRequestQueryHandler : IRequestHandler<ExportRequestQuery, str
     {
         var requestResult = await _stubContext.GetRequestResultAsync(request.CorrelationId, cancellationToken)
             .IfNull(() => throw new NotFoundException("request", request.CorrelationId));
-        return request.RequestExportType switch
+        var response = await _stubContext.GetResponseAsync(request.CorrelationId, cancellationToken);
+        switch (request.RequestExportType)
         {
-            RequestExportType.Curl => _requestToCurlCommandService.Convert(requestResult),
-            RequestExportType.Har => _requestToHarService.Convert(requestResult),
-            _ => throw new NotImplementedException(
-                $"Converting of request to {request.RequestExportType} not supported.")
-        };
+            case RequestExportType.Curl:
+                return _requestToCurlCommandService.Convert(requestResult);
+            case RequestExportType.Har:
+                if (response == null)
+                {
+                    throw new NotFoundException("response", request.CorrelationId);
+                }
+
+                return _requestToHarService.Convert(requestResult, response);
+            default:
+                throw new NotImplementedException(
+                    $"Converting of request to {request.RequestExportType} not supported.");
+        }
     }
 }
