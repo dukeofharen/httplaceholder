@@ -108,6 +108,9 @@ internal class RequestToHarService : IRequestToHarService, ISingletonService
                 }
             }
         };
-        return JsonConvert.SerializeObject(har);
+        return JsonConvert.SerializeObject(har, settings: new JsonSerializerSettings
+        {
+            NullValueHandling = NullValueHandling.Ignore
+        });
     }
 }
