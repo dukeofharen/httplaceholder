@@ -5,6 +5,9 @@
         Select an export format...
       </option>
       <option :value="RequestExportType.Curl">cURL</option>
+      <option v-if="request.hasResponse" :value="RequestExportType.Har">
+        HTTP Archive (HAR)
+      </option>
     </select>
     <div v-if="showExportResult" class="code-copy-wrapper mt-2">
       <div class="icon-wrapper">
@@ -24,16 +27,17 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from "vue";
+import { computed, defineComponent, PropType, ref, watch } from "vue";
 import { RequestExportType } from "@/domain/request/enums/request-export-type";
 import { useExportStore } from "@/store/export";
 import { handleHttpError } from "@/utils/error";
 import { copyTextToClipboard } from "@/utils/clipboard";
+import { RequestResultModel } from "@/domain/request/request-result-model";
 
 export default defineComponent({
   props: {
-    requestId: {
-      type: String,
+    request: {
+      type: Object as PropType<RequestResultModel>,
       required: true,
     },
   },
@@ -63,7 +67,7 @@ export default defineComponent({
     const exportRequest = async () => {
       try {
         const result = await exportStore.exportRequest(
-          props.requestId,
+          props.request.correlationId,
           exportType.value,
         );
         exportResult.value = result.result;
@@ -102,7 +106,6 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
   gap: 10px;
 
   .icon-wrapper {

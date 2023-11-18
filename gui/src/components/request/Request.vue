@@ -49,10 +49,7 @@
           </button>
         </div>
       </div>
-      <RequestExport
-        v-if="exportRequestOpened"
-        :request-id="request.correlationId"
-      />
+      <RequestExport v-if="exportRequestOpened" :request="request" />
       <RequestDetails :request="request" />
     </template>
   </accordion-item>
