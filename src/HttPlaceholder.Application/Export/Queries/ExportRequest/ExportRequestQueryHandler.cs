@@ -16,14 +16,17 @@ public class ExportRequestQueryHandler : IRequestHandler<ExportRequestQuery, str
 {
     private readonly IStubContext _stubContext;
     private readonly IRequestToCurlCommandService _requestToCurlCommandService;
+    private readonly IRequestToHarService _requestToHarService;
 
     /// <summary>
     ///     Constructs an <see cref="ExportRequestQueryHandler"/> instance.
     /// </summary>
-    public ExportRequestQueryHandler(IStubContext stubContext, IRequestToCurlCommandService requestToCurlCommandService)
+    public ExportRequestQueryHandler(IStubContext stubContext, IRequestToCurlCommandService requestToCurlCommandService,
+        IRequestToHarService requestToHarService)
     {
         _stubContext = stubContext;
         _requestToCurlCommandService = requestToCurlCommandService;
+        _requestToHarService = requestToHarService;
     }
 
     /// <inheritdoc />
@@ -34,6 +37,7 @@ public class ExportRequestQueryHandler : IRequestHandler<ExportRequestQuery, str
         return request.RequestExportType switch
         {
             RequestExportType.Curl => _requestToCurlCommandService.Convert(requestResult),
+            RequestExportType.Har => _requestToHarService.Convert(requestResult),
             _ => throw new NotImplementedException(
                 $"Converting of request to {request.RequestExportType} not supported.")
         };

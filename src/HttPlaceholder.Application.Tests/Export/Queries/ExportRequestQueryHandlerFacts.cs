@@ -36,7 +36,6 @@ public class ExportRequestQueryHandlerFacts
     }
 
     [DataTestMethod]
-    [DataRow(RequestExportType.Har)]
     [DataRow(RequestExportType.Hurl)]
     [DataRow(RequestExportType.NotSet)]
     public async Task Handle_RequestExportTypeNotSupported_ShouldThrowNotImplementedException(RequestExportType requestExportType)
@@ -85,5 +84,33 @@ public class ExportRequestQueryHandlerFacts
 
         // Assert
         Assert.AreEqual(curlCommand, result);
+    }
+
+    [TestMethod]
+    public async Task Handle_ExportToHar()
+    {
+        // Arrange
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+        var requestToHarServiceMock = _mocker.GetMock<IRequestToHarService>();
+        var handler = _mocker.CreateInstance<ExportRequestQueryHandler>();
+
+        const string requqestId = "abc123";
+
+        var requestResult = new RequestResultModel();
+        stubContextMock
+            .Setup(m => m.GetRequestResultAsync(requqestId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(requestResult);
+
+        const string harJson = "HAR";
+        requestToHarServiceMock
+            .Setup(m => m.Convert(requestResult))
+            .Returns(harJson);
+
+        // Act
+        var result = await handler.Handle(new ExportRequestQuery(requqestId, RequestExportType.Har),
+            CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(harJson, result);
     }
 }
