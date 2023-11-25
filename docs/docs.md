@@ -184,7 +184,7 @@ IIS, Nginx and Apache (and a lot of other web servers) have the option to run an
 - `X-Forwarded-Proto`: contains the protocol of the original call to the proxying web server (`http` or `https`).
 - `X-Forwarded-Host`: contains the hostname of the original call to the proxying web server(e.g. `httplaceholder.org`).
 
-These headers are, right now, only used instead of the "real" values if the actual IP address of the proxy server is the loopback IP (e.g. `127.0.0.1`, `::1` etc.).
+You can configure "safe IPs" which can be checked by HttPlaceholder to see if the "X-..." headers are sent from a known source. If the IP address is not known, the "X-..." headers are not used by HttPlaceholder.
 
 Read more about this subject for the specific web servers:
 
