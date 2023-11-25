@@ -184,7 +184,7 @@ IIS, Nginx and Apache (and a lot of other web servers) have the option to run an
 - `X-Forwarded-Proto`: contains the protocol of the original call to the proxying web server (`http` or `https`).
 - `X-Forwarded-Host`: contains the hostname of the original call to the proxying web server(e.g. `httplaceholder.org`).
 
-These headers are, right now, only used instead of the "real" values if the actual IP address of the proxy server is the loopback IP (e.g. `127.0.0.1`, `::1` etc.).
+You can configure "safe IPs" which can be checked by HttPlaceholder to see if the "X-..." headers are sent from a known source. If the IP address is not known, the "X-..." headers are not used by HttPlaceholder.
 
 Read more about this subject for the specific web servers:
 
@@ -2270,7 +2270,7 @@ When you call the url `http://localhost:5000/response-abort-connection`, the con
 
 # REST API
 
-Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, scheduled job collection, import collection, configuration collection and users collection.
+Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, scheduled job collection, import collection, export collection, configuration collection and users collection.
 
 Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest)). Also, by running HttPlaceholder and going to the path `/swagger` (e.g. http://localhost:5000/swagger/) you go to the Swagger UI where you can play around with the API.
 

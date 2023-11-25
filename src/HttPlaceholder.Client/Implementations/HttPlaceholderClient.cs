@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Configuration;
 using HttPlaceholder.Client.Dto.Enums;
+using HttPlaceholder.Client.Dto.Export;
 using HttPlaceholder.Client.Dto.Import;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
@@ -644,6 +645,21 @@ public class HttPlaceholderClient : IHttPlaceholderClient
             var content = await response.Content.ReadAsStringAsync();
             throw new HttPlaceholderClientException(response.StatusCode, content);
         }
+    }
+
+    /// <inheritdoc />
+    public async Task<RequestExportResultDto> ExportRequestAsync(string requestId, RequestExportType type,
+        CancellationToken cancellationToken = default)
+    {
+        var url = $"/ph-api/export/requests/{requestId}?type={type}";
+        using var response = await HttpClient.GetAsync(url, cancellationToken);
+        var content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttPlaceholderClientException(response.StatusCode, content);
+        }
+
+        return JsonConvert.DeserializeObject<RequestExportResultDto>(content);
     }
 
     /// <inheritdoc />
