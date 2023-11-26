@@ -1,4 +1,8 @@
 [vnext]
+- Upgraded application to .NET 8 (https://github.com/dukeofharen/httplaceholder/pull/338).
+
+# BREAKING CHANGES
+- If you installed HttPlaceholder as .NET tool, you need to have the .NET 8 SDK installed on your machine. If you download the compiled version of HttPlaceholder for your OS, you do not need to have .NET installed so you will notice no changes.
 
 [2023.11.25]
 - Fixed small oversight in dark mode in the UI (https://github.com/dukeofharen/httplaceholder/pull/326).
