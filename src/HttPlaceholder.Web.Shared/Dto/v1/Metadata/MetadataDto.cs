@@ -14,6 +14,11 @@ public class MetadataDto : IMapFrom<MetadataModel>, IMapTo<MetadataModel>
     public string Version { get; set; }
 
     /// <summary>
+    ///     Gets or sets the runtime version.
+    /// </summary>
+    public string RuntimeVersion { get; set; }
+
+    /// <summary>
     ///     Gets or sets the available variable handlers.
     /// </summary>
     public IEnumerable<VariableHandlerDto> VariableHandlers { get; set; }

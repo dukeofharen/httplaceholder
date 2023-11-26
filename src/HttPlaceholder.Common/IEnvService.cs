@@ -33,4 +33,10 @@ public interface IEnvService
     /// </summary>
     /// <returns>The value of ASPNETCORE_ENVIRONMENT or null if it was not found.</returns>
     string GetAspNetCoreEnvironment();
+
+    /// <summary>
+    ///     A method to retrieve the runtime information.
+    /// </summary>
+    /// <returns>The runtime information.</returns>
+    string GetRuntime();
 }
