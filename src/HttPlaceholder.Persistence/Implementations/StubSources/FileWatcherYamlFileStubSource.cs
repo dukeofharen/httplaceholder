@@ -61,6 +61,14 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         return Task.CompletedTask;
     }
 
+    public void Dispose()
+    {
+        foreach (var watcher in _fileSystemWatchers.Values)
+        {
+            watcher.Dispose();
+        }
+    }
+
     /// <inheritdoc />
     public async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default) =>
@@ -91,7 +99,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
     {
         // Load the stubs.
         var input = _fileService.ReadAllText(file);
-        _logger.LogDebug($"Parsing .yml file '{file}'.");
+        _logger.LogDebug($"Parsing file '{file}'.");
         try
         {
             _logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
@@ -100,7 +108,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         }
         catch (YamlException ex)
         {
-            _logger.LogWarning(ex, $"Error occurred while parsing YAML file '{file}'");
+            _logger.LogWarning(ex, $"Error occurred while parsing file '{file}'");
         }
     }
 
@@ -131,7 +139,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
                 continue;
             }
 
-            // Right now, stubs loaded from YAML files are allowed to have validation errors.
+            // Right now, stubs loaded from files are allowed to have validation errors.
             // They are NOT allowed to have no ID however.
             var validationResults = _stubModelValidator.ValidateStubModel(stub).ToArray();
             if (validationResults.Length != 0)
@@ -163,8 +171,10 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         }
         else
         {
-            watcher.Filters.Add("*.yml");
-            watcher.Filters.Add("*.yaml");
+            foreach (var extension in _extensions)
+            {
+                watcher.Filters.Add($"*{extension}");
+            }
         }
 
         watcher.NotifyFilter = NotifyFilters.CreationTime
@@ -196,9 +206,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
                 FileDeleted(e);
                 break;
             case WatcherChangeTypes.Renamed:
-                // TODO check that file is still .y(a)ml
-                // TODO what if folder is renamed.
-                _logger.LogDebug($"File {e.FullPath} renamed.");
+                FileRenamed((RenamedEventArgs)e);
                 break;
         }
     }
@@ -236,10 +244,35 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
             }
         }
 
-        if (_fileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
+        TryRemoveWatcher(fullPath);
+    }
+
+    private void FileRenamed(RenamedEventArgs e)
+    {
+        var fullPath = e.FullPath;
+        var oldPath = e.OldFullPath;
+        // Due to limitations in .NET / FileSystemWatcher, no event is triggered when a directory is renamed.
+        if (!_fileService.IsDirectory(fullPath))
         {
-            foundWatcher.Dispose();
-            _fileSystemWatchers.TryRemove(fullPath, out _);
+            _logger.LogDebug($"File {fullPath} renamed.");
+
+            // Try to delete the stub from memory.
+            if (_stubs.TryRemove(oldPath, out _))
+            {
+                _logger.LogDebug($"Removed stub '{oldPath}'.");
+            }
+
+            TryRemoveWatcher(oldPath);
+            SetupWatcherForLocation(fullPath);
+            if (!_extensions.Any(ext => fullPath.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
+            {
+                _logger.LogDebug(
+                    $"File {fullPath} not supported. Supported file extensions: {string.Join(", ", _extensions)}");
+            }
+            else
+            {
+                LoadStubs(fullPath);
+            }
         }
     }
 
@@ -248,7 +281,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         var inputFileLocation = _options.CurrentValue.Storage?.InputFile;
         if (string.IsNullOrEmpty(inputFileLocation))
         {
-            // If the input file location is not set, try looking in the current directory for .yml files.
+            // If the input file location is not set, try looking in the current directory for files.
             var currentDirectory = _fileService.GetCurrentDirectory();
             return _fileService.GetFiles(currentDirectory, _extensions);
         }
@@ -268,11 +301,15 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         return _fileService.IsDirectory(location) ? _fileService.GetFiles(location, _extensions) : new[] {location};
     }
 
-    public void Dispose()
+    private bool TryRemoveWatcher(string fullPath)
     {
-        foreach (var watcher in _fileSystemWatchers.Values)
+        if (_fileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
         {
-            watcher.Dispose();
+            foundWatcher.Dispose();
+            _fileSystemWatchers.TryRemove(fullPath, out _);
+            return true;
         }
+
+        return false;
     }
 }
