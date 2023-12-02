@@ -55,42 +55,36 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         .ToArray();
 
     /// <inheritdoc />
+    public Task PrepareStubSourceAsync(CancellationToken cancellationToken)
+    {
+        SetupStubs();
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc />
     public async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken)).FirstOrDefault(s => s.Id == stubId);
 
-    /// <inheritdoc />
-    public async Task PrepareStubSourceAsync(CancellationToken cancellationToken)
+    private void SetupStubs()
     {
-        // TODO
-        // - File watchers inrichten.
-        // - Alle .yaml files inladen samen met de file watchers (in SetupFileWatchers methode die dan wellicht anders moet heten).
-        // - Alle stubs in memory inladen met bestandsnaam als key. Iedere keer als er een wijziging plaatsvindt; alléén dit specifiek bestand in geheugen aanpassen.
-        // - De methodes implementeren.
-        // - Unit tests maken.
-        await SetupStubsAsync(cancellationToken);
-        // await GetStubsAsync(null, cancellationToken);
-    }
-
-    private async Task SetupStubsAsync(CancellationToken cancellationToken)
-    {
-        var locations = await GetInputLocationsAsync(cancellationToken);
+        var locations = GetInputLocations();
         foreach (var location in locations)
         {
-            _fileSystemWatchers.Add(await SetupWatcherForLocation(location, cancellationToken));
-            var files = await ParseFileLocationsAsync(location, cancellationToken);
+            _fileSystemWatchers.Add(SetupWatcherForLocation(location));
+            var files = ParseFileLocations(location);
             foreach (var file in files)
             {
-                await LoadStubsAsync(file, cancellationToken);
+                LoadStubs(file);
             }
         }
     }
 
-    private async Task LoadStubsAsync(string file, CancellationToken cancellationToken)
+    private void LoadStubs(string file)
     {
         // Load the stubs.
-        var input = await _fileService.ReadAllTextAsync(file, cancellationToken);
-        _logger.LogInformation($"Parsing .yml file '{file}'.");
+        var input = _fileService.ReadAllText(file);
+        _logger.LogDebug($"Parsing .yml file '{file}'.");
         try
         {
             _logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
@@ -150,18 +144,13 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         .SplitNewlines()
         .Any(l => l.StartsWith('-'));
 
-    private async Task<FileSystemWatcher> SetupWatcherForLocation(string location, CancellationToken cancellationToken)
+    private FileSystemWatcher SetupWatcherForLocation(string location)
     {
-        var isDir = await _fileService.IsDirectoryAsync(location, cancellationToken);
+        var isDir = _fileService.IsDirectory(location);
         var finalLocation = (isDir ? location : Path.GetDirectoryName(location)) ??
                             throw new InvalidOperationException($"Location {location} is invalid.");
         var watcher = new FileSystemWatcher(finalLocation);
-        if (isDir)
-        {
-            watcher.Filters.Add("*.yml");
-            watcher.Filters.Add("*.yaml");
-        }
-        else
+        if (!isDir)
         {
             watcher.Filter = Path.GetFileName(location);
         }
@@ -185,27 +174,37 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         {
             case WatcherChangeTypes.Changed:
                 _logger.LogDebug($"File {e.FullPath} changed.");
+                LoadStubs(e.FullPath);
                 break;
             case WatcherChangeTypes.Created:
                 _logger.LogDebug($"File {e.FullPath} created.");
+                LoadStubs(e.FullPath);
                 break;
             case WatcherChangeTypes.Deleted:
+                // TODO check what happens if folder is deleted.
+                // TODO delete folder AND file watchers.
                 _logger.LogDebug($"File {e.FullPath} deleted.");
                 break;
             case WatcherChangeTypes.Renamed:
+                // TODO check that file is still .y(a)ml
                 _logger.LogDebug($"File {e.FullPath} renamed.");
                 break;
         }
     }
 
-    private async Task<IEnumerable<string>> GetInputLocationsAsync(CancellationToken cancellationToken)
+    private void FileChanged(string fullPath)
+    {
+
+    }
+
+    private IEnumerable<string> GetInputLocations()
     {
         var inputFileLocation = _options.CurrentValue.Storage?.InputFile;
         if (string.IsNullOrEmpty(inputFileLocation))
         {
             // If the input file location is not set, try looking in the current directory for .yml files.
             var currentDirectory = _fileService.GetCurrentDirectory();
-            return await _fileService.GetFilesAsync(currentDirectory, _extensions, cancellationToken);
+            return _fileService.GetFiles(currentDirectory, _extensions);
         }
 
         // Split file path: it is possible to supply multiple locations.
@@ -216,16 +215,11 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
 
     private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
 
-    private async Task<IEnumerable<string>> ParseFileLocationsAsync(string part, CancellationToken cancellationToken)
+    private IEnumerable<string> ParseFileLocations(string part)
     {
         var location = part.Trim();
         _logger.LogInformation($"Reading location '{location}'.");
-        if (await _fileService.IsDirectoryAsync(location, cancellationToken))
-        {
-            return await _fileService.GetFilesAsync(location, _extensions, cancellationToken);
-        }
-
-        return new[] {location};
+        return _fileService.IsDirectory(location) ? _fileService.GetFiles(location, _extensions) : new[] {location};
     }
 
     public void Dispose()

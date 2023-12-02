@@ -62,12 +62,20 @@ internal class FileService : IFileService, ISingletonService
     public DateTime GetLastWriteTime(string path) => File.GetLastWriteTime(path);
 
     /// <inheritdoc />
-    public Task<bool> IsDirectoryAsync(string path, CancellationToken cancellationToken) => Task.Run(() =>
-        (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory, cancellationToken);
+    public bool IsDirectory(string path) =>
+        (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
+
+    /// <inheritdoc />
+    public Task<bool> IsDirectoryAsync(string path, CancellationToken cancellationToken) => Task.Run(() => IsDirectory(path), cancellationToken);
 
     /// <inheritdoc />
     public string[] GetFiles(string path, string searchPattern) =>
         !DirectoryExists(path) ? Array.Empty<string>() : Directory.GetFiles(path, searchPattern);
+
+    /// <inheritdoc />
+    public string[] GetFiles(string path, IEnumerable<string> allowedFileExtensions) => Directory.GetFiles(path)
+        .Where(f => allowedFileExtensions.Any(e => f.ToLower().EndsWith(e)))
+        .ToArray();
 
     /// <inheritdoc />
     public Task<string[]> GetFilesAsync(string path, string searchPattern, CancellationToken cancellationToken) =>
@@ -76,9 +84,7 @@ internal class FileService : IFileService, ISingletonService
     /// <inheritdoc />
     public Task<string[]> GetFilesAsync(string path, IEnumerable<string> allowedFileExtensions,
         CancellationToken cancellationToken) =>
-        Task.Run(() => Directory.GetFiles(path)
-            .Where(f => allowedFileExtensions.Any(e => f.ToLower().EndsWith(e)))
-            .ToArray(), cancellationToken);
+        Task.Run(() => GetFiles(path, allowedFileExtensions), cancellationToken);
 
     /// <inheritdoc />
     public string GetCurrentDirectory() => Directory.GetCurrentDirectory();

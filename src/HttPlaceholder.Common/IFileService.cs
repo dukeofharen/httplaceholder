@@ -117,6 +117,13 @@ public interface IFileService
     ///     Checks whether the given path is a directory.
     /// </summary>
     /// <param name="path">The directory path.</param>
+    /// <returns>True if the path is a directory, false otherwise.</returns>
+    bool IsDirectory(string path);
+
+    /// <summary>
+    ///     Checks whether the given path is a directory.
+    /// </summary>
+    /// <param name="path">The directory path.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>True if the path is a directory, false otherwise.</returns>
     Task<bool> IsDirectoryAsync(string path, CancellationToken cancellationToken);
@@ -128,6 +135,14 @@ public interface IFileService
     /// <param name="searchPattern">A file search pattern to limit the number of files returned.</param>
     /// <returns>An array of file names.</returns>
     string[] GetFiles(string path, string searchPattern);
+
+    /// <summary>
+    ///     Returns a list of files.
+    /// </summary>
+    /// <param name="path">The directory path.</param>
+    /// <param name="allowedFileExtensions">A list of file extensions to filter for.</param>
+    /// <returns>An array of file names.</returns>
+    string[] GetFiles(string path, IEnumerable<string> allowedFileExtensions);
 
     /// <summary>
     ///     Returns a list of files.
