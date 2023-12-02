@@ -62,11 +62,19 @@ internal class FileService : IFileService, ISingletonService
     public DateTime GetLastWriteTime(string path) => File.GetLastWriteTime(path);
 
     /// <inheritdoc />
-    public bool IsDirectory(string path) =>
-        (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
+    public bool IsDirectory(string path)
+    {
+        if (!Directory.Exists(path) && !File.Exists(path))
+        {
+            return false;
+        }
+
+        return (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
+    }
 
     /// <inheritdoc />
-    public Task<bool> IsDirectoryAsync(string path, CancellationToken cancellationToken) => Task.Run(() => IsDirectory(path), cancellationToken);
+    public Task<bool> IsDirectoryAsync(string path, CancellationToken cancellationToken) =>
+        Task.Run(() => IsDirectory(path), cancellationToken);
 
     /// <inheritdoc />
     public string[] GetFiles(string path, string searchPattern) =>

@@ -78,7 +78,7 @@ public static class PersistenceModule
         }
 
         // The YAML stub source should always be registered.
-        return services.AddSingleton<IStubSource, YamlFileStubSource>();
+        return services.AddSingleton<IStubSource, FileWatcherYamlFileStubSource>();
     }
 
     private static IServiceCollection RegisterConnectionFactory<TConnectionFactory, TQueryStore>(

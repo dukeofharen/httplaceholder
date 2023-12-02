@@ -28,7 +28,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
     private readonly ILogger<FileWatcherYamlFileStubSource> _logger;
     private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IStubModelValidator _stubModelValidator;
-    private readonly IList<FileSystemWatcher> _fileSystemWatchers = new List<FileSystemWatcher>();
+    private readonly ConcurrentDictionary<string, FileSystemWatcher> _fileSystemWatchers = new();
 
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
     private readonly ConcurrentDictionary<string, IEnumerable<StubModel>> _stubs = new();
@@ -71,7 +71,14 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         var locations = GetInputLocations();
         foreach (var location in locations)
         {
-            _fileSystemWatchers.Add(SetupWatcherForLocation(location));
+            if (!_fileService.DirectoryExists(location) && !_fileService.FileExists(location))
+            {
+                _logger.LogWarning($"Location '{location}' not found.");
+                continue;
+            }
+
+            SetupWatcherForLocation(location);
+
             var files = ParseFileLocations(location);
             foreach (var file in files)
             {
@@ -117,7 +124,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         var result = new List<StubModel>();
         foreach (var stub in stubs)
         {
-            if (string.IsNullOrWhiteSpace(stub.Id))
+            if (string.IsNullOrWhiteSpace(stub?.Id))
             {
                 // If no ID is set, log a warning as the stub is invalid.
                 _logger.LogWarning($"Stub in file '{filename}' has no 'id' field defined, so is not a valid stub.");
@@ -144,7 +151,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         .SplitNewlines()
         .Any(l => l.StartsWith('-'));
 
-    private FileSystemWatcher SetupWatcherForLocation(string location)
+    private void SetupWatcherForLocation(string location)
     {
         var isDir = _fileService.IsDirectory(location);
         var finalLocation = (isDir ? location : Path.GetDirectoryName(location)) ??
@@ -154,18 +161,25 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         {
             watcher.Filter = Path.GetFileName(location);
         }
+        else
+        {
+            watcher.Filters.Add("*.yml");
+            watcher.Filters.Add("*.yaml");
+        }
 
         watcher.NotifyFilter = NotifyFilters.CreationTime
                                | NotifyFilters.DirectoryName
                                | NotifyFilters.FileName
                                | NotifyFilters.LastWrite
-                               | NotifyFilters.Size;
+                               | NotifyFilters.Size
+                               | NotifyFilters.Attributes
+                               | NotifyFilters.Security;
         watcher.Changed += OnInputLocationUpdated;
         watcher.Created += OnInputLocationUpdated;
         watcher.Deleted += OnInputLocationUpdated;
         watcher.Renamed += OnInputLocationUpdated;
         watcher.EnableRaisingEvents = true;
-        return watcher;
+        _fileSystemWatchers.TryAdd(location, watcher);
     }
 
     private void OnInputLocationUpdated(object sender, FileSystemEventArgs e)
@@ -173,28 +187,60 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         switch (e.ChangeType)
         {
             case WatcherChangeTypes.Changed:
-                _logger.LogDebug($"File {e.FullPath} changed.");
-                LoadStubs(e.FullPath);
+                FileChanged(e);
                 break;
             case WatcherChangeTypes.Created:
-                _logger.LogDebug($"File {e.FullPath} created.");
-                LoadStubs(e.FullPath);
+                FileCreated(e);
                 break;
             case WatcherChangeTypes.Deleted:
-                // TODO check what happens if folder is deleted.
-                // TODO delete folder AND file watchers.
-                _logger.LogDebug($"File {e.FullPath} deleted.");
+                FileDeleted(e);
                 break;
             case WatcherChangeTypes.Renamed:
                 // TODO check that file is still .y(a)ml
+                // TODO what if folder is renamed.
                 _logger.LogDebug($"File {e.FullPath} renamed.");
                 break;
         }
     }
 
-    private void FileChanged(string fullPath)
+    private void FileChanged(FileSystemEventArgs e)
     {
+        _logger.LogDebug($"File {e.FullPath} changed.");
+        LoadStubs(e.FullPath);
+    }
 
+    private void FileCreated(FileSystemEventArgs e)
+    {
+        var fullPath = e.FullPath;
+        if (_fileService.IsDirectory(fullPath))
+        {
+            // Ignore the event if the created object is a directory.
+            return;
+        }
+
+        _logger.LogDebug($"File {fullPath} created.");
+        LoadStubs(fullPath);
+    }
+
+    private void FileDeleted(FileSystemEventArgs e)
+    {
+        var fullPath = e.FullPath;
+
+        // Due to limitations in .NET / FileSystemWatcher, no event is triggered when a directory is deleted.
+        if (!_fileService.IsDirectory(fullPath))
+        {
+            _logger.LogDebug($"File {fullPath} deleted.");
+            if (_stubs.TryRemove(fullPath, out _))
+            {
+                _logger.LogDebug($"Removed stub '{fullPath}'.");
+            }
+        }
+
+        if (_fileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
+        {
+            foundWatcher.Dispose();
+            _fileSystemWatchers.TryRemove(fullPath, out _);
+        }
     }
 
     private IEnumerable<string> GetInputLocations()
@@ -224,7 +270,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
 
     public void Dispose()
     {
-        foreach (var watcher in _fileSystemWatchers)
+        foreach (var watcher in _fileSystemWatchers.Values)
         {
             watcher.Dispose();
         }
