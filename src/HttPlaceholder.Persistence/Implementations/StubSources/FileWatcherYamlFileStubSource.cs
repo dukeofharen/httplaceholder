@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,61 +13,39 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using YamlDotNet.Core;
-using Constants = HttPlaceholder.Domain.Constants;
+using SharpYaml;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
 /// <summary>
 ///     A stub source that is used to read data from one or several YAML files, from possibly multiple locations.
+///     This source uses a file system watcher.
 /// </summary>
-internal class YamlFileStubSource : IStubSource
+internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
 {
     private static readonly string[] _extensions = {".yml", ".yaml"};
     private readonly IFileService _fileService;
-    private readonly ILogger<YamlFileStubSource> _logger;
+    private readonly ILogger<FileWatcherYamlFileStubSource> _logger;
     private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IStubModelValidator _stubModelValidator;
-    private DateTime _stubLoadDateTime;
+    private readonly IList<FileSystemWatcher> _fileSystemWatchers = new List<FileSystemWatcher>();
 
-    private IEnumerable<StubModel> _stubs;
+    // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
+    private readonly ConcurrentDictionary<string, IEnumerable<StubModel>> _stubs = new();
 
-    public YamlFileStubSource(
-        IFileService fileService,
-        ILogger<YamlFileStubSource> logger,
-        IOptionsMonitor<SettingsModel> options,
-        IStubModelValidator stubModelValidator)
+    public FileWatcherYamlFileStubSource(IFileService fileService, ILogger<FileWatcherYamlFileStubSource> logger,
+        IOptionsMonitor<SettingsModel> options, IStubModelValidator stubModelValidator)
     {
         _fileService = fileService;
         _logger = logger;
-        _stubModelValidator = stubModelValidator;
         _options = options;
+        _stubModelValidator = stubModelValidator;
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default)
-    {
-        var fileLocations = (await GetYamlFileLocationsAsync(cancellationToken)).ToArray();
-        if (fileLocations.Length == 0)
-        {
-            _logger.LogInformation("No .yml input files found.");
-            return Array.Empty<StubModel>().AsEnumerable();
-        }
-
-        if (_stubs == null || GetLastStubFileModificationDateTime(fileLocations) > _stubLoadDateTime)
-        {
-            _stubs =
-                (await Task.WhenAll(fileLocations.Select(l => LoadStubsAsync(l, cancellationToken))))
-                .SelectMany(s => s);
-        }
-        else
-        {
-            _logger.LogDebug("No stub file contents changed in the meanwhile.");
-        }
-
-        return _stubs;
-    }
+    public Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+        CancellationToken cancellationToken = default) =>
+        Task.FromResult(_stubs.Values.SelectMany(v => v));
 
     /// <inheritdoc />
     public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
@@ -81,30 +60,47 @@ internal class YamlFileStubSource : IStubSource
         (await GetStubsAsync(distributionKey, cancellationToken)).FirstOrDefault(s => s.Id == stubId);
 
     /// <inheritdoc />
-    public async Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>
-        // Check if the .yml files could be loaded.
-        await GetStubsAsync(null, cancellationToken);
+    public async Task PrepareStubSourceAsync(CancellationToken cancellationToken)
+    {
+        // TODO
+        // - File watchers inrichten.
+        // - Alle .yaml files inladen samen met de file watchers (in SetupFileWatchers methode die dan wellicht anders moet heten).
+        // - Alle stubs in memory inladen met bestandsnaam als key. Iedere keer als er een wijziging plaatsvindt; alléén dit specifiek bestand in geheugen aanpassen.
+        // - De methodes implementeren.
+        // - Unit tests maken.
+        await SetupStubsAsync(cancellationToken);
+        // await GetStubsAsync(null, cancellationToken);
+    }
 
-    private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
-        files.Max(f => _fileService.GetLastWriteTime(f));
+    private async Task SetupStubsAsync(CancellationToken cancellationToken)
+    {
+        var locations = await GetInputLocationsAsync(cancellationToken);
+        foreach (var location in locations)
+        {
+            _fileSystemWatchers.Add(await SetupWatcherForLocation(location, cancellationToken));
+            var files = await ParseFileLocationsAsync(location, cancellationToken);
+            foreach (var file in files)
+            {
+                await LoadStubsAsync(file, cancellationToken);
+            }
+        }
+    }
 
-    private async Task<IEnumerable<StubModel>> LoadStubsAsync(string file, CancellationToken cancellationToken)
+    private async Task LoadStubsAsync(string file, CancellationToken cancellationToken)
     {
         // Load the stubs.
         var input = await _fileService.ReadAllTextAsync(file, cancellationToken);
         _logger.LogInformation($"Parsing .yml file '{file}'.");
         try
         {
+            _logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
             var stubs = ParseAndValidateStubs(input, file);
-            _stubLoadDateTime = DateTime.Now;
-            return stubs;
+            _stubs.AddOrUpdate(file, (k) => stubs, (k, v) => stubs);
         }
         catch (YamlException ex)
         {
             _logger.LogWarning(ex, $"Error occurred while parsing YAML file '{file}'");
         }
-
-        return Array.Empty<StubModel>();
     }
 
     private IEnumerable<StubModel> ParseAndValidateStubs(string input, string file)
@@ -150,13 +146,59 @@ internal class YamlFileStubSource : IStubSource
         return result;
     }
 
-    private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
-
     private static bool YamlIsArray(string yaml) => yaml
         .SplitNewlines()
         .Any(l => l.StartsWith('-'));
 
-    private async Task<IEnumerable<string>> GetYamlFileLocationsAsync(CancellationToken cancellationToken)
+    private async Task<FileSystemWatcher> SetupWatcherForLocation(string location, CancellationToken cancellationToken)
+    {
+        var isDir = await _fileService.IsDirectoryAsync(location, cancellationToken);
+        var finalLocation = (isDir ? location : Path.GetDirectoryName(location)) ??
+                            throw new InvalidOperationException($"Location {location} is invalid.");
+        var watcher = new FileSystemWatcher(finalLocation);
+        if (isDir)
+        {
+            watcher.Filters.Add("*.yml");
+            watcher.Filters.Add("*.yaml");
+        }
+        else
+        {
+            watcher.Filter = Path.GetFileName(location);
+        }
+
+        watcher.NotifyFilter = NotifyFilters.CreationTime
+                               | NotifyFilters.DirectoryName
+                               | NotifyFilters.FileName
+                               | NotifyFilters.LastWrite
+                               | NotifyFilters.Size;
+        watcher.Changed += OnInputLocationUpdated;
+        watcher.Created += OnInputLocationUpdated;
+        watcher.Deleted += OnInputLocationUpdated;
+        watcher.Renamed += OnInputLocationUpdated;
+        watcher.EnableRaisingEvents = true;
+        return watcher;
+    }
+
+    private void OnInputLocationUpdated(object sender, FileSystemEventArgs e)
+    {
+        switch (e.ChangeType)
+        {
+            case WatcherChangeTypes.Changed:
+                _logger.LogDebug($"File {e.FullPath} changed.");
+                break;
+            case WatcherChangeTypes.Created:
+                _logger.LogDebug($"File {e.FullPath} created.");
+                break;
+            case WatcherChangeTypes.Deleted:
+                _logger.LogDebug($"File {e.FullPath} deleted.");
+                break;
+            case WatcherChangeTypes.Renamed:
+                _logger.LogDebug($"File {e.FullPath} renamed.");
+                break;
+        }
+    }
+
+    private async Task<IEnumerable<string>> GetInputLocationsAsync(CancellationToken cancellationToken)
     {
         var inputFileLocation = _options.CurrentValue.Storage?.InputFile;
         if (string.IsNullOrEmpty(inputFileLocation))
@@ -167,12 +209,12 @@ internal class YamlFileStubSource : IStubSource
         }
 
         // Split file path: it is possible to supply multiple locations.
-        var locations = inputFileLocation
+        return inputFileLocation
             .Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
             .Select(StripIllegalCharacters);
-        return (await Task.WhenAll(locations.Select(l => ParseFileLocationsAsync(l, cancellationToken))))
-            .SelectMany(p => p);
     }
+
+    private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
 
     private async Task<IEnumerable<string>> ParseFileLocationsAsync(string part, CancellationToken cancellationToken)
     {
@@ -184,5 +226,13 @@ internal class YamlFileStubSource : IStubSource
         }
 
         return new[] {location};
+    }
+
+    public void Dispose()
+    {
+        foreach (var watcher in _fileSystemWatchers)
+        {
+            watcher.Dispose();
+        }
     }
 }
