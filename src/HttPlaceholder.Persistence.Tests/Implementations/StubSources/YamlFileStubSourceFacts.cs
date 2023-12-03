@@ -32,6 +32,10 @@ public class YamlFileStubSourceFacts
         var source = _mocker.CreateInstance<YamlFileStubSource>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
+        fileServiceMock
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
         const string currentDirectory = @"C:\stubs";
         var files = new[] {$@"{currentDirectory}\file1.yml", $@"{currentDirectory}\file2.yml"};
 
@@ -98,6 +102,10 @@ public class YamlFileStubSourceFacts
         var source = _mocker.CreateInstance<YamlFileStubSource>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
+        fileServiceMock
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
         var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
         _options.CurrentValue.Storage.InputFile = string.Join(separator, files);
 
@@ -128,6 +136,10 @@ public class YamlFileStubSourceFacts
         var source = _mocker.CreateInstance<YamlFileStubSource>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
+        fileServiceMock
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
         var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
         _options.CurrentValue.Storage.InputFile = string.Join(",", files);
 
@@ -157,6 +169,10 @@ public class YamlFileStubSourceFacts
         var source = _mocker.CreateInstance<YamlFileStubSource>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
+
+        fileServiceMock
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         const string inputFile = @"C:\stubs";
         _options.CurrentValue.Storage.InputFile = inputFile;
@@ -198,6 +214,10 @@ public class YamlFileStubSourceFacts
         var source = _mocker.CreateInstance<YamlFileStubSource>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
+        fileServiceMock
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
         const string inputFile = @"C:\stubs";
         _options.CurrentValue.Storage.InputFile = inputFile;
 
@@ -234,6 +254,10 @@ public class YamlFileStubSourceFacts
         var source = _mocker.CreateInstance<YamlFileStubSource>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
+        fileServiceMock
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
         const string inputFile = @"C:\stubs";
         _options.CurrentValue.Storage.InputFile = inputFile;
 
@@ -268,6 +292,14 @@ public class YamlFileStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
 
+        fileServiceMock
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        fileServiceMock
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
         const string inputFile = @"C:\stubs\file1.yml";
         _options.CurrentValue.Storage.InputFile = inputFile;
 
@@ -300,6 +332,10 @@ public class YamlFileStubSourceFacts
         // Arrange
         var source = _mocker.CreateInstance<YamlFileStubSource>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
+
+        fileServiceMock
+                    .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(true);
 
         const string inputFile = @"C:\stubs\file1.yml";
         _options.CurrentValue.Storage.InputFile = inputFile;
