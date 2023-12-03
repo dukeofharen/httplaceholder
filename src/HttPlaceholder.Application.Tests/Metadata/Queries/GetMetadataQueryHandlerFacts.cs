@@ -20,7 +20,6 @@ public class GetMetadataQueryHandlerFacts
         // Arrange
         var assemblyServiceMock = _mocker.GetMock<IAssemblyService>();
         var serviceProviderMock = _mocker.GetMock<IServiceProvider>();
-        var envServiceMock = _mocker.GetMock<IEnvService>();
         var handler = _mocker.CreateInstance<GetMetadataQueryHandler>();
 
         var mock1 = CreateHandlerMock("handler1", "Handler 1", "Example 1", "Description 1");
@@ -35,17 +34,11 @@ public class GetMetadataQueryHandlerFacts
             .Setup(m => m.GetService(typeof(IEnumerable<IResponseVariableParsingHandler>)))
             .Returns(new[] {mock1.Object, mock2.Object});
 
-        const string runtimeVersion = ".NET 8.0.0";
-        envServiceMock
-            .Setup(m => m.GetRuntime())
-            .Returns(runtimeVersion);
-
         // Act
         var result = await handler.Handle(new GetMetadataQuery(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual(version, result.Version);
-        Assert.AreEqual(runtimeVersion, result.RuntimeVersion);
 
         var variableHandlers = result.VariableHandlers.ToArray();
         Assert.AreEqual(2, variableHandlers.Length);

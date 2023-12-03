@@ -23,7 +23,7 @@ public static class BaseStartup
         app
             .UseHttPlaceholder()
             .UseCustomOpenApi()
-            .UseSwaggerUi()
+            .UseSwaggerUi3()
             .UseGui(settings?.Gui?.EnableUserInterface == true)
             .UsePhStatic()
             .PreloadStubs(preloadStubs)

@@ -55,7 +55,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpRedirect
 Enable-WindowsOptionalFeature -Online -FeatureName IIS-ApplicationDevelopment
 
 # Install dependencies
-& choco install dotnet-windowshosting --version=8.0.0 -y
+& choco install dotnet-windowshosting --version=7.0.10 -y
 
 # Stop HttPlaceholder IIS site if it exists.
 Stop-Website -Name $iisSite -ErrorAction SilentlyContinue

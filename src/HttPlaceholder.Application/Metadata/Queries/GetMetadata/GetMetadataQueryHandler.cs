@@ -17,19 +17,16 @@ public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, Metadat
 {
     private readonly IAssemblyService _assemblyService;
     private readonly IServiceProvider _serviceProvider;
-    private readonly IEnvService _envService;
 
     /// <summary>
     ///     Constructs a <see cref="GetMetadataQueryHandler" /> instance.
     /// </summary>
     public GetMetadataQueryHandler(
         IAssemblyService assemblyService,
-        IServiceProvider serviceProvider,
-        IEnvService envService)
+        IServiceProvider serviceProvider)
     {
         _assemblyService = assemblyService;
         _serviceProvider = serviceProvider;
-        _envService = envService;
     }
 
     /// <inheritdoc />
@@ -40,8 +37,7 @@ public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, Metadat
         {
             Version = _assemblyService.GetAssemblyVersion(),
             VariableHandlers = handlers.Select(h =>
-                new VariableHandlerModel(h.Name, h.FullName, h.Examples, h.GetDescription())),
-            RuntimeVersion = _envService.GetRuntime()
+                new VariableHandlerModel(h.Name, h.FullName, h.Examples, h.GetDescription()))
         };
         return Task.FromResult(result);
     }

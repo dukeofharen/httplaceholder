@@ -16,7 +16,7 @@ public class StubResponseAbortConnectionIntegrationTests : StubIntegrationTestBa
         var url = $"{TestServer.BaseAddress}response-abort-connection";
 
         // Act
-        var exception = await Assert.ThrowsExceptionAsync<OperationCanceledException>(() => Client.GetAsync(url));
+        var exception = await Assert.ThrowsExceptionAsync<Exception>(() => Client.GetAsync(url));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("The application aborted the request."));

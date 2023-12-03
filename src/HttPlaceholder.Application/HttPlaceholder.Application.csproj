@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -10,21 +10,21 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1"/>
         <PackageReference Include="Bogus" Version="34.0.2"/>
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.52" />
         <PackageReference Include="IPAddressRange" Version="6.0.0" />
-        <PackageReference Include="MediatR" Version="12.2.0" />
+        <PackageReference Include="MediatR" Version="12.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17"/>
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Primitives" Version="8.0.0" />
-        <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.11" />
-        <PackageReference Include="NCrontab" Version="3.3.3" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.0.2" />
-        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Primitives" Version="7.0.0"/>
+        <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.6" />
+        <PackageReference Include="NCrontab" Version="3.3.1"/>
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1"/>
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0" />
     </ItemGroup>
 
     <ItemGroup>

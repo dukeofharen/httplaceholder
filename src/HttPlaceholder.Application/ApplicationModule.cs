@@ -27,9 +27,11 @@ public static class ApplicationModule
         services.Scan(scan => scan.FromCallingAssembly().RegisterDependencies());
 
         // Add other modules
-        services.AddHttpClient("proxy")
-            .ConfigurePrimaryHttpMessageHandler(() =>
-                new HttpClientHandler {ServerCertificateCustomValidationCallback = (_, _, _, _) => true});
+        services.AddHttpClient("proxy").ConfigureHttpMessageHandlerBuilder(h =>
+            h.PrimaryHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (_, _, _, _) => true
+            });
 
         return services;
     }

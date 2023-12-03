@@ -101,7 +101,7 @@ Follow these steps to install / update HttPlaceholder. If you update HttPlacehol
 
 ## Dotnet global tool (cross platform)
 
-Make sure you have installed the correct .NET SDK (at least .NET 8) for your OS (see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run the following command to install HttPlaceholder:
+Make sure you have installed the correct .NET SDK (at least .NET 7) for your OS (see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run the following command to install HttPlaceholder:
 
 ```shell
 dotnet tool install --global HttPlaceholder

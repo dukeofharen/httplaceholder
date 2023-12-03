@@ -85,24 +85,6 @@
         </template>
       </div>
     </div>
-
-    <div class="row mt-3">
-      <div class="col-md-12">
-        <h2>Metadata</h2>
-      </div>
-      <div class="row">
-        <div class="col-md-2"><strong>Version</strong></div>
-      </div>
-      <div class="row">
-        <div class="col-md-2">{{ metadata.version }}</div>
-      </div>
-      <div class="row mt-2">
-        <div class="col-md-2"><strong>Runtime</strong></div>
-      </div>
-      <div class="row">
-        <div class="col-md-2">{{ metadata.runtimeVersion }}</div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -114,14 +96,12 @@ import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 import { handleHttpError } from "@/utils/error";
 import { renderDocLink } from "@/constants/resources";
-import { useMetadataStore } from "@/store/metadata";
 
 export default defineComponent({
   name: "Settings",
   setup() {
     const generalStore = useSettingsStore();
     const configurationStore = useConfigurationStore();
-    const metadataStore = useMetadataStore();
 
     // Data
     const settings = ref<SettingsModel>(generalStore.getSettings);
@@ -165,19 +145,11 @@ export default defineComponent({
       },
     });
     const configDocsLink = renderDocLink("configuration");
-    const metadata = computed(() => metadataStore.getMetadataState);
 
     // Lifecycle
     onMounted(async () => await loadConfig());
 
-    return {
-      settings,
-      saveSettings,
-      config,
-      storeResponses,
-      configDocsLink,
-      metadata,
-    };
+    return { settings, saveSettings, config, storeResponses, configDocsLink };
   },
 });
 </script>
