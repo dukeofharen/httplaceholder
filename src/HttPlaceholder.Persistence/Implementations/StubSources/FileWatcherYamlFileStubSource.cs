@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -21,41 +20,33 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 ///     A stub source that is used to read data from one or several YAML files, from possibly multiple locations.
 ///     This source uses a file system watcher.
 /// </summary>
-internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
+internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
 {
-    private static readonly string[] _extensions = {".yml", ".yaml"};
-    private readonly IFileService _fileService;
-    private readonly ILogger<FileWatcherYamlFileStubSource> _logger;
-    private readonly IOptionsMonitor<SettingsModel> _options;
-    private readonly IStubModelValidator _stubModelValidator;
     private readonly ConcurrentDictionary<string, FileSystemWatcher> _fileSystemWatchers = new();
 
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
     private readonly ConcurrentDictionary<string, IEnumerable<StubModel>> _stubs = new();
 
     public FileWatcherYamlFileStubSource(IFileService fileService, ILogger<FileWatcherYamlFileStubSource> logger,
-        IOptionsMonitor<SettingsModel> options, IStubModelValidator stubModelValidator)
+        IOptionsMonitor<SettingsModel> options, IStubModelValidator stubModelValidator) : base(logger, fileService,
+        options, stubModelValidator)
     {
-        _fileService = fileService;
-        _logger = logger;
-        _options = options;
-        _stubModelValidator = stubModelValidator;
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+    public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         Task.FromResult(_stubs.Values.SelectMany(v => v));
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />
-    public Task PrepareStubSourceAsync(CancellationToken cancellationToken)
+    public override Task PrepareStubSourceAsync(CancellationToken cancellationToken)
     {
         SetupStubs();
         return Task.CompletedTask;
@@ -70,7 +61,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
     }
 
     /// <inheritdoc />
-    public async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+    public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken)).FirstOrDefault(s => s.Id == stubId);
 
@@ -79,9 +70,9 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         var locations = GetInputLocations();
         foreach (var location in locations)
         {
-            if (!_fileService.DirectoryExists(location) && !_fileService.FileExists(location))
+            if (!FileService.DirectoryExists(location) && !FileService.FileExists(location))
             {
-                _logger.LogWarning($"Location '{location}' not found.");
+                Logger.LogWarning($"Location '{location}' not found.");
                 continue;
             }
 
@@ -98,70 +89,23 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
     private void LoadStubs(string file)
     {
         // Load the stubs.
-        var input = _fileService.ReadAllText(file);
-        _logger.LogDebug($"Parsing file '{file}'.");
+        var input = FileService.ReadAllText(file);
+        Logger.LogDebug($"Parsing file '{file}'.");
         try
         {
-            _logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
+            Logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
             var stubs = ParseAndValidateStubs(input, file);
             _stubs.AddOrUpdate(file, (k) => stubs, (k, v) => stubs);
         }
         catch (YamlException ex)
         {
-            _logger.LogWarning(ex, $"Error occurred while parsing file '{file}'");
+            Logger.LogWarning(ex, $"Error occurred while parsing file '{file}'");
         }
     }
-
-    private IEnumerable<StubModel> ParseAndValidateStubs(string input, string file)
-    {
-        IEnumerable<StubModel> stubs;
-        if (YamlIsArray(input))
-        {
-            stubs = YamlUtilities.Parse<List<StubModel>>(input);
-        }
-        else
-        {
-            stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
-        }
-
-        return ValidateStubs(file, stubs);
-    }
-
-    private IEnumerable<StubModel> ValidateStubs(string filename, IEnumerable<StubModel> stubs)
-    {
-        var result = new List<StubModel>();
-        foreach (var stub in stubs)
-        {
-            if (string.IsNullOrWhiteSpace(stub?.Id))
-            {
-                // If no ID is set, log a warning as the stub is invalid.
-                _logger.LogWarning($"Stub in file '{filename}' has no 'id' field defined, so is not a valid stub.");
-                continue;
-            }
-
-            // Right now, stubs loaded from files are allowed to have validation errors.
-            // They are NOT allowed to have no ID however.
-            var validationResults = _stubModelValidator.ValidateStubModel(stub).ToArray();
-            if (validationResults.Length != 0)
-            {
-                validationResults = validationResults.Select(r => $"- {r}").ToArray();
-                _logger.LogWarning(
-                    $"Validation warnings encountered for stub '{stub.Id}':\n{string.Join("\n", validationResults)}");
-            }
-
-            result.Add(stub);
-        }
-
-        return result;
-    }
-
-    private static bool YamlIsArray(string yaml) => yaml
-        .SplitNewlines()
-        .Any(l => l.StartsWith('-'));
 
     private void SetupWatcherForLocation(string location)
     {
-        var isDir = _fileService.IsDirectory(location);
+        var isDir = FileService.IsDirectory(location);
         var finalLocation = (isDir ? location : Path.GetDirectoryName(location)) ??
                             throw new InvalidOperationException($"Location {location} is invalid.");
         var watcher = new FileSystemWatcher(finalLocation);
@@ -171,7 +115,7 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         }
         else
         {
-            foreach (var extension in _extensions)
+            foreach (var extension in SupportedExtensions)
             {
                 watcher.Filters.Add($"*{extension}");
             }
@@ -213,20 +157,20 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
 
     private void FileChanged(FileSystemEventArgs e)
     {
-        _logger.LogDebug($"File {e.FullPath} changed.");
+        Logger.LogDebug($"File {e.FullPath} changed.");
         LoadStubs(e.FullPath);
     }
 
     private void FileCreated(FileSystemEventArgs e)
     {
         var fullPath = e.FullPath;
-        if (_fileService.IsDirectory(fullPath))
+        if (FileService.IsDirectory(fullPath))
         {
             // Ignore the event if the created object is a directory.
             return;
         }
 
-        _logger.LogDebug($"File {fullPath} created.");
+        Logger.LogDebug($"File {fullPath} created.");
         LoadStubs(fullPath);
     }
 
@@ -235,12 +179,12 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
         var fullPath = e.FullPath;
 
         // Due to limitations in .NET / FileSystemWatcher, no event is triggered when a directory is deleted.
-        if (!_fileService.IsDirectory(fullPath))
+        if (!FileService.IsDirectory(fullPath))
         {
-            _logger.LogDebug($"File {fullPath} deleted.");
+            Logger.LogDebug($"File {fullPath} deleted.");
             if (_stubs.TryRemove(fullPath, out _))
             {
-                _logger.LogDebug($"Removed stub '{fullPath}'.");
+                Logger.LogDebug($"Removed stub '{fullPath}'.");
             }
         }
 
@@ -251,54 +195,30 @@ internal class FileWatcherYamlFileStubSource : IStubSource, IDisposable
     {
         var fullPath = e.FullPath;
         var oldPath = e.OldFullPath;
+
         // Due to limitations in .NET / FileSystemWatcher, no event is triggered when a directory is renamed.
-        if (!_fileService.IsDirectory(fullPath))
+        if (!FileService.IsDirectory(fullPath))
         {
-            _logger.LogDebug($"File {fullPath} renamed.");
+            Logger.LogDebug($"File {fullPath} renamed.");
 
             // Try to delete the stub from memory.
             if (_stubs.TryRemove(oldPath, out _))
             {
-                _logger.LogDebug($"Removed stub '{oldPath}'.");
+                Logger.LogDebug($"Removed stub '{oldPath}'.");
             }
 
             TryRemoveWatcher(oldPath);
             SetupWatcherForLocation(fullPath);
-            if (!_extensions.Any(ext => fullPath.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
+            if (!SupportedExtensions.Any(ext => fullPath.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
             {
-                _logger.LogDebug(
-                    $"File {fullPath} not supported. Supported file extensions: {string.Join(", ", _extensions)}");
+                Logger.LogDebug(
+                    $"File {fullPath} not supported. Supported file extensions: {string.Join(", ", SupportedExtensions)}");
             }
             else
             {
                 LoadStubs(fullPath);
             }
         }
-    }
-
-    private IEnumerable<string> GetInputLocations()
-    {
-        var inputFileLocation = _options.CurrentValue.Storage?.InputFile;
-        if (string.IsNullOrEmpty(inputFileLocation))
-        {
-            // If the input file location is not set, try looking in the current directory for files.
-            var currentDirectory = _fileService.GetCurrentDirectory();
-            return _fileService.GetFiles(currentDirectory, _extensions);
-        }
-
-        // Split file path: it is possible to supply multiple locations.
-        return inputFileLocation
-            .Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
-            .Select(StripIllegalCharacters);
-    }
-
-    private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
-
-    private IEnumerable<string> ParseFileLocations(string part)
-    {
-        var location = part.Trim();
-        _logger.LogInformation($"Reading location '{location}'.");
-        return _fileService.IsDirectory(location) ? _fileService.GetFiles(location, _extensions) : new[] {location};
     }
 
     private bool TryRemoveWatcher(string fullPath)
