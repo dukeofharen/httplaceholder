@@ -2450,6 +2450,14 @@ httplaceholder --inputFile "C:\path\to\stubsfolder,C:\path\to\file.yml"
 
 Make sure to surround the value with double quotes if you run the command from PowerShell.
 
+### Disable file watcher
+
+By default, HttPlaceholder uses file watchers to keep track of the .yml files specified in the "inputFile" parameter. If something goes wrong (e.g. too few watchers available or some other issue), you can choose to read the .yml files the "classic" way by specifying the following property.
+
+```bash
+httplaceholder --disableFileWatcher
+```
+
 ### Enable / disable request logging on the terminal (optional)
 
 ```bash
