@@ -34,7 +34,7 @@ internal class YamlFileStubSource : BaseFileStubSource
     public override async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
-        var fileLocations = (GetYamlFileLocations()).ToArray();
+        var fileLocations = GetYamlFileLocations().ToArray();
         if (fileLocations.Length == 0)
         {
             Logger.LogInformation("No .yml input files found.");
