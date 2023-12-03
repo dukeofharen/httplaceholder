@@ -43,9 +43,20 @@ internal class YamlFileStubSource : BaseFileStubSource
 
         if (_stubs == null || GetLastStubFileModificationDateTime(fileLocations) > _stubLoadDateTime)
         {
-            _stubs =
-                (await Task.WhenAll(fileLocations.Select(l => LoadStubsAsync(l, cancellationToken))))
-                .SelectMany(s => s);
+            var result = new List<StubModel>();
+            foreach (var location in fileLocations)
+            {
+                if (!await FileService.DirectoryExistsAsync(location, cancellationToken) &&
+                    !await FileService.FileExistsAsync(location, cancellationToken))
+                {
+                    Logger.LogWarning($"Location '{location}' not found.");
+                    continue;
+                }
+
+                result.AddRange(await LoadStubsAsync(location, cancellationToken));
+            }
+
+            _stubs = result;
         }
         else
         {

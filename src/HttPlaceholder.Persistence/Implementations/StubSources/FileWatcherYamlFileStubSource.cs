@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -27,8 +26,11 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
     private readonly ConcurrentDictionary<string, IEnumerable<StubModel>> _stubs = new();
 
-    public FileWatcherYamlFileStubSource(IFileService fileService, ILogger<FileWatcherYamlFileStubSource> logger,
-        IOptionsMonitor<SettingsModel> options, IStubModelValidator stubModelValidator) : base(logger, fileService,
+    public FileWatcherYamlFileStubSource(
+        IFileService fileService,
+        ILogger<FileWatcherYamlFileStubSource> logger,
+        IOptionsMonitor<SettingsModel> options,
+        IStubModelValidator stubModelValidator) : base(logger, fileService,
         options, stubModelValidator)
     {
     }
