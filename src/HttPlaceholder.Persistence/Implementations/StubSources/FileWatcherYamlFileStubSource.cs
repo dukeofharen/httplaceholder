@@ -21,24 +21,23 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 /// </summary>
 internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
 {
-    private readonly ConcurrentDictionary<string, FileSystemWatcher> _fileSystemWatchers = new();
+    internal readonly ConcurrentDictionary<string, FileSystemWatcher> FileSystemWatchers = new();
 
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
-    private readonly ConcurrentDictionary<string, IEnumerable<StubModel>> _stubs = new();
+    internal readonly ConcurrentDictionary<string, IEnumerable<StubModel>> Stubs = new();
 
     public FileWatcherYamlFileStubSource(
         IFileService fileService,
         ILogger<FileWatcherYamlFileStubSource> logger,
         IOptionsMonitor<SettingsModel> options,
-        IStubModelValidator stubModelValidator) : base(logger, fileService,
-        options, stubModelValidator)
+        IStubModelValidator stubModelValidator) : base(logger, fileService, options, stubModelValidator)
     {
     }
 
     /// <inheritdoc />
     public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
         CancellationToken cancellationToken = default) =>
-        Task.FromResult(_stubs.Values.SelectMany(v => v));
+        Task.FromResult(Stubs.Values.SelectMany(v => v));
 
     /// <inheritdoc />
     public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
@@ -56,7 +55,7 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
 
     public void Dispose()
     {
-        foreach (var watcher in _fileSystemWatchers.Values)
+        foreach (var watcher in FileSystemWatchers.Values)
         {
             watcher.Dispose();
         }
@@ -97,7 +96,7 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
         {
             Logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
             var stubs = ParseAndValidateStubs(input, file);
-            _stubs.AddOrUpdate(file, (k) => stubs, (k, v) => stubs);
+            Stubs.AddOrUpdate(file, (k) => stubs, (k, v) => stubs);
         }
         catch (YamlException ex)
         {
@@ -135,10 +134,10 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
         watcher.Deleted += OnInputLocationUpdated;
         watcher.Renamed += OnInputLocationUpdated;
         watcher.EnableRaisingEvents = true;
-        _fileSystemWatchers.TryAdd(location, watcher);
+        FileSystemWatchers.TryAdd(location, watcher);
     }
 
-    private void OnInputLocationUpdated(object sender, FileSystemEventArgs e)
+    internal void OnInputLocationUpdated(object sender, FileSystemEventArgs e)
     {
         switch (e.ChangeType)
         {
@@ -184,7 +183,7 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
         if (!FileService.IsDirectory(fullPath))
         {
             Logger.LogDebug($"File {fullPath} deleted.");
-            if (_stubs.TryRemove(fullPath, out _))
+            if (Stubs.TryRemove(fullPath, out _))
             {
                 Logger.LogDebug($"Removed stub '{fullPath}'.");
             }
@@ -204,7 +203,7 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
             Logger.LogDebug($"File {fullPath} renamed.");
 
             // Try to delete the stub from memory.
-            if (_stubs.TryRemove(oldPath, out _))
+            if (Stubs.TryRemove(oldPath, out _))
             {
                 Logger.LogDebug($"Removed stub '{oldPath}'.");
             }
@@ -225,10 +224,10 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
 
     private bool TryRemoveWatcher(string fullPath)
     {
-        if (_fileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
+        if (FileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
         {
             foundWatcher.Dispose();
-            _fileSystemWatchers.TryRemove(fullPath, out _);
+            FileSystemWatchers.TryRemove(fullPath, out _);
             return true;
         }
 
