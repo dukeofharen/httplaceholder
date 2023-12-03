@@ -133,9 +133,12 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
         watcher.Created += OnInputLocationUpdated;
         watcher.Deleted += OnInputLocationUpdated;
         watcher.Renamed += OnInputLocationUpdated;
+        watcher.Error += OnError;
         watcher.EnableRaisingEvents = true;
         FileSystemWatchers.TryAdd(location, watcher);
     }
+
+    private void OnError(object sender, ErrorEventArgs e) => Logger.LogWarning(e.GetException(), "Error occurred in file watcher.");
 
     internal void OnInputLocationUpdated(object sender, FileSystemEventArgs e)
     {
