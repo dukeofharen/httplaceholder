@@ -16,11 +16,13 @@ export const useMetadataStore = defineStore({
       metadata: {
         version: "",
         variableHandlers: [],
+        runtimeVersion: "",
       },
       authenticationEnabled: false,
     }) as MetadataState,
   getters: {
     getAuthenticationEnabled: (state): boolean => state.authenticationEnabled,
+    getMetadataState: (state): MetadataModel => state.metadata,
   },
   actions: {
     checkFeatureIsEnabled: (
@@ -34,13 +36,14 @@ export const useMetadataStore = defineStore({
       this.authenticationEnabled = authEnabled;
       return authEnabled;
     },
-    getMetadata(): Promise<MetadataModel> {
-      return get("/ph-api/metadata")
-        .then((response) => {
-          this.metadata = response;
-          return Promise.resolve(response);
-        })
-        .catch((error) => Promise.reject(error));
+    async getMetadata(): Promise<MetadataModel> {
+      try {
+        const response = await get("/ph-api/metadata");
+        this.metadata = response;
+        return Promise.resolve(response);
+      } catch (error) {
+        return await Promise.reject(error);
+      }
     },
   },
 });

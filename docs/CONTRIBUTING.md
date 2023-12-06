@@ -15,7 +15,7 @@ To set up a development environment, please follow these steps:
 
 ### Setting up development environment for HttPlaceholder
 
-1. Make sure [.NET 7](https://asp.net) is installed.
+1. Make sure [.NET 8](https://asp.net) is installed.
 2. In your terminal, go to the folder `src`.
 3. In the folder, executed the command `dotnet build`. This will download all NuGet packages and makes sure everything builds as intended.
 4. Go to the folder `src/HttPlaceholder`.

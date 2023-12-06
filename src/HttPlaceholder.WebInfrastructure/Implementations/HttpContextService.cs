@@ -134,7 +134,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     public void AddHeader(string key, StringValues values)
     {
         var httpContext = _httpContextAccessor.HttpContext;
-        httpContext.Response.Headers.Add(key, values);
+        httpContext.Response.Headers.Append(key, values);
     }
 
     /// <inheritdoc />
@@ -146,7 +146,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
             return false;
         }
 
-        httpContext.Response.Headers.Add(key, values);
+        httpContext.Response.Headers.Append(key, values);
         return true;
     }
 
