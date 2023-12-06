@@ -26,7 +26,7 @@ public class PersistenceModuleFacts
 
         // assert
         Assert.AreEqual(2, _services.Count);
-        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(InMemoryStubSource)));
     }
 
@@ -42,7 +42,7 @@ public class PersistenceModuleFacts
 
         // assert
         Assert.AreEqual(2, _services.Count);
-        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(InMemoryStubSource)));
     }
 
@@ -57,7 +57,7 @@ public class PersistenceModuleFacts
 
         // assert
         Assert.AreEqual(3, _services.Count);
-        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileSystemStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileSystemStubCache)));
     }
@@ -74,7 +74,7 @@ public class PersistenceModuleFacts
 
         // assert
         Assert.AreEqual(7, _services.Count);
-        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(MysqlQueryStore)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(MysqlDbConnectionFactory)));
@@ -94,7 +94,7 @@ public class PersistenceModuleFacts
 
         // assert
         Assert.AreEqual(7, _services.Count);
-        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqliteQueryStore)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqliteDbConnectionFactory)));
@@ -115,7 +115,7 @@ public class PersistenceModuleFacts
 
         // assert
         Assert.AreEqual(7, _services.Count);
-        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerQueryStore)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerDbConnectionFactory)));
@@ -136,13 +136,41 @@ public class PersistenceModuleFacts
 
         // assert
         Assert.AreEqual(7, _services.Count);
-        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(PostgresQueryStore)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(PostgresDbConnectionFactory)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(DatabaseContextFactory)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubCache)));
         Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbMigrator)));
+    }
+
+    [TestMethod]
+    public void DependencyRegistration_DisableFileWatcher()
+    {
+        // arrange
+        _args.Add("Storage:DisableFileWatcher", "true");
+
+        // act
+        _services.AddStubSources(BuildConfiguration(_args));
+
+        // assert
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsFalse(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
+    }
+
+    [TestMethod]
+    public void DependencyRegistration_EnableFileWatcher()
+    {
+        // arrange
+        _args.Add("Storage:DisableFileWatcher", "false");
+
+        // act
+        _services.AddStubSources(BuildConfiguration(_args));
+
+        // assert
+        Assert.IsFalse(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+        Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileWatcherYamlFileStubSource)));
     }
 
     private static IConfiguration BuildConfiguration(IDictionary<string, string> dict) =>

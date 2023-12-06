@@ -1,8 +1,10 @@
 [vnext]
 - Upgraded application to .NET 8 (https://github.com/dukeofharen/httplaceholder/pull/338).
+- Use file watches to check if the .yml stub files are updated on disk (https://github.com/dukeofharen/httplaceholder/pull/339).
 
 # BREAKING CHANGES
 - If you installed HttPlaceholder as .NET tool, you need to have the .NET 8 SDK installed on your machine. If you download the compiled version of HttPlaceholder for your OS, you do not need to have .NET installed so you will notice no changes.
+- In an ideal situation, you will not notice any difference. If your OS, however, does not have enough file watches or something else goes wrong so you can't use file watches, you can default to the "classic" situation where the .yml files are checked with every request. You need to provide the "--disableFileWatcher" option when starting HttPlaceholder.
 
 [2023.11.25]
 - Fixed small oversight in dark mode in the UI (https://github.com/dukeofharen/httplaceholder/pull/326).

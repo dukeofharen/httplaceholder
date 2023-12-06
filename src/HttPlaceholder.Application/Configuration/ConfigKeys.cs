@@ -30,6 +30,11 @@ public static class ConfigKeys
     public const string InputFileKey = "inputFile";
 
     /// <summary>
+    ///     Constant for disableFileWatcher.
+    /// </summary>
+    public const string DisableFileWatcher = "disableFileWatcher";
+
+    /// <summary>
     ///     Constant for oldRequestsQueueLength.
     /// </summary>
     public const string OldRequestsQueueLengthKey = "oldRequestsQueueLength";
@@ -185,6 +190,15 @@ public static class ConfigKeys
             "Storage:InputFile",
             ConfigKeyType.Storage,
             null,
+            null,
+            null),
+        Create(
+            DisableFileWatcher,
+            "by default, the OS file watcher will be used to keep track of the .yml stub files. If a problem occurs with the file watcher, you can enable this option to read and track the .yml stub files in the 'classic' way (default false).",
+            "true",
+            "Storage:DisableFileWatcher",
+            ConfigKeyType.Storage,
+            true,
             null,
             null),
         Create(
