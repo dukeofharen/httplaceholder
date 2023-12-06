@@ -1,3 +1,9 @@
+[vnext]
+- Updated application to .NET 8 (https://github.com/dukeofharen/httplaceholder/pull/338).
+
+# BREAKING CHANGES
+
+
 [2023.11.25]
 - Fixed small oversight in dark mode in the UI (https://github.com/dukeofharen/httplaceholder/pull/326).
 - Fixed bug in the caching of the index.html of the UI (https://github.com/dukeofharen/httplaceholder/pull/327).

@@ -1,5 +1,5 @@
 # Build docs
-FROM python:3.11-bookworm AS doc-build-env
+FROM python:3.12-bookworm AS doc-build-env
 WORKDIR /app
 COPY . ./
 RUN cd docs/httpl-docs && pip install -r requirements.txt && python sync.py && mkdocs build && cp -r site /app
