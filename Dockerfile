@@ -6,7 +6,7 @@ COPY . ./
 RUN VERSION=$(cat version.txt) && cd src/HttPlaceholder && dotnet publish -c Release /p:Version=$VERSION /p:AssemblyVersion=$VERSION /p:FileVersion=$VERSION  -o /app/out
 
 # Build UI
-FROM node:18 AS gui-build-env
+FROM node:20 AS gui-build-env
 WORKDIR /app
 
 COPY . ./
