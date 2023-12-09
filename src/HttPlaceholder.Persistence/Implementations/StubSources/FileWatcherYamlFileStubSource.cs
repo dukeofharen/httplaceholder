@@ -28,7 +28,6 @@ internal class FileWatcherYamlFileStubSource(
     IFileWatcherBuilderFactory fileWatcherBuilderFactory)
     : BaseFileStubSource(logger, fileService, options, stubModelValidator), IDisposable
 {
-    private readonly IFileWatcherBuilderFactory _fileWatcherBuilderFactory = fileWatcherBuilderFactory;
     internal readonly ConcurrentDictionary<string, FileSystemWatcher> FileSystemWatchers = new();
 
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
@@ -104,9 +103,9 @@ internal class FileWatcherYamlFileStubSource(
         }
     }
 
-    private void SetupWatcherForLocation(string location)
+    internal void SetupWatcherForLocation(string location)
     {
-        var builder = _fileWatcherBuilderFactory.CreateBuilder();
+        var builder = fileWatcherBuilderFactory.CreateBuilder();
         builder.SetPathOrFilters(location, SupportedExtensions);
         builder.SetNotifyFilters(NotifyFilters.CreationTime
                                  | NotifyFilters.DirectoryName
@@ -189,7 +188,7 @@ internal class FileWatcherYamlFileStubSource(
         // Due to limitations in .NET / FileSystemWatcher, no event is triggered when a directory is renamed.
         if (!FileService.IsDirectory(fullPath))
         {
-            Logger.LogDebug($"File {fullPath} renamed.");
+            Logger.LogDebug($"File {oldPath} renamed to {fullPath}.");
 
             // Try to delete the stub from memory.
             if (Stubs.TryRemove(oldPath, out _))
@@ -198,7 +197,6 @@ internal class FileWatcherYamlFileStubSource(
             }
 
             TryRemoveWatcher(oldPath);
-            SetupWatcherForLocation(fullPath);
             if (!SupportedExtensions.Any(ext => fullPath.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
             {
                 Logger.LogDebug(
@@ -207,11 +205,12 @@ internal class FileWatcherYamlFileStubSource(
             else
             {
                 LoadStubs(fullPath);
+                SetupWatcherForLocation(fullPath);
             }
         }
     }
 
-    private bool TryRemoveWatcher(string fullPath)
+    internal bool TryRemoveWatcher(string fullPath)
     {
         if (FileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
         {
