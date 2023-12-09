@@ -77,8 +77,18 @@ public static class PersistenceModule
             services.AddSingleton<IStubSource, InMemoryStubSource>();
         }
 
-        // The YAML stub source should always be registered.
-        return services.AddSingleton<IStubSource, YamlFileStubSource>();
+        // The YAML stub source should always be registered. If stated that the file watcher should be disabled, register the YamlFileStubSource instead.
+        var disableFileWatcher = settings?.Storage?.DisableFileWatcher ?? false;
+        if (disableFileWatcher)
+        {
+            services.AddSingleton<IStubSource, YamlFileStubSource>();
+        }
+        else
+        {
+            services.AddSingleton<IStubSource, FileWatcherYamlFileStubSource>();
+        }
+
+        return services;
     }
 
     private static IServiceCollection RegisterConnectionFactory<TConnectionFactory, TQueryStore>(

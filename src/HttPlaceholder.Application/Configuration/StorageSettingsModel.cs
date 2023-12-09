@@ -11,6 +11,11 @@ public class StorageSettingsModel
     public string InputFile { get; set; }
 
     /// <summary>
+    ///     Gets or sets whether the file watcher should be disabled.
+    /// </summary>
+    public bool DisableFileWatcher { get; set; }
+
+    /// <summary>
     ///     Gets or sets the length the old request queue may be.
     /// </summary>
     public int OldRequestsQueueLength { get; set; } = 40;
