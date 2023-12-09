@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.FileWatchers;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -23,9 +24,11 @@ internal class FileWatcherYamlFileStubSource(
     IFileService fileService,
     ILogger<FileWatcherYamlFileStubSource> logger,
     IOptionsMonitor<SettingsModel> options,
-    IStubModelValidator stubModelValidator)
+    IStubModelValidator stubModelValidator,
+    IFileWatcherBuilderFactory fileWatcherBuilderFactory)
     : BaseFileStubSource(logger, fileService, options, stubModelValidator), IDisposable
 {
+    private readonly IFileWatcherBuilderFactory _fileWatcherBuilderFactory = fileWatcherBuilderFactory;
     internal readonly ConcurrentDictionary<string, FileSystemWatcher> FileSystemWatchers = new();
 
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
@@ -40,7 +43,7 @@ internal class FileWatcherYamlFileStubSource(
     public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
-        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
+        .Select(s => new StubOverviewModel { Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled })
         .ToArray();
 
     /// <inheritdoc />
@@ -103,39 +106,25 @@ internal class FileWatcherYamlFileStubSource(
 
     private void SetupWatcherForLocation(string location)
     {
-        var isDir = FileService.IsDirectory(location);
-        var finalLocation = (isDir ? location : Path.GetDirectoryName(location)) ??
-                            throw new InvalidOperationException($"Location {location} is invalid.");
-        var watcher = new FileSystemWatcher(finalLocation);
-        if (!isDir)
-        {
-            watcher.Filter = Path.GetFileName(location);
-        }
-        else
-        {
-            foreach (var extension in SupportedExtensions)
-            {
-                watcher.Filters.Add($"*{extension}");
-            }
-        }
-
-        watcher.NotifyFilter = NotifyFilters.CreationTime
-                               | NotifyFilters.DirectoryName
-                               | NotifyFilters.FileName
-                               | NotifyFilters.LastWrite
-                               | NotifyFilters.Size
-                               | NotifyFilters.Attributes
-                               | NotifyFilters.Security;
-        watcher.Changed += OnInputLocationUpdated;
-        watcher.Created += OnInputLocationUpdated;
-        watcher.Deleted += OnInputLocationUpdated;
-        watcher.Renamed += OnInputLocationUpdated;
-        watcher.Error += OnError;
-        watcher.EnableRaisingEvents = true;
-        FileSystemWatchers.TryAdd(location, watcher);
+        var builder = _fileWatcherBuilderFactory.CreateBuilder();
+        builder.SetPathOrFilters(location, SupportedExtensions);
+        builder.SetNotifyFilters(NotifyFilters.CreationTime
+                                 | NotifyFilters.DirectoryName
+                                 | NotifyFilters.FileName
+                                 | NotifyFilters.LastWrite
+                                 | NotifyFilters.Size
+                                 | NotifyFilters.Attributes
+                                 | NotifyFilters.Security);
+        builder.SetOnChanged(OnInputLocationUpdated);
+        builder.SetOnCreated(OnInputLocationUpdated);
+        builder.SetOnDeleted(OnInputLocationUpdated);
+        builder.SetOnRenamed(OnInputLocationUpdated);
+        builder.SetOnError(OnError);
+        FileSystemWatchers.TryAdd(location, builder.Build());
     }
 
-    private void OnError(object sender, ErrorEventArgs e) => Logger.LogWarning(e.GetException(), "Error occurred in file watcher.");
+    private void OnError(object sender, ErrorEventArgs e) =>
+        Logger.LogWarning(e.GetException(), "Error occurred in file watcher.");
 
     internal void OnInputLocationUpdated(object sender, FileSystemEventArgs e)
     {
