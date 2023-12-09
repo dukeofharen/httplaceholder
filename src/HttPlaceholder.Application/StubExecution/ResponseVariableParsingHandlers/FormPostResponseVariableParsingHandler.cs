@@ -13,16 +13,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a given posted form value in the response.
 /// </summary>
-internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    public FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) :
-        base(fileService)
-    {
-        _httpContextService = httpContextService;
-    }
-
     /// <inheritdoc />
     public override string Name => "form_post";
 
@@ -36,7 +29,7 @@ internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandl
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var formValues = _httpContextService.GetFormValues();
+        var formValues = httpContextService.GetFormValues();
         // TODO there can be multiple form values, so this should be fixed in the future.
         var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
         return Task.FromResult(matches

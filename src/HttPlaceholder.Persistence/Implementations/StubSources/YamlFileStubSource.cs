@@ -16,19 +16,16 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 /// <summary>
 ///     A stub source that is used to read data from one or several YAML files, from possibly multiple locations.
 /// </summary>
-internal class YamlFileStubSource : BaseFileStubSource
+internal class YamlFileStubSource(
+    IFileService fileService,
+    ILogger<YamlFileStubSource> logger,
+    IOptionsMonitor<SettingsModel> options,
+    IStubModelValidator stubModelValidator)
+    : BaseFileStubSource(logger, fileService, options, stubModelValidator)
 {
     private DateTime _stubLoadDateTime;
 
     private IEnumerable<StubModel> _stubs;
-
-    public YamlFileStubSource(
-        IFileService fileService,
-        ILogger<YamlFileStubSource> logger,
-        IOptionsMonitor<SettingsModel> options,
-        IStubModelValidator stubModelValidator) : base(logger, fileService, options, stubModelValidator)
-    {
-    }
 
     /// <inheritdoc />
     public override async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,

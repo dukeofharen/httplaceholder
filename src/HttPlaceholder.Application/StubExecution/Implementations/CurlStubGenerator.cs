@@ -8,36 +8,24 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class CurlStubGenerator : ICurlStubGenerator, ISingletonService
+internal class CurlStubGenerator(
+    ICurlToHttpRequestMapper curlToHttpRequestMapper,
+    ILogger<CurlStubGenerator> logger,
+    IHttpRequestToConditionsService httpRequestToConditionsService,
+    IStubContext stubContext)
+    : ICurlStubGenerator, ISingletonService
 {
-    private readonly ICurlToHttpRequestMapper _curlToHttpRequestMapper;
-    private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
-    private readonly ILogger<CurlStubGenerator> _logger;
-    private readonly IStubContext _stubContext;
-
-    public CurlStubGenerator(
-        ICurlToHttpRequestMapper curlToHttpRequestMapper,
-        ILogger<CurlStubGenerator> logger,
-        IHttpRequestToConditionsService httpRequestToConditionsService,
-        IStubContext stubContext)
-    {
-        _curlToHttpRequestMapper = curlToHttpRequestMapper;
-        _logger = logger;
-        _httpRequestToConditionsService = httpRequestToConditionsService;
-        _stubContext = stubContext;
-    }
-
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant,
         string stubIdPrefix,
         CancellationToken cancellationToken)
     {
-        _logger.LogDebug($"Creating stubs based on cURL command {input}.");
-        var requests = _curlToHttpRequestMapper.MapCurlCommandsToHttpRequest(input);
+        logger.LogDebug($"Creating stubs based on cURL command {input}.");
+        var requests = curlToHttpRequestMapper.MapCurlCommandsToHttpRequest(input);
         var results = new List<FullStubModel>();
         foreach (var request in requests)
         {
-            var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken);
+            var conditions = await httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken);
             var stub = new StubModel
             {
                 Tenant = tenant,
@@ -62,7 +50,7 @@ internal class CurlStubGenerator : ICurlStubGenerator, ISingletonService
             return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
         }
 
-        await _stubContext.DeleteStubAsync(stub.Id, cancellationToken);
-        return await _stubContext.AddStubAsync(stub, cancellationToken);
+        await stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+        return await stubContext.AddStubAsync(stub, cancellationToken);
     }
 }

@@ -8,19 +8,13 @@ namespace HttPlaceholder.Persistence.Db.Implementations;
 /// <summary>
 ///     A class for creating MS SQL Server DB connections.
 /// </summary>
-internal class SqlServerDbConnectionFactory : IDbConnectionFactory
+internal class SqlServerDbConnectionFactory(IConfiguration configuration) : IDbConnectionFactory
 {
     internal const string ConnectionStringKey = "SqlServer";
-    private readonly IConfiguration _configuration;
-
-    public SqlServerDbConnectionFactory(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
 
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
-        new SqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
+        new SqlConnection(configuration.GetConnectionString(ConnectionStringKey));
 
 
     /// <inheritdoc />

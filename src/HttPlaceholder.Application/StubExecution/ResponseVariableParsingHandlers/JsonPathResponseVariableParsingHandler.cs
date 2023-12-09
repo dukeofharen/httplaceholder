@@ -17,20 +17,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 ///     Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The
 ///     result is put in the response.
 /// </summary>
-internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class JsonPathResponseVariableParsingHandler(
+    IHttpContextService httpContextService,
+    ILogger<JsonPathResponseVariableParsingHandler> logger,
+    IFileService fileService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly ILogger<JsonPathResponseVariableParsingHandler> _logger;
-
-    public JsonPathResponseVariableParsingHandler(
-        IHttpContextService httpContextService,
-        ILogger<JsonPathResponseVariableParsingHandler> logger,
-        IFileService fileService) : base(fileService)
-    {
-        _httpContextService = httpContextService;
-        _logger = logger;
-    }
-
     /// <inheritdoc />
     public override string Name => "jsonpath";
 
@@ -44,7 +36,7 @@ internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandl
     protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var body = await _httpContextService.GetBodyAsync(cancellationToken);
+        var body = await httpContextService.GetBodyAsync(cancellationToken);
         var json = ParseJson(body);
         return matches
             .Where(match => match.Groups.Count >= 2)
@@ -60,7 +52,7 @@ internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandl
         }
         catch (JsonException je)
         {
-            _logger.LogInformation($"Exception occurred while trying to parse response body as JSON: {je}");
+            logger.LogInformation($"Exception occurred while trying to parse response body as JSON: {je}");
         }
 
         return null;

@@ -21,17 +21,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 ///     Response writer that is used to generate a random image (BMP, GIF, JPEG or PNG) with parameters (like quality, size
 ///     etc.) and return it to the client.
 /// </summary>
-internal class ImageResponseWriter : IResponseWriter, ISingletonService
+internal class ImageResponseWriter(IAssemblyService assemblyService, IFileService fileService)
+    : IResponseWriter, ISingletonService
 {
-    private readonly IAssemblyService _assemblyService;
-    private readonly IFileService _fileService;
-
-    public ImageResponseWriter(IAssemblyService assemblyService, IFileService fileService)
-    {
-        _assemblyService = assemblyService;
-        _fileService = fileService;
-    }
-
     /// <inheritdoc />
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
         CancellationToken cancellationToken)
@@ -45,16 +37,16 @@ internal class ImageResponseWriter : IResponseWriter, ISingletonService
         var stubImage = stub.Response.Image;
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, stubImage.ContentTypeHeaderValue);
 
-        var cacheFilePath = Path.Combine(_fileService.GetTempPath(), $"{stubImage.Hash}.bin");
+        var cacheFilePath = Path.Combine(fileService.GetTempPath(), $"{stubImage.Hash}.bin");
         byte[] bytes;
-        if (await _fileService.FileExistsAsync(cacheFilePath, cancellationToken))
+        if (await fileService.FileExistsAsync(cacheFilePath, cancellationToken))
         {
-            bytes = await _fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken);
+            bytes = await fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken);
         }
         else
         {
             var collection = new FontCollection();
-            collection.Add(Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
+            collection.Add(Path.Combine(assemblyService.GetExecutingAssemblyRootPath(),
                 "Files", "Manrope-Regular.ttf"));
             const string fontFamilyName = "Manrope";
             if (!collection.TryGet(fontFamilyName, out var family))
@@ -92,7 +84,7 @@ internal class ImageResponseWriter : IResponseWriter, ISingletonService
             }
 
             bytes = ms.ToArray();
-            await _fileService.WriteAllBytesAsync(cacheFilePath, bytes, cancellationToken);
+            await fileService.WriteAllBytesAsync(cacheFilePath, bytes, cancellationToken);
         }
 
         response.Body = bytes;

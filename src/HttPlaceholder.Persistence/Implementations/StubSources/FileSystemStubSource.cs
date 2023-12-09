@@ -19,25 +19,13 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 /// <summary>
 ///     A stub source that is used to store and read data on the file system.
 /// </summary>
-internal class FileSystemStubSource : BaseWritableStubSource
+internal class FileSystemStubSource(
+    IFileService fileService,
+    IOptionsMonitor<SettingsModel> options,
+    IFileSystemStubCache fileSystemStubCache,
+    IDateTime dateTime)
+    : BaseWritableStubSource
 {
-    private readonly IDateTime _dateTime;
-    private readonly IFileService _fileService;
-    private readonly IFileSystemStubCache _fileSystemStubCache;
-    private readonly IOptionsMonitor<SettingsModel> _options;
-
-    public FileSystemStubSource(
-        IFileService fileService,
-        IOptionsMonitor<SettingsModel> options,
-        IFileSystemStubCache fileSystemStubCache,
-        IDateTime dateTime)
-    {
-        _fileService = fileService;
-        _fileSystemStubCache = fileSystemStubCache;
-        _dateTime = dateTime;
-        _options = options;
-    }
-
     /// <inheritdoc />
     public override async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
         string distributionKey = null,
@@ -51,7 +39,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
         var requestFilePath = Path.Combine(requestsFolder, ConstructRequestFilename(requestResult.CorrelationId));
         var requestContents = JsonConvert.SerializeObject(requestResult);
-        await _fileService.WriteAllTextAsync(requestFilePath, requestContents, cancellationToken);
+        await fileService.WriteAllTextAsync(requestFilePath, requestContents, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -63,10 +51,10 @@ internal class FileSystemStubSource : BaseWritableStubSource
         var path = GetStubsFolder(distributionKey);
         var filePath = Path.Combine(path, ConstructStubFilename(stub.Id));
         var contents = JsonConvert.SerializeObject(stub);
-        await _fileService.WriteAllTextAsync(filePath, contents, cancellationToken);
+        await fileService.WriteAllTextAsync(filePath, contents, cancellationToken);
         if (string.IsNullOrWhiteSpace(distributionKey))
         {
-            _fileSystemStubCache.AddOrReplaceStub(stub);
+            fileSystemStubCache.AddOrReplaceStub(stub);
         }
     }
 
@@ -80,7 +68,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
             return null;
         }
 
-        var contents = await _fileService.ReadAllTextAsync(requestFilePath, cancellationToken);
+        var contents = await fileService.ReadAllTextAsync(requestFilePath, cancellationToken);
         return JsonConvert.DeserializeObject<RequestResultModel>(contents);
     }
 
@@ -90,12 +78,12 @@ internal class FileSystemStubSource : BaseWritableStubSource
     {
         var path = GetResponsesFolder(distributionKey);
         var filePath = Path.Combine(path, ConstructResponseFilename(correlationId));
-        if (!await _fileService.FileExistsAsync(filePath, cancellationToken))
+        if (!await fileService.FileExistsAsync(filePath, cancellationToken))
         {
             return null;
         }
 
-        var contents = await _fileService.ReadAllTextAsync(filePath, cancellationToken);
+        var contents = await fileService.ReadAllTextAsync(filePath, cancellationToken);
         return JsonConvert.DeserializeObject<ResponseModel>(contents);
     }
 
@@ -104,10 +92,10 @@ internal class FileSystemStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         var requestsPath = GetRequestsFolder(distributionKey);
-        var files = await _fileService.GetFilesAsync(requestsPath, "*.json", cancellationToken);
+        var files = await fileService.GetFilesAsync(requestsPath, "*.json", cancellationToken);
         foreach (var filePath in files)
         {
-            await _fileService.DeleteFileAsync(filePath, cancellationToken);
+            await fileService.DeleteFileAsync(filePath, cancellationToken);
             await DeleteResponseAsync(filePath, distributionKey, cancellationToken);
         }
     }
@@ -123,7 +111,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
         }
 
         await DeleteResponseAsync(ConstructResponseFilename(correlationId), distributionKey, cancellationToken);
-        await _fileService.DeleteFileAsync(requestFilePath, cancellationToken);
+        await fileService.DeleteFileAsync(requestFilePath, cancellationToken);
         return true;
     }
 
@@ -133,15 +121,15 @@ internal class FileSystemStubSource : BaseWritableStubSource
     {
         var path = GetStubsFolder(distributionKey);
         var filePath = Path.Combine(path, ConstructStubFilename(stubId));
-        if (!await _fileService.FileExistsAsync(filePath, cancellationToken))
+        if (!await fileService.FileExistsAsync(filePath, cancellationToken))
         {
             return false;
         }
 
-        await _fileService.DeleteFileAsync(filePath, cancellationToken);
+        await fileService.DeleteFileAsync(filePath, cancellationToken);
         if (string.IsNullOrWhiteSpace(distributionKey))
         {
-            _fileSystemStubCache.DeleteStub(stubId);
+            fileSystemStubCache.DeleteStub(stubId);
         }
 
         return true;
@@ -153,7 +141,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         var path = GetRequestsFolder(distributionKey);
-        var files = (await _fileService.GetFilesAsync(path, "*.json", cancellationToken))
+        var files = (await fileService.GetFilesAsync(path, "*.json", cancellationToken))
             .OrderByDescending(f => f)
             .ToArray();
         if (pagingModel != null)
@@ -179,7 +167,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
         }
 
         var result = files
-            .Select(filePath => _fileService
+            .Select(filePath => fileService
                 .ReadAllTextAsync(filePath, cancellationToken))
             .ToArray();
         var results = await Task.WhenAll(result);
@@ -191,7 +179,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         await EnsureDirectoriesExist(distributionKey, cancellationToken);
-        return await _fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
+        return await fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
             cancellationToken);
     }
 
@@ -200,7 +188,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         await EnsureDirectoriesExist(distributionKey, cancellationToken);
-        var stubs = await _fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
+        var stubs = await fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
             cancellationToken);
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
@@ -216,7 +204,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
     public override async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken = default)
     {
         var path = GetRequestsFolder();
-        var folders = await _fileService.GetDirectoriesAsync(path, cancellationToken);
+        var folders = await fileService.GetDirectoriesAsync(path, cancellationToken);
         await HandleCleaningOfOldRequests(path, null, cancellationToken);
         foreach (var folder in folders)
         {
@@ -230,12 +218,12 @@ internal class FileSystemStubSource : BaseWritableStubSource
     {
         var path = GetScenariosFolder(distributionKey);
         var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
-        if (!await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
+        if (!await fileService.FileExistsAsync(scenarioPath, cancellationToken))
         {
             return null;
         }
 
-        var contents = await _fileService.ReadAllTextAsync(scenarioPath, cancellationToken);
+        var contents = await fileService.ReadAllTextAsync(scenarioPath, cancellationToken);
         return JsonConvert.DeserializeObject<ScenarioStateModel>(contents);
     }
 
@@ -248,12 +236,12 @@ internal class FileSystemStubSource : BaseWritableStubSource
         await EnsureDirectoriesExist(distributionKey, cancellationToken);
         var path = GetScenariosFolder(distributionKey);
         var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
-        if (await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
+        if (await fileService.FileExistsAsync(scenarioPath, cancellationToken))
         {
             throw new InvalidOperationException($"Scenario state with key '{scenario}' already exists.");
         }
 
-        await _fileService.WriteAllTextAsync(scenarioPath, JsonConvert.SerializeObject(scenarioStateModel),
+        await fileService.WriteAllTextAsync(scenarioPath, JsonConvert.SerializeObject(scenarioStateModel),
             cancellationToken);
         return scenarioStateModel;
     }
@@ -265,12 +253,12 @@ internal class FileSystemStubSource : BaseWritableStubSource
     {
         var path = GetScenariosFolder(distributionKey);
         var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
-        if (!await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
+        if (!await fileService.FileExistsAsync(scenarioPath, cancellationToken))
         {
             throw new InvalidOperationException($"Scenario state with key '{scenario}' not found.");
         }
 
-        await _fileService.WriteAllTextAsync(scenarioPath, JsonConvert.SerializeObject(scenarioStateModel),
+        await fileService.WriteAllTextAsync(scenarioPath, JsonConvert.SerializeObject(scenarioStateModel),
             cancellationToken);
     }
 
@@ -279,11 +267,11 @@ internal class FileSystemStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         var path = GetScenariosFolder(distributionKey);
-        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        var files = await fileService.GetFilesAsync(path, "*.json", cancellationToken);
         var result = new List<ScenarioStateModel>();
         foreach (var file in files)
         {
-            var contents = await _fileService.ReadAllTextAsync(file, cancellationToken);
+            var contents = await fileService.ReadAllTextAsync(file, cancellationToken);
             result.Add(JsonConvert.DeserializeObject<ScenarioStateModel>(contents));
         }
 
@@ -301,12 +289,12 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
         var path = GetScenariosFolder(distributionKey);
         var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
-        if (!await _fileService.FileExistsAsync(scenarioPath, cancellationToken))
+        if (!await fileService.FileExistsAsync(scenarioPath, cancellationToken))
         {
             return false;
         }
 
-        await _fileService.DeleteFileAsync(scenarioPath, cancellationToken);
+        await fileService.DeleteFileAsync(scenarioPath, cancellationToken);
         return true;
     }
 
@@ -315,25 +303,25 @@ internal class FileSystemStubSource : BaseWritableStubSource
         CancellationToken cancellationToken = default)
     {
         var path = GetScenariosFolder(distributionKey);
-        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        var files = await fileService.GetFilesAsync(path, "*.json", cancellationToken);
         foreach (var file in files)
         {
-            await _fileService.DeleteFileAsync(file, cancellationToken);
+            await fileService.DeleteFileAsync(file, cancellationToken);
         }
     }
 
     private async Task HandleCleaningOfOldRequests(string path, string distributionKey,
         CancellationToken cancellationToken)
     {
-        var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
-        var filePaths = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        var maxLength = options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
+        var filePaths = await fileService.GetFilesAsync(path, "*.json", cancellationToken);
         var filePathsAndDates = filePaths
-            .Select(p => (path: p, lastWriteTime: _fileService.GetLastWriteTime(p)))
+            .Select(p => (path: p, lastWriteTime: fileService.GetLastWriteTime(p)))
             .OrderByDescending(t => t.lastWriteTime)
             .Skip(maxLength);
         foreach (var filePath in filePathsAndDates)
         {
-            await _fileService.DeleteFileAsync(filePath.path, cancellationToken);
+            await fileService.DeleteFileAsync(filePath.path, cancellationToken);
             await DeleteResponseAsync(filePath.path, distributionKey, cancellationToken);
         }
     }
@@ -343,7 +331,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
     {
         await CreateDirectoryIfNotExistsAsync(GetRootFolder(), cancellationToken);
         await EnsureDirectoriesExist(null, cancellationToken);
-        await _fileSystemStubCache.GetOrUpdateStubCacheAsync(null, cancellationToken);
+        await fileSystemStubCache.GetOrUpdateStubCacheAsync(null, cancellationToken);
     }
 
     private async Task EnsureDirectoriesExist(string distributionKey = null,
@@ -357,7 +345,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
     private string GetRootFolder()
     {
-        var folder = _options.CurrentValue.Storage?.FileStorageLocation;
+        var folder = options.CurrentValue.Storage?.FileStorageLocation;
         if (string.IsNullOrWhiteSpace(folder))
         {
             throw new InvalidOperationException("File storage location unexpectedly not set.");
@@ -389,9 +377,9 @@ internal class FileSystemStubSource : BaseWritableStubSource
         var responsesPath = GetResponsesFolder(distributionKey);
         var responseFileName = Path.GetFileName(filePath);
         var responseFilePath = Path.Combine(responsesPath, responseFileName);
-        if (await _fileService.FileExistsAsync(responseFilePath, cancellationToken))
+        if (await fileService.FileExistsAsync(responseFilePath, cancellationToken))
         {
-            await _fileService.DeleteFileAsync(responseFilePath, cancellationToken);
+            await fileService.DeleteFileAsync(responseFilePath, cancellationToken);
         }
     }
 
@@ -407,15 +395,15 @@ internal class FileSystemStubSource : BaseWritableStubSource
             var responseFilePath =
                 Path.Combine(responsesFolder, ConstructResponseFilename(requestResult.CorrelationId));
             var responseContents = JsonConvert.SerializeObject(responseModel);
-            await _fileService.WriteAllTextAsync(responseFilePath, responseContents, cancellationToken);
+            await fileService.WriteAllTextAsync(responseFilePath, responseContents, cancellationToken);
         }
     }
 
     private async Task CreateDirectoryIfNotExistsAsync(string path, CancellationToken cancellationToken)
     {
-        if (!await _fileService.DirectoryExistsAsync(path, cancellationToken))
+        if (!await fileService.DirectoryExistsAsync(path, cancellationToken))
         {
-            await _fileService.CreateDirectoryAsync(path, cancellationToken);
+            await fileService.CreateDirectoryAsync(path, cancellationToken);
         }
     }
 
@@ -428,7 +416,7 @@ internal class FileSystemStubSource : BaseWritableStubSource
 
     private string ConstructRequestFilename(string correlationId)
     {
-        var unix = _dateTime.UtcNowUnix;
+        var unix = dateTime.UtcNowUnix;
         return $"{unix}-{correlationId}.json";
     }
 
@@ -438,12 +426,12 @@ internal class FileSystemStubSource : BaseWritableStubSource
         var requestsFolder = GetRequestsFolder(distributionKey);
         var oldRequestFilename = ConstructOldRequestFilename(correlationId);
         var oldRequestPath = Path.Join(requestsFolder, oldRequestFilename);
-        if (await _fileService.FileExistsAsync(oldRequestPath, cancellationToken))
+        if (await fileService.FileExistsAsync(oldRequestPath, cancellationToken))
         {
             return oldRequestPath;
         }
 
-        var files = await _fileService.GetFilesAsync(requestsFolder, $"*-{correlationId}.json", cancellationToken);
+        var files = await fileService.GetFilesAsync(requestsFolder, $"*-{correlationId}.json", cancellationToken);
         return !files.Any() ? null : files[0];
     }
 

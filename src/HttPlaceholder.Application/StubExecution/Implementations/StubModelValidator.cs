@@ -14,28 +14,20 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class StubModelValidator : IStubModelValidator, ISingletonService
+internal class StubModelValidator(
+    IModelValidator modelValidator,
+    IOptionsMonitor<SettingsModel> options)
+    : IStubModelValidator, ISingletonService
 {
     private static readonly string[] _illegalHeaders =
     {
         "X-HttPlaceholder-Correlation", "X-HttPlaceholder-ExecutedStub"
     };
 
-    private readonly IModelValidator _modelValidator;
-    private readonly IOptionsMonitor<SettingsModel> _options;
-
-    public StubModelValidator(
-        IModelValidator modelValidator,
-        IOptionsMonitor<SettingsModel> options)
-    {
-        _modelValidator = modelValidator;
-        _options = options;
-    }
-
     /// <inheritdoc />
     public IEnumerable<string> ValidateStubModel(StubModel stub)
     {
-        var validationResults = _modelValidator.ValidateModel(stub);
+        var validationResults = modelValidator.ValidateModel(stub);
         var result = new List<string>();
         result.AddRange(HandleValidationResult(validationResults));
         result.AddRange(ValidateExtraDuration(stub));
@@ -51,7 +43,7 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
         var result = new List<string>();
         const string errorTemplate = "Value for '{0}' cannot be higher than '{1}'.";
         var extraDuration = stub?.Response?.ExtraDuration;
-        var allowedMillis = _options.CurrentValue.Stub?.MaximumExtraDurationMillis;
+        var allowedMillis = options.CurrentValue.Stub?.MaximumExtraDurationMillis;
         var parsedDuration = ConversionUtilities.ParseInteger(extraDuration);
         if (parsedDuration.HasValue)
         {

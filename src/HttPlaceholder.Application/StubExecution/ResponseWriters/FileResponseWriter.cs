@@ -16,28 +16,14 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 ///     Response writer that is used to search for a file on the OS and return that file to the client.
 /// </summary>
-internal class FileResponseWriter : IResponseWriter, ISingletonService
+internal class FileResponseWriter(
+    IFileService fileService,
+    IStubRootPathResolver stubRootPathResolver,
+    IOptionsMonitor<SettingsModel> options,
+    ILogger<FileResponseWriter> logger,
+    IMimeService mimeService)
+    : IResponseWriter, ISingletonService
 {
-    private readonly IFileService _fileService;
-    private readonly ILogger<FileResponseWriter> _logger;
-    private readonly IMimeService _mimeService;
-    private readonly IOptionsMonitor<SettingsModel> _options;
-    private readonly IStubRootPathResolver _stubRootPathResolver;
-
-    public FileResponseWriter(
-        IFileService fileService,
-        IStubRootPathResolver stubRootPathResolver,
-        IOptionsMonitor<SettingsModel> options,
-        ILogger<FileResponseWriter> logger,
-        IMimeService mimeService)
-    {
-        _fileService = fileService;
-        _stubRootPathResolver = stubRootPathResolver;
-        _options = options;
-        _logger = logger;
-        _mimeService = mimeService;
-    }
-
     /// <inheritdoc />
     public int Priority => 0;
 
@@ -45,7 +31,7 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
         CancellationToken cancellationToken)
     {
-        var settings = _options.CurrentValue;
+        var settings = options.CurrentValue;
         if (stub.Response?.File == null && stub.Response?.TextFile == null)
         {
             return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
@@ -53,7 +39,7 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
 
         var file = stub.Response?.File ?? stub.Response?.TextFile;
         string finalFilePath = null;
-        if (await _fileService.FileExistsAsync(file, cancellationToken))
+        if (await fileService.FileExistsAsync(file, cancellationToken))
         {
             finalFilePath = file;
             if (settings.Stub?.AllowGlobalFileSearch == false)
@@ -62,22 +48,22 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
                     $"Path '{finalFilePath}' found, but can't be used because setting '{ConfigKeys.AllowGlobalFileSearch}' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.");
             }
 
-            _logger.LogInformation($"Path '{finalFilePath}' found.");
+            logger.LogInformation($"Path '{finalFilePath}' found.");
         }
         else
         {
             // File doesn't exist, but might exist in the file root folder.
-            var stubRootPaths = await _stubRootPathResolver.GetStubRootPathsAsync(cancellationToken);
+            var stubRootPaths = await stubRootPathResolver.GetStubRootPathsAsync(cancellationToken);
             foreach (var path in stubRootPaths)
             {
                 var tempPath = Path.Combine(path, PathUtilities.CleanPath(file));
-                if (!await _fileService.FileExistsAsync(tempPath, cancellationToken))
+                if (!await fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
-                    _logger.LogInformation($"Path '{tempPath}' not found.");
+                    logger.LogInformation($"Path '{tempPath}' not found.");
                     continue;
                 }
 
-                _logger.LogInformation($"Path '{tempPath}' found.");
+                logger.LogInformation($"Path '{tempPath}' found.");
                 finalFilePath = tempPath;
                 break;
             }
@@ -88,8 +74,8 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
             return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
-        response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, _mimeService.GetMimeType(finalFilePath));
-        response.Body = await _fileService.ReadAllBytesAsync(finalFilePath, cancellationToken);
+        response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, mimeService.GetMimeType(finalFilePath));
+        response.Body = await fileService.ReadAllBytesAsync(finalFilePath, cancellationToken);
         response.BodyIsBinary = string.IsNullOrWhiteSpace(stub.Response.TextFile);
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }

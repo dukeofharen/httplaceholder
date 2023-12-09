@@ -18,7 +18,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 ///     Response writer that is used to setup a reverse proxy to another URL.
 /// </summary>
-internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
+internal class ReverseProxyResponseWriter(
+    IHttpClientFactory httpClientFactory,
+    IHttpContextService httpContextService,
+    ILogger<ReverseProxyResponseWriter> logger,
+    IUrlResolver urlResolver)
+    : IResponseWriter, ISingletonService
 {
     private static readonly string[] _excludedRequestHeaderNames =
     {
@@ -31,23 +36,6 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         HeaderKeys.XHttPlaceholderCorrelation, HeaderKeys.XHttPlaceholderExecutedStub, HeaderKeys.TransferEncoding,
         HeaderKeys.ContentLength
     };
-
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IHttpContextService _httpContextService;
-    private readonly ILogger<ReverseProxyResponseWriter> _logger;
-    private readonly IUrlResolver _urlResolver;
-
-    public ReverseProxyResponseWriter(
-        IHttpClientFactory httpClientFactory,
-        IHttpContextService httpContextService,
-        ILogger<ReverseProxyResponseWriter> logger,
-        IUrlResolver urlResolver)
-    {
-        _httpClientFactory = httpClientFactory;
-        _httpContextService = httpContextService;
-        _logger = logger;
-        _urlResolver = urlResolver;
-    }
 
     /// <inheritdoc />
     public int Priority => -10;
@@ -70,14 +58,14 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 
         if (stub.Response.ReverseProxy.AppendQueryString == true)
         {
-            proxyUrl += _httpContextService.GetQueryString();
+            proxyUrl += httpContextService.GetQueryString();
         }
 
-        var method = new HttpMethod(_httpContextService.Method);
+        var method = new HttpMethod(httpContextService.Method);
         var request = new HttpRequestMessage(method, proxyUrl);
         var log = new StringBuilder();
         log.AppendLine($"Performing {method} request to URL {proxyUrl}");
-        var originalHeaders = _httpContextService.GetHeaders();
+        var originalHeaders = httpContextService.GetHeaders();
         var headers = CleanHeaders(originalHeaders);
         foreach (var header in headers)
         {
@@ -89,7 +77,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
             await AddRequestBodyAsync(request, originalHeaders, cancellationToken);
         }
 
-        using var httpClient = _httpClientFactory.CreateClient("proxy");
+        using var httpClient = httpClientFactory.CreateClient("proxy");
         try
         {
             using var responseMessage = await httpClient.SendAsync(request, cancellationToken);
@@ -117,7 +105,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         }
         catch (Exception ex)
         {
-            _logger.LogInformation(ex, $"Exception occurred while calling URL {proxyUrl}");
+            logger.LogInformation(ex, $"Exception occurred while calling URL {proxyUrl}");
             log.AppendLine($"Exception occurred while calling URL {proxyUrl}: {ex.Message}");
             response.Body = "502 Bad Gateway"u8.ToArray();
             response.StatusCode = (int)HttpStatusCode.BadGateway;
@@ -150,7 +138,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
     {
         var rootUrlParts = proxyUrl.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
         var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
-        var httPlaceholderRootUrl = _urlResolver.GetRootUrl();
+        var httPlaceholderRootUrl = urlResolver.GetRootUrl();
         var path = GetPath(stub);
         if (appendPath && !string.IsNullOrWhiteSpace(path))
         {
@@ -170,7 +158,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
     private async Task AddRequestBodyAsync(HttpRequestMessage request, IDictionary<string, string> originalHeaders,
         CancellationToken cancellationToken)
     {
-        var requestBody = await _httpContextService.GetBodyAsBytesAsync(cancellationToken);
+        var requestBody = await httpContextService.GetBodyAsBytesAsync(cancellationToken);
         if (!requestBody.Any())
         {
             return;
@@ -191,7 +179,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 
     private string AppendPath(StubModel stub, string proxyUrl)
     {
-        proxyUrl = proxyUrl.EnsureEndsWith("/") + _httpContextService.Path.TrimStart('/');
+        proxyUrl = proxyUrl.EnsureEndsWith("/") + httpContextService.Path.TrimStart('/');
         var path = GetPath(stub);
         if (string.IsNullOrWhiteSpace(path))
         {

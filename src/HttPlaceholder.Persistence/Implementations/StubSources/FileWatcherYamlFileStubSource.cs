@@ -19,20 +19,17 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 ///     A stub source that is used to read data from one or several YAML files, from possibly multiple locations.
 ///     This source uses a file system watcher.
 /// </summary>
-internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
+internal class FileWatcherYamlFileStubSource(
+    IFileService fileService,
+    ILogger<FileWatcherYamlFileStubSource> logger,
+    IOptionsMonitor<SettingsModel> options,
+    IStubModelValidator stubModelValidator)
+    : BaseFileStubSource(logger, fileService, options, stubModelValidator), IDisposable
 {
     internal readonly ConcurrentDictionary<string, FileSystemWatcher> FileSystemWatchers = new();
 
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
     internal readonly ConcurrentDictionary<string, IEnumerable<StubModel>> Stubs = new();
-
-    public FileWatcherYamlFileStubSource(
-        IFileService fileService,
-        ILogger<FileWatcherYamlFileStubSource> logger,
-        IOptionsMonitor<SettingsModel> options,
-        IStubModelValidator stubModelValidator) : base(logger, fileService, options, stubModelValidator)
-    {
-    }
 
     /// <inheritdoc />
     public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,

@@ -14,16 +14,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a request header in the response.
 /// </summary>
-internal class RequestHeaderResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class RequestHeaderResponseVariableParsingHandler(
+    IHttpContextService httpContextService,
+    IFileService fileService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    public RequestHeaderResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService)
-        : base(fileService)
-    {
-        _httpContextService = httpContextService;
-    }
-
     /// <inheritdoc />
     public override string Name => "request_header";
 
@@ -37,7 +32,7 @@ internal class RequestHeaderResponseVariableParsingHandler : BaseVariableParsing
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var headers = _httpContextService.GetHeaders();
+        var headers = httpContextService.GetHeaders();
         return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 3)
             .Aggregate(input, (current, match) => InsertHeader(current, match, headers)));

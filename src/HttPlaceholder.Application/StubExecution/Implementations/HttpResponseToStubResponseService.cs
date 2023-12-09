@@ -10,29 +10,21 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class HttpResponseToStubResponseService : IHttpResponseToStubResponseService, ISingletonService
+internal class HttpResponseToStubResponseService(
+    IEnumerable<IResponseToStubResponseHandler> handlers,
+    ILogger<HttpResponseToStubResponseService> logger)
+    : IHttpResponseToStubResponseService, ISingletonService
 {
-    private readonly IEnumerable<IResponseToStubResponseHandler> _handlers;
-    private readonly ILogger<HttpResponseToStubResponseService> _logger;
-
-    public HttpResponseToStubResponseService(
-        IEnumerable<IResponseToStubResponseHandler> handlers,
-        ILogger<HttpResponseToStubResponseService> logger)
-    {
-        _handlers = handlers;
-        _logger = logger;
-    }
-
     /// <inheritdoc />
     public async Task<StubResponseModel> ConvertToResponseAsync(HttpResponseModel response,
         CancellationToken cancellationToken)
     {
         var stubResponse = new StubResponseModel();
-        foreach (var handler in _handlers.OrderByDescending(h => h.Priority))
+        foreach (var handler in handlers.OrderByDescending(h => h.Priority))
         {
             var executed =
                 await handler.HandleStubGenerationAsync(response, stubResponse, cancellationToken);
-            _logger.LogDebug(
+            logger.LogDebug(
                 $"Handler '{handler.GetType().Name}' " + (executed ? "executed" : "not executed") + ".");
         }
 

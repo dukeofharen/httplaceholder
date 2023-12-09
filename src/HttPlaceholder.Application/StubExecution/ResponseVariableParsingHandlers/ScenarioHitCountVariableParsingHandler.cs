@@ -13,21 +13,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable handler that is used to insert the hit count of a specific scenario in the response
 /// </summary>
-internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class ScenarioHitCountVariableParsingHandler(
+    IStubContext stubContext,
+    IFileService fileService,
+    ICacheService cacheService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly ICacheService _cacheService;
-    private readonly IStubContext _stubContext;
-
-    public ScenarioHitCountVariableParsingHandler(
-        IStubContext stubContext,
-        IFileService fileService,
-        ICacheService cacheService) :
-        base(fileService)
-    {
-        _stubContext = stubContext;
-        _cacheService = cacheService;
-    }
-
     /// <inheritdoc />
     public override string Name => "scenario_hitcount";
 
@@ -60,7 +51,7 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
         if (!customScenarioNameSet)
         {
             // Try to read the scenario state from the HttpContext as it contains the correct state of the moment the state was set.
-            var state = _cacheService.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState);
+            var state = cacheService.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState);
             hitCount = state?.HitCount;
         }
 
@@ -69,7 +60,7 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
             var scenarioName = StringHelper.GetFirstNonWhitespaceString(match.Groups[2].Value, stub.Scenario);
             if (!string.IsNullOrWhiteSpace(scenarioName))
             {
-                var scenario = await _stubContext.GetScenarioAsync(scenarioName, cancellationToken);
+                var scenario = await stubContext.GetScenarioAsync(scenarioName, cancellationToken);
                 hitCount = scenario?.HitCount;
             }
         }

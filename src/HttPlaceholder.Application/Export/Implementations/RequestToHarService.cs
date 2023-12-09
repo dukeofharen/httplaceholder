@@ -12,15 +12,8 @@ using ConvertUtil = System.Convert;
 
 namespace HttPlaceholder.Application.Export.Implementations;
 
-internal class RequestToHarService : IRequestToHarService, ISingletonService
+internal class RequestToHarService(IAssemblyService assemblyService) : IRequestToHarService, ISingletonService
 {
-    private readonly IAssemblyService _assemblyService;
-
-    public RequestToHarService(IAssemblyService assemblyService)
-    {
-        _assemblyService = assemblyService;
-    }
-
     public string Convert(RequestResultModel request, ResponseModel response)
     {
         var requestParams = request.RequestParameters;
@@ -34,7 +27,7 @@ internal class RequestToHarService : IRequestToHarService, ISingletonService
         const string creator = "HttPlaceholder";
         const string httpVersion = "HTTP/1.1";
         var pageId = $"page_{request.CorrelationId}";
-        var version = _assemblyService.GetAssemblyVersion();
+        var version = assemblyService.GetAssemblyVersion();
         var har = new Har
         {
             Log = new Log

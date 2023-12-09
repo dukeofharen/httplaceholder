@@ -17,21 +17,16 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 /// <summary>
 ///     A base class that is used for a read only stub source that reads files from the OS.
 /// </summary>
-internal abstract class BaseFileStubSource : IStubSource
+internal abstract class BaseFileStubSource(
+    ILogger<BaseFileStubSource> logger,
+    IFileService fileService,
+    IOptionsMonitor<SettingsModel> options,
+    IStubModelValidator stubModelValidator)
+    : IStubSource
 {
     private static readonly string[] _extensions = {".yml", ".yaml"};
-    protected readonly ILogger<BaseFileStubSource> Logger;
-    protected readonly IFileService FileService;
-    private readonly IOptionsMonitor<SettingsModel> _options;
-    private readonly IStubModelValidator _stubModelValidator;
-
-    protected BaseFileStubSource(ILogger<BaseFileStubSource> logger, IFileService fileService, IOptionsMonitor<SettingsModel> options, IStubModelValidator stubModelValidator)
-    {
-        Logger = logger;
-        FileService = fileService;
-        _options = options;
-        _stubModelValidator = stubModelValidator;
-    }
+    protected readonly ILogger<BaseFileStubSource> Logger = logger;
+    protected readonly IFileService FileService = fileService;
 
     public abstract Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
         CancellationToken cancellationToken = default);
@@ -57,7 +52,7 @@ internal abstract class BaseFileStubSource : IStubSource
 
     protected IEnumerable<string> GetInputLocations()
     {
-        var inputFileLocation = _options.CurrentValue.Storage?.InputFile;
+        var inputFileLocation = options.CurrentValue.Storage?.InputFile;
         if (string.IsNullOrEmpty(inputFileLocation))
         {
             // If the input file location is not set, try looking in the current directory for files.
@@ -104,7 +99,7 @@ internal abstract class BaseFileStubSource : IStubSource
 
             // Right now, stubs loaded from files are allowed to have validation errors.
             // They are NOT allowed to have no ID however.
-            var validationResults = _stubModelValidator.ValidateStubModel(stub).ToArray();
+            var validationResults = stubModelValidator.ValidateStubModel(stub).ToArray();
             if (validationResults.Length != 0)
             {
                 validationResults = validationResults.Select(r => $"- {r}").ToArray();

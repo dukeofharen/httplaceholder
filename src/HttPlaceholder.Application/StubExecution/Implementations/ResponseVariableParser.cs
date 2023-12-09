@@ -10,15 +10,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class ResponseVariableParser : IResponseVariableParser, ISingletonService
+internal class ResponseVariableParser(IEnumerable<IResponseVariableParsingHandler> handlers)
+    : IResponseVariableParser, ISingletonService
 {
-    private readonly IEnumerable<IResponseVariableParsingHandler> _handlers;
-
-    public ResponseVariableParser(IEnumerable<IResponseVariableParsingHandler> handlers)
-    {
-        _handlers = handlers;
-    }
-
     public static Regex VarRegex { get; } = new(
         @"\(\(([a-zA-Z0-9_]*)\:? ?'?(.*?)?'? ?\)\)",
         RegexOptions.Compiled,
@@ -28,7 +22,7 @@ internal class ResponseVariableParser : IResponseVariableParser, ISingletonServi
     public async Task<string> ParseAsync(string input, StubModel stub, CancellationToken cancellationToken)
     {
         var matches = VarRegex.Matches(input).ToArray();
-        foreach (var handler in _handlers)
+        foreach (var handler in handlers)
         {
             var handlerMatches = matches
                 .Where(m => m.Groups.Count > 1 && string.Equals(m.Groups[1].Value, handler.Name,

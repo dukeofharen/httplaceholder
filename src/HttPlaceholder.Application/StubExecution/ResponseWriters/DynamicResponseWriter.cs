@@ -10,15 +10,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 ///     Response writer that is used to run the "response variable parsing handlers" for manipulating the response.
 /// </summary>
-internal class DynamicResponseWriter : IResponseWriter, ISingletonService
+internal class DynamicResponseWriter(IResponseVariableParser responseVariableParser)
+    : IResponseWriter, ISingletonService
 {
-    private readonly IResponseVariableParser _responseVariableParser;
-
-    public DynamicResponseWriter(IResponseVariableParser responseVariableParser)
-    {
-        _responseVariableParser = responseVariableParser;
-    }
-
     /// <inheritdoc />
     public int Priority => -12;
 
@@ -35,7 +29,7 @@ internal class DynamicResponseWriter : IResponseWriter, ISingletonService
         if (!response.BodyIsBinary && response.Body != null)
         {
             var parsedBody =
-                await _responseVariableParser.ParseAsync(Encoding.UTF8.GetString(response.Body), stub,
+                await responseVariableParser.ParseAsync(Encoding.UTF8.GetString(response.Body), stub,
                     cancellationToken);
             response.Body = Encoding.UTF8.GetBytes(parsedBody);
         }
@@ -45,7 +39,7 @@ internal class DynamicResponseWriter : IResponseWriter, ISingletonService
         foreach (var key in keys)
         {
             response.Headers[key] =
-                await _responseVariableParser.ParseAsync(response.Headers[key], stub, cancellationToken);
+                await responseVariableParser.ParseAsync(response.Headers[key], stub, cancellationToken);
         }
 
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);

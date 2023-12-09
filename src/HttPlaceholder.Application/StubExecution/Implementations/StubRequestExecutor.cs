@@ -14,47 +14,29 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
+internal class StubRequestExecutor(
+    IEnumerable<IConditionChecker> conditionCheckers,
+    IFinalStubDeterminer finalStubDeterminer,
+    ILogger<StubRequestExecutor> logger,
+    IRequestLoggerFactory requestLoggerFactory,
+    IStubContext stubContext,
+    IStubResponseGenerator stubResponseGenerator,
+    IMediator mediator)
+    : IStubRequestExecutor, ISingletonService
 {
-    private readonly IEnumerable<IConditionChecker> _conditionCheckers;
-    private readonly IFinalStubDeterminer _finalStubDeterminer;
-    private readonly ILogger<StubRequestExecutor> _logger;
-    private readonly IMediator _mediator;
-    private readonly IRequestLoggerFactory _requestLoggerFactory;
-    private readonly IStubContext _stubContext;
-    private readonly IStubResponseGenerator _stubResponseGenerator;
-
-    public StubRequestExecutor(
-        IEnumerable<IConditionChecker> conditionCheckers,
-        IFinalStubDeterminer finalStubDeterminer,
-        ILogger<StubRequestExecutor> logger,
-        IRequestLoggerFactory requestLoggerFactory,
-        IStubContext stubContext,
-        IStubResponseGenerator stubResponseGenerator,
-        IMediator mediator)
-    {
-        _conditionCheckers = conditionCheckers;
-        _finalStubDeterminer = finalStubDeterminer;
-        _logger = logger;
-        _requestLoggerFactory = requestLoggerFactory;
-        _stubContext = stubContext;
-        _stubResponseGenerator = stubResponseGenerator;
-        _mediator = mediator;
-    }
-
     /// <inheritdoc />
     public async Task<ResponseModel> ExecuteRequestAsync(CancellationToken cancellationToken)
     {
-        var requestLogger = _requestLoggerFactory.GetRequestLogger();
+        var requestLogger = requestLoggerFactory.GetRequestLogger();
         var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
-        var stubs = (await _stubContext.GetStubsAsync(cancellationToken)).Where(s => s.Stub.Enabled).ToArray();
-        var orderedConditionCheckers = _conditionCheckers.OrderByDescending(c => c.Priority).ToArray();
+        var stubs = (await stubContext.GetStubsAsync(cancellationToken)).Where(s => s.Stub.Enabled).ToArray();
+        var orderedConditionCheckers = conditionCheckers.OrderByDescending(c => c.Priority).ToArray();
 
         var beforeCheckingNotification = new BeforeCheckingStubConditionsNotification
         {
             ConditionCheckers = orderedConditionCheckers, Stubs = stubs
         };
-        await _mediator.Publish(beforeCheckingNotification, cancellationToken);
+        await mediator.Publish(beforeCheckingNotification, cancellationToken);
         if (beforeCheckingNotification.Response != null)
         {
             return beforeCheckingNotification.Response;
@@ -88,7 +70,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
             }
             catch (Exception e)
             {
-                _logger.LogWarning($"Exception thrown while executing checks for stub '{stub.Id}': {e}");
+                logger.LogWarning($"Exception thrown while executing checks for stub '{stub.Id}': {e}");
             }
         }
 
@@ -99,11 +81,11 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
                 $"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
         }
 
-        var finalStub = _finalStubDeterminer.DetermineFinalStub(foundStubs);
-        await _stubContext.IncreaseHitCountAsync(finalStub.Scenario, cancellationToken);
+        var finalStub = finalStubDeterminer.DetermineFinalStub(foundStubs);
+        await stubContext.IncreaseHitCountAsync(finalStub.Scenario, cancellationToken);
         requestLogger.SetExecutingStubId(finalStub.Id);
-        var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub, cancellationToken);
-        await _mediator.Publish(new BeforeStubResponseReturnedNotification {Response = response}, cancellationToken);
+        var response = await stubResponseGenerator.GenerateResponseAsync(finalStub, cancellationToken);
+        await mediator.Publish(new BeforeStubResponseReturnedNotification {Response = response}, cancellationToken);
         return response;
     }
 

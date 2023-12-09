@@ -117,15 +117,12 @@ public class BackgroundServiceFacts
         Assert.IsTrue(service.StoppingCts.IsCancellationRequested);
     }
 
-    private class SucceedingBackgroundService : BackgroundService
+    private class SucceedingBackgroundService(
+        ILogger<BackgroundService> logger,
+        IDateTime dateTime,
+        IAsyncService asyncService)
+        : BackgroundService(logger, dateTime, asyncService)
     {
-        public SucceedingBackgroundService(
-            ILogger<BackgroundService> logger,
-            IDateTime dateTime,
-            IAsyncService asyncService) : base(logger, dateTime, asyncService)
-        {
-        }
-
         public bool ProcessCalled { get; set; }
 
         public override string Schedule => "5 4 * * *";
@@ -141,15 +138,12 @@ public class BackgroundServiceFacts
         }
     }
 
-    private class FailingBackgroundService : BackgroundService
+    private class FailingBackgroundService(
+        ILogger<BackgroundService> logger,
+        IDateTime dateTime,
+        IAsyncService asyncService)
+        : BackgroundService(logger, dateTime, asyncService)
     {
-        public FailingBackgroundService(
-            ILogger<BackgroundService> logger,
-            IDateTime dateTime,
-            IAsyncService asyncService) : base(logger, dateTime, asyncService)
-        {
-        }
-
         public bool ProcessCalled { get; set; }
 
         public override string Schedule => "5 4 * * *";

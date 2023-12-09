@@ -7,25 +7,18 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.WebInfrastructure.Implementations;
 
-internal class LoginCookieService : ILoginCookieService, ITransientService
+internal class LoginCookieService(
+    IOptionsMonitor<SettingsModel> options,
+    IHttpContextService httpContextService)
+    : ILoginCookieService, ITransientService
 {
     private const string LoginCookieKey = "HttPlaceholderLoggedin";
     private const string Salt = "83b2737f-7d85-4a0a-8113-b98ed4a255a1";
-    private readonly IHttpContextService _httpContextService;
-    private readonly IOptionsMonitor<SettingsModel> _options;
-
-    public LoginCookieService(
-        IOptionsMonitor<SettingsModel> options,
-        IHttpContextService httpContextService)
-    {
-        _options = options;
-        _httpContextService = httpContextService;
-    }
 
     /// <inheritdoc />
     public bool CheckLoginCookie()
     {
-        var settings = _options.CurrentValue;
+        var settings = options.CurrentValue;
         var username = settings.Authentication?.ApiUsername ?? string.Empty;
         var password = settings.Authentication?.ApiPassword ?? string.Empty;
         if (string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(password))
@@ -34,12 +27,12 @@ internal class LoginCookieService : ILoginCookieService, ITransientService
         }
 
         var expectedHash = CreateHash(username, password);
-        var cookie = _httpContextService.GetRequestCookie(LoginCookieKey);
+        var cookie = httpContextService.GetRequestCookie(LoginCookieKey);
         return cookie?.Value == expectedHash;
     }
 
     /// <inheritdoc />
-    public void SetLoginCookie(string username, string password) => _httpContextService.AppendCookie(
+    public void SetLoginCookie(string username, string password) => httpContextService.AppendCookie(
         LoginCookieKey,
         CreateHash(username, password),
         new CookieOptions {HttpOnly = false, SameSite = SameSiteMode.Lax});

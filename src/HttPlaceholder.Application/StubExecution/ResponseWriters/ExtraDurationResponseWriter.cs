@@ -11,16 +11,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 ///     Response writer that is used to add an extra duration to the total execution time of the request.
 /// </summary>
-internal class ExtraDurationResponseWriter : IResponseWriter, ISingletonService
+internal class ExtraDurationResponseWriter(IAsyncService asyncService) : IResponseWriter, ISingletonService
 {
     private static readonly Random _random = new();
-    private readonly IAsyncService _asyncService;
-
-    public ExtraDurationResponseWriter(
-        IAsyncService asyncService)
-    {
-        _asyncService = asyncService;
-    }
 
     /// <inheritdoc />
     public int Priority => 0;
@@ -49,7 +42,7 @@ internal class ExtraDurationResponseWriter : IResponseWriter, ISingletonService
             duration = _random.Next(min, max);
         }
 
-        await _asyncService.DelayAsync(duration, cancellationToken);
+        await asyncService.DelayAsync(duration, cancellationToken);
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 }

@@ -15,16 +15,10 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 /// <summary>
 ///     A stub source that is used to store and read data from memory.
 /// </summary>
-internal class InMemoryStubSource : BaseWritableStubSource
+internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : BaseWritableStubSource
 {
     private static readonly object _lock = new();
-    private readonly IOptionsMonitor<SettingsModel> _options;
     internal readonly ConcurrentDictionary<string, StubRequestCollectionItem> CollectionItems = new();
-
-    public InMemoryStubSource(IOptionsMonitor<SettingsModel> options)
-    {
-        _options = options;
-    }
 
     /// <inheritdoc />
     public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
@@ -208,7 +202,7 @@ internal class InMemoryStubSource : BaseWritableStubSource
         {
             foreach (var item in CollectionItems)
             {
-                var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
+                var maxLength = options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
                 var requests = item.Value.RequestResultModels
                     .OrderByDescending(r => r.RequestEndTime)
                     .Skip(maxLength);

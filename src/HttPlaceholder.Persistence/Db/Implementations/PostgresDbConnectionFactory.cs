@@ -8,19 +8,13 @@ namespace HttPlaceholder.Persistence.Db.Implementations;
 /// <summary>
 ///     A class for creating Postgres DB connections.
 /// </summary>
-internal class PostgresDbConnectionFactory : IDbConnectionFactory
+internal class PostgresDbConnectionFactory(IConfiguration configuration) : IDbConnectionFactory
 {
     internal const string ConnectionStringKey = "Postgres";
-    private readonly IConfiguration _configuration;
-
-    public PostgresDbConnectionFactory(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
 
     /// <inheritdoc />
     public IDbConnection GetConnection() => null;
 
     public DbDataSource GetDataSource() =>
-        NpgsqlDataSource.Create(_configuration.GetConnectionString(ConnectionStringKey));
+        NpgsqlDataSource.Create(configuration.GetConnectionString(ConnectionStringKey));
 }

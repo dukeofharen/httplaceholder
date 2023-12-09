@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class FakerService : IFakerService, ISingletonService
+internal class FakerService(ILogger<FakerService> logger) : IFakerService, ISingletonService
 {
     private const string DefaultDatetimeFormat = "yyyy-MM-dd HH:mm:ss";
 
@@ -131,12 +131,6 @@ internal class FakerService : IFakerService, ISingletonService
     };
 
     private readonly ConcurrentDictionary<string, Faker> _cachedFakers = new();
-    private readonly ILogger<FakerService> _logger;
-
-    public FakerService(ILogger<FakerService> logger)
-    {
-        _logger = logger;
-    }
 
     /// <inheritdoc />
     public FakeDataGeneratorModel[] GetGenerators() => _generators;
@@ -151,7 +145,7 @@ internal class FakerService : IFakerService, ISingletonService
             _generators.FirstOrDefault(g => string.Equals(generator, g.Name, StringComparison.OrdinalIgnoreCase));
         if (generatorModel == null)
         {
-            _logger.LogWarning($"No fake data generator found with name '{generator}'.");
+            logger.LogWarning($"No fake data generator found with name '{generator}'.");
             return string.Empty;
         }
 
@@ -159,7 +153,7 @@ internal class FakerService : IFakerService, ISingletonService
         {
             if (!string.IsNullOrWhiteSpace(locale))
             {
-                _logger.LogDebug($"Locale '{locale}' not found. Choose from: {string.Join(',', _locales)}.");
+                logger.LogDebug($"Locale '{locale}' not found. Choose from: {string.Join(',', _locales)}.");
             }
 
             locale = "en";

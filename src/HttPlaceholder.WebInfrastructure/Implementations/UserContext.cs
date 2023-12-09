@@ -4,15 +4,8 @@ using HttPlaceholder.Application.Interfaces.Authentication;
 
 namespace HttPlaceholder.WebInfrastructure.Implementations;
 
-internal class UserContext : IUserContext, ITransientService
+internal class UserContext(IHttpContextAccessor httpContextAccessor) : IUserContext, ITransientService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public UserContext(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
     /// <inheritdoc />
-    public ClaimsPrincipal User => _httpContextAccessor.HttpContext.User;
+    public ClaimsPrincipal User => httpContextAccessor.HttpContext.User;
 }

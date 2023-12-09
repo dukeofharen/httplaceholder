@@ -8,25 +8,17 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class StubResponseGenerator : IStubResponseGenerator, ISingletonService
+internal class StubResponseGenerator(
+    IRequestLoggerFactory requestLoggerFactory,
+    IEnumerable<IResponseWriter> responseWriters)
+    : IStubResponseGenerator, ISingletonService
 {
-    private readonly IRequestLoggerFactory _requestLoggerFactory;
-    private readonly IEnumerable<IResponseWriter> _responseWriters;
-
-    public StubResponseGenerator(
-        IRequestLoggerFactory requestLoggerFactory,
-        IEnumerable<IResponseWriter> responseWriters)
-    {
-        _requestLoggerFactory = requestLoggerFactory;
-        _responseWriters = responseWriters;
-    }
-
     /// <inheritdoc />
     public async Task<ResponseModel> GenerateResponseAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var requestLogger = _requestLoggerFactory.GetRequestLogger();
+        var requestLogger = requestLoggerFactory.GetRequestLogger();
         var response = new ResponseModel();
-        foreach (var writer in _responseWriters.OrderByDescending(w => w.Priority))
+        foreach (var writer in responseWriters.OrderByDescending(w => w.Priority))
         {
             var result = await writer.WriteToResponseAsync(stub, response, cancellationToken);
             if (result?.Executed == true)
