@@ -28,13 +28,13 @@ internal abstract class BaseFileStubSource(
     protected readonly ILogger<BaseFileStubSource> Logger = logger;
     protected readonly IFileService FileService = fileService;
 
-    public abstract Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+    public abstract Task<IEnumerable<(StubModel, IDictionary<string, string>)>> GetStubsAsync(string distributionKey = null,
         CancellationToken cancellationToken = default);
 
-    public abstract Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+    public abstract Task<IEnumerable<(StubOverviewModel, IDictionary<string, string>)>> GetStubsOverviewAsync(string distributionKey = null,
         CancellationToken cancellationToken = default);
 
-    public abstract Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+    public abstract Task<(StubModel, IDictionary<string, string>)> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     public abstract Task PrepareStubSourceAsync(CancellationToken cancellationToken);
