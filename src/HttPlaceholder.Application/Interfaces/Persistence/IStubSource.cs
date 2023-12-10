@@ -14,7 +14,7 @@ public interface IStubSource
     ///     Gets a list of <see cref="StubModel" />.
     /// </summary>
     /// <param name="distributionKey">
-    ///     The destribution key the stubs should be retrieved for. Leave it null if there is no
+    ///     The distribution key the stubs should be retrieved for. Leave it null if there is no
     ///     user.
     /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -26,7 +26,7 @@ public interface IStubSource
     ///     Gets an overview list of <see cref="StubOverviewModel" />.
     /// </summary>
     /// <param name="distributionKey">
-    ///     The destribution key the stubs should be retrieved for. Leave it null if there is no
+    ///     The distribution key the stubs should be retrieved for. Leave it null if there is no
     ///     user.
     /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -38,7 +38,7 @@ public interface IStubSource
     ///     Gets a <see cref="StubModel" /> by ID.
     /// </summary>
     /// <param name="stubId">The stub ID.</param>
-    /// <param name="distributionKey">The destribution key the stub should be retrieved for. Leave it null if there is no user.</param>
+    /// <param name="distributionKey">The distribution key the stub should be retrieved for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="StubModel" />.</returns>
     Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
