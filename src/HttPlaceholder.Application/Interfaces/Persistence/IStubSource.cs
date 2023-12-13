@@ -19,7 +19,7 @@ public interface IStubSource
     /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A list of <see cref="StubModel" /> with the corresponding metadata.</returns>
-    Task<IEnumerable<(StubModel Stub, IDictionary<string, string> Metadata)>> GetStubsAsync(string distributionKey = null,
+    Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -31,7 +31,7 @@ public interface IStubSource
     /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>An overview list of <see cref="StubOverviewModel" /> with the corresponding metadata.</returns>
-    Task<IEnumerable<(StubOverviewModel Stub, IDictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
+    Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -41,7 +41,7 @@ public interface IStubSource
     /// <param name="distributionKey">The distribution key the stub should be retrieved for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="StubModel" /> with the corresponding metadata.</returns>
-    Task<(StubModel Stub, IDictionary<string, string> Metadata)> GetStubAsync(string stubId, string distributionKey = null,
+    Task<(StubModel Stub, Dictionary<string, string> Metadata)> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -28,14 +28,15 @@ internal class YamlFileStubSource(
     private IEnumerable<StubModel> _stubs;
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+    public override async Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
+        string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
         var fileLocations = GetYamlFileLocations().ToArray();
         if (fileLocations.Length == 0)
         {
             Logger.LogInformation("No .yml input files found.");
-            return Array.Empty<StubModel>().AsEnumerable();
+            return Array.Empty<(StubModel, Dictionary<string, string>)>().AsEnumerable();
         }
 
         if (_stubs == null || GetLastStubFileModificationDateTime(fileLocations) > _stubLoadDateTime)
@@ -60,20 +61,25 @@ internal class YamlFileStubSource(
             Logger.LogDebug("No stub file contents changed in the meanwhile.");
         }
 
-        return _stubs;
+        return _stubs
+            .Select(stub => (stub, new Dictionary<string, string>()));
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
+    public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
+        GetStubsOverviewAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
-        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
-        .ToArray();
+        .Select(s => (new StubOverviewModel { Id = s.Stub.Id, Tenant = s.Stub.Tenant, Enabled = s.Stub.Enabled },
+            s.Metadata));
 
     /// <inheritdoc />
-    public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)> GetStubAsync(
+        string stubId,
+        string distributionKey = null,
         CancellationToken cancellationToken = default) =>
-        (await GetStubsAsync(distributionKey, cancellationToken)).FirstOrDefault(s => s.Id == stubId);
+        (await GetStubsAsync(distributionKey, cancellationToken))
+        .FirstOrDefault(s => s.Stub.Id == stubId);
 
     /// <inheritdoc />
     public override async Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>

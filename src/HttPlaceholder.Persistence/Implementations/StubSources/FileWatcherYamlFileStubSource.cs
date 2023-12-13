@@ -34,7 +34,7 @@ internal class FileWatcherYamlFileStubSource(
     internal readonly ConcurrentDictionary<string, IEnumerable<StubModel>> Stubs = new();
 
     /// <inheritdoc />
-    public override Task<IEnumerable<(StubModel Stub, IDictionary<string, string> Metadata)>> GetStubsAsync(
+    public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
         string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
@@ -44,12 +44,12 @@ internal class FileWatcherYamlFileStubSource(
             from stub
                 in kv.Value
             select (stub,
-                (IDictionary<string, string>)new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } });
+                new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } });
         return Task.FromResult(result);
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<(StubOverviewModel Stub, IDictionary<string, string> Metadata)>> GetStubsOverviewAsync(
+    public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(
         string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
@@ -73,7 +73,7 @@ internal class FileWatcherYamlFileStubSource(
     }
 
     /// <inheritdoc />
-    public override async Task<(StubModel Stub, IDictionary<string, string> Metadata)> GetStubAsync(string stubId,
+    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)> GetStubAsync(string stubId,
         string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
