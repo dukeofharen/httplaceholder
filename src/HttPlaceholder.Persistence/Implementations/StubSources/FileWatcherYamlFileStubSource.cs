@@ -34,15 +34,27 @@ internal class FileWatcherYamlFileStubSource(
     internal readonly ConcurrentDictionary<string, IEnumerable<StubModel>> Stubs = new();
 
     /// <inheritdoc />
-    public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        Task.FromResult(Stubs.Values.SelectMany(v => v));
+    public override Task<IEnumerable<(StubModel Stub, IDictionary<string, string> Metadata)>> GetStubsAsync(
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var result =
+            from kv
+                in Stubs
+            from stub
+                in kv.Value
+            select (stub,
+                (IDictionary<string, string>)new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } });
+        return Task.FromResult(result);
+    }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+    public override async Task<IEnumerable<(StubOverviewModel Stub, IDictionary<string, string> Metadata)>> GetStubsOverviewAsync(
+        string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
-        .Select(s => new StubOverviewModel { Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled })
+        .Select(s => (new StubOverviewModel { Id = s.Stub.Id, Tenant = s.Stub.Tenant, Enabled = s.Stub.Enabled },
+            s.Metadata))
         .ToArray();
 
     /// <inheritdoc />
@@ -61,9 +73,11 @@ internal class FileWatcherYamlFileStubSource(
     }
 
     /// <inheritdoc />
-    public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+    public override async Task<(StubModel Stub, IDictionary<string, string> Metadata)> GetStubAsync(string stubId,
+        string distributionKey = null,
         CancellationToken cancellationToken = default) =>
-        (await GetStubsAsync(distributionKey, cancellationToken)).FirstOrDefault(s => s.Id == stubId);
+        (await GetStubsAsync(distributionKey, cancellationToken))
+        .FirstOrDefault(s => s.Item1.Id == stubId);
 
     private void SetupStubs()
     {
