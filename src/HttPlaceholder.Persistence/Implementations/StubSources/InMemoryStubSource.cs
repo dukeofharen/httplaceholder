@@ -178,7 +178,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
             // We need to convert the list to an array here, or else we can get errors when deleting the stubs.
             var item = GetCollection(distributionKey);
             var stubs = item.StubModels;
-            return Task.FromResult(stubs.Select(s => (s, new Dictionary<string, string>())));
+            return Task.FromResult(stubs.Select(s => (s, new Dictionary<string, string>())).ToArray().AsEnumerable());
         }
     }
 
