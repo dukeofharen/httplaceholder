@@ -74,12 +74,17 @@ internal class YamlFileStubSource(
             s.Metadata));
 
     /// <inheritdoc />
-    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)> GetStubAsync(
+    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(
         string stubId,
         string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        (await GetStubsAsync(distributionKey, cancellationToken))
-        .FirstOrDefault(s => s.Stub.Id == stubId);
+        CancellationToken cancellationToken = default)
+    {
+        {
+            var result = (await GetStubsAsync(distributionKey, cancellationToken))
+                .FirstOrDefault(s => s.Item1.Id == stubId);
+            return result.Stub != null ? result : null;
+        }
+    }
 
     /// <inheritdoc />
     public override async Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>

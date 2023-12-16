@@ -41,7 +41,7 @@ public interface IStubSource
     /// <param name="distributionKey">The distribution key the stub should be retrieved for. Leave it null if there is no user.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="StubModel" /> with the corresponding metadata.</returns>
-    Task<(StubModel Stub, Dictionary<string, string> Metadata)> GetStubAsync(string stubId, string distributionKey = null,
+    Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>

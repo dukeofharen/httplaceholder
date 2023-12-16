@@ -148,7 +148,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
                 if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
                 {
                     var index = result
-                        .Select((request, index) => new {request, index})
+                        .Select((request, index) => new { request, index })
                         .Where(f => f.request.CorrelationId.Equals(pagingModel.FromIdentifier))
                         .Select(f => f.index)
                         .FirstOrDefault();
@@ -169,30 +169,37 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+    public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
+        string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
         lock (_lock)
         {
             // We need to convert the list to an array here, or else we can get errors when deleting the stubs.
             var item = GetCollection(distributionKey);
-            return Task.FromResult(item.StubModels.ToArray().AsEnumerable());
+            var stubs = item.StubModels;
+            return Task.FromResult(stubs.Select(s => (s, new Dictionary<string, string>())));
         }
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
+    public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
+        GetStubsOverviewAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
-        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
+        .Select(s => (new StubOverviewModel { Id = s.Stub.Id, Tenant = s.Stub.Tenant, Enabled = s.Stub.Enabled },
+            s.Metadata))
         .ToArray();
 
     /// <inheritdoc />
-    public override Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+    public override Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId,
+        string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
         var item = GetCollection(distributionKey);
-        return Task.FromResult(item.StubModels.FirstOrDefault(s => s.Id == stubId));
+        var stub = item.StubModels.FirstOrDefault(s => s.Id == stubId);
+        (StubModel, Dictionary<string, string>)? result = stub != null ? (stub, new Dictionary<string, string>()) : null;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

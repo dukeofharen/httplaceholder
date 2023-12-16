@@ -34,7 +34,7 @@ internal abstract class BaseFileStubSource(
     public abstract Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
         CancellationToken cancellationToken = default);
 
-    public abstract Task<(StubModel Stub, Dictionary<string, string> Metadata)> GetStubAsync(string stubId, string distributionKey = null,
+    public abstract Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     public abstract Task PrepareStubSourceAsync(CancellationToken cancellationToken);

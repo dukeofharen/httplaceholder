@@ -150,7 +150,7 @@ internal class FileSystemStubSource(
             if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
             {
                 var index = files
-                    .Select((file, index) => new {file, index})
+                    .Select((file, index) => new { file, index })
                     .Where(f => f.file.Contains(pagingModel.FromIdentifier))
                     .Select(f => f.index)
                     .FirstOrDefault();
@@ -175,29 +175,35 @@ internal class FileSystemStubSource(
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+    public override async Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
+        string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
         await EnsureDirectoriesExist(distributionKey, cancellationToken);
-        return await fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
+        var result = await fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
             cancellationToken);
+        return result.Select(s => (s, new Dictionary<string, string>()));
     }
 
     /// <inheritdoc />
-    public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId,
+        string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
         await EnsureDirectoriesExist(distributionKey, cancellationToken);
         var stubs = await fileSystemStubCache.GetOrUpdateStubCacheAsync(distributionKey,
             cancellationToken);
-        return stubs.FirstOrDefault(s => s.Id == stubId);
+        var result = stubs.FirstOrDefault(s => s.Id == stubId);
+        return result != null ? (result, new Dictionary<string, string>()) : null;
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
+    public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
+        GetStubsOverviewAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
-        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
+        .Select(s => (new StubOverviewModel { Id = s.Stub.Id, Tenant = s.Stub.Tenant, Enabled = s.Stub.Enabled },
+            s.Metadata))
         .ToArray();
 
     /// <inheritdoc />

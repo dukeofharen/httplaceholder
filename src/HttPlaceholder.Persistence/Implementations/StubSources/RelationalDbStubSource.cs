@@ -88,7 +88,7 @@ internal class RelationalDbStubSource(
     {
         using var ctx = databaseContextFactory.CreateDatabaseContext();
         var updatedRows = await ctx.ExecuteAsync(queryStore.DeleteRequestQuery, cancellationToken,
-            new {CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey)});
+            new { CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey) });
         return updatedRows > 0;
     }
 
@@ -101,7 +101,7 @@ internal class RelationalDbStubSource(
         foreach (var key in keys)
         {
             await ctx.ExecuteAsync(queryStore.CleanOldRequestsQuery, cancellationToken,
-                new {Limit = maxLength, DistributionKey = key});
+                new { Limit = maxLength, DistributionKey = key });
         }
     }
 
@@ -165,7 +165,7 @@ internal class RelationalDbStubSource(
     {
         using var ctx = databaseContextFactory.CreateDatabaseContext();
         return await ctx.QueryAsync<ScenarioStateModel>(queryStore.GetAllScenariosQuery, cancellationToken,
-            new {DistributionKey = CleanDistKey(distributionKey)});
+            new { DistributionKey = CleanDistKey(distributionKey) });
     }
 
     /// <inheritdoc />
@@ -179,7 +179,7 @@ internal class RelationalDbStubSource(
 
         using var ctx = databaseContextFactory.CreateDatabaseContext();
         var count = await ctx.ExecuteAsync(queryStore.DeleteScenarioQuery, cancellationToken,
-            new {Scenario = scenario, DistributionKey = CleanDistKey(distributionKey)});
+            new { Scenario = scenario, DistributionKey = CleanDistKey(distributionKey) });
         return count >= 1;
     }
 
@@ -189,7 +189,7 @@ internal class RelationalDbStubSource(
     {
         using var ctx = databaseContextFactory.CreateDatabaseContext();
         await ctx.ExecuteAsync(queryStore.DeleteAllScenariosQuery, cancellationToken,
-            new {DistributionKey = CleanDistKey(distributionKey)});
+            new { DistributionKey = CleanDistKey(distributionKey) });
     }
 
     /// <inheritdoc />
@@ -200,7 +200,7 @@ internal class RelationalDbStubSource(
         var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(
             queryStore.GetRequestQuery,
             cancellationToken,
-            new {CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey)});
+            new { CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey) });
         return result == null ? null : JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
     }
 
@@ -212,7 +212,7 @@ internal class RelationalDbStubSource(
         var result = await ctx.QueryFirstOrDefaultAsync<DbResponseModel>(
             queryStore.GetResponseQuery,
             cancellationToken,
-            new {CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey)});
+            new { CorrelationId = correlationId, DistributionKey = CleanDistKey(distributionKey) });
         if (result == null)
         {
             return null;
@@ -233,7 +233,7 @@ internal class RelationalDbStubSource(
     {
         using var ctx = databaseContextFactory.CreateDatabaseContext();
         await ctx.ExecuteAsync(queryStore.DeleteAllRequestsQuery, cancellationToken,
-            new {DistributionKey = CleanDistKey(distributionKey)});
+            new { DistributionKey = CleanDistKey(distributionKey) });
     }
 
     /// <inheritdoc />
@@ -242,7 +242,7 @@ internal class RelationalDbStubSource(
     {
         using var ctx = databaseContextFactory.CreateDatabaseContext();
         var updated = await ctx.ExecuteAsync(queryStore.DeleteStubQuery, cancellationToken,
-            new {StubId = stubId, DistributionKey = CleanDistKey(distributionKey)});
+            new { StubId = stubId, DistributionKey = CleanDistKey(distributionKey) });
         if (string.IsNullOrWhiteSpace(distributionKey))
         {
             await relationalDbStubCache.DeleteStubAsync(ctx, stubId, cancellationToken);
@@ -262,12 +262,12 @@ internal class RelationalDbStubSource(
         {
             IEnumerable<string> correlationIds =
                 (await ctx.QueryAsync<string>(queryStore.GetPagedRequestCorrelationIdsQuery, cancellationToken,
-                    new {DistributionKey = CleanDistKey(distributionKey)}))
+                    new { DistributionKey = CleanDistKey(distributionKey) }))
                 .ToArray();
             if (!string.IsNullOrWhiteSpace(pagingModel.FromIdentifier))
             {
                 var index = correlationIds
-                    .Select((correlationId, index) => new {correlationId, index})
+                    .Select((correlationId, index) => new { correlationId, index })
                     .Where(x => x.correlationId.Equals(pagingModel.FromIdentifier))
                     .Select(f => f.index)
                     .FirstOrDefault();
@@ -281,12 +281,12 @@ internal class RelationalDbStubSource(
 
             result = await ctx.QueryAsync<DbRequestModel>(queryStore.GetRequestsByCorrelationIdsQuery,
                 cancellationToken,
-                new {CorrelationIds = correlationIds.ToArray(), DistributionKey = CleanDistKey(distributionKey)});
+                new { CorrelationIds = correlationIds.ToArray(), DistributionKey = CleanDistKey(distributionKey) });
         }
         else
         {
             result = await ctx.QueryAsync<DbRequestModel>(queryStore.GetRequestsQuery, cancellationToken,
-                new {DistributionKey = CleanDistKey(distributionKey)});
+                new { DistributionKey = CleanDistKey(distributionKey) });
         }
 
         return result
@@ -294,28 +294,33 @@ internal class RelationalDbStubSource(
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+    public override async Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
+        string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
         using var ctx = databaseContextFactory.CreateDatabaseContext();
-        return await relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx,
+        var result = await relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx,
             cancellationToken);
+        return result.Select(s => (s, new Dictionary<string, string>()));
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+    public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
         CancellationToken cancellationToken = default) =>
-        (await GetStubsAsync(CleanDistKey(distributionKey), cancellationToken))
-        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled});
+        (await GetStubsAsync(distributionKey, cancellationToken))
+        .Select(s => (new StubOverviewModel { Id = s.Stub.Id, Tenant = s.Stub.Tenant, Enabled = s.Stub.Enabled },
+            s.Metadata))
+        .ToArray();
 
     /// <inheritdoc />
-    public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
         using var ctx = databaseContextFactory.CreateDatabaseContext();
         var stubs = await relationalDbStubCache.GetOrUpdateStubCacheAsync(CleanDistKey(distributionKey), ctx,
             cancellationToken);
-        return stubs.FirstOrDefault(s => s.Id == stubId);
+        var result = stubs.FirstOrDefault(s => s.Id == stubId);
+        return result != null ? (result, new Dictionary<string, string>()) : null;
     }
 
     /// <inheritdoc />
@@ -333,5 +338,5 @@ internal class RelationalDbStubSource(
     private async Task<ScenarioStateModel> GetScenarioInternalAsync(IDatabaseContext ctx, string scenario,
         string distributionKey, CancellationToken cancellationToken) =>
         await ctx.QueryFirstOrDefaultAsync<ScenarioStateModel>(queryStore.GetScenarioQuery,
-            cancellationToken, new {Scenario = scenario, DistributionKey = CleanDistKey(distributionKey)});
+            cancellationToken, new { Scenario = scenario, DistributionKey = CleanDistKey(distributionKey) });
 }
