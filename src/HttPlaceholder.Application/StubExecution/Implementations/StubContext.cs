@@ -54,7 +54,7 @@ internal class StubContext(
                 (await source.GetStubsOverviewAsync(stubRequestContext.DistributionKey, cancellationToken))
                 .Select(s => new FullStubOverviewModel
                 {
-                    Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
+                    Stub = s.Stub, Metadata = MapMetadata(stubSourceIsReadOnly, s.Metadata)
                 });
             result.AddRange(fullStubModels);
         }
@@ -75,10 +75,10 @@ internal class StubContext(
         var source = GetWritableStubSource();
         var distKey = stubRequestContext.DistributionKey;
         await source.AddStubAsync(stub, distKey, cancellationToken);
-        var result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
+        var result = new FullStubModel { Stub = stub, Metadata = MapMetadata(false) };
         var overviewModel = new FullStubOverviewModel
         {
-            Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
+            Stub = new StubOverviewModel { Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled },
             Metadata = result.Metadata
         };
         await stubNotify.StubAddedAsync(overviewModel, distKey, cancellationToken);
@@ -101,11 +101,11 @@ internal class StubContext(
         var source = GetWritableStubSource();
         var distKey = stubRequestContext.DistributionKey;
         var stubs = (await source.GetStubsAsync(distKey, cancellationToken))
-            .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
+            .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
         foreach (var stub in stubs)
         {
-            await source.DeleteStubAsync(stub.Id, distKey, cancellationToken);
-            await stubNotify.StubDeletedAsync(stub.Id, distKey, cancellationToken);
+            await source.DeleteStubAsync(stub.Stub.Id, distKey, cancellationToken);
+            await stubNotify.StubDeletedAsync(stub.Stub.Id, distKey, cancellationToken);
         }
     }
 
@@ -117,8 +117,8 @@ internal class StubContext(
         var stubs = await source.GetStubsAsync(distKey, cancellationToken);
         foreach (var stub in stubs)
         {
-            await source.DeleteStubAsync(stub.Id, distKey, cancellationToken);
-            await stubNotify.StubDeletedAsync(stub.Id, distKey, cancellationToken);
+            await source.DeleteStubAsync(stub.Stub.Id, distKey, cancellationToken);
+            await stubNotify.StubDeletedAsync(stub.Stub.Id, distKey, cancellationToken);
         }
     }
 
@@ -132,14 +132,14 @@ internal class StubContext(
             .Distinct();
         var distKey = stubRequestContext.DistributionKey;
         var existingStubs = (await source.GetStubsAsync(distKey, cancellationToken))
-            .Where(s => stubIds.Any(sid => string.Equals(sid, s.Id, StringComparison.OrdinalIgnoreCase)) ||
-                        string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
+            .Where(s => stubIds.Any(sid => string.Equals(sid, s.Stub.Id, StringComparison.OrdinalIgnoreCase)) ||
+                        string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
 
         // First, delete the existing stubs.
         foreach (var stub in existingStubs)
         {
-            await source.DeleteStubAsync(stub.Id, distKey, cancellationToken);
-            await stubNotify.StubDeletedAsync(stub.Id, distKey, cancellationToken);
+            await source.DeleteStubAsync(stub.Stub.Id, distKey, cancellationToken);
+            await stubNotify.StubDeletedAsync(stub.Stub.Id, distKey, cancellationToken);
         }
 
         // Make sure the new selection of stubs all have the new tenant and add them to the stub source.
@@ -149,8 +149,8 @@ internal class StubContext(
             await source.AddStubAsync(stub, distKey, cancellationToken);
             var overviewModel = new FullStubOverviewModel
             {
-                Stub = new StubOverviewModel {Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled},
-                Metadata = new StubMetadataModel {ReadOnly = false}
+                Stub = new StubOverviewModel { Id = stub.Id, Tenant = stub.Tenant, Enabled = stub.Enabled },
+                Metadata = MapMetadata(false)
             };
             await stubNotify.StubAddedAsync(overviewModel, distKey, cancellationToken);
         }
@@ -170,7 +170,7 @@ internal class StubContext(
 
             result = new FullStubModel
             {
-                Stub = stub, Metadata = new StubMetadataModel {ReadOnly = source is not IWritableStubSource}
+                Stub = stub.Value.Stub, Metadata = MapMetadata(source is not IWritableStubSource, stub.Value.Metadata)
             };
             break;
         }
@@ -444,9 +444,20 @@ internal class StubContext(
             var stubs = await source.GetStubsAsync(stubRequestContext.DistributionKey, cancellationToken);
             var fullStubModels = stubs.Select(s => new FullStubModel
             {
-                Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
+                Stub = s.Stub, Metadata = MapMetadata(stubSourceIsReadOnly, s.Metadata)
             });
             result.AddRange(fullStubModels);
+        }
+
+        return result;
+    }
+
+    private static StubMetadataModel MapMetadata(bool stubSourceIsReadOnly, IDictionary<string, string> metadata = null)
+    {
+        var result = new StubMetadataModel { ReadOnly = stubSourceIsReadOnly };
+        if (metadata != null && metadata.TryGetValue(StubMetadataKeys.Filename, out var filename))
+        {
+            result.Filename = filename;
         }
 
         return result;
