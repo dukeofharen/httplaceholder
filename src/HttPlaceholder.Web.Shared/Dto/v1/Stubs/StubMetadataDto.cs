@@ -18,5 +18,6 @@ public class StubMetadataDto : IMapFrom<StubMetadataModel>, IMapTo<StubMetadataM
     /// <summary>
     ///     Gets or sets the filename the stub is in
     /// </summary>
+    [YamlIgnore]
     public string Filename { get; set; }
 }
