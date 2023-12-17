@@ -44,9 +44,12 @@ public class FileWatcherYamlFileStubSourceFacts
 
         // Assert
         Assert.AreEqual(3, result.Length);
-        Assert.AreEqual(stub1.Id, result[0].Id);
-        Assert.AreEqual(stub2.Id, result[1].Id);
-        Assert.AreEqual(stub3.Id, result[2].Id);
+        Assert.AreEqual(stub1.Id, result[0].Stub.Id);
+        Assert.AreEqual("/path/to/file1.yml", result[0].Metadata[StubMetadataKeys.Filename]);
+        Assert.AreEqual(stub2.Id, result[1].Stub.Id);
+        Assert.AreEqual("/path/to/file2.yml", result[1].Metadata[StubMetadataKeys.Filename]);
+        Assert.AreEqual(stub3.Id, result[2].Stub.Id);
+        Assert.AreEqual("/path/to/file2.yml", result[2].Metadata[StubMetadataKeys.Filename]);
     }
 
     [TestMethod]
@@ -66,9 +69,12 @@ public class FileWatcherYamlFileStubSourceFacts
 
         // Assert
         Assert.AreEqual(3, result.Length);
-        Assert.AreEqual(stub1.Id, result[0].Id);
-        Assert.AreEqual(stub2.Id, result[1].Id);
-        Assert.AreEqual(stub3.Id, result[2].Id);
+        Assert.AreEqual(stub1.Id, result[0].Stub.Id);
+        Assert.AreEqual("/path/to/file1.yml", result[0].Metadata[StubMetadataKeys.Filename]);
+        Assert.AreEqual(stub2.Id, result[1].Stub.Id);
+        Assert.AreEqual("/path/to/file2.yml", result[1].Metadata[StubMetadataKeys.Filename]);
+        Assert.AreEqual(stub3.Id, result[2].Stub.Id);
+        Assert.AreEqual("/path/to/file2.yml", result[2].Metadata[StubMetadataKeys.Filename]);
     }
 
     [TestMethod]
@@ -87,7 +93,9 @@ public class FileWatcherYamlFileStubSourceFacts
         var result = await source.GetStubAsync(stub2.Id);
 
         // Assert
-        Assert.AreEqual(stub2.Id, result.Id);
+        Assert.IsTrue(result.HasValue);
+        Assert.AreEqual(stub2.Id, result.Value.Stub.Id);
+        Assert.AreEqual("/path/to/file2.yml", result.Value.Metadata[StubMetadataKeys.Filename]);
     }
 
     [TestMethod]
