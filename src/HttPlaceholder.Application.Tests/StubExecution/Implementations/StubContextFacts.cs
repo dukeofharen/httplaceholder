@@ -17,7 +17,7 @@ public class StubContextFacts
 {
     private const string DistrubutionKey = "username";
     private readonly AutoMocker _mocker = new();
-    private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
+    private readonly SettingsModel _settings = new() { Storage = new StorageSettingsModel() };
     private readonly IList<IStubSource> _stubSources = new List<IStubSource>();
 
     [TestInitialize]
@@ -44,17 +44,17 @@ public class StubContextFacts
         var stubSource1 = new Mock<IStubSource>();
         var stubSource2 = new Mock<IStubSource>();
 
-        var stub1 = new StubModel();
-        var stub2 = new StubModel();
-        var stub3 = new StubModel();
+        var stub1 = GetTuple(new StubModel(), "file1.yml");
+        var stub2 = GetTuple(new StubModel(), "file1.yml");
+        var stub3 = GetTuple(new StubModel(), "file2.yml");
 
         stubSource1
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub1, stub2});
+            .ReturnsAsync(new[] { stub1, stub2 });
 
         stubSource2
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub3});
+            .ReturnsAsync(new[] { stub3 });
 
         _stubSources.Add(stubSource1.Object);
         _stubSources.Add(stubSource2.Object);
@@ -66,9 +66,12 @@ public class StubContextFacts
 
         // assert
         Assert.AreEqual(3, result.Length);
-        Assert.AreEqual(stub1, result[0].Stub);
-        Assert.AreEqual(stub2, result[1].Stub);
-        Assert.AreEqual(stub3, result[2].Stub);
+        Assert.AreEqual(stub1.Stub, result[0].Stub);
+        Assert.AreEqual("file1.yml", result[0].Metadata.Filename);
+        Assert.AreEqual(stub2.Stub, result[1].Stub);
+        Assert.AreEqual("file1.yml", result[1].Metadata.Filename);
+        Assert.AreEqual(stub3.Stub, result[2].Stub);
+        Assert.AreEqual("file2.yml", result[2].Metadata.Filename);
     }
 
     [TestMethod]
@@ -78,17 +81,17 @@ public class StubContextFacts
         var stubSource1 = new Mock<IStubSource>();
         var stubSource2 = new Mock<IStubSource>();
 
-        var stub1 = new StubOverviewModel();
-        var stub2 = new StubOverviewModel();
-        var stub3 = new StubOverviewModel();
+        var stub1 = GetTuple(new StubOverviewModel(), "file1.yml");
+        var stub2 = GetTuple(new StubOverviewModel(), "file1.yml");
+        var stub3 = GetTuple(new StubOverviewModel(), "file2.yml");
 
         stubSource1
             .Setup(m => m.GetStubsOverviewAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub1, stub2});
+            .ReturnsAsync(new[] { stub1, stub2 });
 
         stubSource2
             .Setup(m => m.GetStubsOverviewAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub3});
+            .ReturnsAsync(new[] { stub3 });
 
         _stubSources.Add(stubSource1.Object);
         _stubSources.Add(stubSource2.Object);
@@ -100,9 +103,12 @@ public class StubContextFacts
 
         // assert
         Assert.AreEqual(3, result.Length);
-        Assert.AreEqual(stub1, result[0].Stub);
-        Assert.AreEqual(stub2, result[1].Stub);
-        Assert.AreEqual(stub3, result[2].Stub);
+        Assert.AreEqual(stub1.Stub, result[0].Stub);
+        Assert.AreEqual("file1.yml", result[0].Metadata.Filename);
+        Assert.AreEqual(stub2.Stub, result[1].Stub);
+        Assert.AreEqual("file1.yml", result[1].Metadata.Filename);
+        Assert.AreEqual(stub3.Stub, result[2].Stub);
+        Assert.AreEqual("file2.yml", result[2].Metadata.Filename);
     }
 
     [TestMethod]
@@ -112,17 +118,17 @@ public class StubContextFacts
         var stubSource1 = new Mock<IStubSource>();
         var stubSource2 = new Mock<IStubSource>();
 
-        var stub1 = new StubModel {Tenant = "tenant1"};
-        var stub2 = new StubModel {Tenant = "tenant2"};
-        var stub3 = new StubModel {Tenant = "TENaNT1"};
+        var stub1 = GetTuple(new StubModel { Tenant = "tenant1" }, "file1.yml");
+        var stub2 = GetTuple(new StubModel { Tenant = "tenant2" }, "file1.yml");
+        var stub3 = GetTuple(new StubModel { Tenant = "TENaNT1" }, "file2.yml");
 
         stubSource1
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub1, stub2});
+            .ReturnsAsync(new[] { stub1, stub2 });
 
         stubSource2
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub3});
+            .ReturnsAsync(new[] { stub3 });
 
         _stubSources.Add(stubSource1.Object);
         _stubSources.Add(stubSource2.Object);
@@ -134,8 +140,10 @@ public class StubContextFacts
 
         // assert
         Assert.AreEqual(2, result.Length);
-        Assert.AreEqual(stub1, result[0].Stub);
-        Assert.AreEqual(stub3, result[1].Stub);
+        Assert.AreEqual(stub1.Stub, result[0].Stub);
+        Assert.AreEqual("file1.yml", result[0].Metadata.Filename);
+        Assert.AreEqual(stub3.Stub, result[1].Stub);
+        Assert.AreEqual("file2.yml", result[1].Metadata.Filename);
     }
 
     [TestMethod]
@@ -143,13 +151,13 @@ public class StubContextFacts
         AddStubAsync_StubIdAlreadyAddedToReadOnlyStubSource_ShouldThrowConflictException()
     {
         // arrange
-        var stubToBeAdded = new StubModel {Id = "conflicted"};
-        var stub = new StubModel {Id = "COnflicted"};
+        var stubToBeAdded = new StubModel { Id = "conflicted" };
+        var stub = new StubModel { Id = "COnflicted" };
         var writableStubSource = new Mock<IWritableStubSource>();
         var readOnlyStubSource = new Mock<IStubSource>();
         readOnlyStubSource
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub});
+            .ReturnsAsync(new[] { GetTuple(stub) });
 
         _stubSources.Add(writableStubSource.Object);
         _stubSources.Add(readOnlyStubSource.Object);
@@ -165,17 +173,17 @@ public class StubContextFacts
     public async Task AddStubAsync_HappyFlow()
     {
         // arrange
-        var stubToBeAdded = new StubModel {Id = "new-stub-02"};
+        var stubToBeAdded = new StubModel { Id = "new-stub-02" };
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
             .Setup(m => m.AddStubAsync(stubToBeAdded, DistrubutionKey, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var stub = new StubModel {Id = "new-stub-01"};
+        var stub = new StubModel { Id = "new-stub-01" };
         var readOnlyStubSource = new Mock<IStubSource>();
         readOnlyStubSource
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub});
+            .ReturnsAsync(new[] { GetTuple(stub) });
 
         _stubSources.Add(stubSource.Object);
         _stubSources.Add(readOnlyStubSource.Object);
@@ -223,14 +231,14 @@ public class StubContextFacts
         var stubSource1 = new Mock<IStubSource>();
         var stubSource2 = new Mock<IStubSource>();
 
-        var stub1 = new StubModel {Id = "stub1"};
-        var stub2 = new StubModel {Id = "stub2"};
+        var stub1 = GetTuple(new StubModel { Id = "stub1" }, "file1.yml");
+        var stub2 = GetTuple(new StubModel { Id = "stub2" }, "file2.yml");
 
         stubSource1
-            .Setup(m => m.GetStubAsync(stub2.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubAsync(stub2.Stub.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub2);
         stubSource2
-            .Setup(m => m.GetStubAsync(stub1.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetStubAsync(stub1.Stub.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub1);
 
         _stubSources.Add(stubSource1.Object);
@@ -242,7 +250,8 @@ public class StubContextFacts
         var result = await context.GetStubAsync("stub2", CancellationToken.None);
 
         // assert
-        Assert.AreEqual(stub2, result.Stub);
+        Assert.AreEqual(stub2.Stub, result.Stub);
+        Assert.AreEqual("file2.yml", result.Metadata.Filename);
     }
 
     [TestMethod]
@@ -252,12 +261,12 @@ public class StubContextFacts
         var stubSource = new Mock<IWritableStubSource>();
         _settings.Storage.StoreResponses = true;
 
-        var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
+        var stub = new StubModel { Id = "stub1", Tenant = "tenant1" };
         stubSource
             .Setup(m => m.GetStubAsync(stub.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(stub);
+            .ReturnsAsync(GetTuple(stub));
 
-        var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var request = new RequestResultModel { ExecutingStubId = stub.Id };
         var response = new ResponseModel();
         stubSource
             .Setup(m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()))
@@ -287,12 +296,12 @@ public class StubContextFacts
         var stubSource = new Mock<IWritableStubSource>();
         _settings.Storage.StoreResponses = false;
 
-        var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
+        var stub = new StubModel { Id = "stub1", Tenant = "tenant1" };
         stubSource
             .Setup(m => m.GetStubAsync(stub.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(stub);
+            .ReturnsAsync(GetTuple(stub));
 
-        var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var request = new RequestResultModel { ExecutingStubId = stub.Id };
         var response = new ResponseModel();
         stubSource
             .Setup(m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()))
@@ -319,12 +328,12 @@ public class StubContextFacts
 
         var stubSource = new Mock<IWritableStubSource>();
 
-        var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
+        var stub = new StubModel { Id = "stub1", Tenant = "tenant1" };
         stubSource
             .Setup(m => m.GetStubAsync(stub.Id, DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(stub);
+            .ReturnsAsync(GetTuple(stub));
 
-        var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var request = new RequestResultModel { ExecutingStubId = stub.Id };
         var response = new ResponseModel();
         stubSource
             .Setup(m => m.AddRequestResultAsync(request, response, DistrubutionKey, It.IsAny<CancellationToken>()))
@@ -369,9 +378,9 @@ public class StubContextFacts
     public async Task GetRequestResultsAsync_HappyFlow()
     {
         // arrange
-        var request1 = new RequestResultModel {RequestBeginTime = DateTime.Now.AddSeconds(-2)};
-        var request2 = new RequestResultModel {RequestBeginTime = DateTime.Now.AddSeconds(-1)};
-        var requests = new[] {request1, request2};
+        var request1 = new RequestResultModel { RequestBeginTime = DateTime.Now.AddSeconds(-2) };
+        var request2 = new RequestResultModel { RequestBeginTime = DateTime.Now.AddSeconds(-1) };
+        var requests = new[] { request1, request2 };
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
             .Setup(m => m.GetRequestResultsAsync(null, DistrubutionKey, It.IsAny<CancellationToken>()))
@@ -393,9 +402,9 @@ public class StubContextFacts
     public async Task GetRequestResultsOverviewAsync_HappyFlow()
     {
         // arrange
-        var request1 = new RequestOverviewModel {RequestEndTime = DateTime.Now.AddSeconds(-2)};
-        var request2 = new RequestOverviewModel {RequestEndTime = DateTime.Now.AddSeconds(-1)};
-        var requests = new[] {request1, request2};
+        var request1 = new RequestOverviewModel { RequestEndTime = DateTime.Now.AddSeconds(-2) };
+        var request2 = new RequestOverviewModel { RequestEndTime = DateTime.Now.AddSeconds(-1) };
+        var requests = new[] { request1, request2 };
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
             .Setup(m => m.GetRequestResultsOverviewAsync(null, DistrubutionKey, It.IsAny<CancellationToken>()))
@@ -418,7 +427,7 @@ public class StubContextFacts
     {
         // arrange
         var correlationId = Guid.NewGuid().ToString();
-        var request = new RequestResultModel {CorrelationId = correlationId};
+        var request = new RequestResultModel { CorrelationId = correlationId };
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
             .Setup(m => m.GetRequestAsync(correlationId, DistrubutionKey, It.IsAny<CancellationToken>()))
@@ -473,7 +482,7 @@ public class StubContextFacts
         {
             ExecutingStubId = "stub1", RequestBeginTime = DateTime.Now.AddSeconds(-1)
         };
-        var requests = new[] {request1, request2, request3};
+        var requests = new[] { request1, request2, request3 };
         var stubSource = new Mock<IWritableStubSource>();
         stubSource
             .Setup(m => m.GetRequestResultsAsync(null, DistrubutionKey, It.IsAny<CancellationToken>()))
@@ -542,13 +551,13 @@ public class StubContextFacts
         const string tenant = "tenant1";
         var stubSource = new Mock<IWritableStubSource>();
 
-        var stub1 = new StubModel {Id = "stub1", Tenant = tenant};
-        var stub2 = new StubModel {Id = "stub2", Tenant = $"{tenant}bla"};
-        var stub3 = new StubModel {Id = "stub3", Tenant = tenant.ToUpper()};
+        var stub1 = new StubModel { Id = "stub1", Tenant = tenant };
+        var stub2 = new StubModel { Id = "stub2", Tenant = $"{tenant}bla" };
+        var stub3 = new StubModel { Id = "stub3", Tenant = tenant.ToUpper() };
 
         stubSource
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub1, stub2, stub3});
+            .ReturnsAsync(new[] { GetTuple(stub1), GetTuple(stub2), GetTuple(stub3) });
 
         _stubSources.Add(stubSource.Object);
 
@@ -577,13 +586,13 @@ public class StubContextFacts
         // arrange
         var stubSource = new Mock<IWritableStubSource>();
 
-        var stub1 = new StubModel {Id = "stub1", Tenant = "tenant1"};
-        var stub2 = new StubModel {Id = "stub2", Tenant = "tenant2"};
-        var stub3 = new StubModel {Id = "stub3", Tenant = "tenant1"};
+        var stub1 = new StubModel { Id = "stub1", Tenant = "tenant1" };
+        var stub2 = new StubModel { Id = "stub2", Tenant = "tenant2" };
+        var stub3 = new StubModel { Id = "stub3", Tenant = "tenant1" };
 
         stubSource
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub1, stub2, stub3});
+            .ReturnsAsync(new[] { GetTuple(stub1), GetTuple(stub2), GetTuple(stub3) });
 
         _stubSources.Add(stubSource.Object);
 
@@ -610,15 +619,15 @@ public class StubContextFacts
         const string tenant2 = "tenant2";
         var stubSource = new Mock<IWritableStubSource>();
 
-        var stub1 = new StubModel {Id = "stub1", Tenant = tenant1};
-        var stub2 = new StubModel {Id = "stub2", Tenant = tenant2};
-        var stub3 = new StubModel {Id = "stub3", Tenant = tenant1.ToUpper()};
+        var stub1 = new StubModel { Id = "stub1", Tenant = tenant1 };
+        var stub2 = new StubModel { Id = "stub2", Tenant = tenant2 };
+        var stub3 = new StubModel { Id = "stub3", Tenant = tenant1.ToUpper() };
 
-        var newStubs = new[] {new StubModel {Id = stub2.Id}, new StubModel {Id = stub3.Id}};
+        var newStubs = new[] { new StubModel { Id = stub2.Id }, new StubModel { Id = stub3.Id } };
 
         stubSource
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub1, stub2, stub3});
+            .ReturnsAsync(new[] { GetTuple(stub1), GetTuple(stub2), GetTuple(stub3) });
 
         _stubSources.Add(stubSource.Object);
 
@@ -673,15 +682,15 @@ public class StubContextFacts
         // arrange
         var stubSource = new Mock<IWritableStubSource>();
 
-        var stub1 = new StubModel {Id = "stub1", Tenant = "tenant-2"};
-        var stub2 = new StubModel {Id = "stub2", Tenant = "tenant-1"};
-        var stub3 = new StubModel {Id = "stub3", Tenant = "tenant-1"};
-        var stub4 = new StubModel {Id = "stub4", Tenant = null};
-        var stub5 = new StubModel {Id = "stub5", Tenant = string.Empty};
+        var stub1 = new StubModel { Id = "stub1", Tenant = "tenant-2" };
+        var stub2 = new StubModel { Id = "stub2", Tenant = "tenant-1" };
+        var stub3 = new StubModel { Id = "stub3", Tenant = "tenant-1" };
+        var stub4 = new StubModel { Id = "stub4", Tenant = null };
+        var stub5 = new StubModel { Id = "stub5", Tenant = string.Empty };
 
         stubSource
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {stub1, stub2, stub3, stub4, stub5});
+            .ReturnsAsync(new[] { GetTuple(stub1), GetTuple(stub2), GetTuple(stub3), GetTuple(stub4), GetTuple(stub5) });
 
         _stubSources.Add(stubSource.Object);
 
@@ -740,7 +749,7 @@ public class StubContextFacts
         var stubSource = InitializeWritableStubSource();
         var context = _mocker.CreateInstance<StubContext>();
 
-        var currentState = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        var currentState = new ScenarioStateModel(scenario) { HitCount = 11, State = Guid.NewGuid().ToString() };
         stubSource
             .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, CancellationToken.None))
             .ReturnsAsync(currentState);
@@ -781,7 +790,7 @@ public class StubContextFacts
         var stubSource = InitializeWritableStubSource();
         var context = _mocker.CreateInstance<StubContext>();
 
-        var currentState = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        var currentState = new ScenarioStateModel(scenario) { HitCount = 11, State = Guid.NewGuid().ToString() };
         stubSource
             .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, CancellationToken.None))
             .ReturnsAsync(currentState);
@@ -800,7 +809,7 @@ public class StubContextFacts
         var stubSource = InitializeWritableStubSource();
         var context = _mocker.CreateInstance<StubContext>();
 
-        var allScenarios = new[] {new ScenarioStateModel("scenario-1"), new ScenarioStateModel("scenario-2")};
+        var allScenarios = new[] { new ScenarioStateModel("scenario-1"), new ScenarioStateModel("scenario-2") };
         stubSource
             .Setup(m => m.GetAllScenariosAsync(DistrubutionKey, CancellationToken.None))
             .ReturnsAsync(allScenarios);
@@ -870,7 +879,7 @@ public class StubContextFacts
         var stubSource = InitializeWritableStubSource();
         var context = _mocker.CreateInstance<StubContext>();
 
-        var newState = new ScenarioStateModel(scenario) {State = string.Empty};
+        var newState = new ScenarioStateModel(scenario) { State = string.Empty };
 
         // Act
         await context.SetScenarioAsync(scenario, newState, CancellationToken.None);
@@ -893,7 +902,7 @@ public class StubContextFacts
         var stubSource = InitializeWritableStubSource();
         var context = _mocker.CreateInstance<StubContext>();
 
-        var newState = new ScenarioStateModel(scenario) {State = Guid.NewGuid().ToString()};
+        var newState = new ScenarioStateModel(scenario) { State = Guid.NewGuid().ToString() };
 
         // Act
         await context.SetScenarioAsync(scenario, newState, CancellationToken.None);
@@ -916,12 +925,12 @@ public class StubContextFacts
         var stubSource = InitializeWritableStubSource();
         var context = _mocker.CreateInstance<StubContext>();
 
-        var currentScenario = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        var currentScenario = new ScenarioStateModel(scenario) { HitCount = 11, State = Guid.NewGuid().ToString() };
         stubSource
             .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(currentScenario);
 
-        var newState = new ScenarioStateModel(scenario) {HitCount = -1, State = string.Empty};
+        var newState = new ScenarioStateModel(scenario) { HitCount = -1, State = string.Empty };
 
         // Act
         await context.SetScenarioAsync(scenario, newState, CancellationToken.None);
@@ -948,12 +957,12 @@ public class StubContextFacts
         var stubSource = InitializeWritableStubSource();
         var context = _mocker.CreateInstance<StubContext>();
 
-        var currentScenario = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        var currentScenario = new ScenarioStateModel(scenario) { HitCount = 11, State = Guid.NewGuid().ToString() };
         stubSource
             .Setup(m => m.GetScenarioAsync(scenario, DistrubutionKey, It.IsAny<CancellationToken>()))
             .ReturnsAsync(currentScenario);
 
-        var newState = new ScenarioStateModel(scenario) {HitCount = 13, State = Guid.NewGuid().ToString()};
+        var newState = new ScenarioStateModel(scenario) { HitCount = 13, State = Guid.NewGuid().ToString() };
 
         // Act
         await context.SetScenarioAsync(scenario, newState, CancellationToken.None);
@@ -1105,5 +1114,29 @@ public class StubContextFacts
         var writableStubSource = new Mock<IWritableStubSource>();
         _stubSources.Add(writableStubSource.Object);
         return writableStubSource;
+    }
+
+    private static (StubModel Stub, Dictionary<string, string> Metadata) GetTuple(StubModel stub,
+        string filename = null)
+    {
+        var metadata = new Dictionary<string, string>();
+        if (!string.IsNullOrWhiteSpace(filename))
+        {
+            metadata.Add(StubMetadataKeys.Filename, filename);
+        }
+
+        return (stub, metadata);
+    }
+
+    private static (StubOverviewModel Stub, Dictionary<string, string> Metadata) GetTuple(StubOverviewModel stub,
+        string filename = null)
+    {
+        var metadata = new Dictionary<string, string>();
+        if (!string.IsNullOrWhiteSpace(filename))
+        {
+            metadata.Add(StubMetadataKeys.Filename, filename);
+        }
+
+        return (stub, metadata);
     }
 }
