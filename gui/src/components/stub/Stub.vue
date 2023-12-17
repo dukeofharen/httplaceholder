@@ -77,6 +77,9 @@
             />
           </div>
         </div>
+        <div v-if="overviewStub.metadata.filename" class="stub-location">
+          Stub location: {{ overviewStub.metadata.filename }}
+        </div>
         <code-highlight language="yaml" :code="stubYaml" />
       </div>
     </template>
@@ -248,5 +251,10 @@ export default defineComponent({
 <style scoped>
 .disabled {
   color: #969696;
+}
+
+.stub-location {
+  font-size: 12px;
+  margin: 10px 0;
 }
 </style>
