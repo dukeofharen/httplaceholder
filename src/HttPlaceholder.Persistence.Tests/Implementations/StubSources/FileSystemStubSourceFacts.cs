@@ -701,7 +701,7 @@ public class FileSystemStubSourceFacts
         var result = await source.GetStubsAsync(withDistributionKey ? DistrubutionKey : null, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(stubs, result);
+        Assert.AreEqual(stubs[0], result.Single().Stub);
     }
 
     [DataTestMethod]
@@ -725,7 +725,8 @@ public class FileSystemStubSourceFacts
             CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(stubs[1], result);
+        Assert.IsTrue(result.HasValue);
+        Assert.AreEqual(stubs[1], result.Value.Stub);
     }
 
     [DataTestMethod]
@@ -780,13 +781,13 @@ public class FileSystemStubSourceFacts
         // Assert
         Assert.AreEqual(2, result.Length);
 
-        Assert.AreEqual(stubs[0].Id, result[0].Id);
-        Assert.AreEqual(stubs[0].Tenant, result[0].Tenant);
-        Assert.AreEqual(stubs[0].Enabled, result[0].Enabled);
+        Assert.AreEqual(stubs[0].Id, result[0].Stub.Id);
+        Assert.AreEqual(stubs[0].Tenant, result[0].Stub.Tenant);
+        Assert.AreEqual(stubs[0].Enabled, result[0].Stub.Enabled);
 
-        Assert.AreEqual(stubs[1].Id, result[1].Id);
-        Assert.AreEqual(stubs[1].Tenant, result[1].Tenant);
-        Assert.AreEqual(stubs[1].Enabled, result[1].Enabled);
+        Assert.AreEqual(stubs[1].Id, result[1].Stub.Id);
+        Assert.AreEqual(stubs[1].Tenant, result[1].Stub.Tenant);
+        Assert.AreEqual(stubs[1].Enabled, result[1].Stub.Enabled);
     }
 
     [TestMethod]

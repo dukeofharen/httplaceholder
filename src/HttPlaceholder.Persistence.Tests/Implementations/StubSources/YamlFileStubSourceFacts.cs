@@ -60,7 +60,7 @@ public class YamlFileStubSourceFacts
         var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
-        var ids = result.Select(s => s.Id).ToArray();
+        var ids = result.Select(s => s.Stub.Id).ToArray();
         Assert.AreEqual("situation-01", ids[0]);
         Assert.AreEqual("situation-02", ids[1]);
         Assert.AreEqual("situation-post-01", ids[2]);
@@ -121,7 +121,7 @@ public class YamlFileStubSourceFacts
         var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
-        var ids = result.Select(s => s.Id).ToArray();
+        var ids = result.Select(s => s.Stub.Id).ToArray();
         Assert.AreEqual(3, ids.Length);
         Assert.AreEqual("situation-01", ids[0]);
         Assert.AreEqual("situation-02", ids[1]);
@@ -155,7 +155,7 @@ public class YamlFileStubSourceFacts
         var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
-        var ids = result.Select(s => s.Id).ToArray();
+        var ids = result.Select(s => s.Stub.Id).ToArray();
         Assert.AreEqual(2, ids.Length);
         Assert.AreEqual("situation-01", ids[0]);
         Assert.AreEqual("situation-02", ids[1]);
@@ -199,7 +199,7 @@ public class YamlFileStubSourceFacts
         var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
-        var ids = result.Select(s => s.Id).ToArray();
+        var ids = result.Select(s => s.Stub.Id).ToArray();
         Assert.AreEqual("situation-01", ids[0]);
         Assert.AreEqual("situation-02", ids[1]);
         Assert.AreEqual("situation-post-01", ids[2]);
@@ -239,7 +239,7 @@ public class YamlFileStubSourceFacts
         var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
-        var ids = result.Select(s => s.Id).ToArray();
+        var ids = result.Select(s => s.Stub.Id).ToArray();
         Assert.AreEqual(0, ids.Length);
         Assert.AreEqual(2, _mockLogger
             .Entries
@@ -279,7 +279,7 @@ public class YamlFileStubSourceFacts
         var result = await source.GetStubsAsync(null, CancellationToken.None);
 
         // Assert
-        var ids = result.Select(s => s.Id).ToArray();
+        var ids = result.Select(s => s.Stub.Id).ToArray();
         Assert.AreEqual("situation-01", ids[0]);
         AssertNoWarningsOrErrors();
     }
@@ -351,9 +351,9 @@ public class YamlFileStubSourceFacts
         Assert.AreEqual(2, result.Length);
 
         var result1 = result[0];
-        Assert.AreEqual("situation-01", result1.Id);
-        Assert.AreEqual("01-get", result1.Tenant);
-        Assert.IsTrue(result1.Enabled);
+        Assert.AreEqual("situation-01", result1.Stub.Id);
+        Assert.AreEqual("01-get", result1.Stub.Tenant);
+        Assert.IsTrue(result1.Stub.Enabled);
         AssertNoWarningsOrErrors();
     }
 
