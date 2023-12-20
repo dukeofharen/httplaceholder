@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -20,7 +21,8 @@ internal class YamlFileStubSource(
     IFileService fileService,
     ILogger<YamlFileStubSource> logger,
     IOptionsMonitor<SettingsModel> options,
-    IStubModelValidator stubModelValidator)
+    IStubModelValidator stubModelValidator,
+    IStubNotify stubNotify)
     : BaseFileStubSource(logger, fileService, options, stubModelValidator)
 {
     private DateTime _stubLoadDateTime;
@@ -55,6 +57,7 @@ internal class YamlFileStubSource(
             }
 
             _stubs = result;
+            await stubNotify.ReloadStubsAsync(cancellationToken: cancellationToken);
         }
         else
         {
@@ -79,11 +82,9 @@ internal class YamlFileStubSource(
         string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
-        {
-            var result = (await GetStubsAsync(distributionKey, cancellationToken))
-                .FirstOrDefault(s => s.Item1.Id == stubId);
-            return result.Stub != null ? result : null;
-        }
+        var result = (await GetStubsAsync(distributionKey, cancellationToken))
+            .FirstOrDefault(s => s.Item1.Id == stubId);
+        return result.Stub != null ? result : null;
     }
 
     /// <inheritdoc />

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations.StubSources;
@@ -37,7 +38,7 @@ public class YamlFileStubSourceFacts
             .ReturnsAsync(true);
 
         const string currentDirectory = @"C:\stubs";
-        var files = new[] {$@"{currentDirectory}\file1.yml", $@"{currentDirectory}\file2.yml"};
+        var files = new[] { $@"{currentDirectory}\file1.yml", $@"{currentDirectory}\file2.yml" };
 
         fileServiceMock
             .Setup(m => m.GetCurrentDirectory())
@@ -106,7 +107,7 @@ public class YamlFileStubSourceFacts
             .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
-        var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
+        var files = new[] { @"C:\stubs\file1.yml", @"C:\stubs\file2.yml" };
         _options.CurrentValue.Storage.InputFile = string.Join(separator, files);
 
         fileServiceMock
@@ -127,6 +128,7 @@ public class YamlFileStubSourceFacts
         Assert.AreEqual("situation-02", ids[1]);
         Assert.AreEqual("situation-post-01", ids[2]);
         AssertNoWarningsOrErrors();
+        _mocker.GetMock<IStubNotify>().Verify(m => m.ReloadStubsAsync(null, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -140,7 +142,7 @@ public class YamlFileStubSourceFacts
             .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
-        var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
+        var files = new[] { @"C:\stubs\file1.yml", @"C:\stubs\file2.yml" };
         _options.CurrentValue.Storage.InputFile = string.Join(",", files);
 
         fileServiceMock
@@ -177,7 +179,7 @@ public class YamlFileStubSourceFacts
         const string inputFile = @"C:\stubs";
         _options.CurrentValue.Storage.InputFile = inputFile;
 
-        var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
+        var files = new[] { @"C:\stubs\file1.yml", @"C:\stubs\file2.yml" };
 
         fileServiceMock
             .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
@@ -221,7 +223,7 @@ public class YamlFileStubSourceFacts
         const string inputFile = @"C:\stubs";
         _options.CurrentValue.Storage.InputFile = inputFile;
 
-        var files = new[] {@"C:\stubs\file3.yml"};
+        var files = new[] { @"C:\stubs\file3.yml" };
 
         fileServiceMock
             .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
@@ -261,7 +263,7 @@ public class YamlFileStubSourceFacts
         const string inputFile = @"C:\stubs";
         _options.CurrentValue.Storage.InputFile = inputFile;
 
-        var files = new[] {@"C:\stubs\file4.yml"};
+        var files = new[] { @"C:\stubs\file4.yml" };
 
         fileServiceMock
             .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
@@ -309,7 +311,7 @@ public class YamlFileStubSourceFacts
 
         stubModelValidatorMock
             .Setup(m => m.ValidateStubModel(It.IsAny<StubModel>()))
-            .Returns(new[] {"validation error"});
+            .Returns(new[] { "validation error" });
 
         // Act
         var result = (await source.GetStubsAsync(null, CancellationToken.None)).ToArray();
@@ -334,8 +336,8 @@ public class YamlFileStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
         fileServiceMock
-                    .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(true);
+            .Setup(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         const string inputFile = @"C:\stubs\file1.yml";
         _options.CurrentValue.Storage.InputFile = inputFile;
