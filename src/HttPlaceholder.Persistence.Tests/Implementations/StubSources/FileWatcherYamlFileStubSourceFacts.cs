@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.FileWatchers;
 using HttPlaceholder.Persistence.Implementations.StubSources;
@@ -151,6 +152,8 @@ public class FileWatcherYamlFileStubSourceFacts
         var stubs = source.Stubs[e.FullPath].ToArray();
         Assert.AreEqual(1, stubs.Length);
         Assert.AreEqual("test123", stubs[0].Id);
+
+        _mocker.GetMock<IStubNotify>().Verify(m => m.ReloadStubsAsync(null, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -195,6 +198,8 @@ public class FileWatcherYamlFileStubSourceFacts
         var stubs = source.Stubs[e.FullPath].ToArray();
         Assert.AreEqual(1, stubs.Length);
         Assert.AreEqual("test123", stubs[0].Id);
+
+        _mocker.GetMock<IStubNotify>().Verify(m => m.ReloadStubsAsync(null, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -243,6 +248,8 @@ public class FileWatcherYamlFileStubSourceFacts
         // Assert
         Assert.AreEqual(0, source.FileSystemWatchers.Count);
         Assert.AreEqual(0, source.Stubs.Count);
+
+        _mocker.GetMock<IStubNotify>().Verify(m => m.ReloadStubsAsync(null, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -327,6 +334,8 @@ public class FileWatcherYamlFileStubSourceFacts
         Assert.AreEqual(watcher, source.FileSystemWatchers[e.FullPath]);
         Assert.AreEqual(1, source.Stubs.Count);
         Assert.AreEqual("test123", source.Stubs[e.FullPath].Single().Id);
+
+        _mocker.GetMock<IStubNotify>().Verify(m => m.ReloadStubsAsync(null, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
