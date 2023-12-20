@@ -25,4 +25,11 @@ public interface IStubNotify
     /// <param name="distributionKey">The distribution key.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     Task StubDeletedAsync(string stubId, string distributionKey = null, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    ///     Signal that the stubs should be reloaded.
+    /// </summary>
+    /// <param name="distributionKey">The distribution key.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task ReloadStubsAsync(string distributionKey = null, CancellationToken cancellationToken = default);
 }

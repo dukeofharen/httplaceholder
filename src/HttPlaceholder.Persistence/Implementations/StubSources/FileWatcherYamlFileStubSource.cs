@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.FileWatchers;
@@ -25,7 +26,8 @@ internal class FileWatcherYamlFileStubSource(
     ILogger<FileWatcherYamlFileStubSource> logger,
     IOptionsMonitor<SettingsModel> options,
     IStubModelValidator stubModelValidator,
-    IFileWatcherBuilderFactory fileWatcherBuilderFactory)
+    IFileWatcherBuilderFactory fileWatcherBuilderFactory,
+    IStubNotify stubNotify)
     : BaseFileStubSource(logger, fileService, options, stubModelValidator), IDisposable
 {
     internal readonly ConcurrentDictionary<string, FileSystemWatcher> FileSystemWatchers = new();
@@ -166,6 +168,7 @@ internal class FileWatcherYamlFileStubSource(
     {
         Logger.LogDebug($"File {e.FullPath} changed.");
         LoadStubs(e.FullPath);
+        SignalStubsReload();
     }
 
     private void FileCreated(FileSystemEventArgs e)
@@ -179,6 +182,7 @@ internal class FileWatcherYamlFileStubSource(
 
         Logger.LogDebug($"File {fullPath} created.");
         LoadStubs(fullPath);
+        SignalStubsReload();
     }
 
     private void FileDeleted(FileSystemEventArgs e)
@@ -196,6 +200,7 @@ internal class FileWatcherYamlFileStubSource(
         }
 
         TryRemoveWatcher(fullPath);
+        SignalStubsReload();
     }
 
     private void FileRenamed(RenamedEventArgs e)
@@ -226,6 +231,8 @@ internal class FileWatcherYamlFileStubSource(
                 SetupWatcherForLocation(fullPath);
             }
         }
+
+        SignalStubsReload();
     }
 
     internal bool TryRemoveWatcher(string fullPath)
@@ -239,4 +246,6 @@ internal class FileWatcherYamlFileStubSource(
 
         return false;
     }
+
+    private void SignalStubsReload() => stubNotify.ReloadStubsAsync().Wait();
 }

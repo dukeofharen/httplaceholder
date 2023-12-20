@@ -36,4 +36,8 @@ public class StubNotify : IStubNotify
     public async Task StubDeletedAsync(string stubId, string distributionKey = null,
         CancellationToken cancellationToken = default) =>
         await _hubContext.GetChannel(distributionKey).SendAsync("StubDeleted", stubId, cancellationToken);
+
+    /// <inheritdoc />
+    public async Task ReloadStubsAsync(string distributionKey = null, CancellationToken cancellationToken = default) =>
+        await _hubContext.GetChannel(distributionKey).SendAsync("ReloadStubs", cancellationToken);
 }
