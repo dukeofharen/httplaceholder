@@ -1,6 +1,8 @@
 [vnext]
 - Upgraded application to .NET 8 (https://github.com/dukeofharen/httplaceholder/pull/338).
 - Use file watches to check if the .yml stub files are updated on disk (https://github.com/dukeofharen/httplaceholder/pull/339).
+- When using YAML stubs; show the file location of the YAML stub in the user interface (https://github.com/dukeofharen/httplaceholder/pull/340).
+- Whenever a YAML file is updated, the change should be reflected in the user interface using web sockets (https://github.com/dukeofharen/httplaceholder/pull/340).
 
 # BREAKING CHANGES
 - If you installed HttPlaceholder as .NET tool, you need to have the .NET 8 SDK installed on your machine. If you download the compiled version of HttPlaceholder for your OS, you do not need to have .NET installed so you will notice no changes.
