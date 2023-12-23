@@ -396,7 +396,7 @@ public class InMemoryStubSourceFacts
         var result = await source.GetStubsAsync(key, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(stub, result.Single());
+        Assert.AreEqual(stub, result.Single().Stub);
     }
 
     [DataTestMethod]
@@ -418,9 +418,9 @@ public class InMemoryStubSourceFacts
         Assert.AreEqual(1, result.Length);
 
         var overviewStub = result.Single();
-        Assert.AreEqual(stub.Id, overviewStub.Id);
-        Assert.AreEqual(stub.Tenant, overviewStub.Tenant);
-        Assert.AreEqual(stub.Enabled, overviewStub.Enabled);
+        Assert.AreEqual(stub.Id, overviewStub.Stub.Id);
+        Assert.AreEqual(stub.Tenant, overviewStub.Stub.Tenant);
+        Assert.AreEqual(stub.Enabled, overviewStub.Stub.Enabled);
     }
 
     [DataTestMethod]
@@ -458,7 +458,8 @@ public class InMemoryStubSourceFacts
         var result = await source.GetStubAsync(stub.Id, key, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(stub, result);
+        Assert.IsTrue(result.HasValue);
+        Assert.AreEqual(stub, result.Value.Stub);
     }
 
     [TestMethod]

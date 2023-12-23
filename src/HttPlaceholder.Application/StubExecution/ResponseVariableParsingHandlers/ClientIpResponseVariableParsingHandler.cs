@@ -12,16 +12,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert the client IP in the response.
 /// </summary>
-internal class ClientIpResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class ClientIpResponseVariableParsingHandler(IClientDataResolver clientDataResolver, IFileService fileService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly IClientDataResolver _clientDataResolver;
-
-    public ClientIpResponseVariableParsingHandler(IClientDataResolver clientDataResolver, IFileService fileService) :
-        base(fileService)
-    {
-        _clientDataResolver = clientDataResolver;
-    }
-
     /// <inheritdoc />
     public override string Name => "client_ip";
 
@@ -35,7 +28,7 @@ internal class ClientIpResponseVariableParsingHandler : BaseVariableParsingHandl
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var ip = _clientDataResolver.GetClientIp();
+        var ip = clientDataResolver.GetClientIp();
         return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => current.Replace(match.Value, ip)));

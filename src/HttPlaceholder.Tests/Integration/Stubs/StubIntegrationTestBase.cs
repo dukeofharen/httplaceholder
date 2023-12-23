@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -54,7 +55,8 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             FileServiceMock.Object,
             new Mock<ILogger<YamlFileStubSource>>().Object,
             Options,
-            new Mock<IStubModelValidator>().Object);
+            new Mock<IStubModelValidator>().Object,
+            new Mock<IStubNotify>().Object);
 
         MockHttp = new MockHttpMessageHandler();
         var mockHttpClientFactory = new Mock<IHttpClientFactory>();

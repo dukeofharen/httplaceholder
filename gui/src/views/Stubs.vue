@@ -205,6 +205,7 @@ export default defineComponent({
     const showEnableStubsModal = ref(false);
     const showDeleteStubsModal = ref(false);
     let signalrConnection: HubConnection;
+    let reloadStubsTimeout: number;
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter: StubSavedFilterModel = {
@@ -262,6 +263,15 @@ export default defineComponent({
         if (stub) {
           stubs.value.splice(stubs.value.indexOf(stub), 1);
         }
+      });
+      signalrConnection.on("ReloadStubs", () => {
+        if (reloadStubsTimeout) {
+          clearTimeout(reloadStubsTimeout);
+        }
+
+        reloadStubsTimeout = setTimeout(async () => {
+          await loadStubs();
+        }, 700);
       });
       try {
         await signalrConnection.start();

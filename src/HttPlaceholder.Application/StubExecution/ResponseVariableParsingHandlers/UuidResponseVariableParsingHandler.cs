@@ -12,12 +12,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler for generating a random UUID and putting it in the response.
 /// </summary>
-internal class UuidResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class UuidResponseVariableParsingHandler(IFileService fileService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    public UuidResponseVariableParsingHandler(IFileService fileService) : base(fileService)
-    {
-    }
-
     /// <inheritdoc />
     public override string Name => "uuid";
 

@@ -196,7 +196,7 @@ response:
         var existingStub = new StubModel {Id = "situation-01"};
         ReadOnlyStubSource
             .Setup(m => m.GetStubsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {existingStub});
+            .ReturnsAsync(new[] {(existingStub, new Dictionary<string, string>())});
 
         // Act
         var request = new HttpRequestMessage(HttpMethod.Post, $"{TestServer.BaseAddress}ph-api/stubs")

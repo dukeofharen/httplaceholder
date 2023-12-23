@@ -713,7 +713,7 @@ public class RelationalDbStubSourceFacts
             await stubSource.GetStubsAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(stubs, result);
+        Assert.AreEqual(stubs[0], result.Single().Stub);
     }
 
     [DataTestMethod]
@@ -744,13 +744,13 @@ public class RelationalDbStubSourceFacts
         // Assert
         Assert.AreEqual(2, result.Length);
 
-        Assert.AreEqual(stubs[0].Id, result[0].Id);
-        Assert.AreEqual(stubs[0].Tenant, result[0].Tenant);
-        Assert.AreEqual(stubs[0].Enabled, result[0].Enabled);
+        Assert.AreEqual(stubs[0].Id, result[0].Stub.Id);
+        Assert.AreEqual(stubs[0].Tenant, result[0].Stub.Tenant);
+        Assert.AreEqual(stubs[0].Enabled, result[0].Stub.Enabled);
 
-        Assert.AreEqual(stubs[1].Id, result[1].Id);
-        Assert.AreEqual(stubs[1].Tenant, result[1].Tenant);
-        Assert.AreEqual(stubs[1].Enabled, result[1].Enabled);
+        Assert.AreEqual(stubs[1].Id, result[1].Stub.Id);
+        Assert.AreEqual(stubs[1].Tenant, result[1].Stub.Tenant);
+        Assert.AreEqual(stubs[1].Enabled, result[1].Stub.Enabled);
     }
 
     [DataTestMethod]
@@ -775,7 +775,8 @@ public class RelationalDbStubSourceFacts
             CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(cachedStubs[1], result);
+        Assert.IsTrue(result.HasValue);
+        Assert.AreEqual(cachedStubs[1], result.Value.Stub);
     }
 
     [DataTestMethod]
@@ -799,7 +800,7 @@ public class RelationalDbStubSourceFacts
             await stubSource.GetStubsAsync(withDistributionKey ? DistributionKey : null, CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(stubs, result);
+        Assert.AreEqual(stubs[0], result.Single().Stub);
     }
 
     [TestMethod]

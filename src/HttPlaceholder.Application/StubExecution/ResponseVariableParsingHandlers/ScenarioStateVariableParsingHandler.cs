@@ -12,21 +12,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable handler that is used to insert the state of a specific scenario in the response
 /// </summary>
-internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class ScenarioStateVariableParsingHandler(
+    IStubContext stubContext,
+    IFileService fileService,
+    ICacheService cacheService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly ICacheService _cacheService;
-    private readonly IStubContext _stubContext;
-
-    public ScenarioStateVariableParsingHandler(
-        IStubContext stubContext,
-        IFileService fileService,
-        ICacheService cacheService) :
-        base(fileService)
-    {
-        _stubContext = stubContext;
-        _cacheService = cacheService;
-    }
-
     /// <inheritdoc />
     public override string Name => "scenario_state";
 
@@ -59,7 +50,7 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler,
         if (!customScenarioNameSet)
         {
             // Try to read the scenario state from the HttpContext as it contains the correct state of the moment the state was set.
-            var scenarioState = _cacheService.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState);
+            var scenarioState = cacheService.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState);
             state = scenarioState?.State;
         }
 
@@ -70,7 +61,7 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler,
                 : stub.Scenario ?? string.Empty;
             if (!string.IsNullOrWhiteSpace(scenarioName))
             {
-                var scenario = await _stubContext.GetScenarioAsync(scenarioName, cancellationToken);
+                var scenario = await stubContext.GetScenarioAsync(scenarioName, cancellationToken);
                 state = scenario?.State;
             }
         }

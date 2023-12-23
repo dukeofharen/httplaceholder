@@ -8,24 +8,14 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.WebInfrastructure.Implementations;
 
-internal class ApiAuthorizationService : IApiAuthorizationService, ISingletonService
+internal class ApiAuthorizationService(
+    ILoginCookieService loginCookieService,
+    ILogger<ApiAuthorizationService> logger,
+    IHttpContextService httpContextService,
+    IOptionsMonitor<SettingsModel> optionsMonitor)
+    : IApiAuthorizationService, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly ILogger<ApiAuthorizationService> _logger;
-    private readonly ILoginCookieService _loginCookieService;
-    private readonly SettingsModel _settings;
-
-    public ApiAuthorizationService(
-        ILoginCookieService loginCookieService,
-        ILogger<ApiAuthorizationService> logger,
-        IHttpContextService httpContextService,
-        IOptionsMonitor<SettingsModel> optionsMonitor)
-    {
-        _loginCookieService = loginCookieService;
-        _logger = logger;
-        _httpContextService = httpContextService;
-        _settings = optionsMonitor.CurrentValue;
-    }
+    private readonly SettingsModel _settings = optionsMonitor.CurrentValue;
 
     /// <inheritdoc />
     public bool CheckAuthorization()
@@ -33,14 +23,14 @@ internal class ApiAuthorizationService : IApiAuthorizationService, ISingletonSer
         bool result;
         var username = _settings.Authentication?.ApiUsername ?? string.Empty;
         var password = _settings.Authentication?.ApiPassword ?? string.Empty;
-        if (_loginCookieService.CheckLoginCookie())
+        if (loginCookieService.CheckLoginCookie())
         {
             AddUserContext(username);
             return true;
         }
 
         // Try to retrieve basic auth header here.
-        _httpContextService.GetHeaders().TryGetValue("Authorization", out var value);
+        httpContextService.GetHeaders().TryGetValue("Authorization", out var value);
         if (string.IsNullOrWhiteSpace(value))
         {
             return false;
@@ -61,20 +51,20 @@ internal class ApiAuthorizationService : IApiAuthorizationService, ISingletonSer
         catch (Exception ex)
         {
             result = false;
-            _logger.LogWarning(ex, "Error while parsing basic authentication.");
+            logger.LogWarning(ex, "Error while parsing basic authentication.");
         }
 
         if (result)
         {
             // Everything went OK, so let's add the user to the claims.
             AddUserContext(username);
-            _loginCookieService.SetLoginCookie(username, password);
+            loginCookieService.SetLoginCookie(username, password);
         }
 
         return result;
     }
 
     private void AddUserContext(string username) =>
-        _httpContextService.SetUser(
+        httpContextService.SetUser(
             new ClaimsPrincipal(new ClaimsIdentity(new[] {new Claim(ClaimTypes.Name, username)})));
 }

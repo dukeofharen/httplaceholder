@@ -294,3 +294,14 @@ public static class CliArgs
                string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
     }
 }
+
+/// <summary>
+///     A static class that contains the keys in the stub metadata dictionary.
+/// </summary>
+public static class StubMetadataKeys
+{
+    /// <summary>
+    ///     Used to store the stub filename (if present).
+    /// </summary>
+    public const string Filename = "filename";
+}

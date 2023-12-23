@@ -79,17 +79,10 @@ public class DatabaseContextFactoryFacts
         Assert.AreEqual(dataSource, result.DataSource);
     }
 
-    private class TestDataSource : DbDataSource
+    private class TestDataSource(DbConnection dbConnection) : DbDataSource
     {
-        private readonly DbConnection _dbConnection;
-
-        public TestDataSource(DbConnection dbConnection)
-        {
-            _dbConnection = dbConnection;
-        }
-
         public override string ConnectionString { get; }
 
-        protected override DbConnection CreateDbConnection() => _dbConnection;
+        protected override DbConnection CreateDbConnection() => dbConnection;
     }
 }

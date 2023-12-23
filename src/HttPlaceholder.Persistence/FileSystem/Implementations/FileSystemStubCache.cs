@@ -16,25 +16,16 @@ using Newtonsoft.Json;
 namespace HttPlaceholder.Persistence.FileSystem.Implementations;
 
 /// <inheritdoc />
-internal class FileSystemStubCache : IFileSystemStubCache
+internal class FileSystemStubCache(
+    ILogger<FileSystemStubCache> logger,
+    IFileService fileService,
+    IOptionsMonitor<SettingsModel> options)
+    : IFileSystemStubCache
 {
     private static readonly object _cacheUpdateLock = new();
-    private readonly IFileService _fileService;
 
-    private readonly ILogger<FileSystemStubCache> _logger;
-    private readonly IOptionsMonitor<SettingsModel> _options;
     internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
     internal string StubUpdateTrackingId;
-
-    public FileSystemStubCache(
-        ILogger<FileSystemStubCache> logger,
-        IFileService fileService,
-        IOptionsMonitor<SettingsModel> options)
-    {
-        _logger = logger;
-        _fileService = fileService;
-        _options = options;
-    }
 
     /// <inheritdoc />
     public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(string distributionKey,
@@ -53,7 +44,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
         if (StubUpdateTrackingId == null)
         {
             // The local cache hasn't been initialized yet. Do that now.
-            _logger.LogDebug(
+            logger.LogDebug(
                 "Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
             UpdateLocalStubUpdateTrackingId(metadata?.StubUpdateTrackingId ?? Guid.NewGuid().ToString());
             shouldUpdateCache = true;
@@ -61,7 +52,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
         else if (StubUpdateTrackingId != metadata.StubUpdateTrackingId)
         {
             // ID has been changed. Update the stub cache.
-            _logger.LogDebug("Initializing the cache, because the tracking ID on disk has been changed.");
+            logger.LogDebug("Initializing the cache, because the tracking ID on disk has been changed.");
             UpdateLocalStubUpdateTrackingId(metadata.StubUpdateTrackingId);
             shouldUpdateCache = true;
         }
@@ -77,7 +68,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
         {
             if (!StubCache.TryAdd(item.Id, item))
             {
-                _logger.LogWarning($"Could not add stub with ID '{item.Id}' to cache.");
+                logger.LogWarning($"Could not add stub with ID '{item.Id}' to cache.");
             }
         }
 
@@ -95,7 +86,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
         if (!StubCache.TryAdd(stubModel.Id, stubModel))
         {
-            _logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
+            logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
         }
 
         var metadata = UpdateMetadata(GetMetadataPath());
@@ -116,9 +107,9 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
     private async Task<IEnumerable<StubModel>> GetStubsAsync(string path, CancellationToken cancellationToken)
     {
-        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        var files = await fileService.GetFilesAsync(path, "*.json", cancellationToken);
         return (await Task.WhenAll(files
-                .Select(filePath => _fileService
+                .Select(filePath => fileService
                     .ReadAllTextAsync(filePath, cancellationToken))))
             .Select(JsonConvert.DeserializeObject<StubModel>);
     }
@@ -127,13 +118,13 @@ internal class FileSystemStubCache : IFileSystemStubCache
     {
         var path = GetMetadataPath();
         FileStorageMetadataModel model;
-        if (!_fileService.FileExists(path))
+        if (!fileService.FileExists(path))
         {
             model = UpdateMetadata(path);
         }
         else
         {
-            var contents = _fileService.ReadAllText(path);
+            var contents = fileService.ReadAllText(path);
             model = JsonConvert.DeserializeObject<FileStorageMetadataModel>(contents);
         }
 
@@ -142,7 +133,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
     private string GetMetadataPath()
     {
-        var rootPath = _options.CurrentValue.Storage?.FileStorageLocation ??
+        var rootPath = options.CurrentValue.Storage?.FileStorageLocation ??
                        throw new InvalidOperationException("FileStorageLocation unexpectedly null.");
         var path = Path.Combine(rootPath, FileNames.MetadataFileName);
         return path;
@@ -154,7 +145,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
         lock (_cacheUpdateLock)
         {
             model = new FileStorageMetadataModel {StubUpdateTrackingId = Guid.NewGuid().ToString()};
-            _fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
+            fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
         }
 
         return model;
@@ -170,7 +161,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
     private string GetStubsFolder(string distributionKey)
     {
-        var rootFolder = _options?.CurrentValue?.Storage?.FileStorageLocation;
+        var rootFolder = options?.CurrentValue?.Storage?.FileStorageLocation;
         return string.IsNullOrWhiteSpace(distributionKey)
             ? Path.Combine(rootFolder, FileNames.StubsFolderName)
             : Path.Combine(rootFolder, distributionKey, FileNames.StubsFolderName);

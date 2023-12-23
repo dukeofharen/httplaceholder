@@ -83,13 +83,13 @@ public class BaseWritableStubSourceFacts
 
         public void SetRequests(IEnumerable<RequestResultModel> requests) => _requests = requests;
 
-        public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
+        public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(string distributionKey = null,
             CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
+        public override Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
             CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
+        public override Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId, string distributionKey = null,
             CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
         public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>

@@ -12,19 +12,13 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonService
+internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
+    : ICurlToHttpRequestMapper, ISingletonService
 {
     private static readonly Regex _urlRegex =
         new(
             @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
             RegexOptions.Compiled);
-
-    private readonly ILogger<CurlToHttpRequestMapper> _logger;
-
-    public CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
-    {
-        _logger = logger;
-    }
 
     /// <inheritdoc />
     public IEnumerable<HttpRequestModel> MapCurlCommandsToHttpRequest(string commands)
@@ -42,14 +36,14 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
             HttpRequestModel request = null;
             if (string.IsNullOrWhiteSpace(commands))
             {
-                _logger.LogDebug("cURL command string is empty, so not extracting request.");
+                logger.LogDebug("cURL command string is empty, so not extracting request.");
                 return result;
             }
 
             var parts = commands.Trim().Split(new[] {" ", "\r\n", "\n"}, StringSplitOptions.None);
             if (!IsCurl(parts[0]))
             {
-                _logger.LogDebug("Command is not a cURL command, so not extracting request.");
+                logger.LogDebug("Command is not a cURL command, so not extracting request.");
                 return result;
             }
 
@@ -153,7 +147,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Exception occurred while trying to parse cURL commands.");
+            logger.LogWarning(ex, "Exception occurred while trying to parse cURL commands.");
             throw new ValidationException(new[]
             {
                 $"Exception occurred while trying to parse cURL commands: {ex.Message}"

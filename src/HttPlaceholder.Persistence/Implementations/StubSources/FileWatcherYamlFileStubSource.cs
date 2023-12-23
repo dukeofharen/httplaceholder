@@ -6,8 +6,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.FileWatchers;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -19,31 +21,43 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 ///     A stub source that is used to read data from one or several YAML files, from possibly multiple locations.
 ///     This source uses a file system watcher.
 /// </summary>
-internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
+internal class FileWatcherYamlFileStubSource(
+    IFileService fileService,
+    ILogger<FileWatcherYamlFileStubSource> logger,
+    IOptionsMonitor<SettingsModel> options,
+    IStubModelValidator stubModelValidator,
+    IFileWatcherBuilderFactory fileWatcherBuilderFactory,
+    IStubNotify stubNotify)
+    : BaseFileStubSource(logger, fileService, options, stubModelValidator), IDisposable
 {
     internal readonly ConcurrentDictionary<string, FileSystemWatcher> FileSystemWatchers = new();
 
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
     internal readonly ConcurrentDictionary<string, IEnumerable<StubModel>> Stubs = new();
 
-    public FileWatcherYamlFileStubSource(
-        IFileService fileService,
-        ILogger<FileWatcherYamlFileStubSource> logger,
-        IOptionsMonitor<SettingsModel> options,
-        IStubModelValidator stubModelValidator) : base(logger, fileService, options, stubModelValidator)
+    /// <inheritdoc />
+    public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
     {
+        var result =
+            from kv
+                in Stubs
+            from stub
+                in kv.Value
+            select (stub,
+                new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } });
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />
-    public override Task<IEnumerable<StubModel>> GetStubsAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        Task.FromResult(Stubs.Values.SelectMany(v => v));
-
-    /// <inheritdoc />
-    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
+    public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
+        GetStubsOverviewAsync(
+            string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
-        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
+        .Select(s => (new StubOverviewModel { Id = s.Stub.Id, Tenant = s.Stub.Tenant, Enabled = s.Stub.Enabled },
+            s.Metadata))
         .ToArray();
 
     /// <inheritdoc />
@@ -62,9 +76,14 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
     }
 
     /// <inheritdoc />
-    public override async Task<StubModel> GetStubAsync(string stubId, string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
-        (await GetStubsAsync(distributionKey, cancellationToken)).FirstOrDefault(s => s.Id == stubId);
+    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId,
+        string distributionKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var result = (await GetStubsAsync(distributionKey, cancellationToken))
+            .FirstOrDefault(s => s.Item1.Id == stubId);
+        return result.Stub != null ? result : null;
+    }
 
     private void SetupStubs()
     {
@@ -104,41 +123,27 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
         }
     }
 
-    private void SetupWatcherForLocation(string location)
+    internal void SetupWatcherForLocation(string location)
     {
-        var isDir = FileService.IsDirectory(location);
-        var finalLocation = (isDir ? location : Path.GetDirectoryName(location)) ??
-                            throw new InvalidOperationException($"Location {location} is invalid.");
-        var watcher = new FileSystemWatcher(finalLocation);
-        if (!isDir)
-        {
-            watcher.Filter = Path.GetFileName(location);
-        }
-        else
-        {
-            foreach (var extension in SupportedExtensions)
-            {
-                watcher.Filters.Add($"*{extension}");
-            }
-        }
-
-        watcher.NotifyFilter = NotifyFilters.CreationTime
-                               | NotifyFilters.DirectoryName
-                               | NotifyFilters.FileName
-                               | NotifyFilters.LastWrite
-                               | NotifyFilters.Size
-                               | NotifyFilters.Attributes
-                               | NotifyFilters.Security;
-        watcher.Changed += OnInputLocationUpdated;
-        watcher.Created += OnInputLocationUpdated;
-        watcher.Deleted += OnInputLocationUpdated;
-        watcher.Renamed += OnInputLocationUpdated;
-        watcher.Error += OnError;
-        watcher.EnableRaisingEvents = true;
-        FileSystemWatchers.TryAdd(location, watcher);
+        var builder = fileWatcherBuilderFactory.CreateBuilder();
+        builder.SetPathOrFilters(location, SupportedExtensions);
+        builder.SetNotifyFilters(NotifyFilters.CreationTime
+                                 | NotifyFilters.DirectoryName
+                                 | NotifyFilters.FileName
+                                 | NotifyFilters.LastWrite
+                                 | NotifyFilters.Size
+                                 | NotifyFilters.Attributes
+                                 | NotifyFilters.Security);
+        builder.SetOnChanged(OnInputLocationUpdated);
+        builder.SetOnCreated(OnInputLocationUpdated);
+        builder.SetOnDeleted(OnInputLocationUpdated);
+        builder.SetOnRenamed(OnInputLocationUpdated);
+        builder.SetOnError(OnError);
+        FileSystemWatchers.TryAdd(location, builder.Build());
     }
 
-    private void OnError(object sender, ErrorEventArgs e) => Logger.LogWarning(e.GetException(), "Error occurred in file watcher.");
+    private void OnError(object sender, ErrorEventArgs e) =>
+        Logger.LogWarning(e.GetException(), "Error occurred in file watcher.");
 
     internal void OnInputLocationUpdated(object sender, FileSystemEventArgs e)
     {
@@ -163,6 +168,7 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
     {
         Logger.LogDebug($"File {e.FullPath} changed.");
         LoadStubs(e.FullPath);
+        SignalStubsReload();
     }
 
     private void FileCreated(FileSystemEventArgs e)
@@ -176,6 +182,7 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
 
         Logger.LogDebug($"File {fullPath} created.");
         LoadStubs(fullPath);
+        SignalStubsReload();
     }
 
     private void FileDeleted(FileSystemEventArgs e)
@@ -193,6 +200,7 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
         }
 
         TryRemoveWatcher(fullPath);
+        SignalStubsReload();
     }
 
     private void FileRenamed(RenamedEventArgs e)
@@ -203,7 +211,7 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
         // Due to limitations in .NET / FileSystemWatcher, no event is triggered when a directory is renamed.
         if (!FileService.IsDirectory(fullPath))
         {
-            Logger.LogDebug($"File {fullPath} renamed.");
+            Logger.LogDebug($"File {oldPath} renamed to {fullPath}.");
 
             // Try to delete the stub from memory.
             if (Stubs.TryRemove(oldPath, out _))
@@ -212,7 +220,6 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
             }
 
             TryRemoveWatcher(oldPath);
-            SetupWatcherForLocation(fullPath);
             if (!SupportedExtensions.Any(ext => fullPath.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
             {
                 Logger.LogDebug(
@@ -221,11 +228,14 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
             else
             {
                 LoadStubs(fullPath);
+                SetupWatcherForLocation(fullPath);
             }
         }
+
+        SignalStubsReload();
     }
 
-    private bool TryRemoveWatcher(string fullPath)
+    internal bool TryRemoveWatcher(string fullPath)
     {
         if (FileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
         {
@@ -236,4 +246,6 @@ internal class FileWatcherYamlFileStubSource : BaseFileStubSource, IDisposable
 
         return false;
     }
+
+    private void SignalStubsReload() => stubNotify.ReloadStubsAsync().Wait();
 }

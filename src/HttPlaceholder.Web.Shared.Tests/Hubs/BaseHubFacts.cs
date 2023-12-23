@@ -39,10 +39,5 @@ public class BaseHubFacts
         await hub.OnConnectedAsync();
     }
 
-    private class TestHub : BaseHub
-    {
-        public TestHub(ILoginCookieService loginCookieService) : base(loginCookieService)
-        {
-        }
-    }
+    private class TestHub(ILoginCookieService loginCookieService) : BaseHub(loginCookieService);
 }

@@ -60,16 +60,10 @@ public static class MapperProfileHelper
 
     private static Type GetGenericType(Type type) => type.GetInterfaces().First().GetGenericArguments().First();
 
-    private sealed class Mapping
+    private sealed class Mapping(Type source, Type destination)
     {
-        public Mapping(Type source, Type destination)
-        {
-            Source = source;
-            Destination = destination;
-        }
+        public Type Source { get; } = source;
 
-        public Type Source { get; }
-
-        public Type Destination { get; }
+        public Type Destination { get; } = destination;
     }
 }

@@ -4,18 +4,11 @@ using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Infrastructure.Implementations;
 
-internal class CacheService : ICacheService, ISingletonService
+internal class CacheService(IHttpContextService httpContextService) : ICacheService, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
+    public TObject GetScopedItem<TObject>(string key) => httpContextService.GetItem<TObject>(key);
 
-    public CacheService(IHttpContextService httpContextService)
-    {
-        _httpContextService = httpContextService;
-    }
+    public void SetScopedItem(string key, object item) => httpContextService.SetItem(key, item);
 
-    public TObject GetScopedItem<TObject>(string key) => _httpContextService.GetItem<TObject>(key);
-
-    public void SetScopedItem(string key, object item) => _httpContextService.SetItem(key, item);
-
-    public bool DeleteScopedItem(string key) => _httpContextService.DeleteItem(key);
+    public bool DeleteScopedItem(string key) => httpContextService.DeleteItem(key);
 }

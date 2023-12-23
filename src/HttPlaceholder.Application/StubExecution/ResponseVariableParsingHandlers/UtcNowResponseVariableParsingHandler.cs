@@ -14,16 +14,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 ///     Response variable parsing handler to insert the UTC date/time into the response. An optional date/time format can
 ///     be provided (based on the .NET date/time formatting strings).
 /// </summary>
-internal class UtcNowResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class UtcNowResponseVariableParsingHandler(IDateTime dateTime, IFileService fileService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly IDateTime _dateTime;
-
-    public UtcNowResponseVariableParsingHandler(IDateTime dateTime, IFileService fileService) : base(fileService)
-    {
-        _dateTime = dateTime;
-    }
-
-
     /// <inheritdoc />
     public override string Name => "utcnow";
 
@@ -37,7 +30,7 @@ internal class UtcNowResponseVariableParsingHandler : BaseVariableParsingHandler
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var now = _dateTime.UtcNow;
+        var now = dateTime.UtcNow;
         return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => InsertDateTime(current, match, now)));

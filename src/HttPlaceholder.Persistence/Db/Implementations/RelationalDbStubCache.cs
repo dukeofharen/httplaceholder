@@ -13,20 +13,13 @@ using Newtonsoft.Json;
 namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <inheritdoc />
-internal class RelationalDbStubCache : IRelationalDbStubCache
+internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalDbStubCache> logger)
+    : IRelationalDbStubCache
 {
     private static readonly object _cacheUpdateLock = new();
-    private readonly ILogger<RelationalDbStubCache> _logger;
 
-    private readonly IQueryStore _queryStore;
     internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
     internal string StubUpdateTrackingId;
-
-    public RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalDbStubCache> logger)
-    {
-        _queryStore = queryStore;
-        _logger = logger;
-    }
 
     /// <inheritdoc />
     public async Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel,
@@ -40,7 +33,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
 
         if (!StubCache.TryAdd(stubModel.Id, stubModel))
         {
-            _logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
+            logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
         }
 
         var newId = await UpdateTrackingIdAsync(ctx, cancellationToken);
@@ -70,17 +63,17 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
 
         // Check if the "stub_update_tracking_id" field in the database has a new value.
         var stubUpdateTrackingId =
-            await ctx.QueryFirstOrDefaultAsync<string>(_queryStore.GetStubUpdateTrackingIdQuery, cancellationToken);
+            await ctx.QueryFirstOrDefaultAsync<string>(queryStore.GetStubUpdateTrackingIdQuery, cancellationToken);
         if (string.IsNullOrWhiteSpace(stubUpdateTrackingId))
         {
             lock (_cacheUpdateLock)
             {
                 // ID doesn't exist yet. Create one and persist it.
-                _logger.LogDebug("Initializing the cache, because there is no tracking ID in the database yet.");
+                logger.LogDebug("Initializing the cache, because there is no tracking ID in the database yet.");
                 var newId = Guid.NewGuid().ToString();
                 StubUpdateTrackingId = newId;
                 ctx.Execute(
-                    _queryStore.InsertStubUpdateTrackingIdQuery,
+                    queryStore.InsertStubUpdateTrackingIdQuery,
                     new {StubUpdateTrackingId = newId});
                 shouldUpdateCache = true;
             }
@@ -88,7 +81,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         else if (StubUpdateTrackingId == null)
         {
             // The local cache hasn't been initialized yet. Do that now.
-            _logger.LogDebug(
+            logger.LogDebug(
                 "Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
             StubUpdateTrackingId = stubUpdateTrackingId;
             shouldUpdateCache = true;
@@ -98,7 +91,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
             lock (_cacheUpdateLock)
             {
                 // ID has been changed. Update the stub cache.
-                _logger.LogDebug(
+                logger.LogDebug(
                     "Initializing the cache, because the tracking ID in the database has been changed.");
                 StubUpdateTrackingId = stubUpdateTrackingId;
                 shouldUpdateCache = true;
@@ -116,7 +109,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         {
             if (!StubCache.TryAdd(stub.Id, stub))
             {
-                _logger.LogWarning($"Could not add stub with ID '{stub.Id}' to cache.");
+                logger.LogWarning($"Could not add stub with ID '{stub.Id}' to cache.");
             }
         }
 
@@ -125,7 +118,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
 
     private IList<StubModel> GetStubs(IDatabaseContext ctx, string distributionKey)
     {
-        var queryResults = ctx.Query<DbStubModel>(_queryStore.GetStubsQuery, new {DistributionKey = distributionKey});
+        var queryResults = ctx.Query<DbStubModel>(queryStore.GetStubsQuery, new {DistributionKey = distributionKey});
 
         return queryResults.Select(queryResult => queryResult.StubType switch
             {
@@ -148,7 +141,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     private async Task<string> UpdateTrackingIdAsync(IDatabaseContext ctx, CancellationToken cancellationToken)
     {
         var newId = Guid.NewGuid().ToString();
-        await ctx.ExecuteAsync(_queryStore.UpdateStubUpdateTrackingIdQuery, cancellationToken,
+        await ctx.ExecuteAsync(queryStore.UpdateStubUpdateTrackingIdQuery, cancellationToken,
             new {StubUpdateTrackingId = newId});
         return newId;
     }

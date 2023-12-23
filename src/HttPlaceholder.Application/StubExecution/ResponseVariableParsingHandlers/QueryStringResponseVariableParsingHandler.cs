@@ -13,16 +13,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a given query parameter in the response.
 /// </summary>
-internal class QueryStringResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class QueryStringResponseVariableParsingHandler(
+    IHttpContextService httpContextService,
+    IFileService fileService)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    public QueryStringResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) :
-        base(fileService)
-    {
-        _httpContextService = httpContextService;
-    }
-
     /// <inheritdoc />
     public override string Name => "query";
 
@@ -36,7 +31,7 @@ internal class QueryStringResponseVariableParsingHandler : BaseVariableParsingHa
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var queryDict = _httpContextService.GetQueryStringDictionary();
+        var queryDict = httpContextService.GetQueryStringDictionary();
         return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 3)
             .Aggregate(input, (current, match) => InsertQuery(current, match, queryDict)));

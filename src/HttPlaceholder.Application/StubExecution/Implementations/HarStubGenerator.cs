@@ -13,23 +13,13 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class HarStubGenerator : IHarStubGenerator, ISingletonService
+internal class HarStubGenerator(
+    IHttpRequestToConditionsService httpRequestToConditionsService,
+    IHttpResponseToStubResponseService httpResponseToStubResponseService,
+    IStubContext stubContext)
+    : IHarStubGenerator, ISingletonService
 {
     private static readonly string[] _responseHeadersToStrip = {"content-length", "content-encoding"};
-
-    private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
-    private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;
-    private readonly IStubContext _stubContext;
-
-    public HarStubGenerator(
-        IHttpRequestToConditionsService httpRequestToConditionsService,
-        IHttpResponseToStubResponseService httpResponseToStubResponseService,
-        IStubContext stubContext)
-    {
-        _httpRequestToConditionsService = httpRequestToConditionsService;
-        _httpResponseToStubResponseService = httpResponseToStubResponseService;
-        _stubContext = stubContext;
-    }
 
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant,
@@ -65,8 +55,8 @@ internal class HarStubGenerator : IHarStubGenerator, ISingletonService
             return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
         }
 
-        await _stubContext.DeleteStubAsync(stub.Id, cancellationToken);
-        return await _stubContext.AddStubAsync(stub, cancellationToken);
+        await stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+        return await stubContext.AddStubAsync(stub, cancellationToken);
     }
 
     private static HttpRequestModel MapRequest(Entry entry) => new()
@@ -94,8 +84,8 @@ internal class HarStubGenerator : IHarStubGenerator, ISingletonService
         string stubIdPrefix,
         CancellationToken cancellationToken)
     {
-        var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(req, cancellationToken);
-        var response = await _httpResponseToStubResponseService.ConvertToResponseAsync(res, cancellationToken);
+        var conditions = await httpRequestToConditionsService.ConvertToConditionsAsync(req, cancellationToken);
+        var response = await httpResponseToStubResponseService.ConvertToResponseAsync(res, cancellationToken);
         var stub = new StubModel
         {
             Tenant = tenant,

@@ -10,16 +10,10 @@ using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
-internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
+internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenerator)
+    : IOpenApiDataFiller, ISingletonService
 {
     private static readonly Regex _statusCodeRegex = new("^[1-5]{1}[0-9]{2}$", RegexOptions.Compiled);
-
-    private readonly IOpenApiFakeDataGenerator _openApiFakeDataGenerator;
-
-    public OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenerator)
-    {
-        _openApiFakeDataGenerator = openApiFakeDataGenerator;
-    }
 
     /// <inheritdoc />
     public string BuildServerUrl(OpenApiServer server)
@@ -51,7 +45,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
             .FirstOrDefault(c => string.Equals(c.Key, MimeTypes.JsonMime, StringComparison.OrdinalIgnoreCase));
 
         // If the content has any examples assigned to it, create a response based on that instead of randomly generating a response.
-        var example = _openApiFakeDataGenerator.GetJsonExample(content.Value);
+        var example = openApiFakeDataGenerator.GetJsonExample(content.Value);
         if (!string.IsNullOrWhiteSpace(example))
         {
             return example;
@@ -59,7 +53,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
 
         return string.IsNullOrWhiteSpace(content.Key)
             ? null
-            : _openApiFakeDataGenerator.GetRandomJsonStringValue(content.Value.Schema);
+            : openApiFakeDataGenerator.GetRandomJsonStringValue(content.Value.Schema);
     }
 
     /// <inheritdoc />
@@ -67,8 +61,8 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
     {
         string GetHeaderValue(KeyValuePair<string, OpenApiHeader> h)
         {
-            var example = _openApiFakeDataGenerator.GetExampleForHeader(h.Value);
-            return example?.ToString() ?? _openApiFakeDataGenerator.GetRandomStringValue(h.Value.Schema);
+            var example = openApiFakeDataGenerator.GetExampleForHeader(h.Value);
+            return example?.ToString() ?? openApiFakeDataGenerator.GetRandomStringValue(h.Value.Schema);
         }
 
         var result = response.Headers?.Any() == true
@@ -97,7 +91,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
             .FirstOrDefault(c => string.Equals(c.Key, MimeTypes.JsonMime, StringComparison.OrdinalIgnoreCase));
 
         // If the content has any examples assigned to it, create a response based on that instead of randomly generating a response.
-        var example = _openApiFakeDataGenerator.GetJsonExample(definition.Value);
+        var example = openApiFakeDataGenerator.GetJsonExample(definition.Value);
         if (!string.IsNullOrWhiteSpace(example))
         {
             return example;
@@ -105,7 +99,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
 
         return string.IsNullOrWhiteSpace(definition.Key)
             ? null
-            : _openApiFakeDataGenerator.GetRandomJsonStringValue(definition.Value.Schema);
+            : openApiFakeDataGenerator.GetRandomJsonStringValue(definition.Value.Schema);
     }
 
     /// <inheritdoc />
@@ -113,7 +107,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
     {
         string GetUrlValue(OpenApiParameter parameter)
         {
-            var example = _openApiFakeDataGenerator.GetExampleForParameter(parameter);
+            var example = openApiFakeDataGenerator.GetExampleForParameter(parameter);
             if (example != null)
             {
                 return example.ToString();
@@ -125,7 +119,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
                 schema = parameter.Schema.Items;
             }
 
-            return _openApiFakeDataGenerator.GetRandomStringValue(schema);
+            return openApiFakeDataGenerator.GetRandomStringValue(schema);
         }
 
         var relativePath = basePath;
@@ -169,7 +163,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
             .Where(p => p.In == ParameterLocation.Header)
             .ToArray();
         var result = headerParams.Any()
-            ? headerParams.ToDictionary(p => p.Name, p => _openApiFakeDataGenerator.GetRandomStringValue(p.Schema))
+            ? headerParams.ToDictionary(p => p.Name, p => openApiFakeDataGenerator.GetRandomStringValue(p.Schema))
             : new Dictionary<string, string>();
         if (operation.RequestBody?.Content != null && operation.RequestBody.Content.Any())
         {

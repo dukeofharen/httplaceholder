@@ -5,7 +5,7 @@ COPY . ./
 RUN cd docs/httpl-docs && pip install -r requirements.txt && python sync.py && mkdocs build && cp -r site /app
 
 # Build UI
-FROM node:18 AS gui-build-env
+FROM node:20 AS gui-build-env
 WORKDIR /app
 COPY --from=doc-build-env /app/site/. ./docs
 

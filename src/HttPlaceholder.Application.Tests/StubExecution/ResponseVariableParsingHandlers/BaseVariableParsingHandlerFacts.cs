@@ -35,12 +35,8 @@ public class BaseVariableParsingHandlerFacts
         fileServiceMock.Verify(m => m.ReadAllText(It.IsAny<string>()), Times.Once);
     }
 
-    private class TestVariableParsingHandler : BaseVariableParsingHandler
+    private class TestVariableParsingHandler(IFileService fileService) : BaseVariableParsingHandler(fileService)
     {
-        public TestVariableParsingHandler(IFileService fileService) : base(fileService)
-        {
-        }
-
         public override string Name => "TestVariableParsingHandler";
         public override string FullName { get; }
         public override string[] Examples { get; }

@@ -14,22 +14,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert the display URL (so the full URL) in the response.
 /// </summary>
-internal class DisplayUrlResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
+internal class DisplayUrlResponseVariableParsingHandler(
+    IFileService fileService,
+    ILogger<DisplayUrlResponseVariableParsingHandler> logger,
+    IUrlResolver urlResolver)
+    : BaseVariableParsingHandler(fileService), ISingletonService
 {
-    private readonly ILogger<DisplayUrlResponseVariableParsingHandler> _logger;
-    private readonly IUrlResolver _urlResolver;
-
-
-    public DisplayUrlResponseVariableParsingHandler(
-        IFileService fileService,
-        ILogger<DisplayUrlResponseVariableParsingHandler> logger,
-        IUrlResolver urlResolver) :
-        base(fileService)
-    {
-        _logger = logger;
-        _urlResolver = urlResolver;
-    }
-
     /// <inheritdoc />
     public override string Name => "display_url";
 
@@ -44,14 +34,14 @@ internal class DisplayUrlResponseVariableParsingHandler : BaseVariableParsingHan
         CancellationToken cancellationToken) =>
         Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => HandleDisplayUrl(match, current, _urlResolver.GetDisplayUrl())));
+            .Aggregate(input, (current, match) => HandleDisplayUrl(match, current, urlResolver.GetDisplayUrl())));
 
     private string HandleDisplayUrl(Match match, string current, string url)
     {
         var result = string.Empty;
         if (match.Groups.Count != 3)
         {
-            _logger.LogWarning(
+            logger.LogWarning(
                 $"Number of regex matches for variable parser {GetType().Name} was {match.Groups.Count}, which should be 3.");
         }
         else if (string.IsNullOrWhiteSpace(match.Groups[2].Value))
@@ -72,12 +62,12 @@ internal class DisplayUrlResponseVariableParsingHandler : BaseVariableParsingHan
                 }
                 else
                 {
-                    _logger.LogInformation($"No result found in display URL for regular expression '{regexValue}'.");
+                    logger.LogInformation($"No result found in display URL for regular expression '{regexValue}'.");
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex, $"Error occurred while executing regex '{regexValue}' on display URL.'");
+                logger.LogWarning(ex, $"Error occurred while executing regex '{regexValue}' on display URL.'");
             }
         }
 

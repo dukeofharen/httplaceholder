@@ -16,15 +16,8 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 ///     yet.
 ///     JSON objects and arrays are supported as root node.
 /// </summary>
-internal class JsonHandler : IRequestToStubConditionsHandler, ISingletonService
+internal class JsonHandler(ILogger<JsonHandler> logger) : IRequestToStubConditionsHandler, ISingletonService
 {
-    private readonly ILogger<JsonHandler> _logger;
-
-    public JsonHandler(ILogger<JsonHandler> logger)
-    {
-        _logger = logger;
-    }
-
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
         CancellationToken cancellationToken)
@@ -50,7 +43,7 @@ internal class JsonHandler : IRequestToStubConditionsHandler, ISingletonService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Exception occurred while trying to parse JSON.");
+            logger.LogWarning(ex, "Exception occurred while trying to parse JSON.");
             return Task.FromResult(false);
         }
     }
