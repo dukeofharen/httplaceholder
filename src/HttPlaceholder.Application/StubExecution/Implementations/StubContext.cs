@@ -10,6 +10,7 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Application.Utilities;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
@@ -67,6 +68,7 @@ internal class StubContext(
     {
         // Check that a stub with the new ID isn't already added to a readonly stub source.
         var stubs = await GetStubsAsync(true, cancellationToken);
+        stub.CleanStubId();
         if (stubs.Any(s => string.Equals(stub.Id, s.Stub.Id, StringComparison.OrdinalIgnoreCase)))
         {
             throw new ConflictException($"Stub with ID '{stub.Id}'.");
@@ -88,6 +90,7 @@ internal class StubContext(
     /// <inheritdoc />
     public async Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
     {
+        stubId = StubUtilities.CleanStubId(stubId);
         var distKey = stubRequestContext.DistributionKey;
         var result = await GetWritableStubSource()
             .DeleteStubAsync(stubId, distKey, cancellationToken);
@@ -104,8 +107,9 @@ internal class StubContext(
             .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
         foreach (var stub in stubs)
         {
-            await source.DeleteStubAsync(stub.Stub.Id, distKey, cancellationToken);
-            await stubNotify.StubDeletedAsync(stub.Stub.Id, distKey, cancellationToken);
+            var stubId = StubUtilities.CleanStubId(stub.Stub.Id);
+            await source.DeleteStubAsync(stubId, distKey, cancellationToken);
+            await stubNotify.StubDeletedAsync(stubId, distKey, cancellationToken);
         }
     }
 
@@ -117,8 +121,9 @@ internal class StubContext(
         var stubs = await source.GetStubsAsync(distKey, cancellationToken);
         foreach (var stub in stubs)
         {
-            await source.DeleteStubAsync(stub.Stub.Id, distKey, cancellationToken);
-            await stubNotify.StubDeletedAsync(stub.Stub.Id, distKey, cancellationToken);
+            var stubId = StubUtilities.CleanStubId(stub.Stub.Id);
+            await source.DeleteStubAsync(stubId, distKey, cancellationToken);
+            await stubNotify.StubDeletedAsync(stubId, distKey, cancellationToken);
         }
     }
 
@@ -138,13 +143,15 @@ internal class StubContext(
         // First, delete the existing stubs.
         foreach (var stub in existingStubs)
         {
-            await source.DeleteStubAsync(stub.Stub.Id, distKey, cancellationToken);
-            await stubNotify.StubDeletedAsync(stub.Stub.Id, distKey, cancellationToken);
+            var stubId = StubUtilities.CleanStubId(stub.Stub.Id);
+            await source.DeleteStubAsync(stubId, distKey, cancellationToken);
+            await stubNotify.StubDeletedAsync(stubId, distKey, cancellationToken);
         }
 
         // Make sure the new selection of stubs all have the new tenant and add them to the stub source.
         foreach (var stub in stubArray)
         {
+            stub.CleanStubId();
             stub.Tenant = tenant;
             await source.AddStubAsync(stub, distKey, cancellationToken);
             var overviewModel = new FullStubOverviewModel
@@ -170,7 +177,8 @@ internal class StubContext(
 
             result = new FullStubModel
             {
-                Stub = stub.Value.Stub, Metadata = MapMetadata(source is not IWritableStubSource, stub.Value.Metadata)
+                Stub = stub.Value.Stub,
+                Metadata = MapMetadata(source is not IWritableStubSource, stub.Value.Metadata)
             };
             break;
         }
@@ -321,6 +329,7 @@ internal class StubContext(
     public async Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState,
         CancellationToken cancellationToken)
     {
+        scenario = StubUtilities.CleanScenarioName(scenario);
         if (string.IsNullOrWhiteSpace(scenario) || scenarioState == null)
         {
             return;
@@ -366,6 +375,7 @@ internal class StubContext(
     /// <inheritdoc />
     public async Task<bool> DeleteScenarioAsync(string scenario, CancellationToken cancellationToken)
     {
+        scenario = StubUtilities.CleanScenarioName(scenario);
         if (string.IsNullOrWhiteSpace(scenario))
         {
             return false;
