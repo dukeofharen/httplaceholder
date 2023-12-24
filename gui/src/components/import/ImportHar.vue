@@ -215,10 +215,6 @@ export default defineComponent({
 
 <style scoped>
 textarea {
-  font-family: monospace;
-  white-space: pre;
-  overflow-wrap: normal;
-  overflow-x: scroll;
   min-height: 300px;
 }
 
