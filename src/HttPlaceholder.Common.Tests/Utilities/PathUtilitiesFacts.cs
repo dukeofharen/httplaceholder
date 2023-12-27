@@ -18,6 +18,7 @@ public class PathUtilitiesFacts
     [DataRow("Folder\\$\\File.png", "Folder/File.png")]
     [DataRow("Folder/?/File.png", "Folder/File.png")]
     [DataRow("Folder\\?\\File.png", "Folder/File.png")]
+    [DataRow("..\\Folder\\?\\File.png", "Folder/File.png")]
     public void CleanPath_HappyFlow(string input, string expectedOutput)
     {
         // Act
