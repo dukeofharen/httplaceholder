@@ -14,7 +14,7 @@ public static class PathUtilities
     /// <summary>
     ///     A method for removing unsafe characters from a path.
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="path">The path to clean.</param>
     /// <returns>The cleaned path.</returns>
     public static string CleanPath(string path)
     {
