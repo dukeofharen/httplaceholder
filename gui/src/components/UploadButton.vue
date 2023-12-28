@@ -15,6 +15,11 @@
 import { defineComponent, type PropType, ref } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { UploadButtonType } from "@/domain/upload-button-type";
+import type { StubResponseWriterResultModel } from "@/domain/request/stub-response-writer-result-model";
+import { getExtension } from "@/utils/file";
+import { vsprintf } from "sprintf-js";
+import { resources } from "@/constants/resources";
+import { warning } from "@/utils/toast";
 
 export default defineComponent({
   name: "UploadButton",
@@ -37,6 +42,9 @@ export default defineComponent({
       type: String as PropType<UploadButtonType>,
       default: UploadButtonType.Text,
     },
+    allowedExtensions: {
+      type: Array as PropType<string[]>,
+    },
   },
   emits: ["uploaded", "allUploaded"],
   setup(props, { emit }) {
@@ -53,12 +61,28 @@ export default defineComponent({
     const handleSingleUploadedFile = (
       file: File,
       onUploaded: (uploadedFile: FileUploadedModel) => void,
+      onError: (error: string) => void,
     ) => {
+      const allowedExtensions = props?.allowedExtensions ?? [];
+      if (
+        allowedExtensions.length > 0 &&
+        !allowedExtensions.includes(getExtension(file.name))
+      ) {
+        onError(
+          vsprintf(resources.uploadInvalidFiles, [
+            file.name,
+            allowedExtensions.map((e) => `.${e}`).join(","),
+          ]),
+        );
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
         const uploadedFile: FileUploadedModel = {
           filename: file.name,
           result: e.target.result,
+          success: true,
         };
         onUploaded(uploadedFile);
       };
@@ -70,7 +94,7 @@ export default defineComponent({
           reader.readAsDataURL(file);
           break;
         default:
-          throw `Result type for upload not supported: ${props.resultType}`;
+          onError(`Result type for upload not supported: ${props.resultType}`);
       }
     };
     const loadTextFromFile = async (ev: any) => {
@@ -80,9 +104,21 @@ export default defineComponent({
         for (const file of files) {
           promises.push(
             new Promise((resolve) => {
-              handleSingleUploadedFile(file, (uploadedFile) => {
-                resolve(uploadedFile);
-              });
+              handleSingleUploadedFile(
+                file,
+                (uploadedFile) => {
+                  resolve(uploadedFile);
+                },
+                (error) => {
+                  warning(error);
+                  const result: FileUploadedModel = {
+                    success: false,
+                    filename: file.name,
+                    result: undefined,
+                  };
+                  resolve(result);
+                },
+              );
             }),
           );
         }
@@ -90,8 +126,10 @@ export default defineComponent({
         emit("allUploaded", await Promise.all(promises));
       } else {
         for (const file of files) {
-          handleSingleUploadedFile(file, (uploadedFile) =>
-            emit("uploaded", uploadedFile),
+          handleSingleUploadedFile(
+            file,
+            (uploadedFile) => emit("uploaded", uploadedFile),
+            warning,
           );
         }
       }
