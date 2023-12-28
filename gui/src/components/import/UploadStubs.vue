@@ -5,8 +5,8 @@
   <span>
     <upload-button
       button-text="Upload stubs"
-      multiple="true"
-      @uploaded="onUploaded"
+      :multiple="true"
+      @all-uploaded="onAllUploaded"
     />
   </span>
 </template>
@@ -44,6 +44,7 @@ export default defineComponent({
         return;
       }
 
+      console.log(file);
       try {
         await addStubs(file.result, file.filename);
       } catch (e) {
@@ -66,7 +67,11 @@ export default defineComponent({
       }
     };
 
-    return { onUploaded };
+    const onAllUploaded = async (files: FileUploadedModel[]) => {
+      console.log(files);
+    };
+
+    return { onAllUploaded };
   },
 });
 </script>

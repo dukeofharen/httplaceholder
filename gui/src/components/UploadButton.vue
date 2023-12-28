@@ -38,6 +38,7 @@ export default defineComponent({
       default: UploadButtonType.Text,
     },
   },
+  emits: ["uploaded", "allUploaded"],
   setup(props, { emit }) {
     // Refs
     const uploadField = ref<HTMLElement>();
@@ -48,26 +49,50 @@ export default defineComponent({
         uploadField.value.click();
       }
     };
-    const loadTextFromFile = (ev: any) => {
-      const files: File[] = Array.from(ev.target.files);
-      for (const file of files) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          const uploadedFile: FileUploadedModel = {
-            filename: file.name,
-            result: e.target.result,
-          };
-          emit("uploaded", uploadedFile);
+
+    const handleSingleUploadedFile = (
+      file: File,
+      onUploaded: (uploadedFile: FileUploadedModel) => void,
+    ) => {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const uploadedFile: FileUploadedModel = {
+          filename: file.name,
+          result: e.target.result,
         };
-        switch (props.resultType) {
-          case UploadButtonType.Text:
-            reader.readAsText(file);
-            break;
-          case UploadButtonType.Base64:
-            reader.readAsDataURL(file);
-            break;
-          default:
-            throw `Result type for upload not supported: ${props.resultType}`;
+        onUploaded(uploadedFile);
+      };
+      switch (props.resultType) {
+        case UploadButtonType.Text:
+          reader.readAsText(file);
+          break;
+        case UploadButtonType.Base64:
+          reader.readAsDataURL(file);
+          break;
+        default:
+          throw `Result type for upload not supported: ${props.resultType}`;
+      }
+    };
+    const loadTextFromFile = async (ev: any) => {
+      const files: File[] = Array.from(ev.target.files);
+      if (props.multiple) {
+        const promises = [];
+        for (const file of files) {
+          promises.push(
+            new Promise((resolve) => {
+              handleSingleUploadedFile(file, (uploadedFile) => {
+                resolve(uploadedFile);
+              });
+            }),
+          );
+        }
+
+        emit("allUploaded", await Promise.all(promises));
+      } else {
+        for (const file of files) {
+          handleSingleUploadedFile(file, (uploadedFile) =>
+            emit("uploaded", uploadedFile),
+          );
         }
       }
     };
