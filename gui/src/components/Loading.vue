@@ -12,14 +12,18 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { useHttpStore } from "@/store/http";
+import { useGeneralStore } from "@/store/general";
 
 export default defineComponent({
   name: "Loading",
   setup() {
     const httpStore = useHttpStore();
+    const generalStore = useGeneralStore();
 
     // Computed
-    const showLoading = computed(() => httpStore.isExecutingHttpCalls);
+    const showLoading = computed(
+      () => generalStore.shouldShowLoader || httpStore.isExecutingHttpCalls,
+    );
 
     return { showLoading };
   },
@@ -58,6 +62,7 @@ export default defineComponent({
   width: 80px;
   height: 80px;
 }
+
 .lds-ring div {
   box-sizing: border-box;
   display: block;
@@ -70,15 +75,19 @@ export default defineComponent({
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #fff transparent transparent transparent;
 }
+
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
 }
+
 .lds-ring div:nth-child(2) {
   animation-delay: -0.3s;
 }
+
 .lds-ring div:nth-child(3) {
   animation-delay: -0.15s;
 }
+
 @keyframes lds-ring {
   0% {
     transform: rotate(0deg);

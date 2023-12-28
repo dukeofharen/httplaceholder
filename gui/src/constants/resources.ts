@@ -25,9 +25,7 @@ export const resources = {
   requestBodyCopiedToClipboard:
     "Request body successfully copied to clipboard.",
   uploadInvalidFiles:
-    "These files you are trying to upload have an incorrect extension: %s.",
-  onlyUploadYmlFiles:
-    "Make sure to only upload files with the 'yml' or 'yaml' extension.",
+    "These files you are trying to upload have an incorrect extension: %s. The following extensions are allowed: %s",
   credentialsIncorrect: "The credentials are incorrect.",
   defaultStub: `id: unique-stub-id
 description: A description for the stub.

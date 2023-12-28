@@ -5,68 +5,57 @@
   <span>
     <upload-button
       button-text="Upload stubs"
-      multiple="true"
-      @uploaded="onUploaded"
+      :multiple="true"
+      @all-uploaded="onAllUploaded"
+      @before-upload="beforeUpload"
+      :allowed-extensions="['yml', 'yaml']"
     />
   </span>
 </template>
 
 <script lang="ts">
-import { getExtension } from "@/utils/file";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
-import { success, warning } from "@/utils/toast";
+import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { defineComponent } from "vue";
 import { vsprintf } from "sprintf-js";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
-
-const expectedExtensions = ["yml", "yaml"];
+import { useGeneralStore } from "@/store/general";
 
 export default defineComponent({
   name: "UploadStubs",
   setup() {
     const stubStore = useStubsStore();
+    const generalStore = useGeneralStore();
     const router = useRouter();
 
-    // Data
-    let reloadHandle: any = null;
-
     // Methods
-    const onUploaded = async (file: FileUploadedModel) => {
-      if (!expectedExtensions.includes(getExtension(file.filename))) {
-        warning(
-          vsprintf(resources.uploadInvalidFiles, [file.filename]) +
-            " " +
-            resources.onlyUploadYmlFiles,
-        );
-        return;
-      }
-
-      try {
-        await addStubs(file.result, file.filename);
-      } catch (e) {
-        handleHttpError(e);
-      }
-    };
-    const addStubs = async (input: any, filename: string) => {
-      try {
-        await stubStore.addStubs(input);
-        success(vsprintf(resources.stubsInFileAddedSuccessfully, [filename]));
-        if (reloadHandle) {
-          clearTimeout(reloadHandle);
+    const onAllUploaded = async (files: FileUploadedModel[]) => {
+      for (const file of files) {
+        if (!file.success) {
+          continue;
         }
 
-        reloadHandle = setTimeout(async () => {
-          await router.push({ name: "Stubs" });
-        }, 200);
-      } catch (e) {
-        handleHttpError(e);
+        try {
+          await stubStore.addStubs(file.result);
+          success(
+            vsprintf(resources.stubsInFileAddedSuccessfully, [file.filename]),
+          );
+        } catch (e) {
+          handleHttpError(e);
+        }
       }
+
+      generalStore.doHideLoader();
+      await router.push({ name: "Stubs" });
+    };
+    const beforeUpload = () => {
+      generalStore.doShowLoader();
     };
 
-    return { onUploaded };
+    return { onAllUploaded, beforeUpload };
   },
 });
 </script>
