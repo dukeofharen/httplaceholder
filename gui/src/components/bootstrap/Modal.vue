@@ -6,10 +6,12 @@
           <h5 class="modal-title">{{ title }}</h5>
           <button
             type="button"
-            class="btn-close"
+            class="btn close-button"
             data-bs-dismiss="modal"
             aria-label="Close"
-          ></button>
+          >
+            <i class="bi bi-x"></i>
+          </button>
         </div>
         <div class="modal-body" v-if="bodyText">
           <p>{{ bodyText }}</p>
@@ -132,4 +134,13 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.close-button {
+  margin: 0;
+  padding: 0;
+
+  .bi {
+    font-size: 30px;
+  }
+}
+</style>
