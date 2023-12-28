@@ -15,7 +15,6 @@
 import { defineComponent, type PropType, ref } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { UploadButtonType } from "@/domain/upload-button-type";
-import type { StubResponseWriterResultModel } from "@/domain/request/stub-response-writer-result-model";
 import { getExtension } from "@/utils/file";
 import { vsprintf } from "sprintf-js";
 import { resources } from "@/constants/resources";
@@ -46,7 +45,7 @@ export default defineComponent({
       type: Array as PropType<string[]>,
     },
   },
-  emits: ["uploaded", "allUploaded"],
+  emits: ["uploaded", "allUploaded", "beforeUpload"],
   setup(props, { emit }) {
     // Refs
     const uploadField = ref<HTMLElement>();
@@ -98,6 +97,7 @@ export default defineComponent({
       }
     };
     const loadTextFromFile = async (ev: any) => {
+      emit("beforeUpload");
       const files: File[] = Array.from(ev.target.files);
       if (props.multiple) {
         const promises = [];

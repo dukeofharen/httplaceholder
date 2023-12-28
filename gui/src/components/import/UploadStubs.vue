@@ -7,6 +7,7 @@
       button-text="Upload stubs"
       :multiple="true"
       @all-uploaded="onAllUploaded"
+      @before-upload="beforeUpload"
       :allowed-extensions="['yml', 'yaml']"
     />
   </span>
@@ -21,22 +22,16 @@ import { useStubsStore } from "@/store/stubs";
 import { defineComponent } from "vue";
 import { vsprintf } from "sprintf-js";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
+import { useGeneralStore } from "@/store/general";
 
 export default defineComponent({
   name: "UploadStubs",
   setup() {
     const stubStore = useStubsStore();
+    const generalStore = useGeneralStore();
     const router = useRouter();
 
     // Methods
-    // const onUploaded = async (file: FileUploadedModel) => {
-    //   try {
-    //     await addStubs(file.result, file.filename);
-    //   } catch (e) {
-    //     handleHttpError(e);
-    //   }
-    // };
-
     const onAllUploaded = async (files: FileUploadedModel[]) => {
       for (const file of files) {
         if (!file.success) {
@@ -53,10 +48,14 @@ export default defineComponent({
         }
       }
 
+      generalStore.doHideLoader();
       await router.push({ name: "Stubs" });
     };
+    const beforeUpload = () => {
+      generalStore.doShowLoader();
+    };
 
-    return { onAllUploaded };
+    return { onAllUploaded, beforeUpload };
   },
 });
 </script>
