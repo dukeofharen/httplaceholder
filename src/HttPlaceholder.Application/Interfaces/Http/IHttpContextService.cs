@@ -83,6 +83,11 @@ public interface IHttpContextService
     bool DeleteItem(string key);
 
     /// <summary>
+    ///     Gets whether the current request has a form content type.
+    /// </summary>
+    bool HasFormContentType { get; }
+
+    /// <summary>
     ///     Gets the posted form values as tuple list of string and <see cref="StringValues" />.
     /// </summary>
     /// <returns>The posted form values.</returns>

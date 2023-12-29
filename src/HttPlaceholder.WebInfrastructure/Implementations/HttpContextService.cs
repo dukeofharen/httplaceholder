@@ -93,17 +93,19 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     }
 
     /// <inheritdoc />
+    public bool HasFormContentType => GetContext().Request.HasFormContentType;
+
+    /// <inheritdoc />
     public (string, StringValues)[] GetFormValues()
     {
-        var httpContext = GetContext();
-        if (!httpContext.Request.HasFormContentType)
+        if (!HasFormContentType)
         {
             return Array.Empty<(string, StringValues)>();
         }
 
         try
         {
-            return httpContext.Request.Form
+            return GetContext().Request.Form
                 .Select(f => (f.Key, f.Value))
                 .ToArray();
         }
