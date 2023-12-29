@@ -96,7 +96,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     public bool HasFormContentType => GetContext().Request.HasFormContentType;
 
     /// <inheritdoc />
-    public (string, StringValues)[] GetFormValues()
+    public async Task<(string, StringValues)[]> GetFormValuesAsync(CancellationToken cancellationToken = default)
     {
         if (!HasFormContentType)
         {
@@ -105,7 +105,8 @@ internal class HttpContextService : IHttpContextService, ISingletonService
 
         try
         {
-            return GetContext().Request.Form
+            var form = await GetContext().Request.ReadFormAsync(cancellationToken);
+            return form
                 .Select(f => (f.Key, f.Value))
                 .ToArray();
         }

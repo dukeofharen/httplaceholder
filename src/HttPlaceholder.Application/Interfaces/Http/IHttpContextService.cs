@@ -91,7 +91,7 @@ public interface IHttpContextService
     ///     Gets the posted form values as tuple list of string and <see cref="StringValues" />.
     /// </summary>
     /// <returns>The posted form values.</returns>
-    (string, StringValues)[] GetFormValues();
+    Task<(string, StringValues)[]> GetFormValuesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Sets the HTTP response status code.

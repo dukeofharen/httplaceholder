@@ -40,8 +40,8 @@ public class FormValueConditionCheckerFacts
         var conditions = new StubConditionsModel {Form = new[] {new StubFormModel {Key = "key3", Value = "val1.1"}}};
         var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
         httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Returns(form);
+            .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(form);
 
 
         // Act
@@ -71,8 +71,8 @@ public class FormValueConditionCheckerFacts
         };
         var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
         httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Returns(form);
+            .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(form);
 
         string outputForLogging;
         stringCheckerMock
@@ -112,8 +112,8 @@ public class FormValueConditionCheckerFacts
         };
         var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
         httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Returns(form);
+            .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(form);
 
         string outputForLogging;
         stringCheckerMock
@@ -152,8 +152,8 @@ public class FormValueConditionCheckerFacts
         };
         var form = new (string, StringValues)[] {("key1", "val%203"), ("key2", "val4")};
         httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Returns(form);
+            .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(form);
 
         string outputForLogging;
         stringCheckerMock
@@ -213,8 +213,8 @@ public class FormValueConditionCheckerFacts
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Returns(formValues);
+            .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(formValues);
 
         // Act
         var result = await checker.ValidateAsync(
