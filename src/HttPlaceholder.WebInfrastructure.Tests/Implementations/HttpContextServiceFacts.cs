@@ -192,6 +192,10 @@ public class HttpContextServiceFacts
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
+        _mockHttpContext
+            .HttpRequestMock
+            .Setup(m => m.HasFormContentType)
+            .Returns(false);
 
         // Act
         var result = service.GetFormValues();
@@ -218,19 +222,16 @@ public class HttpContextServiceFacts
         Assert.AreEqual(0, result.Length);
     }
 
-    [DataTestMethod]
-    [DataRow("application/x-www-form-urlencoded")]
-    [DataRow("multipart/form-data")]
-    [DataRow("APPLICATION/X-WWW-FORM-URLENCODED")]
-    [DataRow("MULTIPART/FORM-DATA")]
-    [DataRow("application/x-www-form-urlencoded; encoding=utf-8")]
-    [DataRow("multipart/form-data; encoding=utf-8")]
-    public void GetFormValues_HappyFlow(string contentType)
+    [TestMethod]
+    public void GetFormValues_HappyFlow()
     {
         // Arrange
         var formDict = new Dictionary<string, StringValues> {{"key1", "val1"}, {"key2", "val2"}};
         _mockHttpContext.SetForm(formDict);
-        _mockHttpContext.SetRequestHeader(HeaderKeys.ContentType, contentType);
+        _mockHttpContext
+            .HttpRequestMock
+            .Setup(m => m.HasFormContentType)
+            .Returns(true);
 
         var service = _mocker.CreateInstance<HttpContextService>();
 

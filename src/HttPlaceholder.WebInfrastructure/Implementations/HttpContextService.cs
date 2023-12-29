@@ -10,7 +10,6 @@ namespace HttPlaceholder.WebInfrastructure.Implementations;
 internal class HttpContextService : IHttpContextService, ISingletonService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-
     private readonly ILogger<HttpContextService> _logger;
 
     /// <summary>
@@ -176,8 +175,6 @@ internal class HttpContextService : IHttpContextService, ISingletonService
         return result;
     }
 
-    private HttpContext GetContext()
-    {
-        return _httpContextAccessor.HttpContext ?? throw new InvalidOperationException("HttpContext not set.");
-    }
+    private HttpContext GetContext() =>
+        _httpContextAccessor.HttpContext ?? throw new InvalidOperationException("HttpContext not set.");
 }
