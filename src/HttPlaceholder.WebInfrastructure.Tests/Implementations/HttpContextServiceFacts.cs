@@ -188,6 +188,23 @@ public class HttpContextServiceFacts
     }
 
     [TestMethod]
+    public void HasFormContentType_HappyFlow()
+    {
+        // Arrange
+        var service = _mocker.CreateInstance<HttpContextService>();
+        _mockHttpContext
+            .HttpRequestMock
+            .Setup(m => m.HasFormContentType)
+            .Returns(true);
+
+        // Act
+        var result = service.HasFormContentType;
+
+        // Assert
+        Assert.IsTrue(result);
+    }
+
+    [TestMethod]
     public void GetFormValues_NoContentTypeSet_ShouldReturnEmptyArray()
     {
         // Arrange
