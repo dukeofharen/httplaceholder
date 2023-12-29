@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -19,9 +19,7 @@ internal class FormHandler() : IRequestToStubConditionsHandler, ISingletonServic
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
         CancellationToken cancellationToken)
     {
-        var pair = request.Headers.FirstOrDefault(p =>
-            p.Key.Equals(HeaderKeys.ContentType, StringComparison.OrdinalIgnoreCase));
-        var contentType = pair.Value;
+        var contentType = request.Headers.CaseInsensitiveSearch(HeaderKeys.ContentType);
         if (string.IsNullOrWhiteSpace(contentType))
         {
             return Task.FromResult(false);
