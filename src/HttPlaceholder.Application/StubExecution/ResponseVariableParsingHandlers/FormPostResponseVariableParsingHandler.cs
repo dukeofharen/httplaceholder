@@ -30,7 +30,6 @@ internal class FormPostResponseVariableParsingHandler(IHttpContextService httpCo
         CancellationToken cancellationToken)
     {
         var formValues = await httpContextService.GetFormValuesAsync(cancellationToken);
-        // TODO there can be multiple form values, so this should be fixed in the future.
         var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
         return matches
             .Where(match => match.Groups.Count >= 3)

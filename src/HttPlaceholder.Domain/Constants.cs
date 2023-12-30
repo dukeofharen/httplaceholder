@@ -188,11 +188,6 @@ public static class MimeTypes
     ///     The multipart form data mime type.
     /// </summary>
     public const string MultipartFormDataMime = "multipart/form-data";
-
-    /// <summary>
-    ///     A list of mime types that are valid for posted HTTP forms.
-    /// </summary>
-    public static string[] FormMimeTypes => new[] {UrlEncodedFormMime, MultipartFormDataMime};
 }
 
 /// <summary>

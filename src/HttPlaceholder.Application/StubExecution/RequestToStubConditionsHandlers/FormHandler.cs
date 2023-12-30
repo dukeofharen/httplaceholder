@@ -26,7 +26,7 @@ internal class FormHandler() : IRequestToStubConditionsHandler, ISingletonServic
         }
 
         if (
-            !MimeTypes.FormMimeTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)) ||
+            !contentType.StartsWith(MimeTypes.UrlEncodedFormMime, StringComparison.OrdinalIgnoreCase) ||
             string.IsNullOrWhiteSpace(request.Body))
         {
             return Task.FromResult(false);

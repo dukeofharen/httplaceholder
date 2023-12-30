@@ -87,8 +87,6 @@ public class FormHandlerFacts
     [DataTestMethod]
     [DataRow(MimeTypes.UrlEncodedFormMime)]
     [DataRow($"{MimeTypes.UrlEncodedFormMime}; charset=UTF-8")]
-    [DataRow(MimeTypes.MultipartFormDataMime)]
-    [DataRow($"{MimeTypes.MultipartFormDataMime}; charset=UTF-8")]
     public async Task FormHandler_HandleStubGenerationAsync_HappyFlow(string contentType)
     {
         // Arrange
