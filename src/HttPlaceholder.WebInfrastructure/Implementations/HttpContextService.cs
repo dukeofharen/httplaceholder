@@ -3,41 +3,41 @@ using System.Security.Claims;
 using System.Text;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain;
 using Microsoft.Extensions.Primitives;
 
-namespace HttPlaceholder.Web.Shared.Infrastructure.Web;
+namespace HttPlaceholder.WebInfrastructure.Implementations;
 
 internal class HttpContextService : IHttpContextService, ISingletonService
 {
-    private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextAccessor _httpContextAccessor;
-
     private readonly ILogger<HttpContextService> _logger;
 
     /// <summary>
     ///     Constructs a <see cref="HttpContextService" /> instance.
     /// </summary>
     public HttpContextService(
-        IClientDataResolver clientDataResolver,
         IHttpContextAccessor httpContextAccessor,
         ILogger<HttpContextService> logger)
     {
-        _clientDataResolver = clientDataResolver;
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
     }
 
     /// <inheritdoc />
-    public string Method => _httpContextAccessor.HttpContext.Request.Method;
+    public string Method => GetContext().Request.Method;
 
     /// <inheritdoc />
-    public string Path => _httpContextAccessor.HttpContext.Request.Path;
+    public string Path => GetContext().Request.Path;
 
     /// <inheritdoc />
-    public string FullPath =>
-        $"{_httpContextAccessor.HttpContext.Request.Path}{_httpContextAccessor.HttpContext.Request.QueryString}";
+    public string FullPath
+    {
+        get
+        {
+            var context = GetContext();
+            return $"{context.Request.Path}{context.Request.QueryString}";
+        }
+    }
 
     /// <inheritdoc />
     public async Task<string> GetBodyAsync(CancellationToken cancellationToken) =>
@@ -46,7 +46,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     /// <inheritdoc />
     public async Task<byte[]> GetBodyAsBytesAsync(CancellationToken cancellationToken)
     {
-        var context = _httpContextAccessor.HttpContext;
+        var context = GetContext();
         using var ms = new MemoryStream();
         await context.Request.Body.CopyToAsync(ms, cancellationToken);
         context.Request.Body.Position = 0;
@@ -55,15 +55,15 @@ internal class HttpContextService : IHttpContextService, ISingletonService
 
     /// <inheritdoc />
     public IDictionary<string, string> GetQueryStringDictionary() =>
-        _httpContextAccessor.HttpContext.Request.Query
+        GetContext().Request.Query
             .ToDictionary(q => q.Key, q => q.Value.ToString());
 
     /// <inheritdoc />
-    public string GetQueryString() => _httpContextAccessor.HttpContext.Request.QueryString.Value;
+    public string GetQueryString() => GetContext().Request.QueryString.Value;
 
     /// <inheritdoc />
     public IDictionary<string, string> GetHeaders() =>
-        _httpContextAccessor.HttpContext.Request.Headers
+        GetContext().Request.Headers
             .ToDictionary(h => h.Key, h => h.Value.ToString());
 
     /// <inheritdoc />
@@ -76,7 +76,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     /// <inheritdoc />
     public void SetItem(string key, object item)
     {
-        var context = _httpContextAccessor.HttpContext;
+        var context = GetContext();
         if (context.Items.ContainsKey(key))
         {
             context.Items.Remove(key);
@@ -88,28 +88,25 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     /// <inheritdoc />
     public bool DeleteItem(string key)
     {
-        var context = _httpContextAccessor.HttpContext;
-        return context.Items.ContainsKey(key) && context.Items.Remove(key);
+        var context = GetContext();
+        return GetContext().Items.ContainsKey(key) && context.Items.Remove(key);
     }
 
     /// <inheritdoc />
-    public (string, StringValues)[] GetFormValues()
-    {
-        var contentType = GetHeaders().CaseInsensitiveSearch(HeaderKeys.ContentType);
-        if (string.IsNullOrWhiteSpace(contentType))
-        {
-            return Array.Empty<(string, StringValues)>();
-        }
+    public bool HasFormContentType => GetContext().Request.HasFormContentType;
 
-        if (!MimeTypes.FormMimeTypes.Any(ct => contentType.Contains(ct, StringComparison.OrdinalIgnoreCase)))
+    /// <inheritdoc />
+    public async Task<(string, StringValues)[]> GetFormValuesAsync(CancellationToken cancellationToken = default)
+    {
+        if (!HasFormContentType)
         {
             return Array.Empty<(string, StringValues)>();
         }
 
         try
         {
-            var httpContext = _httpContextAccessor.HttpContext;
-            return httpContext.Request.Form
+            var form = await GetContext().Request.ReadFormAsync(cancellationToken);
+            return form
                 .Select(f => (f.Key, f.Value))
                 .ToArray();
         }
@@ -121,26 +118,18 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     }
 
     /// <inheritdoc />
-    public void SetStatusCode(int statusCode)
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        httpContext.Response.StatusCode = statusCode;
-    }
+    public void SetStatusCode(int statusCode) => GetContext().Response.StatusCode = statusCode;
 
     /// <inheritdoc />
     public void SetStatusCode(HttpStatusCode statusCode) => SetStatusCode((int)statusCode);
 
     /// <inheritdoc />
-    public void AddHeader(string key, StringValues values)
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        httpContext.Response.Headers.Append(key, values);
-    }
+    public void AddHeader(string key, StringValues values) => GetContext().Response.Headers.Append(key, values);
 
     /// <inheritdoc />
     public bool TryAddHeader(string key, StringValues values)
     {
-        var httpContext = _httpContextAccessor.HttpContext;
+        var httpContext = GetContext();
         if (httpContext.Response.Headers.ContainsKey(key))
         {
             return false;
@@ -151,48 +140,36 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     }
 
     /// <inheritdoc />
-    public void EnableRewind()
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        httpContext.Request.EnableBuffering();
-    }
+    public void EnableRewind() => GetContext().Request.EnableBuffering();
 
     /// <inheritdoc />
-    public void ClearResponse()
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        httpContext.Response.Clear();
-    }
+    public void ClearResponse() => GetContext().Response.Clear();
 
     /// <inheritdoc />
-    public async Task WriteAsync(byte[] body, CancellationToken cancellationToken)
-    {
-        var httpContext = _httpContextAccessor.HttpContext;
-        await httpContext.Response.Body.WriteAsync(body, 0, body.Length, cancellationToken);
-    }
+    public async Task WriteAsync(byte[] body, CancellationToken cancellationToken) =>
+        await GetContext().Response.Body.WriteAsync(body, 0, body.Length, cancellationToken);
 
     /// <inheritdoc />
     public async Task WriteAsync(string body, CancellationToken cancellationToken)
     {
-        var httpContext = _httpContextAccessor.HttpContext;
         var bodyBytes = Encoding.UTF8.GetBytes(body);
-        await httpContext.Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken);
+        await GetContext().Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken);
     }
 
     /// <inheritdoc />
-    public void SetUser(ClaimsPrincipal principal) => _httpContextAccessor.HttpContext.User = principal;
+    public void SetUser(ClaimsPrincipal principal) => GetContext().User = principal;
 
     /// <inheritdoc />
-    public void AbortConnection() => _httpContextAccessor.HttpContext.Abort();
+    public void AbortConnection() => GetContext().Abort();
 
     /// <inheritdoc />
     public void AppendCookie(string key, string value, CookieOptions options) =>
-        _httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, options);
+        GetContext().Response.Cookies.Append(key, value, options);
 
     /// <inheritdoc />
     public KeyValuePair<string, string>? GetRequestCookie(string key)
     {
-        var result = _httpContextAccessor.HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == key);
+        var result = GetContext().Request.Cookies.FirstOrDefault(c => c.Key == key);
         if (string.IsNullOrWhiteSpace(result.Key))
         {
             return null;
@@ -200,4 +177,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
 
         return result;
     }
+
+    private HttpContext GetContext() =>
+        _httpContextAccessor.HttpContext ?? throw new InvalidOperationException("HttpContext not set.");
 }

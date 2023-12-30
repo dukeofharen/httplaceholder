@@ -160,8 +160,8 @@ public class MockHttpContext : HttpContext
 
     public void SetForm(Dictionary<string, StringValues> form) =>
         HttpRequestMock
-            .Setup(m => m.Form)
-            .Returns(new FormCollection(form));
+            .Setup(m => m.ReadFormAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new FormCollection(form));
 
     public void SetBody(string body) =>
         SetBody(Encoding.UTF8.GetBytes(body));

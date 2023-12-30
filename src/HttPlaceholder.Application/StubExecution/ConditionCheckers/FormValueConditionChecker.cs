@@ -29,16 +29,16 @@ public class FormValueConditionChecker : IConditionChecker, ISingletonService
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var formConditions = stub.Conditions?.Form?.ToArray() ?? Array.Empty<StubFormModel>();
         if (!formConditions.Any())
         {
-            return Task.FromResult(result);
+            return result;
         }
 
-        var form = _httpContextService.GetFormValues();
+        var form = await _httpContextService.GetFormValuesAsync(cancellationToken);
         var validConditions = 0;
         foreach (var condition in formConditions)
         {
@@ -83,7 +83,7 @@ public class FormValueConditionChecker : IConditionChecker, ISingletonService
             result.ConditionValidation = ConditionValidationType.Invalid;
         }
 
-        return Task.FromResult(result);
+        return result;
     }
 
     /// <inheritdoc />

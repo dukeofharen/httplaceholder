@@ -26,15 +26,14 @@ internal class FormPostResponseVariableParsingHandler(IHttpContextService httpCo
     public override string[] Examples => new[] {$"(({Name}:form_key))"};
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var formValues = httpContextService.GetFormValues();
-        // TODO there can be multiple form values, so this should be fixed in the future.
+        var formValues = await httpContextService.GetFormValuesAsync(cancellationToken);
         var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
-        return Task.FromResult(matches
+        return matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertFormValue(current, match, formDict)));
+            .Aggregate(input, (current, match) => InsertFormValue(current, match, formDict));
     }
 
     private static string InsertFormValue(string current, Match match, IDictionary<string, string> formDict)

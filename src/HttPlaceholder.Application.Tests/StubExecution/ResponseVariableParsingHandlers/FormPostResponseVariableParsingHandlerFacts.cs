@@ -28,8 +28,8 @@ public class FormPostResponseVariableParsingHandlerFacts
         const string expectedResult = "Form var 1: https://google.com, Form var 2: , Form var 3: value3";
 
         httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Returns(formTuples);
+            .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(formTuples);
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
