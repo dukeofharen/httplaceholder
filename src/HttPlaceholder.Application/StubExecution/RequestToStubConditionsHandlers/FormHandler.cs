@@ -13,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// <summary>
 ///     "Request to stub conditions handler" that is used to create form conditions.
 /// </summary>
-internal class FormHandler() : IRequestToStubConditionsHandler, ISingletonService
+internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
