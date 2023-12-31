@@ -118,9 +118,9 @@ export const useStubFormStore = defineStore({
     setFormHelperSelectorFilter(filter: string) {
       this.formHelperSelectorFilter = filter;
     },
-    setDescription(): void {
+    setDescription(description: string): void {
       handle((parsed) => {
-        parsed.description = defaultValues.description;
+        parsed.description = description;
         this.setInput(yaml.dump(parsed));
       }, this.input);
     },

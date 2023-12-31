@@ -7,14 +7,16 @@
         class="form-control mt-2"
         v-model="value"
         @keyup.enter="insert"
+        autofocus
       />
+      <!-- TODO autofocus -->
       <button class="btn btn-success mt-2" @click="insert">Add</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { useStubFormStore } from "@/store/stubForm";
 
 export default defineComponent({
@@ -34,15 +36,11 @@ export default defineComponent({
 
     // Methods
     const insert = () => {
+      if (props.valueSetter) {
+        props.valueSetter(value.value);
+      }
       stubFormStore.closeFormHelper();
     };
-
-    // Watches
-    watch(value, (newValue) => {
-      if (newValue && props.valueSetter) {
-        props.valueSetter(newValue);
-      }
-    });
 
     // Lifecycle
     onMounted(() => {

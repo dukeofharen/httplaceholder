@@ -4,7 +4,6 @@ import { ResponseImageType } from "@/domain/stub/enums/response-image-type";
 import type { StubResponseReplaceModel } from "@/domain/stub/stub-response-replace-model";
 
 export const defaultValues = {
-  description: "A description for the stub.",
   methods: ["GET", "POST"],
   priority: 1,
   urlPath: "/path",
