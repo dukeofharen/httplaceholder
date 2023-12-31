@@ -110,10 +110,17 @@ export const useStubFormStore = defineStore({
     setFormIsDirty(formIsDirty: boolean) {
       this.formIsDirty = formIsDirty;
     },
-    setInput(input: string): void {
-      this.input = input;
+    setInput(input: StubModel | string): void {
+      let serializedYaml: string;
+      if (typeof input === "string") {
+        serializedYaml = input;
+      } else {
+        serializedYaml = yaml.dump(input);
+      }
+
+      this.input = serializedYaml;
       this.formIsDirty = true;
-      this.inputHasMultipleStubs = /^-/gm.test(input);
+      this.inputHasMultipleStubs = /^-/gm.test(serializedYaml);
     },
     setFormHelperSelectorFilter(filter: string) {
       this.formHelperSelectorFilter = filter;
@@ -121,13 +128,13 @@ export const useStubFormStore = defineStore({
     setDescription(description: string): void {
       handle((parsed) => {
         parsed.description = description;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultPriority(): void {
       handle((parsed) => {
         parsed.priority = defaultValues.priority;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultPath(keyword: StringCheckingKeyword): void {
@@ -146,7 +153,7 @@ export const useStubFormStore = defineStore({
 
         parsed.conditions.url.path[keyword.key] =
           keyword.defaultValue || defaultValues.urlPath;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultFullPath(keyword: StringCheckingKeyword): void {
@@ -165,7 +172,7 @@ export const useStubFormStore = defineStore({
 
         parsed.conditions.url.fullPath[keyword.key] =
           keyword.defaultValue || defaultValues.fullPath;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultQuery(keyword: StringCheckingKeyword): void {
@@ -190,7 +197,7 @@ export const useStubFormStore = defineStore({
               : keyword.defaultValue || defaultValues.query[key];
         }
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultIsHttps(): void {
@@ -204,7 +211,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.url.isHttps = true;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultBasicAuth(): void {
@@ -215,7 +222,7 @@ export const useStubFormStore = defineStore({
 
         parsed.conditions.basicAuthentication =
           defaultValues.basicAuthentication;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultRequestHeaders(keyword: StringCheckingKeyword): void {
@@ -236,7 +243,7 @@ export const useStubFormStore = defineStore({
               : keyword.defaultValue || defaultValues.requestHeaders[key];
         }
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultRequestBody(keyword: StringCheckingKeyword): void {
@@ -255,7 +262,7 @@ export const useStubFormStore = defineStore({
           parsed.conditions.body.push(newBody);
         }
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultFormBody(keyword: StringCheckingKeyword): void {
@@ -280,7 +287,7 @@ export const useStubFormStore = defineStore({
           });
         }
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultClientIp(): void {
@@ -290,7 +297,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.clientIp = defaultValues.clientIp;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultHostname(keyword: StringCheckingKeyword): void {
@@ -305,7 +312,7 @@ export const useStubFormStore = defineStore({
 
         parsed.conditions.host[keyword.key] =
           keyword.defaultValue || defaultValues.hostname;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultJsonPath(): void {
@@ -321,7 +328,7 @@ export const useStubFormStore = defineStore({
         parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(
           defaultValues.jsonPath,
         );
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultJsonObject(): void {
@@ -331,7 +338,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.json = defaultValues.jsonObject;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultJsonArray(): void {
@@ -341,7 +348,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.json = defaultValues.jsonArray;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultXPath(): void {
@@ -357,7 +364,7 @@ export const useStubFormStore = defineStore({
         parsed.conditions.xpath = parsed.conditions.xpath.concat(
           defaultValues.xpath,
         );
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setMethod(method: string | string[]): void {
@@ -367,19 +374,19 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.method = method;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setTenant(tenant: string): void {
       handle((parsed) => {
         parsed.tenant = tenant;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setScenario(scenario: string): void {
       handle((parsed) => {
         parsed.scenario = scenario;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setStatusCode(code: number): void {
@@ -389,7 +396,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.statusCode = code;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setResponseBody(payload: SetResponseInput): void {
@@ -425,7 +432,7 @@ export const useStubFormStore = defineStore({
             break;
         }
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setResponseContentType(contentType: string): void {
@@ -444,7 +451,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.contentType = contentType;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultResponseHeaders(): void {
@@ -461,7 +468,7 @@ export const useStubFormStore = defineStore({
           ...parsed.response.headers,
           ...defaultValues.responseHeaders,
         };
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultExtraDuration(): void {
@@ -471,7 +478,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.extraDuration = defaultValues.extraDuration;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultTempRedirect(): void {
@@ -481,7 +488,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.temporaryRedirect = defaultValues.redirect;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultPermanentRedirect(): void {
@@ -491,7 +498,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.permanentRedirect = defaultValues.redirect;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setLineEndings(lineEndings: LineEndingType | undefined): void {
@@ -506,7 +513,7 @@ export const useStubFormStore = defineStore({
           parsed.response.lineEndings = lineEndings;
         }
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDynamicMode(value: boolean | undefined): void {
@@ -521,7 +528,7 @@ export const useStubFormStore = defineStore({
           delete parsed.response.enableDynamicMode;
         }
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultReverseProxy(): void {
@@ -531,7 +538,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.reverseProxy = defaultValues.reverseProxy;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setAbortConnection(): void {
@@ -541,13 +548,13 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.abortConnection = true;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setStubDisabled(): void {
       handle((parsed) => {
         parsed.enabled = false;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultResponseContentType(): void {
@@ -557,7 +564,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.contentType = defaultValues.responseContentType;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultImage(): void {
@@ -567,7 +574,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.image = defaultValues.image;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultMinHits(): void {
@@ -581,7 +588,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.scenario.minHits = defaultValues.minHits;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultMaxHits(): void {
@@ -595,7 +602,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.scenario.maxHits = defaultValues.maxHits;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultExactHits(): void {
@@ -609,7 +616,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.scenario.exactHits = defaultValues.exactHits;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultScenarioState(): void {
@@ -623,7 +630,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.scenario.scenarioState = defaultValues.scenarioState;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultStringReplace(): void {
@@ -640,7 +647,7 @@ export const useStubFormStore = defineStore({
           defaultValues.stringReplace,
         );
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultRegexReplace(): void {
@@ -657,7 +664,7 @@ export const useStubFormStore = defineStore({
           defaultValues.regexReplace,
         );
 
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setClearState(): void {
@@ -671,7 +678,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.scenario.clearState = true;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
     setDefaultNewScenarioState(): void {
@@ -686,7 +693,7 @@ export const useStubFormStore = defineStore({
 
         parsed.response.scenario.setScenarioState =
           defaultValues.newScenarioState;
-        this.setInput(yaml.dump(parsed));
+        this.setInput(parsed);
       }, this.input);
     },
   },
