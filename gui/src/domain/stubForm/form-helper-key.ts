@@ -1,5 +1,6 @@
 export enum FormHelperKey {
   None = "",
+  Description = "description",
   Tenant = "tenant",
   HttpMethod = "httpMethod",
   StatusCode = "statusCode",

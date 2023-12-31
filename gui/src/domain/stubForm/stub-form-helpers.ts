@@ -29,7 +29,7 @@ export const stubFormHelpers = [
     title: "Description",
     subTitle: elementDescriptions.description,
     stubFormHelperCategory: StubFormHelperCategory.GeneralInfo,
-    defaultValueMutation: (store: any) => store.setDefaultDescription(),
+    formHelperToOpen: FormHelperKey.Description,
   },
   {
     title: "Priority",

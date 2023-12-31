@@ -118,6 +118,11 @@
           />
           <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
           <SetHost v-if="currentSelectedFormHelper === FormHelperKey.Host" />
+          <BasicInput
+            v-if="currentSelectedFormHelper === FormHelperKey.Description"
+            :value-getter="() => stubFormStore.getDescription"
+            :value-setter="(v) => stubFormStore"
+          />
         </div>
       </div>
     </div>
@@ -159,10 +164,12 @@ import SetBody from "@/components/stubForm/formHelper/SetBody.vue";
 import SetHeader from "@/components/stubForm/formHelper/SetHeader.vue";
 import SetForm from "@/components/stubForm/formHelper/SetForm.vue";
 import SetHost from "@/components/stubForm/formHelper/SetHost.vue";
+import BasicInput from "@/components/stubForm/formHelper/BasicInput.vue";
 
 export default defineComponent({
   name: "FormHelperSelector",
   components: {
+    BasicInput,
     SetHost,
     SetForm,
     SetHeader,
@@ -312,6 +319,7 @@ export default defineComponent({
       ResponseBodyType,
       formHelperButtons,
       selectedFormHelperCategory,
+      stubFormStore,
     };
   },
 });

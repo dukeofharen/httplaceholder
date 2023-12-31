@@ -126,6 +126,12 @@ export const useStubFormStore = defineStore({
       });
     },
     getInputHasMultipleStubs: (state): boolean => state.inputHasMultipleStubs,
+    getDescription(state): string {
+      return handle(() => {
+        const parsed = parseInput(state.input);
+        return parsed?.description ?? "";
+      });
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -145,7 +151,7 @@ export const useStubFormStore = defineStore({
     setFormHelperSelectorFilter(filter: string) {
       this.formHelperSelectorFilter = filter;
     },
-    setDefaultDescription(): void {
+    setDescription(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
