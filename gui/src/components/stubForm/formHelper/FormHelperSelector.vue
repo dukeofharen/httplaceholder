@@ -295,6 +295,11 @@ export default defineComponent({
       () => route.params,
       () => closeFormHelperAndList(),
     );
+    watch(showFormHelperItems, (newValue) => {
+      if (!newValue) {
+        selectedFormHelperCategory.value = StubFormHelperCategory.None;
+      }
+    });
 
     // Lifecycle
     const escapeListener = (e: KeyboardEvent) => {
