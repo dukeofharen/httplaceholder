@@ -1,16 +1,18 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <strong>Insert description</strong>
+      <strong>{{ title }}</strong>
       <input
         type="text"
         class="form-control mt-2"
         v-model="value"
         @keyup.enter="insert"
-        autofocus
+        ref="fieldRef"
       />
       <!-- TODO autofocus -->
-      <button class="btn btn-success mt-2" @click="insert">Add</button>
+      <button class="btn btn-success mt-2" @click="insert">
+        {{ buttonText ?? "Add" }}
+      </button>
     </div>
   </div>
 </template>
@@ -23,9 +25,17 @@ export default defineComponent({
   props: {
     valueGetter: {
       type: Function,
+      required: true,
     },
     valueSetter: {
       type: Function,
+      required: true,
+    },
+    title: {
+      type: String,
+    },
+    buttonText: {
+      type: String,
     },
   },
   setup(props) {
@@ -33,6 +43,7 @@ export default defineComponent({
 
     // Data
     const value = ref("");
+    const fieldRef = ref<HTMLFormElement>();
 
     // Methods
     const insert = () => {
@@ -47,11 +58,14 @@ export default defineComponent({
       if (props.valueGetter) {
         value.value = props.valueGetter();
       }
+
+      fieldRef.value?.focus();
     });
 
     return {
       value,
       insert,
+      fieldRef,
     };
   },
 });

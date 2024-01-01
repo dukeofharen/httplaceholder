@@ -121,7 +121,8 @@
           <BasicInput
             v-if="currentSelectedFormHelper === FormHelperKey.Description"
             :value-getter="() => stubFormStore.getDescription"
-            :value-setter="(v) => stubFormStore.setDescription(v)"
+            :value-setter="(v: string) => stubFormStore.setDescription(v)"
+            title="Insert description"
           />
         </div>
       </div>
