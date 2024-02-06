@@ -56,74 +56,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
-          <ExampleSelector
-            v-if="currentSelectedFormHelper === FormHelperKey.Example"
-          />
-          <HttpMethodSelector
-            v-if="currentSelectedFormHelper === FormHelperKey.HttpMethod"
-          />
-          <TenantSelector
-            v-if="currentSelectedFormHelper === FormHelperKey.Tenant"
-          />
-          <HttpStatusCodeSelector
-            v-if="currentSelectedFormHelper === FormHelperKey.StatusCode"
-          />
-          <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === FormHelperKey.ResponseBody"
-          />
-          <ResponseBodyHelper
-            v-if="
-              currentSelectedFormHelper === FormHelperKey.ResponseBodyPlainText
-            "
-            :preset-response-body-type="ResponseBodyType.text"
-          />
-          <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === FormHelperKey.ResponseBodyJson"
-            :preset-response-body-type="ResponseBodyType.json"
-          />
-          <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === FormHelperKey.ResponseBodyXml"
-            :preset-response-body-type="ResponseBodyType.xml"
-          />
-          <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === FormHelperKey.ResponseBodyHtml"
-            :preset-response-body-type="ResponseBodyType.html"
-          />
-          <ResponseBodyHelper
-            v-if="
-              currentSelectedFormHelper === FormHelperKey.ResponseBodyBase64
-            "
-            :preset-response-body-type="ResponseBodyType.base64"
-          />
-          <RedirectSelector
-            v-if="currentSelectedFormHelper === FormHelperKey.Redirect"
-          />
-          <LineEndingSelector
-            v-if="currentSelectedFormHelper === FormHelperKey.LineEndings"
-          />
-          <ScenarioSelector
-            v-if="currentSelectedFormHelper === FormHelperKey.Scenario"
-          />
-          <SetDynamicMode
-            v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
-          />
-          <SetPath v-if="currentSelectedFormHelper === FormHelperKey.Path" />
-          <SetFullPath
-            v-if="currentSelectedFormHelper === FormHelperKey.FullPath"
-          />
-          <SetQuery v-if="currentSelectedFormHelper === FormHelperKey.Query" />
-          <SetBody v-if="currentSelectedFormHelper === FormHelperKey.Body" />
-          <SetHeader
-            v-if="currentSelectedFormHelper === FormHelperKey.Header"
-          />
-          <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
-          <SetHost v-if="currentSelectedFormHelper === FormHelperKey.Host" />
-          <BasicInput
-            v-if="currentSelectedFormHelper === FormHelperKey.Description"
-            :value-getter="() => stubFormStore.getDescription"
-            :value-setter="(v: string) => stubFormStore.setDescription(v)"
-            title="Insert description"
-          />
+          <RenderedFormHelper />
         </div>
       </div>
     </div>
@@ -139,16 +72,6 @@ import {
   ref,
   watch,
 } from "vue";
-import HttpMethodSelector from "@/components/stubForm/formHelper/HttpMethodSelector.vue";
-import TenantSelector from "@/components/stubForm/formHelper/TenantSelector.vue";
-import HttpStatusCodeSelector from "@/components/stubForm/formHelper/HttpStatusCodeSelector.vue";
-import ResponseBodyHelper from "@/components/stubForm/formHelper/ResponseBodyHelper.vue";
-import RedirectSelector from "@/components/stubForm/formHelper/RedirectSelector.vue";
-import LineEndingSelector from "@/components/stubForm/formHelper/LineEndingSelector.vue";
-import ScenarioSelector from "@/components/stubForm/formHelper/ScenarioSelector.vue";
-import SetDynamicMode from "@/components/stubForm/formHelper/SetDynamicMode.vue";
-import SetPath from "@/components/stubForm/formHelper/SetPath.vue";
-import SetFullPath from "@/components/stubForm/formHelper/SetFullPath.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
@@ -157,37 +80,11 @@ import {
   StubFormHelperCategory,
   stubFormHelpers,
 } from "@/domain/stubForm/stub-form-helpers";
-import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
-import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
-import ExampleSelector from "@/components/stubForm/formHelper/ExampleSelector.vue";
-import SetQuery from "@/components/stubForm/formHelper/SetQuery.vue";
-import SetBody from "@/components/stubForm/formHelper/SetBody.vue";
-import SetHeader from "@/components/stubForm/formHelper/SetHeader.vue";
-import SetForm from "@/components/stubForm/formHelper/SetForm.vue";
-import SetHost from "@/components/stubForm/formHelper/SetHost.vue";
-import BasicInput from "@/components/stubForm/formHelper/BasicInput.vue";
+import RenderedFormHelper from "@/components/stubForm/formHelper/RenderedFormHelper.vue";
 
 export default defineComponent({
   name: "FormHelperSelector",
-  components: {
-    BasicInput,
-    SetHost,
-    SetForm,
-    SetHeader,
-    SetBody,
-    SetQuery,
-    SetFullPath,
-    ExampleSelector,
-    LineEndingSelector,
-    RedirectSelector,
-    ResponseBodyHelper,
-    HttpStatusCodeSelector,
-    TenantSelector,
-    HttpMethodSelector,
-    ScenarioSelector,
-    SetDynamicMode,
-    SetPath,
-  },
+  components: { RenderedFormHelper },
   setup() {
     const stubFormStore = useStubFormStore();
     const route = useRoute();
@@ -215,7 +112,6 @@ export default defineComponent({
     const selectedFormHelperCategory = ref<StubFormHelperCategory>(
       StubFormHelperCategory.None,
     );
-    const formHelperItems = ref();
 
     // Methods
     const onFormHelperItemClick = (item: StubFormHelper) => {
@@ -312,7 +208,6 @@ export default defineComponent({
     onUnmounted(() => document.removeEventListener("keydown", escapeListener));
 
     return {
-      formHelperItems,
       currentSelectedFormHelper,
       showFormHelperItems,
       filteredStubFormHelpers,
@@ -321,11 +216,8 @@ export default defineComponent({
       formHelperFilterInput,
       openFormHelperList,
       closeFormHelperAndList,
-      FormHelperKey,
-      ResponseBodyType,
       formHelperButtons,
       selectedFormHelperCategory,
-      stubFormStore,
     };
   },
 });
