@@ -53,7 +53,14 @@
     v-if="currentSelectedFormHelper === FormHelperKey.Description"
     :value-getter="() => stubFormStore.getDescription"
     :value-setter="(v: string) => stubFormStore.setDescription(v)"
-    title="Insert description"
+    title="Description"
+  />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.Priority"
+    :value-getter="() => stubFormStore.getPriority"
+    :value-setter="(v: string) => stubFormStore.setPriority(v)"
+    input-type="numeric"
+    title="Set a stub priority (the higher the number, the higher the stub priority)"
   />
 </template>
 
@@ -79,9 +86,15 @@ import SetFullPath from "@/components/stubForm/formHelper/SetFullPath.vue";
 import SetDynamicMode from "@/components/stubForm/formHelper/SetDynamicMode.vue";
 import ExampleSelector from "@/components/stubForm/formHelper/ExampleSelector.vue";
 import SetHost from "@/components/stubForm/formHelper/SetHost.vue";
+import { stubFormHelpers } from "@/domain/stubForm/stub-form-helpers";
 
 export default defineComponent({
   name: "RenderedFormHelper",
+  methods: {
+    stubFormHelpers() {
+      return stubFormHelpers;
+    },
+  },
   components: {
     SetHost,
     ExampleSelector,

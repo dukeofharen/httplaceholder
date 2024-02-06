@@ -35,7 +35,7 @@ export const stubFormHelpers = [
     title: "Priority",
     subTitle: elementDescriptions.priority,
     stubFormHelperCategory: StubFormHelperCategory.GeneralInfo,
-    defaultValueMutation: (store: any) => store.setDefaultPriority(),
+    formHelperToOpen: FormHelperKey.Priority,
   },
   {
     title: "Disable stub",

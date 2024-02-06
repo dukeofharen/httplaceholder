@@ -3,7 +3,16 @@
     <div class="col-md-12">
       <strong>{{ title }}</strong>
       <input
+        v-if="inputType === 'text'"
         type="text"
+        class="form-control mt-2"
+        v-model="value"
+        @keyup.enter="insert"
+        ref="fieldRef"
+      />
+      <input
+        v-if="inputType === 'numeric'"
+        type="number"
         class="form-control mt-2"
         v-model="value"
         @keyup.enter="insert"
@@ -35,6 +44,13 @@ export default defineComponent({
     },
     buttonText: {
       type: String,
+    },
+    inputType: {
+      type: String,
+      default: "text",
+      validator(value: string) {
+        return ["text", "numeric"].includes(value);
+      },
     },
   },
   setup(props) {

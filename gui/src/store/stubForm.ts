@@ -99,6 +99,9 @@ export const useStubFormStore = defineStore({
     getDescription(state): string {
       return handle((parsed) => parsed?.description ?? "", state.input);
     },
+    getPriority(state): string {
+      return handle((parsed) => parsed?.priority ?? "0", state.input);
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -131,9 +134,9 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
-    setDefaultPriority(): void {
+    setPriority(priority: string): void {
       handle((parsed) => {
-        parsed.priority = defaultValues.priority;
+        parsed.priority = parseInt(priority);
         this.setInput(parsed);
       }, this.input);
     },
