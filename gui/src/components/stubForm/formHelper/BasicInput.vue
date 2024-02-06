@@ -9,7 +9,6 @@
         @keyup.enter="insert"
         ref="fieldRef"
       />
-      <!-- TODO autofocus -->
       <button class="btn btn-success mt-2" @click="insert">
         {{ buttonText ?? "Add" }}
       </button>
