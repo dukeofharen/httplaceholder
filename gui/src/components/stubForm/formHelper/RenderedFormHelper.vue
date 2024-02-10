@@ -42,8 +42,6 @@
   <SetDynamicMode
     v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
   />
-  <SetFullPath v-if="currentSelectedFormHelper === FormHelperKey.FullPath" />
-  <SetQuery v-if="currentSelectedFormHelper === FormHelperKey.Query" />
   <SetBody v-if="currentSelectedFormHelper === FormHelperKey.Body" />
   <SetHeader v-if="currentSelectedFormHelper === FormHelperKey.Header" />
   <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
@@ -74,6 +72,15 @@
     :value-setter="(input: any) => stubFormStore.setFullPath(input)"
     title="Full path (including query string)"
   />
+  <StringCheckerInput
+    v-if="currentSelectedFormHelper === FormHelperKey.Query"
+    :value-getter="() => stubFormStore.getQuery"
+    :value-setter="(input: any) => stubFormStore.setQuery(input)"
+    title="Query string"
+    :has-multiple-keys="true"
+    key-placeholder="Query string key"
+    :multiple="true"
+  />
 </template>
 
 <script lang="ts">
@@ -87,7 +94,6 @@ import RedirectSelector from "@/components/stubForm/formHelper/RedirectSelector.
 import SetHeader from "@/components/stubForm/formHelper/SetHeader.vue";
 import BasicInput from "@/components/stubForm/formHelper/BasicInput.vue";
 import SetBody from "@/components/stubForm/formHelper/SetBody.vue";
-import SetQuery from "@/components/stubForm/formHelper/SetQuery.vue";
 import SetForm from "@/components/stubForm/formHelper/SetForm.vue";
 import ScenarioSelector from "@/components/stubForm/formHelper/ScenarioSelector.vue";
 import LineEndingSelector from "@/components/stubForm/formHelper/LineEndingSelector.vue";
@@ -116,7 +122,6 @@ export default defineComponent({
     LineEndingSelector,
     ScenarioSelector,
     SetForm,
-    SetQuery,
     SetBody,
     BasicInput,
     SetHeader,

@@ -114,6 +114,12 @@ export const useStubFormStore = defineStore({
         state.input,
       );
     },
+    getQuery(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.url?.query ?? "",
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -180,7 +186,7 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
-    setDefaultQuery(keyword: StringCheckingKeyword): void {
+    setQuery(input: object) {
       handle((parsed) => {
         if (!parsed.conditions) {
           parsed.conditions = {};
@@ -190,18 +196,7 @@ export const useStubFormStore = defineStore({
           parsed.conditions.url = {};
         }
 
-        if (!parsed.conditions.url.query) {
-          parsed.conditions.url.query = {};
-        }
-
-        for (const key of Object.keys(defaultValues.query)) {
-          parsed.conditions.url.query[key] = {};
-          parsed.conditions.url.query[key][keyword.key] =
-            keyword.key === "present"
-              ? true
-              : keyword.defaultValue || defaultValues.query[key];
-        }
-
+        parsed.conditions.url.query = input;
         this.setInput(parsed);
       }, this.input);
     },
