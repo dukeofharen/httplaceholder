@@ -133,7 +133,7 @@ export const stubFormHelpers = [
     title: "Client IP",
     subTitle: elementDescriptions.clientIp,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultClientIp(),
+    formHelperToOpen: FormHelperKey.ClientIp,
   },
   {
     title: "Hostname",

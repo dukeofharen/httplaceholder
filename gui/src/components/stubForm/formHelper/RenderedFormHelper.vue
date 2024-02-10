@@ -89,6 +89,12 @@
     key-placeholder="Request header name"
     :multiple="true"
   />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.ClientIp"
+    :value-getter="() => stubFormStore.getClientIp"
+    :value-setter="(v: string) => stubFormStore.setClientIp(v)"
+    title="Client IP (e.g. '127.0.0.1' or '127.0.0.0/30' to provide an IP range)"
+  />
 </template>
 
 <script lang="ts">

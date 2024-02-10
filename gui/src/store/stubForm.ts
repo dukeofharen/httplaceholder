@@ -123,6 +123,12 @@ export const useStubFormStore = defineStore({
     getRequestHeaders(state): any {
       return handle((parsed) => parsed?.conditions?.headers ?? {}, state.input);
     },
+    getClientIp(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.clientIp ?? "",
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -213,6 +219,16 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
+    setClientIp(ip: string): void {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.clientIp = ip;
+        this.setInput(parsed);
+      }, this.input);
+    },
     setDefaultIsHttps(): void {
       handle((parsed) => {
         if (!parsed.conditions) {
@@ -279,16 +295,6 @@ export const useStubFormStore = defineStore({
           });
         }
 
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultClientIp(): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        parsed.conditions.clientIp = defaultValues.clientIp;
         this.setInput(parsed);
       }, this.input);
     },
