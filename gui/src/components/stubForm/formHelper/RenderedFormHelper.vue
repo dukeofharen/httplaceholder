@@ -62,10 +62,17 @@
     title="Set a stub priority (the higher the number, the higher the stub priority)"
   />
   <StringCheckerInput
+    v-if="currentSelectedFormHelper === FormHelperKey.Path"
     :value-getter="() => stubFormStore.getUrlPath"
     :value-setter="(input: any) => stubFormStore.setUrlPath(input)"
     title="URL path"
     :multiple="true"
+  />
+  <StringCheckerInput
+    v-if="currentSelectedFormHelper === FormHelperKey.FullPath"
+    :value-getter="() => stubFormStore.getFullPath"
+    :value-setter="(input: any) => stubFormStore.setFullPath(input)"
+    title="Full path (including query string)"
   />
 </template>
 
@@ -86,7 +93,6 @@ import ScenarioSelector from "@/components/stubForm/formHelper/ScenarioSelector.
 import LineEndingSelector from "@/components/stubForm/formHelper/LineEndingSelector.vue";
 import TenantSelector from "@/components/stubForm/formHelper/TenantSelector.vue";
 import ResponseBodyHelper from "@/components/stubForm/formHelper/ResponseBodyHelper.vue";
-import SetFullPath from "@/components/stubForm/formHelper/SetFullPath.vue";
 import SetDynamicMode from "@/components/stubForm/formHelper/SetDynamicMode.vue";
 import ExampleSelector from "@/components/stubForm/formHelper/ExampleSelector.vue";
 import SetHost from "@/components/stubForm/formHelper/SetHost.vue";
@@ -105,7 +111,6 @@ export default defineComponent({
     SetHost,
     ExampleSelector,
     SetDynamicMode,
-    SetFullPath,
     ResponseBodyHelper,
     TenantSelector,
     LineEndingSelector,

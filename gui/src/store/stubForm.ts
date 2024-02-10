@@ -108,6 +108,12 @@ export const useStubFormStore = defineStore({
         state.input,
       );
     },
+    getFullPath(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.url?.fullPath ?? "",
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -147,7 +153,6 @@ export const useStubFormStore = defineStore({
       }, this.input);
     },
     setUrlPath(input: object) {
-      console.log(input);
       handle((parsed) => {
         if (!parsed.conditions) {
           parsed.conditions = {};
@@ -161,7 +166,7 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
-    setDefaultFullPath(keyword: StringCheckingKeyword): void {
+    setFullPath(input: object) {
       handle((parsed) => {
         if (!parsed.conditions) {
           parsed.conditions = {};
@@ -171,12 +176,7 @@ export const useStubFormStore = defineStore({
           parsed.conditions.url = {};
         }
 
-        if (!parsed.conditions.url.fullPath) {
-          parsed.conditions.url.fullPath = {};
-        }
-
-        parsed.conditions.url.fullPath[keyword.key] =
-          keyword.defaultValue || defaultValues.fullPath;
+        parsed.conditions.url.fullPath = input;
         this.setInput(parsed);
       }, this.input);
     },
