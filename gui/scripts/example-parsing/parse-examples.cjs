@@ -1,5 +1,5 @@
 const { join } = require("path");
-const { readdirSync, readFileSync, writeFileSync } = require("../helper/file");
+const { readdirSync, readFileSync, writeFileSync } = require("../helper/file.cjs");
 const { load } = require("js-yaml");
 
 const examplesRootDir = join(__dirname, "../../resources/examples");

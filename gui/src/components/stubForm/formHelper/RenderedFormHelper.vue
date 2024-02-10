@@ -63,7 +63,7 @@
   />
   <StringCheckerInput
     :value-getter="() => stubFormStore.getUrlPath"
-    :value-setter="(input: any) => {}"
+    :value-setter="(input: any) => stubFormStore.setUrlPath(input)"
     title="URL path"
   />
 </template>

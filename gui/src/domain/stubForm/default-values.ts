@@ -7,7 +7,6 @@ import type { StubResponseReplaceModel } from "@/domain/stub/stub-response-repla
 export const defaultValues = {
   methods: ["GET", "POST"],
   priority: 1,
-  urlPath: "/path",
   fullPath: "/path?query=val1",
   query: {
     query1: "val1",
