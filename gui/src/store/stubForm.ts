@@ -120,6 +120,9 @@ export const useStubFormStore = defineStore({
         state.input,
       );
     },
+    getRequestHeaders(state): any {
+      return handle((parsed) => parsed?.conditions?.headers ?? {}, state.input);
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -200,6 +203,16 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
+    setRequestHeaders(input: object) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.headers = input;
+        this.setInput(parsed);
+      }, this.input);
+    },
     setDefaultIsHttps(): void {
       handle((parsed) => {
         if (!parsed.conditions) {
@@ -222,27 +235,6 @@ export const useStubFormStore = defineStore({
 
         parsed.conditions.basicAuthentication =
           defaultValues.basicAuthentication;
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultRequestHeaders(keyword: StringCheckingKeyword): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        if (!parsed.conditions.headers) {
-          parsed.conditions.headers = {};
-        }
-
-        for (const key of Object.keys(defaultValues.requestHeaders)) {
-          parsed.conditions.headers[key] = {};
-          parsed.conditions.headers[key][keyword.key] =
-            keyword.key === "present"
-              ? true
-              : keyword.defaultValue || defaultValues.requestHeaders[key];
-        }
-
         this.setInput(parsed);
       }, this.input);
     },

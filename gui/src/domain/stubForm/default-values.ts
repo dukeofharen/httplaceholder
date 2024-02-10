@@ -11,10 +11,6 @@ export const defaultValues = {
     username: "username",
     password: "password",
   },
-  requestHeaders: {
-    Header1: "val1",
-    Header2: "val2",
-  } as any,
   requestBody: ["val1", "val2"],
   formBody: {
     key1: "val1",

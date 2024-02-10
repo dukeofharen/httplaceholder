@@ -43,7 +43,6 @@
     v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
   />
   <SetBody v-if="currentSelectedFormHelper === FormHelperKey.Body" />
-  <SetHeader v-if="currentSelectedFormHelper === FormHelperKey.Header" />
   <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
   <SetHost v-if="currentSelectedFormHelper === FormHelperKey.Host" />
   <BasicInput
@@ -81,6 +80,15 @@
     key-placeholder="Query string key"
     :multiple="true"
   />
+  <StringCheckerInput
+    v-if="currentSelectedFormHelper === FormHelperKey.Header"
+    :value-getter="() => stubFormStore.getRequestHeaders"
+    :value-setter="(input: any) => stubFormStore.setRequestHeaders(input)"
+    title="Request headers"
+    :has-multiple-keys="true"
+    key-placeholder="Request header name"
+    :multiple="true"
+  />
 </template>
 
 <script lang="ts">
@@ -91,7 +99,6 @@ import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 import HttpMethodSelector from "@/components/stubForm/formHelper/HttpMethodSelector.vue";
 import HttpStatusCodeSelector from "@/components/stubForm/formHelper/HttpStatusCodeSelector.vue";
 import RedirectSelector from "@/components/stubForm/formHelper/RedirectSelector.vue";
-import SetHeader from "@/components/stubForm/formHelper/SetHeader.vue";
 import BasicInput from "@/components/stubForm/formHelper/BasicInput.vue";
 import SetBody from "@/components/stubForm/formHelper/SetBody.vue";
 import SetForm from "@/components/stubForm/formHelper/SetForm.vue";
@@ -124,7 +131,6 @@ export default defineComponent({
     SetForm,
     SetBody,
     BasicInput,
-    SetHeader,
     RedirectSelector,
     HttpStatusCodeSelector,
     HttpMethodSelector,

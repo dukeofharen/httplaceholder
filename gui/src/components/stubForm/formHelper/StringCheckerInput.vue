@@ -133,7 +133,8 @@ const insert = () => {
 onMounted(() => {
   if (props.valueGetter) {
     const val = props.valueGetter();
-    if (val) {
+    console.log(val);
+    if (val && Object.keys(val).length) {
       if (typeof val === "string") {
         formData.value.push({
           value: val,
