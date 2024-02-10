@@ -129,6 +129,9 @@ export const useStubFormStore = defineStore({
         state.input,
       );
     },
+    getHostname(state): any {
+      return handle((parsed) => parsed?.conditions?.host ?? "", state.input);
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -229,6 +232,16 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
+    setHostname(hostname: string): void {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.host = hostname;
+        this.setInput(parsed);
+      }, this.input);
+    },
     setDefaultIsHttps(): void {
       handle((parsed) => {
         if (!parsed.conditions) {
@@ -295,21 +308,6 @@ export const useStubFormStore = defineStore({
           });
         }
 
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultHostname(keyword: StringCheckingKeyword): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        if (!parsed.conditions.host) {
-          parsed.conditions.host = {};
-        }
-
-        parsed.conditions.host[keyword.key] =
-          keyword.defaultValue || defaultValues.hostname;
         this.setInput(parsed);
       }, this.input);
     },

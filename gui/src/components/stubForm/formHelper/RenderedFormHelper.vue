@@ -44,7 +44,6 @@
   />
   <SetBody v-if="currentSelectedFormHelper === FormHelperKey.Body" />
   <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
-  <SetHost v-if="currentSelectedFormHelper === FormHelperKey.Host" />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.Description"
     :value-getter="() => stubFormStore.getDescription"
@@ -95,6 +94,12 @@
     :value-setter="(v: string) => stubFormStore.setClientIp(v)"
     title="Client IP (e.g. '127.0.0.1' or '127.0.0.0/30' to provide an IP range)"
   />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.Host"
+    :value-getter="() => stubFormStore.getHostname"
+    :value-setter="(v: string) => stubFormStore.setHostname(v)"
+    title="Hostname (e.g. 'httplaceholder.com')"
+  />
 </template>
 
 <script lang="ts">
@@ -114,7 +119,6 @@ import TenantSelector from "@/components/stubForm/formHelper/TenantSelector.vue"
 import ResponseBodyHelper from "@/components/stubForm/formHelper/ResponseBodyHelper.vue";
 import SetDynamicMode from "@/components/stubForm/formHelper/SetDynamicMode.vue";
 import ExampleSelector from "@/components/stubForm/formHelper/ExampleSelector.vue";
-import SetHost from "@/components/stubForm/formHelper/SetHost.vue";
 import { stubFormHelpers } from "@/domain/stubForm/stub-form-helpers";
 import StringCheckerInput from "@/components/stubForm/formHelper/StringCheckerInput.vue";
 
@@ -127,7 +131,6 @@ export default defineComponent({
   },
   components: {
     StringCheckerInput,
-    SetHost,
     ExampleSelector,
     SetDynamicMode,
     ResponseBodyHelper,

@@ -25,8 +25,3 @@ export enum FormHelperKey {
   Priority = "priority",
   ClientIp = "clientIp",
 }
-
-export function getValues(): string[] {
-  const enumType = FormHelperKey as any;
-  return Object.keys(FormHelperKey).map((key) => enumType[key]);
-}

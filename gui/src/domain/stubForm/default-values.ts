@@ -17,7 +17,6 @@ export const defaultValues = {
     key2: "val2",
   } as any,
   clientIp: "127.0.0.1",
-  hostname: "httplaceholder.com",
   jsonPath: [
     {
       query: "$.people[0].name",
