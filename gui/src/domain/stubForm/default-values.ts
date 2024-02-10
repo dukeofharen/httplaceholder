@@ -3,6 +3,7 @@ import type { StubResponseImageModel } from "@/domain/stub/stub-response-image-m
 import { ResponseImageType } from "@/domain/stub/enums/response-image-type";
 import type { StubResponseReplaceModel } from "@/domain/stub/stub-response-replace-model";
 
+// TODO dit moet straks grotendeels weg
 export const defaultValues = {
   methods: ["GET", "POST"],
   priority: 1,

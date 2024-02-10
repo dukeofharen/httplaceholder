@@ -23,7 +23,7 @@ import { defineComponent } from "vue";
 import {
   getStringCheckingKeywords,
   type StringCheckingKeyword,
-} from "@/constants/string-checking-keywords";
+} from "@/constants/keywords";
 import { useStubFormStore } from "@/store/stubForm";
 
 export default defineComponent({

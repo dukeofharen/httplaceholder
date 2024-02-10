@@ -42,7 +42,6 @@
   <SetDynamicMode
     v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
   />
-  <SetPath v-if="currentSelectedFormHelper === FormHelperKey.Path" />
   <SetFullPath v-if="currentSelectedFormHelper === FormHelperKey.FullPath" />
   <SetQuery v-if="currentSelectedFormHelper === FormHelperKey.Query" />
   <SetBody v-if="currentSelectedFormHelper === FormHelperKey.Body" />
@@ -62,6 +61,11 @@
     input-type="numeric"
     title="Set a stub priority (the higher the number, the higher the stub priority)"
   />
+  <StringCheckerInput
+    :value-getter="() => stubFormStore.getUrlPath"
+    :value-setter="(input: any) => {}"
+    title="URL path"
+  />
 </template>
 
 <script lang="ts">
@@ -70,7 +74,6 @@ import { useStubFormStore } from "@/store/stubForm";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 import HttpMethodSelector from "@/components/stubForm/formHelper/HttpMethodSelector.vue";
-import SetPath from "@/components/stubForm/formHelper/SetPath.vue";
 import HttpStatusCodeSelector from "@/components/stubForm/formHelper/HttpStatusCodeSelector.vue";
 import RedirectSelector from "@/components/stubForm/formHelper/RedirectSelector.vue";
 import SetHeader from "@/components/stubForm/formHelper/SetHeader.vue";
@@ -87,6 +90,7 @@ import SetDynamicMode from "@/components/stubForm/formHelper/SetDynamicMode.vue"
 import ExampleSelector from "@/components/stubForm/formHelper/ExampleSelector.vue";
 import SetHost from "@/components/stubForm/formHelper/SetHost.vue";
 import { stubFormHelpers } from "@/domain/stubForm/stub-form-helpers";
+import StringCheckerInput from "@/components/stubForm/formHelper/StringCheckerInput.vue";
 
 export default defineComponent({
   name: "RenderedFormHelper",
@@ -96,6 +100,7 @@ export default defineComponent({
     },
   },
   components: {
+    StringCheckerInput,
     SetHost,
     ExampleSelector,
     SetDynamicMode,
@@ -111,7 +116,6 @@ export default defineComponent({
     SetHeader,
     RedirectSelector,
     HttpStatusCodeSelector,
-    SetPath,
     HttpMethodSelector,
   },
   setup() {

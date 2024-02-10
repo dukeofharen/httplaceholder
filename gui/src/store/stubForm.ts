@@ -8,7 +8,7 @@ import { vsprintf } from "sprintf-js";
 import type { StubModel } from "@/domain/stub/stub-model";
 import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
-import type { StringCheckingKeyword } from "@/constants/string-checking-keywords";
+import type { StringCheckingKeyword } from "@/constants/keywords";
 
 type StubFormState = {
   input: string;
@@ -101,6 +101,12 @@ export const useStubFormStore = defineStore({
     },
     getPriority(state): string {
       return handle((parsed) => parsed?.priority ?? "0", state.input);
+    },
+    getUrlPath(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.url?.path ?? "",
+        state.input,
+      );
     },
   },
   actions: {
