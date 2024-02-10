@@ -1,7 +1,7 @@
 <template>
   <div class="row" @keyup.enter="insert">
     <div class="col-md-12">
-      <strong>{{ props.title }}</strong>
+      <strong>{{ title }}</strong>
       <div v-for="(item, index) of formData" :key="index" class="row mt-2">
         <div class="col-md-3">
           <select
@@ -23,6 +23,23 @@
             class="form-control"
             v-model="formData[index].value"
           />
+        </div>
+        <div class="col-md-6 d-flex align-items-center gap-2" v-if="multiple">
+          <button
+            v-if="index === formData.length - 1"
+            class="btn btn-outline-success"
+            title="Add another row"
+            @click="addEmptyEntry"
+          >
+            <i class="bi bi-plus"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            title="Delete row"
+            @click="removeEntry(index)"
+          >
+            <i class="bi bi-x"></i>
+          </button>
         </div>
       </div>
       <div class="row">
@@ -74,6 +91,10 @@ function addEmptyEntry() {
     value: "",
     stringCheckingKeyword: keywords.equals,
   });
+}
+
+function removeEntry(index: number) {
+  formData.value.splice(index, 1);
 }
 
 const insert = () => {

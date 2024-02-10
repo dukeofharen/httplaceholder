@@ -6,7 +6,7 @@
     "dev": "npm run parse-stub-examples && vite --host 0.0.0.0 --port 10001",
     "build": "npm run parse-stub-examples && npm run lint && vue-tsc --noEmit && vite build",
     "parse-stub-examples": "node scripts/example-parsing/parse-examples.cjs",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "@codemirror/lang-html": "^6.4.7",

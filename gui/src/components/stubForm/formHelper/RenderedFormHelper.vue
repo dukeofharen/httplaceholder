@@ -65,6 +65,7 @@
     :value-getter="() => stubFormStore.getUrlPath"
     :value-setter="(input: any) => stubFormStore.setUrlPath(input)"
     title="URL path"
+    :multiple="true"
   />
 </template>
 
