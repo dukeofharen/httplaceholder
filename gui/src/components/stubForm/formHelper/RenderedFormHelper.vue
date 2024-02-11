@@ -42,7 +42,6 @@
   <SetDynamicMode
     v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
   />
-  <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.Description"
     :value-getter="() => stubFormStore.getDescription"
@@ -66,7 +65,7 @@
   <StringCheckerInput
     v-if="currentSelectedFormHelper === FormHelperKey.FullPath"
     :value-getter="() => stubFormStore.getFullPath"
-    :value-setter="(input: any) => stubFormStore.setFullPath(input)"
+    :value-setter="(input: any) => stubFormStore.setForm(input)"
     title="Full path (including query string)"
   />
   <StringCheckerInput
@@ -103,7 +102,16 @@
     v-if="currentSelectedFormHelper === FormHelperKey.Body"
     :value-getter="() => stubFormStore.getRequestBody"
     :value-setter="(input: any) => stubFormStore.setRequestBody(input)"
-    title="URL path"
+    title="Request body"
+    :multiple="true"
+  />
+  <StringCheckerInput
+    v-if="currentSelectedFormHelper === FormHelperKey.Form"
+    :value-getter="() => stubFormStore.getForm"
+    :value-setter="(input: any) => stubFormStore.setForm(input)"
+    title="Form body"
+    :has-multiple-keys="true"
+    key-placeholder="Posted form value key"
     :multiple="true"
   />
 </template>
@@ -117,7 +125,6 @@ import HttpMethodSelector from "@/components/stubForm/formHelper/HttpMethodSelec
 import HttpStatusCodeSelector from "@/components/stubForm/formHelper/HttpStatusCodeSelector.vue";
 import RedirectSelector from "@/components/stubForm/formHelper/RedirectSelector.vue";
 import BasicInput from "@/components/stubForm/formHelper/BasicInput.vue";
-import SetForm from "@/components/stubForm/formHelper/SetForm.vue";
 import ScenarioSelector from "@/components/stubForm/formHelper/ScenarioSelector.vue";
 import LineEndingSelector from "@/components/stubForm/formHelper/LineEndingSelector.vue";
 import TenantSelector from "@/components/stubForm/formHelper/TenantSelector.vue";
@@ -142,7 +149,6 @@ export default defineComponent({
     TenantSelector,
     LineEndingSelector,
     ScenarioSelector,
-    SetForm,
     BasicInput,
     RedirectSelector,
     HttpStatusCodeSelector,

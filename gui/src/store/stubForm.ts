@@ -9,6 +9,7 @@ import type { StubModel } from "@/domain/stub/stub-model";
 import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import type { StringCheckingKeyword } from "@/constants/string-checking-keywords";
+import type { StubFormModel } from "@/domain/stub/stub-form-model";
 
 type StubFormState = {
   input: string;
@@ -148,6 +149,22 @@ export const useStubFormStore = defineStore({
         return result;
       }, state.input);
     },
+    getForm(state): any {
+      return handle((parsed) => {
+        const form = parsed?.conditions?.form ?? [];
+        const result: any = {};
+        for (const item of form) {
+          const subResult: any = {};
+          for (const key of Object.keys(item.value)) {
+            subResult[key] = item.value[key];
+          }
+
+          result[item.key] = subResult;
+        }
+
+        return result;
+      }, state.input);
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -275,6 +292,24 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
+    setForm(input: any): void {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        const result: StubFormModel[] = [];
+        for (const key of Object.keys(input)) {
+          result.push({
+            key,
+            value: input[key],
+          });
+        }
+
+        parsed.conditions.form = result;
+        this.setInput(parsed);
+      }, this.input);
+    },
     setDefaultIsHttps(): void {
       handle((parsed) => {
         if (!parsed.conditions) {
@@ -297,31 +332,6 @@ export const useStubFormStore = defineStore({
 
         parsed.conditions.basicAuthentication =
           defaultValues.basicAuthentication;
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultFormBody(keyword: StringCheckingKeyword): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        if (!parsed.conditions.form) {
-          parsed.conditions.form = [];
-        }
-
-        for (const key of Object.keys(defaultValues.formBody)) {
-          const val = {} as any;
-          val[keyword.key] =
-            keyword.key === "present"
-              ? true
-              : keyword.defaultValue || defaultValues.formBody[key];
-          parsed.conditions.form.push({
-            key: key,
-            value: val,
-          });
-        }
-
         this.setInput(parsed);
       }, this.input);
     },

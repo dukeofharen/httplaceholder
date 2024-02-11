@@ -11,10 +11,6 @@ export const defaultValues = {
     username: "username",
     password: "password",
   },
-  formBody: {
-    key1: "val1",
-    key2: "val2",
-  } as any,
   clientIp: "127.0.0.1",
   jsonPath: [
     {
