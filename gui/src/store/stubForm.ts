@@ -132,6 +132,22 @@ export const useStubFormStore = defineStore({
     getHostname(state): any {
       return handle((parsed) => parsed?.conditions?.host ?? "", state.input);
     },
+    getRequestBody(state): any {
+      return handle((parsed) => {
+        const body = parsed?.conditions?.body ?? [];
+        const result: any = {};
+        for (const bodyItem of body) {
+          const keys = Object.keys(bodyItem);
+          if (!keys.length) {
+            continue;
+          }
+
+          result[keys[0]] = bodyItem[keys[0]];
+        }
+
+        return result;
+      }, state.input);
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -242,6 +258,23 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
+    setRequestBody(input: any): void {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        const result = [];
+        for (const key of Object.keys(input)) {
+          const entry: any = {};
+          entry[key] = input[key];
+          result.push(entry);
+        }
+
+        parsed.conditions.body = result;
+        this.setInput(parsed);
+      }, this.input);
+    },
     setDefaultIsHttps(): void {
       handle((parsed) => {
         if (!parsed.conditions) {
@@ -264,25 +297,6 @@ export const useStubFormStore = defineStore({
 
         parsed.conditions.basicAuthentication =
           defaultValues.basicAuthentication;
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultRequestBody(keyword: StringCheckingKeyword): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        if (!parsed.conditions.body) {
-          parsed.conditions.body = [];
-        }
-
-        for (const body of defaultValues.requestBody) {
-          const newBody: any = {};
-          newBody[keyword.key] = keyword.defaultValue || body;
-          parsed.conditions.body.push(newBody);
-        }
-
         this.setInput(parsed);
       }, this.input);
     },

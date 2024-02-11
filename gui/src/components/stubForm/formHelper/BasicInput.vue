@@ -19,7 +19,7 @@
         ref="fieldRef"
       />
       <button class="btn btn-success mt-2" @click="insert">
-        {{ buttonText ?? "Add" }}
+        {{ buttonText ?? "Insert into stub" }}
       </button>
     </div>
   </div>

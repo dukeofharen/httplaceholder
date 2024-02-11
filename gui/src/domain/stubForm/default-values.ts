@@ -11,7 +11,6 @@ export const defaultValues = {
     username: "username",
     password: "password",
   },
-  requestBody: ["val1", "val2"],
   formBody: {
     key1: "val1",
     key2: "val2",

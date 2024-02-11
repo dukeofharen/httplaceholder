@@ -42,7 +42,6 @@
   <SetDynamicMode
     v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
   />
-  <SetBody v-if="currentSelectedFormHelper === FormHelperKey.Body" />
   <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.Description"
@@ -100,6 +99,13 @@
     :value-setter="(v: string) => stubFormStore.setHostname(v)"
     title="Hostname (e.g. 'httplaceholder.com')"
   />
+  <StringCheckerInput
+    v-if="currentSelectedFormHelper === FormHelperKey.Body"
+    :value-getter="() => stubFormStore.getRequestBody"
+    :value-setter="(input: any) => stubFormStore.setRequestBody(input)"
+    title="URL path"
+    :multiple="true"
+  />
 </template>
 
 <script lang="ts">
@@ -111,7 +117,6 @@ import HttpMethodSelector from "@/components/stubForm/formHelper/HttpMethodSelec
 import HttpStatusCodeSelector from "@/components/stubForm/formHelper/HttpStatusCodeSelector.vue";
 import RedirectSelector from "@/components/stubForm/formHelper/RedirectSelector.vue";
 import BasicInput from "@/components/stubForm/formHelper/BasicInput.vue";
-import SetBody from "@/components/stubForm/formHelper/SetBody.vue";
 import SetForm from "@/components/stubForm/formHelper/SetForm.vue";
 import ScenarioSelector from "@/components/stubForm/formHelper/ScenarioSelector.vue";
 import LineEndingSelector from "@/components/stubForm/formHelper/LineEndingSelector.vue";
@@ -138,7 +143,6 @@ export default defineComponent({
     LineEndingSelector,
     ScenarioSelector,
     SetForm,
-    SetBody,
     BasicInput,
     RedirectSelector,
     HttpStatusCodeSelector,

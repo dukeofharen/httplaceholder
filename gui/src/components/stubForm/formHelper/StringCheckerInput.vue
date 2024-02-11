@@ -53,7 +53,7 @@
       <div class="row">
         <div class="col-md-12">
           <button class="btn btn-success mt-2" @click="insert">
-            {{ buttonText ?? "Add" }}
+            {{ buttonText ?? "Insert into stub" }}
           </button>
         </div>
       </div>
@@ -133,7 +133,6 @@ const insert = () => {
 onMounted(() => {
   if (props.valueGetter) {
     const val = props.valueGetter();
-    console.log(val);
     if (val && Object.keys(val).length) {
       if (typeof val === "string") {
         formData.value.push({
