@@ -65,7 +65,6 @@ export const defaultValues = {
     fontSize: 10,
     wordWrap: false,
   } as StubResponseImageModel,
-  maxHits: 2,
   exactHits: 3,
   scenarioState: "new-state",
   newScenarioState: "new-state",

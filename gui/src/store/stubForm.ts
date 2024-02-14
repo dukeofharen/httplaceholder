@@ -171,6 +171,12 @@ export const useStubFormStore = defineStore({
         state.input,
       );
     },
+    getScenarioMaxHits(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.scenario?.maxHits ?? 0,
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -327,6 +333,21 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.scenario.minHits = parseInt(minHits);
+
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setScenarioMaxHits(maxHits: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.maxHits = parseInt(maxHits);
 
         this.setInput(parsed);
       }, this.input);
@@ -615,20 +636,6 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.image = defaultValues.image;
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultMaxHits(): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        if (!parsed.conditions.scenario) {
-          parsed.conditions.scenario = {};
-        }
-
-        parsed.conditions.scenario.maxHits = defaultValues.maxHits;
         this.setInput(parsed);
       }, this.input);
     },

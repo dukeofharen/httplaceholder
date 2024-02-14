@@ -121,6 +121,13 @@
     input-type="numeric"
     title="Minimum amount of hits (inclusive) that any stub under the same scenario should be hit"
   />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.ScenarioMaxHits"
+    :value-getter="() => stubFormStore.getScenarioMaxHits"
+    :value-setter="(v: string) => stubFormStore.setScenarioMaxHits(v)"
+    input-type="numeric"
+    title="Maximum amount of hits (exclusive) that any stub under the same scenario should be hit"
+  />
 </template>
 
 <script lang="ts">
