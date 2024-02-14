@@ -196,13 +196,13 @@ export const stubFormHelpers = [
     title: "Scenario exact hit counter",
     subTitle: elementDescriptions.exactHits,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultExactHits(),
+    formHelperToOpen: FormHelperKey.ScenarioExactHits,
   },
   {
     title: "Scenario state check",
     subTitle: elementDescriptions.scenarioState,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultScenarioState(),
+    formHelperToOpen: FormHelperKey.ScenarioState,
   },
   {
     title: "HTTP status code",

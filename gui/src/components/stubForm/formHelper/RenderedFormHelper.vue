@@ -128,6 +128,19 @@
     input-type="numeric"
     title="Maximum amount of hits (exclusive) that any stub under the same scenario should be hit"
   />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.ScenarioExactHits"
+    :value-getter="() => stubFormStore.getScenarioExactHits"
+    :value-setter="(v: string) => stubFormStore.setScenarioExactHits(v)"
+    input-type="numeric"
+    title="Exact amount of hits that any stub under the same scenario should be hit"
+  />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.ScenarioState"
+    :value-getter="() => stubFormStore.getScenarioStateCheck"
+    :value-setter="(v: string) => stubFormStore.setScenarioStateCheck(v)"
+    title="State the scenario should be in"
+  />
 </template>
 
 <script lang="ts">

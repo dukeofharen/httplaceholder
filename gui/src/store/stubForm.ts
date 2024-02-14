@@ -177,6 +177,18 @@ export const useStubFormStore = defineStore({
         state.input,
       );
     },
+    getScenarioExactHits(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.scenario?.exactHits ?? 0,
+        state.input,
+      );
+    },
+    getScenarioStateCheck(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.scenario?.scenarioState ?? 0,
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -348,6 +360,36 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.scenario.maxHits = parseInt(maxHits);
+
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setScenarioExactHits(exactHits: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.exactHits = parseInt(exactHits);
+
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setScenarioStateCheck(state: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.scenarioState = state;
 
         this.setInput(parsed);
       }, this.input);
@@ -636,20 +678,6 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.image = defaultValues.image;
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultExactHits(): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        if (!parsed.conditions.scenario) {
-          parsed.conditions.scenario = {};
-        }
-
-        parsed.conditions.scenario.exactHits = defaultValues.exactHits;
         this.setInput(parsed);
       }, this.input);
     },
