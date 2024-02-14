@@ -184,7 +184,7 @@ export const stubFormHelpers = [
     title: "Scenario min hit counter",
     subTitle: elementDescriptions.minHits,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultMinHits(),
+    formHelperToOpen: FormHelperKey.ScenarioMinHits,
   },
   {
     title: "Scenario max hit counter",

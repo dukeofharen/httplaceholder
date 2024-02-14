@@ -24,4 +24,5 @@ export enum FormHelperKey {
   Host = "host",
   Priority = "priority",
   ClientIp = "clientIp",
+  ScenarioMinHits = "scenarioMinHits",
 }

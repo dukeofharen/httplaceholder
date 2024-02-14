@@ -165,6 +165,12 @@ export const useStubFormStore = defineStore({
         return result;
       }, state.input);
     },
+    getScenarioMinHits(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.scenario?.minHits ?? 0,
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -307,6 +313,21 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.form = result;
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setScenarioMinHits(minHits: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.minHits = parseInt(minHits);
+
         this.setInput(parsed);
       }, this.input);
     },
@@ -594,20 +615,6 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.image = defaultValues.image;
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultMinHits(): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        if (!parsed.conditions.scenario) {
-          parsed.conditions.scenario = {};
-        }
-
-        parsed.conditions.scenario.minHits = defaultValues.minHits;
         this.setInput(parsed);
       }, this.input);
     },

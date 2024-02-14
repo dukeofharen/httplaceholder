@@ -65,7 +65,7 @@
   <StringCheckerInput
     v-if="currentSelectedFormHelper === FormHelperKey.FullPath"
     :value-getter="() => stubFormStore.getFullPath"
-    :value-setter="(input: any) => stubFormStore.setForm(input)"
+    :value-setter="(input: any) => stubFormStore.setFullPath(input)"
     title="Full path (including query string)"
   />
   <StringCheckerInput
@@ -113,6 +113,13 @@
     :has-multiple-keys="true"
     key-placeholder="Posted form value key"
     :multiple="true"
+  />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.ScenarioMinHits"
+    :value-getter="() => stubFormStore.getScenarioMinHits"
+    :value-setter="(v: string) => stubFormStore.setScenarioMinHits(v)"
+    input-type="numeric"
+    title="Minimum amount of hits (inclusive) that any stub under the same scenario should be hit"
   />
 </template>
 
