@@ -185,7 +185,7 @@ export const useStubFormStore = defineStore({
     },
     getScenarioStateCheck(state): any {
       return handle(
-        (parsed) => parsed?.conditions?.scenario?.scenarioState ?? 0,
+        (parsed) => parsed?.conditions?.scenario?.scenarioState ?? "",
         state.input,
       );
     },
