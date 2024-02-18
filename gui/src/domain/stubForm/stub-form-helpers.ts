@@ -342,6 +342,6 @@ export const stubFormHelpers = [
     title: "Extra duration",
     subTitle: elementDescriptions.extraDuration,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultExtraDuration(),
+    formHelperToOpen: FormHelperKey.ExtraDuration,
   },
 ] as StubFormHelper[];

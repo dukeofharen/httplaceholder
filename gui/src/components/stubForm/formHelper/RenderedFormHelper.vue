@@ -150,6 +150,13 @@
     :value-setter="(v: string) => stubFormStore.setResponseContentType(v)"
     title="Content type of response"
   />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.ExtraDuration"
+    :value-getter="() => stubFormStore.getExtraDuration"
+    :value-setter="(v: number) => stubFormStore.setExtraDuration(v)"
+    input-type="numeric"
+    title="Extra duration in milliseconds"
+  />
 </template>
 
 <script lang="ts">

@@ -202,6 +202,12 @@ export const useStubFormStore = defineStore({
         state.input,
       );
     },
+    getExtraDuration(state): any {
+      return handle(
+        (parsed) => parsed?.response?.extraDuration ?? 0,
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -423,6 +429,17 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
+    setExtraDuration(duration: number) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.response = {};
+        }
+
+        parsed.response.extraDuration = duration;
+
+        this.setInput(parsed);
+      }, this.input);
+    },
     setDefaultIsHttps(): void {
       handle((parsed) => {
         if (!parsed.conditions) {
@@ -590,16 +607,6 @@ export const useStubFormStore = defineStore({
           ...parsed.response.headers,
           ...defaultValues.responseHeaders,
         };
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultExtraDuration(): void {
-      handle((parsed) => {
-        if (!parsed.response) {
-          parsed.response = {};
-        }
-
-        parsed.response.extraDuration = defaultValues.extraDuration;
         this.setInput(parsed);
       }, this.input);
     },

@@ -30,4 +30,5 @@ export enum FormHelperKey {
   ScenarioState = "scenarioState",
   BasicAuthentication = "basicAuthentication",
   ResponseContentType = "responseContentType",
+  ExtraDuration = "extraDuration",
 }

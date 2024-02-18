@@ -43,7 +43,6 @@ export const defaultValues = {
     Header1: "val1",
     Header2: "val2",
   },
-  extraDuration: 10000,
   redirect: "https://google.com",
   reverseProxy: {
     url: "https://jsonplaceholder.typicode.com/todos",
