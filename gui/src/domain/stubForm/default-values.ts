@@ -51,7 +51,6 @@ export const defaultValues = {
     appendQueryString: true,
     replaceRootUrl: true,
   },
-  responseContentType: "application/json",
   image: {
     type: ResponseImageType.Png,
     width: 1024,

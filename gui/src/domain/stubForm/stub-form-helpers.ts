@@ -296,7 +296,7 @@ export const stubFormHelpers = [
     title: "Content type",
     subTitle: elementDescriptions.responseContentType,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultResponseContentType(),
+    formHelperToOpen: FormHelperKey.ResponseContentType,
   },
   {
     title: "Redirect",

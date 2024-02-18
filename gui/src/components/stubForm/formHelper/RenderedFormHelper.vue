@@ -144,6 +144,12 @@
   <BasicAuthHelper
     v-if="currentSelectedFormHelper === FormHelperKey.BasicAuthentication"
   />
+  <BasicInput
+    v-if="currentSelectedFormHelper === FormHelperKey.ResponseContentType"
+    :value-getter="() => stubFormStore.getResponseContentType"
+    :value-setter="(v: string) => stubFormStore.setResponseContentType(v)"
+    title="Content type of response"
+  />
 </template>
 
 <script lang="ts">

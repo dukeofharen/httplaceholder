@@ -196,6 +196,12 @@ export const useStubFormStore = defineStore({
         state.input,
       );
     },
+    getResponseContentType(state): any {
+      return handle(
+        (parsed) => parsed?.response?.contentType ?? "",
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -670,16 +676,6 @@ export const useStubFormStore = defineStore({
     setStubDisabled(): void {
       handle((parsed) => {
         parsed.enabled = false;
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultResponseContentType(): void {
-      handle((parsed) => {
-        if (!parsed.response) {
-          parsed.response = {};
-        }
-
-        parsed.response.contentType = defaultValues.responseContentType;
         this.setInput(parsed);
       }, this.input);
     },

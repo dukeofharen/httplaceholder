@@ -29,4 +29,5 @@ export enum FormHelperKey {
   ScenarioExactHits = "scenarioExactHits",
   ScenarioState = "scenarioState",
   BasicAuthentication = "basicAuthentication",
+  ResponseContentType = "responseContentType",
 }
