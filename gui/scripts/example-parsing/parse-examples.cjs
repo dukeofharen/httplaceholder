@@ -1,5 +1,9 @@
 const { join } = require("path");
-const { readdirSync, readFileSync, writeFileSync } = require("../helper/file");
+const {
+  readdirSync,
+  readFileSync,
+  writeFileSync,
+} = require("../helper/file.cjs");
 const { load } = require("js-yaml");
 
 const examplesRootDir = join(__dirname, "../../resources/examples");
@@ -19,6 +23,6 @@ const parsedExamples = examples
 
 const exampleResultPath = join(
   __dirname,
-  "../../src/constants/stub-examples.json"
+  "../../src/constants/stub-examples.json",
 );
 writeFileSync(exampleResultPath, JSON.stringify(parsedExamples));

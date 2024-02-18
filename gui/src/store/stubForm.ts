@@ -8,7 +8,8 @@ import { vsprintf } from "sprintf-js";
 import type { StubModel } from "@/domain/stub/stub-model";
 import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
-import type { StringCheckingKeyword } from "@/constants/string-checking-keywords";
+import type { StubFormModel } from "@/domain/stub/stub-form-model";
+import type { StubBasicAuthenticationModel } from "@/domain/stub/stub-basic-authentication-model";
 
 type StubFormState = {
   input: string;
@@ -23,18 +24,10 @@ export interface SetResponseInput {
   body: string;
 }
 
-const parseInput = (input: string): StubModel | undefined => {
+const handle = (func: (parsed: StubModel) => any, input: string) => {
   try {
-    return yaml.load(input) as StubModel;
-  } catch (e) {
-    error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
-    return undefined;
-  }
-};
-
-const handle = (func: () => any) => {
-  try {
-    return func();
+    const parsed = yaml.load(input) as StubModel;
+    return func(parsed);
   } catch (e) {
     error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
     return null;
@@ -60,72 +53,160 @@ export const useStubFormStore = defineStore({
     getFormHelperSelectorFilter: (state): string =>
       state.formHelperSelectorFilter,
     getResponseBodyType(state): ResponseBodyType {
-      return handle(() => {
-        const parsed = parseInput(state.input);
-        if (parsed) {
-          if (!parsed.response) {
-            return ResponseBodyType.text;
-          }
+      return handle((parsed) => {
+        if (!parsed.response) {
+          return ResponseBodyType.text;
+        }
 
-          const res = parsed.response;
-          if (res.text) {
-            return ResponseBodyType.text;
-          } else if (res.json) {
-            return ResponseBodyType.json;
-          } else if (res.xml) {
-            return ResponseBodyType.xml;
-          } else if (res.html) {
-            return ResponseBodyType.html;
-          } else if (res.base64) {
-            return ResponseBodyType.base64;
-          }
+        const res = parsed.response;
+        if (res.text) {
+          return ResponseBodyType.text;
+        } else if (res.json) {
+          return ResponseBodyType.json;
+        } else if (res.xml) {
+          return ResponseBodyType.xml;
+        } else if (res.html) {
+          return ResponseBodyType.html;
+        } else if (res.base64) {
+          return ResponseBodyType.base64;
         }
 
         return ResponseBodyType.text;
-      });
+      }, state.input);
     },
     getResponseBody(state): string {
-      return handle(() => {
-        const parsed = parseInput(state.input);
-        if (parsed) {
-          if (!parsed.response) {
-            return "";
-          }
-
-          const res = parsed.response;
-          return (
-            res.text || res.json || res.xml || res.html || res.base64 || ""
-          );
+      return handle((parsed) => {
+        if (!parsed.response) {
+          return "";
         }
 
-        return "";
-      });
+        const res = parsed.response;
+        return res.text || res.json || res.xml || res.html || res.base64 || "";
+      }, state.input);
     },
     getDynamicMode(state): boolean {
-      return handle(() => {
-        const parsed = parseInput(state.input);
-        if (parsed) {
-          if (!parsed.response) {
-            return false;
-          }
-
-          return parsed.response.enableDynamicMode || false;
+      return handle((parsed) => {
+        if (!parsed.response) {
+          return false;
         }
 
-        return false;
-      });
+        return parsed.response.enableDynamicMode || false;
+      }, state.input);
     },
     getStubId(state): string {
-      return handle(() => {
-        const parsed = parseInput(state.input);
-        if (parsed) {
-          return parsed.id;
-        }
-
-        return "";
-      });
+      return handle((parsed) => parsed.id, state.input);
     },
     getInputHasMultipleStubs: (state): boolean => state.inputHasMultipleStubs,
+    getDescription(state): string {
+      return handle((parsed) => parsed?.description ?? "", state.input);
+    },
+    getPriority(state): string {
+      return handle((parsed) => parsed?.priority ?? "0", state.input);
+    },
+    getUrlPath(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.url?.path ?? "",
+        state.input,
+      );
+    },
+    getFullPath(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.url?.fullPath ?? "",
+        state.input,
+      );
+    },
+    getQuery(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.url?.query ?? "",
+        state.input,
+      );
+    },
+    getRequestHeaders(state): any {
+      return handle((parsed) => parsed?.conditions?.headers ?? {}, state.input);
+    },
+    getClientIp(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.clientIp ?? "",
+        state.input,
+      );
+    },
+    getHostname(state): any {
+      return handle((parsed) => parsed?.conditions?.host ?? "", state.input);
+    },
+    getRequestBody(state): any {
+      return handle((parsed) => {
+        const body = parsed?.conditions?.body ?? [];
+        const result: any = {};
+        for (const bodyItem of body) {
+          const keys = Object.keys(bodyItem);
+          if (!keys.length) {
+            continue;
+          }
+
+          result[keys[0]] = bodyItem[keys[0]];
+        }
+
+        return result;
+      }, state.input);
+    },
+    getForm(state): any {
+      return handle((parsed) => {
+        const form = parsed?.conditions?.form ?? [];
+        const result: any = {};
+        for (const item of form) {
+          const subResult: any = {};
+          for (const key of Object.keys(item.value)) {
+            subResult[key] = item.value[key];
+          }
+
+          result[item.key] = subResult;
+        }
+
+        return result;
+      }, state.input);
+    },
+    getScenarioMinHits(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.scenario?.minHits ?? 0,
+        state.input,
+      );
+    },
+    getScenarioMaxHits(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.scenario?.maxHits ?? 0,
+        state.input,
+      );
+    },
+    getScenarioExactHits(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.scenario?.exactHits ?? 0,
+        state.input,
+      );
+    },
+    getScenarioStateCheck(state): any {
+      return handle(
+        (parsed) => parsed?.conditions?.scenario?.scenarioState ?? "",
+        state.input,
+      );
+    },
+    getBasicAuth(state): StubBasicAuthenticationModel | undefined {
+      return handle(
+        (parsed) => parsed?.conditions?.basicAuthentication,
+        state.input,
+      );
+    },
+    getResponseContentType(state): any {
+      return handle(
+        (parsed) => parsed?.response?.contentType ?? "",
+        state.input,
+      );
+    },
+    getExtraDuration(state): any {
+      return handle(
+        (parsed) => parsed?.response?.extraDuration ?? 0,
+        state.input,
+      );
+    },
   },
   actions: {
     openFormHelper(key: FormHelperKey): void {
@@ -137,708 +218,559 @@ export const useStubFormStore = defineStore({
     setFormIsDirty(formIsDirty: boolean) {
       this.formIsDirty = formIsDirty;
     },
-    setInput(input: string): void {
-      this.input = input;
+    setInput(input: StubModel | string): void {
+      let serializedYaml: string;
+      if (typeof input === "string") {
+        serializedYaml = input;
+      } else {
+        serializedYaml = yaml.dump(input);
+      }
+
+      this.input = serializedYaml;
       this.formIsDirty = true;
-      this.inputHasMultipleStubs = /^-/gm.test(input);
+      this.inputHasMultipleStubs = /^-/gm.test(serializedYaml);
     },
     setFormHelperSelectorFilter(filter: string) {
       this.formHelperSelectorFilter = filter;
     },
-    setDefaultDescription(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          parsed.description = defaultValues.description;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
+    setDescription(description: string): void {
+      handle((parsed) => {
+        parsed.description = description;
+        this.setInput(parsed);
+      }, this.input);
     },
-    setDefaultPriority(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          parsed.priority = defaultValues.priority;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
+    setPriority(priority: string): void {
+      handle((parsed) => {
+        parsed.priority = parseInt(priority);
+        this.setInput(parsed);
+      }, this.input);
     },
-    setDefaultPath(keyword: StringCheckingKeyword): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.url) {
-            parsed.conditions.url = {};
-          }
-
-          if (!parsed.conditions.url.path) {
-            parsed.conditions.url.path = {};
-          }
-
-          parsed.conditions.url.path[keyword.key] =
-            keyword.defaultValue || defaultValues.urlPath;
-          this.setInput(yaml.dump(parsed));
+    setUrlPath(input: object) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        if (!parsed.conditions.url) {
+          parsed.conditions.url = {};
+        }
+
+        parsed.conditions.url.path = input;
+        this.setInput(parsed);
+      }, this.input);
     },
-    setDefaultFullPath(keyword: StringCheckingKeyword): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.url) {
-            parsed.conditions.url = {};
-          }
-
-          if (!parsed.conditions.url.fullPath) {
-            parsed.conditions.url.fullPath = {};
-          }
-
-          parsed.conditions.url.fullPath[keyword.key] =
-            keyword.defaultValue || defaultValues.fullPath;
-          this.setInput(yaml.dump(parsed));
+    setFullPath(input: object) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        if (!parsed.conditions.url) {
+          parsed.conditions.url = {};
+        }
+
+        parsed.conditions.url.fullPath = input;
+        this.setInput(parsed);
+      }, this.input);
     },
-    setDefaultQuery(keyword: StringCheckingKeyword): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.url) {
-            parsed.conditions.url = {};
-          }
-
-          if (!parsed.conditions.url.query) {
-            parsed.conditions.url.query = {};
-          }
-
-          for (const key of Object.keys(defaultValues.query)) {
-            parsed.conditions.url.query[key] = {};
-            parsed.conditions.url.query[key][keyword.key] =
-              keyword.key === "present"
-                ? true
-                : keyword.defaultValue || defaultValues.query[key];
-          }
-
-          this.setInput(yaml.dump(parsed));
+    setQuery(input: object) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        if (!parsed.conditions.url) {
+          parsed.conditions.url = {};
+        }
+
+        parsed.conditions.url.query = input;
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setRequestHeaders(input: object) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.headers = input;
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setClientIp(ip: string): void {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.clientIp = ip;
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setHostname(hostname: string): void {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.host = hostname;
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setRequestBody(input: any): void {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        const result = [];
+        for (const key of Object.keys(input)) {
+          const entry: any = {};
+          entry[key] = input[key];
+          result.push(entry);
+        }
+
+        parsed.conditions.body = result;
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setForm(input: any): void {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        const result: StubFormModel[] = [];
+        for (const key of Object.keys(input)) {
+          result.push({
+            key,
+            value: input[key],
+          });
+        }
+
+        parsed.conditions.form = result;
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setScenarioMinHits(minHits: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.minHits = parseInt(minHits);
+
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setScenarioMaxHits(maxHits: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.maxHits = parseInt(maxHits);
+
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setScenarioExactHits(exactHits: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.exactHits = parseInt(exactHits);
+
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setScenarioStateCheck(state: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.scenarioState = state;
+
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setBasicAuth(username: string, password: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.basicAuthentication) {
+          parsed.conditions.basicAuthentication = {};
+        }
+
+        parsed.conditions.basicAuthentication.username = username;
+        parsed.conditions.basicAuthentication.password = password;
+
+        this.setInput(parsed);
+      }, this.input);
+    },
+    setExtraDuration(duration: number) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.response = {};
+        }
+
+        parsed.response.extraDuration = duration;
+
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultIsHttps(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.url) {
-            parsed.conditions.url = {};
-          }
-
-          parsed.conditions.url.isHttps = true;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
-    },
-    setDefaultBasicAuth(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
 
-          parsed.conditions.basicAuthentication =
-            defaultValues.basicAuthentication;
-          this.setInput(yaml.dump(parsed));
+        if (!parsed.conditions.url) {
+          parsed.conditions.url = {};
         }
-      });
-    },
-    setDefaultRequestHeaders(keyword: StringCheckingKeyword): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
 
-          if (!parsed.conditions.headers) {
-            parsed.conditions.headers = {};
-          }
-
-          for (const key of Object.keys(defaultValues.requestHeaders)) {
-            parsed.conditions.headers[key] = {};
-            parsed.conditions.headers[key][keyword.key] =
-              keyword.key === "present"
-                ? true
-                : keyword.defaultValue || defaultValues.requestHeaders[key];
-          }
-
-          this.setInput(yaml.dump(parsed));
-        }
-      });
-    },
-    setDefaultRequestBody(keyword: StringCheckingKeyword): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.body) {
-            parsed.conditions.body = [];
-          }
-
-          for (const body of defaultValues.requestBody) {
-            const newBody: any = {};
-            newBody[keyword.key] = keyword.defaultValue || body;
-            parsed.conditions.body.push(newBody);
-          }
-
-          this.setInput(yaml.dump(parsed));
-        }
-      });
-    },
-    setDefaultFormBody(keyword: StringCheckingKeyword): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.form) {
-            parsed.conditions.form = [];
-          }
-
-          for (const key of Object.keys(defaultValues.formBody)) {
-            const val = {} as any;
-            val[keyword.key] =
-              keyword.key === "present"
-                ? true
-                : keyword.defaultValue || defaultValues.formBody[key];
-            parsed.conditions.form.push({
-              key: key,
-              value: val,
-            });
-          }
-
-          this.setInput(yaml.dump(parsed));
-        }
-      });
-    },
-    setDefaultClientIp(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          parsed.conditions.clientIp = defaultValues.clientIp;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
-    },
-    setDefaultHostname(keyword: StringCheckingKeyword): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.host) {
-            parsed.conditions.host = {};
-          }
-
-          parsed.conditions.host[keyword.key] =
-            keyword.defaultValue || defaultValues.hostname;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
+        parsed.conditions.url.isHttps = true;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultJsonPath(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.jsonPath) {
-            parsed.conditions.jsonPath = [];
-          }
-
-          parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(
-            defaultValues.jsonPath,
-          );
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        if (!parsed.conditions.jsonPath) {
+          parsed.conditions.jsonPath = [];
+        }
+
+        parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(
+          defaultValues.jsonPath,
+        );
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultJsonObject(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          parsed.conditions.json = defaultValues.jsonObject;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        parsed.conditions.json = defaultValues.jsonObject;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultJsonArray(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          parsed.conditions.json = defaultValues.jsonArray;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        parsed.conditions.json = defaultValues.jsonArray;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultXPath(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.xpath) {
-            parsed.conditions.xpath = [];
-          }
-
-          parsed.conditions.xpath = parsed.conditions.xpath.concat(
-            defaultValues.xpath,
-          );
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        if (!parsed.conditions.xpath) {
+          parsed.conditions.xpath = [];
+        }
+
+        parsed.conditions.xpath = parsed.conditions.xpath.concat(
+          defaultValues.xpath,
+        );
+        this.setInput(parsed);
+      }, this.input);
     },
     setMethod(method: string | string[]): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          parsed.conditions.method = method;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        parsed.conditions.method = method;
+        this.setInput(parsed);
+      }, this.input);
     },
     setTenant(tenant: string): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          parsed.tenant = tenant;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
+      handle((parsed) => {
+        parsed.tenant = tenant;
+        this.setInput(parsed);
+      }, this.input);
     },
     setScenario(scenario: string): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          parsed.scenario = scenario;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
+      handle((parsed) => {
+        parsed.scenario = scenario;
+        this.setInput(parsed);
+      }, this.input);
     },
     setStatusCode(code: number): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          parsed.response.statusCode = code;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        parsed.response.statusCode = code;
+        this.setInput(parsed);
+      }, this.input);
     },
     setResponseBody(payload: SetResponseInput): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          delete parsed.response.text;
-          delete parsed.response.json;
-          delete parsed.response.xml;
-          delete parsed.response.html;
-          delete parsed.response.base64;
-
-          const responseType = payload.type || ResponseBodyType.text;
-          const responseBody = payload.body || "";
-          switch (responseType) {
-            case ResponseBodyType.json:
-              parsed.response.json = responseBody;
-              break;
-            case ResponseBodyType.xml:
-              parsed.response.xml = responseBody;
-              break;
-            case ResponseBodyType.html:
-              parsed.response.html = responseBody;
-              break;
-            case ResponseBodyType.base64:
-              parsed.response.base64 = responseBody;
-              break;
-            default:
-            case ResponseBodyType.text:
-              parsed.response.text = responseBody;
-              break;
-          }
-
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        delete parsed.response.text;
+        delete parsed.response.json;
+        delete parsed.response.xml;
+        delete parsed.response.html;
+        delete parsed.response.base64;
+
+        const responseType = payload.type || ResponseBodyType.text;
+        const responseBody = payload.body || "";
+        switch (responseType) {
+          case ResponseBodyType.json:
+            parsed.response.json = responseBody;
+            break;
+          case ResponseBodyType.xml:
+            parsed.response.xml = responseBody;
+            break;
+          case ResponseBodyType.html:
+            parsed.response.html = responseBody;
+            break;
+          case ResponseBodyType.base64:
+            parsed.response.base64 = responseBody;
+            break;
+          default:
+          case ResponseBodyType.text:
+            parsed.response.text = responseBody;
+            break;
+        }
+
+        this.setInput(parsed);
+      }, this.input);
     },
     setResponseContentType(contentType: string): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          if (parsed.response.headers) {
-            const key: string | undefined = Object.keys(
-              parsed.response.headers,
-            ).find((k) => k.toLowerCase().trim() === "content-type");
-            if (key) {
-              delete parsed.response.headers[key];
-            }
-          }
-
-          parsed.response.contentType = contentType;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        if (parsed.response.headers) {
+          const key: string | undefined = Object.keys(
+            parsed.response.headers,
+          ).find((k) => k.toLowerCase().trim() === "content-type");
+          if (key) {
+            delete parsed.response.headers[key];
+          }
+        }
+
+        parsed.response.contentType = contentType;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultResponseHeaders(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          if (!parsed.response.headers) {
-            parsed.response.headers = {};
-          }
-
-          parsed.response.headers = {
-            ...parsed.response.headers,
-            ...defaultValues.responseHeaders,
-          };
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
-    },
-    setDefaultExtraDuration(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
 
-          parsed.response.extraDuration = defaultValues.extraDuration;
-          this.setInput(yaml.dump(parsed));
+        if (!parsed.response.headers) {
+          parsed.response.headers = {};
         }
-      });
+
+        parsed.response.headers = {
+          ...parsed.response.headers,
+          ...defaultValues.responseHeaders,
+        };
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultTempRedirect(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          parsed.response.temporaryRedirect = defaultValues.redirect;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        parsed.response.temporaryRedirect = defaultValues.redirect;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultPermanentRedirect(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          parsed.response.permanentRedirect = defaultValues.redirect;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        parsed.response.permanentRedirect = defaultValues.redirect;
+        this.setInput(parsed);
+      }, this.input);
     },
     setLineEndings(lineEndings: LineEndingType | undefined): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          if (!lineEndings) {
-            delete parsed.response.lineEndings;
-          } else {
-            parsed.response.lineEndings = lineEndings;
-          }
-
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        if (!lineEndings) {
+          delete parsed.response.lineEndings;
+        } else {
+          parsed.response.lineEndings = lineEndings;
+        }
+
+        this.setInput(parsed);
+      }, this.input);
     },
     setDynamicMode(value: boolean | undefined): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          if (value) {
-            parsed.response.enableDynamicMode = value;
-          } else {
-            delete parsed.response.enableDynamicMode;
-          }
-
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        if (value) {
+          parsed.response.enableDynamicMode = value;
+        } else {
+          delete parsed.response.enableDynamicMode;
+        }
+
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultReverseProxy(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          parsed.response.reverseProxy = defaultValues.reverseProxy;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        parsed.response.reverseProxy = defaultValues.reverseProxy;
+        this.setInput(parsed);
+      }, this.input);
     },
     setAbortConnection(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          parsed.response.abortConnection = true;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        parsed.response.abortConnection = true;
+        this.setInput(parsed);
+      }, this.input);
     },
     setStubDisabled(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          parsed.enabled = false;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
-    },
-    setDefaultResponseContentType(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          parsed.response.contentType = defaultValues.responseContentType;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
+      handle((parsed) => {
+        parsed.enabled = false;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultImage(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          parsed.response.image = defaultValues.image;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
-    },
-    setDefaultMinHits(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
 
-          if (!parsed.conditions.scenario) {
-            parsed.conditions.scenario = {};
-          }
-
-          parsed.conditions.scenario.minHits = defaultValues.minHits;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
-    },
-    setDefaultMaxHits(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.scenario) {
-            parsed.conditions.scenario = {};
-          }
-
-          parsed.conditions.scenario.maxHits = defaultValues.maxHits;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
-    },
-    setDefaultExactHits(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.scenario) {
-            parsed.conditions.scenario = {};
-          }
-
-          parsed.conditions.scenario.exactHits = defaultValues.exactHits;
-          this.setInput(yaml.dump(parsed));
-        }
-      });
+        parsed.response.image = defaultValues.image;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultScenarioState(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.conditions) {
-            parsed.conditions = {};
-          }
-
-          if (!parsed.conditions.scenario) {
-            parsed.conditions.scenario = {};
-          }
-
-          parsed.conditions.scenario.scenarioState =
-            defaultValues.scenarioState;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
-      });
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.scenarioState = defaultValues.scenarioState;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultStringReplace(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          if (!parsed.response.replace) {
-            parsed.response.replace = [];
-          }
-
-          parsed.response.replace = parsed.response.replace.concat(
-            defaultValues.stringReplace,
-          );
-
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        if (!parsed.response.replace) {
+          parsed.response.replace = [];
+        }
+
+        parsed.response.replace = parsed.response.replace.concat(
+          defaultValues.stringReplace,
+        );
+
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultRegexReplace(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          if (!parsed.response.replace) {
-            parsed.response.replace = [];
-          }
-
-          parsed.response.replace = parsed.response.replace.concat(
-            defaultValues.regexReplace,
-          );
-
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        if (!parsed.response.replace) {
+          parsed.response.replace = [];
+        }
+
+        parsed.response.replace = parsed.response.replace.concat(
+          defaultValues.regexReplace,
+        );
+
+        this.setInput(parsed);
+      }, this.input);
     },
     setClearState(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          if (!parsed.response.scenario) {
-            parsed.response.scenario = {};
-          }
-
-          parsed.response.scenario.clearState = true;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        if (!parsed.response.scenario) {
+          parsed.response.scenario = {};
+        }
+
+        parsed.response.scenario.clearState = true;
+        this.setInput(parsed);
+      }, this.input);
     },
     setDefaultNewScenarioState(): void {
-      handle(() => {
-        const parsed = parseInput(this.input);
-        if (parsed) {
-          if (!parsed.response) {
-            parsed.response = {};
-          }
-
-          if (!parsed.response.scenario) {
-            parsed.response.scenario = {};
-          }
-
-          parsed.response.scenario.setScenarioState =
-            defaultValues.newScenarioState;
-          this.setInput(yaml.dump(parsed));
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
         }
-      });
+
+        if (!parsed.response.scenario) {
+          parsed.response.scenario = {};
+        }
+
+        parsed.response.scenario.setScenarioState =
+          defaultValues.newScenarioState;
+        this.setInput(parsed);
+      }, this.input);
     },
   },
 });

@@ -3,31 +3,11 @@ import type { StubResponseImageModel } from "@/domain/stub/stub-response-image-m
 import { ResponseImageType } from "@/domain/stub/enums/response-image-type";
 import type { StubResponseReplaceModel } from "@/domain/stub/stub-response-replace-model";
 
+// TODO dit moet straks grotendeels weg
 export const defaultValues = {
-  description: "A description for the stub.",
   methods: ["GET", "POST"],
   priority: 1,
-  urlPath: "/path",
-  fullPath: "/path?query=val1",
-  query: {
-    query1: "val1",
-    query2: "val2",
-  } as any,
-  basicAuthentication: {
-    username: "username",
-    password: "password",
-  },
-  requestHeaders: {
-    Header1: "val1",
-    Header2: "val2",
-  } as any,
-  requestBody: ["val1", "val2"],
-  formBody: {
-    key1: "val1",
-    key2: "val2",
-  } as any,
   clientIp: "127.0.0.1",
-  hostname: "httplaceholder.com",
   jsonPath: [
     {
       query: "$.people[0].name",
@@ -63,7 +43,6 @@ export const defaultValues = {
     Header1: "val1",
     Header2: "val2",
   },
-  extraDuration: 10000,
   redirect: "https://google.com",
   reverseProxy: {
     url: "https://jsonplaceholder.typicode.com/todos",
@@ -71,7 +50,6 @@ export const defaultValues = {
     appendQueryString: true,
     replaceRootUrl: true,
   },
-  responseContentType: "application/json",
   image: {
     type: ResponseImageType.Png,
     width: 1024,
@@ -81,9 +59,6 @@ export const defaultValues = {
     fontSize: 10,
     wordWrap: false,
   } as StubResponseImageModel,
-  minHits: 1,
-  maxHits: 2,
-  exactHits: 3,
   scenarioState: "new-state",
   newScenarioState: "new-state",
   stringReplace: [

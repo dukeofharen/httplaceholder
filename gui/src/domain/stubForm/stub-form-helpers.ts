@@ -29,13 +29,13 @@ export const stubFormHelpers = [
     title: "Description",
     subTitle: elementDescriptions.description,
     stubFormHelperCategory: StubFormHelperCategory.GeneralInfo,
-    defaultValueMutation: (store: any) => store.setDefaultDescription(),
+    formHelperToOpen: FormHelperKey.Description,
   },
   {
     title: "Priority",
     subTitle: elementDescriptions.priority,
     stubFormHelperCategory: StubFormHelperCategory.GeneralInfo,
-    defaultValueMutation: (store: any) => store.setDefaultPriority(),
+    formHelperToOpen: FormHelperKey.Priority,
   },
   {
     title: "Disable stub",
@@ -99,7 +99,7 @@ export const stubFormHelpers = [
     title: "Basic authentication",
     subTitle: elementDescriptions.basicAuthentication,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultBasicAuth(),
+    formHelperToOpen: FormHelperKey.BasicAuthentication,
   },
   {
     title: "Headers",
@@ -133,7 +133,7 @@ export const stubFormHelpers = [
     title: "Client IP",
     subTitle: elementDescriptions.clientIp,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultClientIp(),
+    formHelperToOpen: FormHelperKey.ClientIp,
   },
   {
     title: "Hostname",
@@ -184,25 +184,25 @@ export const stubFormHelpers = [
     title: "Scenario min hit counter",
     subTitle: elementDescriptions.minHits,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultMinHits(),
+    formHelperToOpen: FormHelperKey.ScenarioMinHits,
   },
   {
     title: "Scenario max hit counter",
     subTitle: elementDescriptions.maxHits,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultMaxHits(),
+    formHelperToOpen: FormHelperKey.ScenarioMaxHits,
   },
   {
     title: "Scenario exact hit counter",
     subTitle: elementDescriptions.exactHits,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultExactHits(),
+    formHelperToOpen: FormHelperKey.ScenarioExactHits,
   },
   {
     title: "Scenario state check",
     subTitle: elementDescriptions.scenarioState,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultScenarioState(),
+    formHelperToOpen: FormHelperKey.ScenarioState,
   },
   {
     title: "HTTP status code",
@@ -296,7 +296,7 @@ export const stubFormHelpers = [
     title: "Content type",
     subTitle: elementDescriptions.responseContentType,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultResponseContentType(),
+    formHelperToOpen: FormHelperKey.ResponseContentType,
   },
   {
     title: "Redirect",
@@ -342,6 +342,6 @@ export const stubFormHelpers = [
     title: "Extra duration",
     subTitle: elementDescriptions.extraDuration,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultExtraDuration(),
+    formHelperToOpen: FormHelperKey.ExtraDuration,
   },
 ] as StubFormHelper[];

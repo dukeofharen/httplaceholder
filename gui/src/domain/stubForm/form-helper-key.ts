@@ -1,5 +1,6 @@
 export enum FormHelperKey {
   None = "",
+  Description = "description",
   Tenant = "tenant",
   HttpMethod = "httpMethod",
   StatusCode = "statusCode",
@@ -21,9 +22,13 @@ export enum FormHelperKey {
   Header = "header",
   Form = "form",
   Host = "host",
-}
-
-export function getValues(): string[] {
-  const enumType = FormHelperKey as any;
-  return Object.keys(FormHelperKey).map((key) => enumType[key]);
+  Priority = "priority",
+  ClientIp = "clientIp",
+  ScenarioMinHits = "scenarioMinHits",
+  ScenarioMaxHits = "scenarioMaxHits",
+  ScenarioExactHits = "scenarioExactHits",
+  ScenarioState = "scenarioState",
+  BasicAuthentication = "basicAuthentication",
+  ResponseContentType = "responseContentType",
+  ExtraDuration = "extraDuration",
 }
