@@ -8,7 +8,6 @@ import { vsprintf } from "sprintf-js";
 import type { StubModel } from "@/domain/stub/stub-model";
 import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
-import type { StringCheckingKeyword } from "@/constants/string-checking-keywords";
 import type { StubFormModel } from "@/domain/stub/stub-form-model";
 import type { StubBasicAuthenticationModel } from "@/domain/stub/stub-basic-authentication-model";
 
