@@ -10,6 +10,7 @@ import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import type { StringCheckingKeyword } from "@/constants/string-checking-keywords";
 import type { StubFormModel } from "@/domain/stub/stub-form-model";
+import type { StubBasicAuthenticationModel } from "@/domain/stub/stub-basic-authentication-model";
 
 type StubFormState = {
   input: string;
@@ -186,6 +187,12 @@ export const useStubFormStore = defineStore({
     getScenarioStateCheck(state): any {
       return handle(
         (parsed) => parsed?.conditions?.scenario?.scenarioState ?? "",
+        state.input,
+      );
+    },
+    getBasicAuth(state): StubBasicAuthenticationModel | undefined {
+      return handle(
+        (parsed) => parsed?.conditions?.basicAuthentication,
         state.input,
       );
     },
@@ -394,6 +401,22 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
+    setBasicAuth(username: string, password: string) {
+      handle((parsed) => {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.basicAuthentication) {
+          parsed.conditions.basicAuthentication = {};
+        }
+
+        parsed.conditions.basicAuthentication.username = username;
+        parsed.conditions.basicAuthentication.password = password;
+
+        this.setInput(parsed);
+      }, this.input);
+    },
     setDefaultIsHttps(): void {
       handle((parsed) => {
         if (!parsed.conditions) {
@@ -405,17 +428,6 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.conditions.url.isHttps = true;
-        this.setInput(parsed);
-      }, this.input);
-    },
-    setDefaultBasicAuth(): void {
-      handle((parsed) => {
-        if (!parsed.conditions) {
-          parsed.conditions = {};
-        }
-
-        parsed.conditions.basicAuthentication =
-          defaultValues.basicAuthentication;
         this.setInput(parsed);
       }, this.input);
     },

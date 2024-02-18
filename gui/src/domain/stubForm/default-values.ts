@@ -7,10 +7,6 @@ import type { StubResponseReplaceModel } from "@/domain/stub/stub-response-repla
 export const defaultValues = {
   methods: ["GET", "POST"],
   priority: 1,
-  basicAuthentication: {
-    username: "username",
-    password: "password",
-  },
   clientIp: "127.0.0.1",
   jsonPath: [
     {

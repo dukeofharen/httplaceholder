@@ -141,6 +141,9 @@
     :value-setter="(v: string) => stubFormStore.setScenarioStateCheck(v)"
     title="State the scenario should be in"
   />
+  <BasicAuthHelper
+    v-if="currentSelectedFormHelper === FormHelperKey.BasicAuthentication"
+  />
 </template>
 
 <script lang="ts">
@@ -160,6 +163,7 @@ import SetDynamicMode from "@/components/stubForm/formHelper/SetDynamicMode.vue"
 import ExampleSelector from "@/components/stubForm/formHelper/ExampleSelector.vue";
 import { stubFormHelpers } from "@/domain/stubForm/stub-form-helpers";
 import StringCheckerInput from "@/components/stubForm/formHelper/StringCheckerInput.vue";
+import BasicAuthHelper from "@/components/stubForm/formHelper/BasicAuthHelper.vue";
 
 export default defineComponent({
   name: "RenderedFormHelper",
@@ -180,6 +184,7 @@ export default defineComponent({
     RedirectSelector,
     HttpStatusCodeSelector,
     HttpMethodSelector,
+    BasicAuthHelper,
   },
   setup() {
     const stubFormStore = useStubFormStore();

@@ -99,7 +99,7 @@ export const stubFormHelpers = [
     title: "Basic authentication",
     subTitle: elementDescriptions.basicAuthentication,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultBasicAuth(),
+    formHelperToOpen: FormHelperKey.BasicAuthentication,
   },
   {
     title: "Headers",

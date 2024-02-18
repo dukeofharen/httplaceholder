@@ -28,4 +28,5 @@ export enum FormHelperKey {
   ScenarioMaxHits = "scenarioMaxHits",
   ScenarioExactHits = "scenarioExactHits",
   ScenarioState = "scenarioState",
+  BasicAuthentication = "basicAuthentication",
 }
