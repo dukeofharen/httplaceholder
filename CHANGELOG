@@ -5,6 +5,7 @@
 - Whenever a YAML file is updated, the change should be reflected in the user interface using web sockets (https://github.com/dukeofharen/httplaceholder/pull/340).
 - Fixed behavior in the frontend that, when uploading stubs through the upload button, the API is not DDOSed (which some stub sources like the SQLite stub source did not like) (https://github.com/dukeofharen/httplaceholder/pull/342).
 - Several fixes in the handling of form data within HttPlaceholder (https://github.com/dukeofharen/httplaceholder/pull/343).
+- Update form helpers so it is much easier to update a stub using the UI (https://github.com/dukeofharen/httplaceholder/pull/344).
 
 # BREAKING CHANGES
 - If you installed HttPlaceholder as .NET tool, you need to have the .NET 8 SDK installed on your machine. If you download the compiled version of HttPlaceholder for your OS, you do not need to have .NET installed so you will notice no changes.
