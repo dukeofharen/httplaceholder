@@ -70,7 +70,7 @@ Also visit the website: https://httplaceholder.org/
 
 ### Built With
 
-- [.NET 6](https://dotnet.microsoft.com/apps/aspnet)
+- [.NET 8](https://dotnet.microsoft.com/apps/aspnet)
 - [Vue.js](https://vuejs.org/)
 - [Bootstrap](https://getbootstrap.com/)
 - [CodeMirror](https://codemirror.net/)
