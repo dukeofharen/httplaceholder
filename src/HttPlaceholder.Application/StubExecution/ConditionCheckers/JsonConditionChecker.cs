@@ -16,18 +16,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that validates if a JSON request body corresponds to a given set of properties.
 /// </summary>
-public class JsonConditionChecker : IConditionChecker, ISingletonService
+public class JsonConditionChecker(IHttpContextService httpContextService) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    /// <summary>
-    ///     Constructs a <see cref="JsonConditionChecker" /> instance.
-    /// </summary>
-    public JsonConditionChecker(IHttpContextService httpContextService)
-    {
-        _httpContextService = httpContextService;
-    }
-
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -39,7 +29,7 @@ public class JsonConditionChecker : IConditionChecker, ISingletonService
 
         var convertedJsonConditions = ConvertJsonConditions(stub.Conditions.Json);
 
-        var body = await _httpContextService.GetBodyAsync(cancellationToken);
+        var body = await httpContextService.GetBodyAsync(cancellationToken);
         try
         {
             var jToken = JToken.Parse(body);

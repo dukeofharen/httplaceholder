@@ -8,27 +8,15 @@ namespace HttPlaceholder.Web.Shared.Utilities.Implementations;
 /// <summary>
 ///     A class that is used to help start up HttPlaceholder.
 /// </summary>
-public class ProgramUtility : IProgramUtility
+public class ProgramUtility(
+    ITcpService tcpService,
+    IIpService ipService) : IProgramUtility
 {
-    private readonly IIpService _ipService;
-    private readonly ITcpService _tcpService;
-
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
     public ProgramUtility() : this(new TcpService(), new IpService())
     {
-    }
-
-    /// <summary>
-    ///     Constructs a <see cref="ProgramUtility" /> instance.
-    /// </summary>
-    internal ProgramUtility(
-        ITcpService tcpService,
-        IIpService ipService)
-    {
-        _tcpService = tcpService;
-        _ipService = ipService;
     }
 
     /// <inheritdoc />
@@ -49,7 +37,7 @@ public class ProgramUtility : IProgramUtility
     public IEnumerable<string> GetHostnames()
     {
         var result = new List<string> { "127.0.0.1", "localhost" };
-        var localIp = _ipService.GetLocalIpAddress();
+        var localIp = ipService.GetLocalIpAddress();
         if (!string.IsNullOrWhiteSpace(localIp))
         {
             result.Add(localIp);
@@ -66,9 +54,9 @@ public class ProgramUtility : IProgramUtility
         // If no specific port is configured, the default port will be used.
         // If that port happens to be taken, look for the next free TCP port.
         if (ports.Length == 1 && ports[0] == defaultPort &&
-            _tcpService.PortIsTaken(ports[0]))
+            tcpService.PortIsTaken(ports[0]))
         {
-            result.Add(_tcpService.GetNextFreeTcpPort());
+            result.Add(tcpService.GetNextFreeTcpPort());
         }
         else
         {
@@ -98,7 +86,7 @@ public class ProgramUtility : IProgramUtility
 
     private void EnsureNoPortsAreTaken(IEnumerable<int> ports)
     {
-        var portsTaken = ports.Where(p => _tcpService.PortIsTaken(p)).ToArray();
+        var portsTaken = ports.Where(p => tcpService.PortIsTaken(p)).ToArray();
         if (portsTaken.Any())
         {
             throw new ArgumentException($"The following ports are already taken: {string.Join(", ", portsTaken)}");

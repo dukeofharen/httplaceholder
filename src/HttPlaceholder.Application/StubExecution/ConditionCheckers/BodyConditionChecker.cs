@@ -11,20 +11,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that verifies the incoming request body.
 /// </summary>
-public class BodyConditionChecker : IConditionChecker, ISingletonService
+public class BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="BodyConditionChecker" /> instance.
-    /// </summary>
-    public BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    {
-        _httpContextService = httpContextService;
-        _stringChecker = stringChecker;
-    }
-
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -35,12 +23,12 @@ public class BodyConditionChecker : IConditionChecker, ISingletonService
             return result;
         }
 
-        var body = await _httpContextService.GetBodyAsync(cancellationToken);
+        var body = await httpContextService.GetBodyAsync(cancellationToken);
 
         var validBodyConditions = 0;
         foreach (var condition in bodyConditions)
         {
-            if (!_stringChecker.CheckString(body, condition, out var outputForLogging))
+            if (!stringChecker.CheckString(body, condition, out var outputForLogging))
             {
                 // If the check failed, it means the body condition is incorrect and the condition should fail.
                 result.Log = $"Body condition '{outputForLogging}' failed.";

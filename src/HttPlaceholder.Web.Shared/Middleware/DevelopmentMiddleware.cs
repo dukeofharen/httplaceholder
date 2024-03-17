@@ -8,18 +8,8 @@ namespace HttPlaceholder.Web.Shared.Middleware;
 ///     A piece of middleware that is used in development scenarios; should NEVER be used in production scenarios.
 ///     Is only active when the ASPNETCORE_ENVIRONMENT environment variable is set to "Development".
 /// </summary>
-public class DevelopmentMiddleware
+public class DevelopmentMiddleware(RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    /// <summary>
-    ///     Constructs a <see cref="DevelopmentMiddleware" /> instance.
-    /// </summary>
-    public DevelopmentMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
     /// <summary>
     ///     Handles the middleware.
     /// </summary>
@@ -32,7 +22,7 @@ public class DevelopmentMiddleware
         var env = envService.GetAspNetCoreEnvironment();
         if (string.IsNullOrWhiteSpace(env) || !env.Equals("development", StringComparison.OrdinalIgnoreCase))
         {
-            await _next(context);
+            await next(context);
             return;
         }
 
@@ -43,6 +33,6 @@ public class DevelopmentMiddleware
             stubRequestContext.DistributionKey = distKeyHeader.Value;
         }
 
-        await _next(context);
+        await next(context);
     }
 }

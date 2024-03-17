@@ -10,20 +10,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that is used to verify the hostname.
 /// </summary>
-public class HostConditionChecker : IConditionChecker, ISingletonService
+public class HostConditionChecker(IClientDataResolver clientDataResolver, IStringChecker stringChecker) : IConditionChecker, ISingletonService
 {
-    private readonly IClientDataResolver _clientDataResolver;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="HostConditionChecker" /> instance.
-    /// </summary>
-    public HostConditionChecker(IClientDataResolver clientDataResolver, IStringChecker stringChecker)
-    {
-        _clientDataResolver = clientDataResolver;
-        _stringChecker = stringChecker;
-    }
-
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -34,8 +22,8 @@ public class HostConditionChecker : IConditionChecker, ISingletonService
             return Task.FromResult(result);
         }
 
-        var host = _clientDataResolver.GetHost();
-        result.ConditionValidation = !_stringChecker.CheckString(host, hostCondition, out _)
+        var host = clientDataResolver.GetHost();
+        result.ConditionValidation = !stringChecker.CheckString(host, hostCondition, out _)
             ? ConditionValidationType.Invalid
             : ConditionValidationType.Valid;
 

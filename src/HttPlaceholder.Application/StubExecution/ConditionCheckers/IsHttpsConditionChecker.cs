@@ -10,18 +10,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that verifies if a request is done over HTTP or HTTPS.
 /// </summary>
-public class IsHttpsConditionChecker : IConditionChecker, ISingletonService
+public class IsHttpsConditionChecker(IClientDataResolver clientDataResolver) : IConditionChecker, ISingletonService
 {
-    private readonly IClientDataResolver _clientDataResolver;
-
-    /// <summary>
-    ///     Constructs a <see cref="IsHttpsConditionChecker" /> instance.
-    /// </summary>
-    public IsHttpsConditionChecker(IClientDataResolver clientDataResolver)
-    {
-        _clientDataResolver = clientDataResolver;
-    }
-
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -33,7 +23,7 @@ public class IsHttpsConditionChecker : IConditionChecker, ISingletonService
         }
 
         var shouldBeHttps = condition.Value;
-        var isHttps = _clientDataResolver.IsHttps();
+        var isHttps = clientDataResolver.IsHttps();
         result.ConditionValidation = isHttps == shouldBeHttps
             ? ConditionValidationType.Valid
             : ConditionValidationType.Invalid;

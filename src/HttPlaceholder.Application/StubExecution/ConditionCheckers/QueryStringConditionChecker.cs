@@ -12,20 +12,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker for validating the query strings.
 /// </summary>
-public class QueryStringConditionChecker : IConditionChecker, ISingletonService
+public class QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="QueryStringConditionChecker" /> instance.
-    /// </summary>
-    public QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    {
-        _httpContextService = httpContextService;
-        _stringChecker = stringChecker;
-    }
-
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -37,7 +25,7 @@ public class QueryStringConditionChecker : IConditionChecker, ISingletonService
         }
 
         var validQueryStrings = 0;
-        var queryString = _httpContextService.GetQueryStringDictionary();
+        var queryString = httpContextService.GetQueryStringDictionary();
         foreach (var condition in queryStringConditions)
         {
             // Do a present check, if needed.
@@ -63,7 +51,7 @@ public class QueryStringConditionChecker : IConditionChecker, ISingletonService
             }
 
             // Check whether the condition query value is available in the actual query string.
-            if (!_stringChecker.CheckString(queryValue, condition.Value, out var outputForLogging))
+            if (!stringChecker.CheckString(queryValue, condition.Value, out var outputForLogging))
             {
                 // If the check failed, it means the query string is incorrect and the condition should fail.
                 result.Log = $"Query string condition '{condition.Key}: {outputForLogging}' failed.";

@@ -13,18 +13,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker to validate the HTTP method.
 /// </summary>
-public class MethodConditionChecker : IConditionChecker, ISingletonService
+public class MethodConditionChecker(IHttpContextService httpContextService) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    /// <summary>
-    ///     Constructs a <see cref="MethodConditionChecker" /> instance.
-    /// </summary>
-    public MethodConditionChecker(IHttpContextService httpContextService)
-    {
-        _httpContextService = httpContextService;
-    }
-
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -35,7 +25,7 @@ public class MethodConditionChecker : IConditionChecker, ISingletonService
             return Task.FromResult(result);
         }
 
-        var method = _httpContextService.Method;
+        var method = httpContextService.Method;
         if ((condition is string methodCondition &&
              string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase)) || (condition is not string &&
                 ConversionUtilities

@@ -18,7 +18,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : BaseWritableStubSource
 {
     private static readonly object _lock = new();
-    internal readonly ConcurrentDictionary<string, StubRequestCollectionItem> CollectionItems = new();
+    private readonly ConcurrentDictionary<string, StubRequestCollectionItem> CollectionItems = new();
 
     /// <inheritdoc />
     public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,

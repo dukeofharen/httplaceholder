@@ -11,18 +11,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker for validating whether the stub scenario is in a specific state.
 /// </summary>
-public class ScenarioStateConditionChecker : IConditionChecker, ISingletonService
+public class ScenarioStateConditionChecker(IStubContext stubContext) : IConditionChecker, ISingletonService
 {
-    private readonly IStubContext _stubContext;
-
-    /// <summary>
-    ///     Constructs a <see cref="ScenarioStateConditionChecker" /> instance.
-    /// </summary>
-    public ScenarioStateConditionChecker(IStubContext stubContext)
-    {
-        _stubContext = stubContext;
-    }
-
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -34,11 +24,11 @@ public class ScenarioStateConditionChecker : IConditionChecker, ISingletonServic
             return result;
         }
 
-        var scenarioState = await _stubContext.GetScenarioAsync(scenario, cancellationToken);
+        var scenarioState = await stubContext.GetScenarioAsync(scenario, cancellationToken);
         if (scenarioState == null)
         {
             scenarioState = new ScenarioStateModel(scenario);
-            await _stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);
+            await stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);
         }
 
         if (!string.Equals(scenarioState.State.Trim(), state.Trim(), StringComparison.OrdinalIgnoreCase))

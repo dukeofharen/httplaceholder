@@ -15,18 +15,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that validates the incoming JSON request body against a list of JSONPath expressions.
 /// </summary>
-public class JsonPathConditionChecker : IConditionChecker, ISingletonService
+public class JsonPathConditionChecker(IHttpContextService httpContextService) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    /// <summary>
-    ///     Constructs a <see cref="JsonPathConditionChecker" /> instance.
-    /// </summary>
-    public JsonPathConditionChecker(IHttpContextService httpContextService)
-    {
-        _httpContextService = httpContextService;
-    }
-
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -38,7 +28,7 @@ public class JsonPathConditionChecker : IConditionChecker, ISingletonService
         }
 
         var validJsonPaths = 0;
-        var body = await _httpContextService.GetBodyAsync(cancellationToken);
+        var body = await httpContextService.GetBodyAsync(cancellationToken);
         var jsonObject = JObject.Parse(body);
         foreach (var condition in jsonPathConditions)
         {

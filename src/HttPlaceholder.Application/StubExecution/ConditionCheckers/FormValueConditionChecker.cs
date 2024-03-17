@@ -14,20 +14,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that is used to validate a posted form.
 /// </summary>
-public class FormValueConditionChecker : IConditionChecker, ISingletonService
+public class FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="FormValueConditionChecker" /> instance.
-    /// </summary>
-    public FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    {
-        _httpContextService = httpContextService;
-        _stringChecker = stringChecker;
-    }
-
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -38,7 +26,7 @@ public class FormValueConditionChecker : IConditionChecker, ISingletonService
             return result;
         }
 
-        var form = await _httpContextService.GetFormValuesAsync(cancellationToken);
+        var form = await httpContextService.GetFormValuesAsync(cancellationToken);
         var validConditions = 0;
         foreach (var condition in formConditions)
         {
@@ -67,7 +55,7 @@ public class FormValueConditionChecker : IConditionChecker, ISingletonService
             }
 
             validConditions += formValues
-                .Count(value => _stringChecker.CheckString(HttpUtility.UrlDecode(value), condition.Value, out _));
+                .Count(value => stringChecker.CheckString(HttpUtility.UrlDecode(value), condition.Value, out _));
         }
 
         // If the number of succeeded conditions is equal to the actual number of conditions,

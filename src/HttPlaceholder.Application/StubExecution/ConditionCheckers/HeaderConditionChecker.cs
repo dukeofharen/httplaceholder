@@ -13,20 +13,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that is used to validate the request headers.
 /// </summary>
-public class HeaderConditionChecker : IConditionChecker, ISingletonService
+public class HeaderConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="HeaderConditionChecker" /> instance.
-    /// </summary>
-    public HeaderConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    {
-        _httpContextService = httpContextService;
-        _stringChecker = stringChecker;
-    }
-
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -38,7 +26,7 @@ public class HeaderConditionChecker : IConditionChecker, ISingletonService
         }
 
         var validHeaders = 0;
-        var headers = _httpContextService.GetHeaders();
+        var headers = httpContextService.GetHeaders();
         foreach (var condition in headerConditions)
         {
             // Do a present check, if needed.
@@ -65,7 +53,7 @@ public class HeaderConditionChecker : IConditionChecker, ISingletonService
             }
 
             // Check whether the condition header value is available in the actual headers.
-            if (!_stringChecker.CheckString(headerValue, condition.Value, out var outputForLogging))
+            if (!stringChecker.CheckString(headerValue, condition.Value, out var outputForLogging))
             {
                 // If the check failed, it means the header is incorrect and the condition should fail.
                 result.Log = $"Header condition '{condition.Key}: {outputForLogging}' failed.";

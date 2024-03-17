@@ -16,22 +16,10 @@ namespace HttPlaceholder.Infrastructure.Configuration;
 /// <summary>
 ///     A class that is used to convert a list of command line arguments to a dictionary.
 /// </summary>
-public class ConfigurationParser
+public class ConfigurationParser(
+    IEnvService envService,
+    IFileService fileService)
 {
-    private readonly IEnvService _envService;
-    private readonly IFileService _fileService;
-
-    /// <summary>
-    ///     Constructs a <see cref="ConfigurationParser" /> instance.
-    /// </summary>
-    internal ConfigurationParser(
-        IEnvService envService,
-        IFileService fileService)
-    {
-        _envService = envService;
-        _fileService = fileService;
-    }
-
     /// <summary>
     ///     Constructs a <see cref="ConfigurationParser" /> instance.
     /// </summary>
@@ -59,7 +47,7 @@ public class ConfigurationParser
         IEnumerable<ConfigMetadataModel> configMetadata)
     {
         var result = new Dictionary<string, string>();
-        var envVars = _envService.GetEnvironmentVariables();
+        var envVars = envService.GetEnvironmentVariables();
         if (envVars == null)
         {
             return new Dictionary<string, string>();
@@ -95,14 +83,14 @@ public class ConfigurationParser
         }
 
         // Read the settings from a given file if the correct config key is set.
-        if (!_fileService.FileExists(configJsonPath))
+        if (!fileService.FileExists(configJsonPath))
         {
             throw new FileNotFoundException($"File '{configJsonPath}' not found.");
         }
 
         ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green,
             ConsoleColor.Black);
-        var config = _fileService.ReadAllText(configJsonPath);
+        var config = fileService.ReadAllText(configJsonPath);
         return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
     }
 
@@ -192,16 +180,16 @@ public class ConfigurationParser
         }
 
         string fileStorageLocation = null;
-        var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
-        var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
+        var windowsProfilePath = envService.GetEnvironmentVariable("USERPROFILE");
+        var unixProfilePath = envService.GetEnvironmentVariable("HOME");
         const string stubFolderName = ".httplaceholder";
-        if (_envService.IsOs(OSPlatform.Windows) && _fileService.DirectoryExists(windowsProfilePath))
+        if (envService.IsOs(OSPlatform.Windows) && fileService.DirectoryExists(windowsProfilePath))
         {
             fileStorageLocation = $"{windowsProfilePath}\\{stubFolderName}";
         }
         else if (
-            (_envService.IsOs(OSPlatform.Linux) ||
-             _envService.IsOs(OSPlatform.OSX)) && _fileService.DirectoryExists(unixProfilePath))
+            (envService.IsOs(OSPlatform.Linux) ||
+             envService.IsOs(OSPlatform.OSX)) && fileService.DirectoryExists(unixProfilePath))
         {
             fileStorageLocation = $"{unixProfilePath}/{stubFolderName}";
         }

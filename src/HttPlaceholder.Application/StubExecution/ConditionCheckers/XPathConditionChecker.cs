@@ -15,18 +15,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker for validating whether the XML in the request body corresponds to a given list of XPath
 ///     expressions.
 /// </summary>
-public class XPathConditionChecker : IConditionChecker, ISingletonService
+public class XPathConditionChecker(IHttpContextService httpContextService) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    /// <summary>
-    ///     Constructs a <see cref="BasicAuthenticationConditionChecker" /> instance.
-    /// </summary>
-    public XPathConditionChecker(IHttpContextService httpContextService)
-    {
-        _httpContextService = httpContextService;
-    }
-
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -38,7 +28,7 @@ public class XPathConditionChecker : IConditionChecker, ISingletonService
         }
 
         var validXpaths = 0;
-        var body = await _httpContextService.GetBodyAsync(cancellationToken);
+        var body = await httpContextService.GetBodyAsync(cancellationToken);
         try
         {
             var doc = new XmlDocument();

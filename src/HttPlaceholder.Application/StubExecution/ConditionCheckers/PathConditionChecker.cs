@@ -10,20 +10,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that validates the request path (relative path without the query string).
 /// </summary>
-public class PathConditionChecker : IConditionChecker, ISingletonService
+public class PathConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker) : IConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="PathConditionChecker" /> instance.
-    /// </summary>
-    public PathConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    {
-        _httpContextService = httpContextService;
-        _stringChecker = stringChecker;
-    }
-
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
@@ -34,8 +22,8 @@ public class PathConditionChecker : IConditionChecker, ISingletonService
             return Task.FromResult(result);
         }
 
-        var path = _httpContextService.Path;
-        if (_stringChecker.CheckString(path, pathCondition, out var outputForLogging))
+        var path = httpContextService.Path;
+        if (stringChecker.CheckString(path, pathCondition, out var outputForLogging))
         {
             // The path matches.
             result.ConditionValidation = ConditionValidationType.Valid;
