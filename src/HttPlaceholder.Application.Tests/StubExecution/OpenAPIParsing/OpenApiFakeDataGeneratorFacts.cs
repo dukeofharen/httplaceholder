@@ -432,7 +432,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void ExtractOpenApiPrimitiveValue_Binary()
     {
         // Arrange
-        var any = new OpenApiBinary(new byte[] { 1, 2, 3 });
+        var any = new OpenApiBinary([1, 2, 3]);
 
         // Act
         var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Binary);
@@ -445,7 +445,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void ExtractOpenApiPrimitiveValue_Byte()
     {
         // Arrange
-        var any = new OpenApiByte(new byte[] { 1, 2, 3 });
+        var any = new OpenApiByte([1, 2, 3]);
 
         // Act
         var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Byte);

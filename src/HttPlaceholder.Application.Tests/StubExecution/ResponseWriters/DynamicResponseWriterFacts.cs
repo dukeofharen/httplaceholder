@@ -71,7 +71,7 @@ public class DynamicResponseWriterFacts
     {
         // arrange
         var stub = new StubModel { Response = new StubResponseModel { EnableDynamicMode = true } };
-        var response = new ResponseModel { Body = new byte[] { 1, 2, 3 }, BodyIsBinary = true };
+        var response = new ResponseModel { Body = [1, 2, 3], BodyIsBinary = true };
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);

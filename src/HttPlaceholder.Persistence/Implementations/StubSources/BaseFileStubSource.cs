@@ -24,7 +24,7 @@ internal abstract class BaseFileStubSource(
     IStubModelValidator stubModelValidator)
     : IStubSource
 {
-    private static readonly string[] _extensions = { ".yml", ".yaml" };
+    private static readonly string[] _extensions = [".yml", ".yaml"];
     protected readonly IFileService FileService = fileService;
     protected readonly ILogger<BaseFileStubSource> Logger = logger;
 
@@ -50,7 +50,7 @@ internal abstract class BaseFileStubSource(
     {
         var location = part.Trim();
         Logger.LogInformation($"Reading location '{location}'.");
-        return FileService.IsDirectory(location) ? FileService.GetFiles(location, _extensions) : new[] { location };
+        return FileService.IsDirectory(location) ? FileService.GetFiles(location, _extensions) : [location];
     }
 
     protected IEnumerable<string> GetInputLocations()

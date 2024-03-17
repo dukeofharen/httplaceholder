@@ -40,7 +40,7 @@ internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
                 return result;
             }
 
-            var parts = commands.Trim().Split(new[] { " ", "\r\n", "\n" }, StringSplitOptions.None);
+            var parts = commands.Trim().Split([" ", "\r\n", "\n"], StringSplitOptions.None);
             if (!IsCurl(parts[0]))
             {
                 logger.LogDebug("Command is not a cURL command, so not extracting request.");

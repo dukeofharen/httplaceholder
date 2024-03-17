@@ -27,7 +27,7 @@ internal class RequestBodyResponseVariableParsingHandler(
     public override string FullName => "Request body";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] { $"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'" };
+    public override string[] Examples => [$"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'"];
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,

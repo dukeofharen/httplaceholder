@@ -155,7 +155,7 @@ public static class ConfigKeys
     };
 
     private static readonly ConfigMetadataModel[] _configMetadata =
-    {
+    [
         Create(
             ApiUsernameKey,
             "the username for securing the REST API",
@@ -399,7 +399,7 @@ public static class ConfigKeys
             null,
             null,
             null)
-    };
+    ];
 
     /// <summary>
     ///     Returns a dictionary of <see cref="ConfigKeyType" /> and translation combinations.

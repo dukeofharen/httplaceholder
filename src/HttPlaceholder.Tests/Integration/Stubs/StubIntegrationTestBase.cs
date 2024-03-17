@@ -66,12 +66,11 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
 
         InMemoryStubSource = new InMemoryStubSource(Options);
         InitializeIntegrationTest(
-            new (Type, object)[]
-            {
-                (typeof(IClientDataResolver), ClientDataResolverMock.Object),
+        [
+            (typeof(IClientDataResolver), ClientDataResolverMock.Object),
                 (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object),
                 (typeof(IHttpClientFactory), mockHttpClientFactory.Object)
-            }, new IStubSource[] { _stubSource, InMemoryStubSource });
+        ], new IStubSource[] { _stubSource, InMemoryStubSource });
     }
 
     protected async Task SetScenario(string scenarioName, ScenarioStateInputDto scenario)

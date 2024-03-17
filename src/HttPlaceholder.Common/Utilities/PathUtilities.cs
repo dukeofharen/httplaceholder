@@ -9,7 +9,7 @@ namespace HttPlaceholder.Common.Utilities;
 /// </summary>
 public static class PathUtilities
 {
-    private static readonly string[] _unsafeStrings = { "$", "..", "?" };
+    private static readonly string[] _unsafeStrings = ["$", "..", "?"];
 
     /// <summary>
     ///     A method for removing unsafe characters from a path.
@@ -23,7 +23,7 @@ public static class PathUtilities
             return path;
         }
 
-        var parts = path.Split(new[] { "/", "\\" }, StringSplitOptions.None);
+        var parts = path.Split(["/", "\\"], StringSplitOptions.None);
         parts = parts.Where(p => !_unsafeStrings.Any(p.Contains)).ToArray();
         return string.Join(Path.DirectorySeparatorChar, parts);
     }

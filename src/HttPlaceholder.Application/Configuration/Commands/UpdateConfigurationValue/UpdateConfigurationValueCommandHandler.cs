@@ -14,7 +14,7 @@ namespace HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationV
 /// </summary>
 public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConfigurationValueCommand, Unit>
 {
-    private static readonly string[] _expectedBoolValues = { "true", "false" };
+    private static readonly string[] _expectedBoolValues = ["true", "false"];
     private readonly IConfigurationRoot _configuration;
 
     /// <summary>

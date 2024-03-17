@@ -22,7 +22,7 @@ internal class ClientIpResponseVariableParsingHandler(IClientDataResolver client
     public override string FullName => "Client IP";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] { $"(({Name}))" };
+    public override string[] Examples => [$"(({Name}))"];
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,

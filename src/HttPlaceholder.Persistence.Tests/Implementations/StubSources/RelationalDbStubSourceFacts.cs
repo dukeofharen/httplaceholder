@@ -122,7 +122,7 @@ public class RelationalDbStubSourceFacts
         };
         var responseModel = new ResponseModel
         {
-            Body = new byte[] { 1, 2, 3 },
+            Body = [1, 2, 3],
             Headers = { { HeaderKeys.ContentType, "text/plain" } },
             StatusCode = 200,
             BodyIsBinary = true

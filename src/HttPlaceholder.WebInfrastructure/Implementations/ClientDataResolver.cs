@@ -15,7 +15,7 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ClientDataResolver> _logger;
     private readonly IOptionsMonitor<SettingsModel> _options;
-    private readonly List<IPAddress> _parsedProxyIps = new();
+    private readonly List<IPAddress> _parsedProxyIps = [];
     private bool _parsedProxyIpsInitialized;
 
     /// <summary>

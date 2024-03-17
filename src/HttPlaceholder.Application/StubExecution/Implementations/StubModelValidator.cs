@@ -20,9 +20,9 @@ internal class StubModelValidator(
     : IStubModelValidator, ISingletonService
 {
     private static readonly string[] _illegalHeaders =
-    {
+    [
         "X-HttPlaceholder-Correlation", "X-HttPlaceholder-ExecutedStub"
-    };
+    ];
 
     /// <inheritdoc />
     public IEnumerable<string> ValidateStubModel(StubModel stub)

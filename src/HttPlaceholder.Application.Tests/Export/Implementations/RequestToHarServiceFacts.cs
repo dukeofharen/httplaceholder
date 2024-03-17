@@ -137,7 +137,7 @@ public class RequestToHarServiceFacts
         var response = new ResponseModel
         {
             Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, "image/png" } },
-            Body = new byte[] { 1, 2, 3 },
+            Body = [1, 2, 3],
             BodyIsBinary = true,
             StatusCode = 200
         };

@@ -18,9 +18,9 @@ namespace HttPlaceholder.Web.Shared.Middleware;
 public class StubHandlingMiddleware
 {
     private static readonly string[] _segmentsToIgnore =
-    {
+    [
         "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub", "/stubHub"
-    };
+    ];
 
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;

@@ -174,33 +174,33 @@ public class FormValueConditionCheckerFacts
 
     public static IEnumerable<object[]> GetPresentData()
     {
-        yield return new object[]
-        {
+        yield return
+        [
             new[]
             {
                 new StubFormModel { Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true) },
                 new StubFormModel { Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false) }
             },
             new[] { ("key1", new StringValues("somevalue")), ("key3", new StringValues("somevalue")) }, true
-        };
-        yield return new object[]
-        {
+        ];
+        yield return
+        [
             new[]
             {
                 new StubFormModel { Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true) },
                 new StubFormModel { Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false) }
             },
             new[] { ("key1", new StringValues("somevalue")) }, true
-        };
-        yield return new object[]
-        {
+        ];
+        yield return
+        [
             new[]
             {
                 new StubFormModel { Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true) },
                 new StubFormModel { Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false) }
             },
             new[] { ("key1", new StringValues("somevalue")), ("key2", new StringValues("somevalue")) }, false
-        };
+        ];
     }
 
     [DataTestMethod]

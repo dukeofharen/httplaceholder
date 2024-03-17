@@ -121,7 +121,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         var correlation = Guid.NewGuid().ToString();
         var request = new RequestResultModel { CorrelationId = correlation };
-        var responseModel = new ResponseModel { Body = new byte[] { 1, 2, 3 }, StatusCode = 200, BodyIsBinary = true };
+        var responseModel = new ResponseModel { Body = [1, 2, 3], StatusCode = 200, BodyIsBinary = true };
         StubSource.GetCollection(null).RequestResultModels.Add(request);
         StubSource.GetCollection(null).StubResponses.Add(responseModel);
         StubSource.GetCollection(null).RequestResponseMap.Add(request, responseModel);

@@ -12,20 +12,17 @@ public class RequestToCurlCommandServiceFacts
     public static IEnumerable<object[]> TestData =>
         new[]
         {
-            new object[]
-            {
+            [
                 CreateModel("GET", "http://localhost:5000/url",
                     new Dictionary<string, string> { { "Accept", "*/*" } }),
                 "curl 'http://localhost:5000/url' -H 'Accept: */*'"
-            },
-            new object[]
-            {
+            ],
+            [
                 CreateModel("DELETE", "http://localhost:5000/url",
                     new Dictionary<string, string> { { "Accept", "*/*" } }),
                 "curl -X DELETE 'http://localhost:5000/url' -H 'Accept: */*'"
-            },
-            new object[]
-            {
+            ],
+            [
                 CreateModel("POST", "http://localhost:5000/url",
                     new Dictionary<string, string>
                     {
@@ -41,7 +38,7 @@ public class RequestToCurlCommandServiceFacts
                     "key": "val"
                 }'
                 """
-            },
+            ],
             new object[]
             {
                 CreateModel("PUT", "http://localhost:5000/url",

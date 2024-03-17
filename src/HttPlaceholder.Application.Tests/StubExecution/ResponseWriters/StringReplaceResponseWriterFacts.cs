@@ -13,10 +13,10 @@ public class StringReplaceResponseWriterFacts
 
     public static IEnumerable<object[]> ProvideStringReplaceData => new[]
     {
-        new object[] { new[] { GetModel("VALUE1", "VALUE2", false) }, "VALUE1 body", "VALUE2 body" },
-        new object[] { new[] { GetModel("value1", "VALUE2", false) }, "VALUE1 body", "VALUE1 body" },
-        new object[] { new[] { GetModel("value1", "VALUE2", true) }, "VALUE1 body", "VALUE2 body" },
-        new object[] { new[] { GetModel("value1", "VALUE2", null) }, "VALUE1 body", "VALUE2 body" },
+        [new[] { GetModel("VALUE1", "VALUE2", false) }, "VALUE1 body", "VALUE2 body"], [new[] { GetModel("value1", "VALUE2", false) }, "VALUE1 body", "VALUE1 body"
+        ],
+        [new[] { GetModel("value1", "VALUE2", true) }, "VALUE1 body", "VALUE2 body"], [new[] { GetModel("value1", "VALUE2", null) }, "VALUE1 body", "VALUE2 body"
+        ],
         new object[]
         {
             new[] { GetModel("VALUE1", "VALUE2", false), GetModel("VALUE2", "VALUE3", false) }, "VALUE1 body",

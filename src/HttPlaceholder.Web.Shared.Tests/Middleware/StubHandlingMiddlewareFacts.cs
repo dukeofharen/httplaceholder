@@ -135,7 +135,7 @@ public class StubHandlingMiddlewareFacts
 
         var stubResponse = new ResponseModel
         {
-            Body = new byte[] { 1, 2, 3 },
+            Body = [1, 2, 3],
             Headers = { { "X-Header1", "val1" }, { "X-Header2", "val2" } },
             StatusCode = 201,
             BodyIsBinary = true

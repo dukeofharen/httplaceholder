@@ -26,7 +26,7 @@ internal class EncodedQueryStringResponseVariableParsingHandler(
     public override string FullName => "URL encoded query string";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] { $"(({Name}:query_string_key))" };
+    public override string[] Examples => [$"(({Name}:query_string_key))"];
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,

@@ -26,16 +26,16 @@ internal class ReverseProxyResponseWriter(
     : IResponseWriter, ISingletonService
 {
     private static readonly string[] _excludedRequestHeaderNames =
-    {
+    [
         HeaderKeys.ContentType, HeaderKeys.ContentLength, HeaderKeys.Host, HeaderKeys.Connection,
         HeaderKeys.AcceptEncoding
-    };
+    ];
 
     private static readonly string[] _excludedResponseHeaderNames =
-    {
+    [
         HeaderKeys.XHttPlaceholderCorrelation, HeaderKeys.XHttPlaceholderExecutedStub, HeaderKeys.TransferEncoding,
         HeaderKeys.ContentLength
-    };
+    ];
 
     /// <inheritdoc />
     public int Priority => -10;
@@ -136,7 +136,7 @@ internal class ReverseProxyResponseWriter(
         bool appendPath,
         Dictionary<string, string> rawResponseHeaders)
     {
-        var rootUrlParts = proxyUrl.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+        var rootUrlParts = proxyUrl.Split(["/"], StringSplitOptions.RemoveEmptyEntries);
         var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
         var httPlaceholderRootUrl = urlResolver.GetRootUrl();
         var path = GetPath(stub);

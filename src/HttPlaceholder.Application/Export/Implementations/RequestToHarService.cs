@@ -35,18 +35,17 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                 Version = "1.2",
                 Creator = new Creator { Name = creator, Version = version },
                 Pages =
-                    new[]
-                    {
-                        new Page
+                [
+                    new Page
                         {
                             Id = pageId,
                             StartedDateTime = request.RequestBeginTime,
                             Title = string.Empty,
                             PageTimings = new PageTimings()
                         }
-                    },
-                Entries = new[]
-                {
+                ],
+                Entries =
+                [
                     new Entry
                     {
                         PageRef = pageId,
@@ -97,7 +96,7 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                         ServerIpAddress = string.Empty,
                         Connection = string.Empty
                     }
-                }
+                ]
             }
         };
         return JsonConvert.SerializeObject(har,

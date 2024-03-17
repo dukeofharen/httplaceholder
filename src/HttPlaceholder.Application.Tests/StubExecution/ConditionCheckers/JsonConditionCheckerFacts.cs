@@ -305,7 +305,7 @@ public class JsonConditionCheckerFacts
         var checker = _mocker.CreateInstance<JsonConditionChecker>();
 
         // Act
-        var result = checker.CheckSubmittedJson(123, JToken.Parse("{}"), new List<string>());
+        var result = checker.CheckSubmittedJson(123, JToken.Parse("{}"), []);
 
         // Assert
         Assert.IsFalse(result);

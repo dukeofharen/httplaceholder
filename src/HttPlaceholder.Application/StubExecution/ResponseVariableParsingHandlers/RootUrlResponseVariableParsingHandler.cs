@@ -24,7 +24,7 @@ internal class RootUrlResponseVariableParsingHandler(
     public override string FullName => "Root URL";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] { $"(({Name}))" };
+    public override string[] Examples => [$"(({Name}))"];
 
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
         CancellationToken cancellationToken)

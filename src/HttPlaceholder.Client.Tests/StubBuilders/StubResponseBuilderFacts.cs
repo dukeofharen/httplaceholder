@@ -75,7 +75,7 @@ public class StubResponseBuilderFacts
     {
         // Act
         var response = StubResponseBuilder.Begin()
-            .WithBase64ResponseBody(new byte[] { 1, 2, 3 })
+            .WithBase64ResponseBody([1, 2, 3])
             .Build();
 
         // Assert

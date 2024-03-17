@@ -24,7 +24,7 @@ internal class UtcNowResponseVariableParsingHandler(IDateTime dateTime, IFileSer
     public override string FullName => "UTC date / time";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] { $"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))" };
+    public override string[] Examples => [$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"];
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,

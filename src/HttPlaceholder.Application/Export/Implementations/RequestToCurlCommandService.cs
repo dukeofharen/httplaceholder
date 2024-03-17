@@ -9,8 +9,8 @@ namespace HttPlaceholder.Application.Export.Implementations;
 
 internal class RequestToCurlCommandService : IRequestToCurlCommandService, ISingletonService
 {
-    private static readonly string[] _methodsToSkip = { "GET", "POST" };
-    private static readonly string[] _headersToSkip = { "Content-Length" };
+    private static readonly string[] _methodsToSkip = ["GET", "POST"];
+    private static readonly string[] _headersToSkip = ["Content-Length"];
 
     public string Convert(RequestResultModel request)
     {
@@ -26,7 +26,7 @@ internal class RequestToCurlCommandService : IRequestToCurlCommandService, ISing
     private static IEnumerable<string> AddMethod(RequestParametersModel reqParams) =>
         _methodsToSkip.Any(m => m.Equals(reqParams.Method, StringComparison.OrdinalIgnoreCase))
             ? Array.Empty<string>()
-            : new[] { "-X", reqParams.Method.ToUpper() };
+            : ["-X", reqParams.Method.ToUpper()];
 
     private static IEnumerable<string> AddUrl(RequestParametersModel reqParams) => new[] { $"'{reqParams.Url}'" };
 
@@ -40,5 +40,5 @@ internal class RequestToCurlCommandService : IRequestToCurlCommandService, ISing
     private static IEnumerable<string> AddRequestBody(RequestParametersModel reqParams) =>
         reqParams?.BinaryBody == null || reqParams?.BinaryBody?.Any() == false
             ? Array.Empty<string>()
-            : new[] { "-d", $"'{Encoding.UTF8.GetString(reqParams.BinaryBody)}'" };
+            : ["-d", $"'{Encoding.UTF8.GetString(reqParams.BinaryBody)}'"];
 }

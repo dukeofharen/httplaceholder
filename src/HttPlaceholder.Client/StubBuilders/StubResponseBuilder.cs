@@ -438,7 +438,7 @@ public sealed class StubResponseBuilder
     {
         var replace = _response.Replace != null
             ? (List<StubResponseReplaceDto>)_response.Replace
-            : new List<StubResponseReplaceDto>();
+            : [];
         replace.Add(dto);
     }
 

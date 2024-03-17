@@ -16,7 +16,7 @@ public class GenericIntegrationTests : IntegrationTestBase
     public void Initialize()
     {
         _stubSource = new InMemoryStubSource(Options);
-        InitializeIntegrationTest(new (Type, object)[] { (typeof(IStubSource), _stubSource) });
+        InitializeIntegrationTest([(typeof(IStubSource), _stubSource)]);
     }
 
     [TestCleanup]

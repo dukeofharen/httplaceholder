@@ -19,7 +19,7 @@ public class RestApiBinaryRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Act: perform binary request.
         using var requestResponse = await Client.PostAsync($"{TestServer.BaseAddress}binary",
-            new ByteArrayContent(new byte[] { 254, 255 }));
+            new ByteArrayContent([254, 255]));
         var correlation = requestResponse.Headers
             .Single(h => h.Key.Equals("X-HttPlaceholder-Correlation", StringComparison.OrdinalIgnoreCase)).Value
             .Single();

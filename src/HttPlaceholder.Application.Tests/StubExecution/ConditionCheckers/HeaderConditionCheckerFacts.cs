@@ -130,51 +130,51 @@ public class HeaderConditionCheckerFacts
 
     public static IEnumerable<object[]> GetPresentData()
     {
-        yield return new object[]
-        {
+        yield return
+        [
             new Dictionary<string, object>
             {
                 { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
                 { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
             new Dictionary<string, string> { { "Header-1", "someval" } }, true
-        };
-        yield return new object[]
-        {
+        ];
+        yield return
+        [
             new Dictionary<string, object>
             {
                 { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
                 { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
             new Dictionary<string, string> { { "header-1", "someval" } }, true
-        };
-        yield return new object[]
-        {
+        ];
+        yield return
+        [
             new Dictionary<string, object>
             {
                 { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
                 { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
             new Dictionary<string, string> { { "Header-1", "someval" }, { "Header-2", "someval" } }, false
-        };
-        yield return new object[]
-        {
+        ];
+        yield return
+        [
             new Dictionary<string, object>
             {
                 { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
                 { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
             new Dictionary<string, string> { { "header-1", "someval" }, { "header-2", "someval" } }, false
-        };
-        yield return new object[]
-        {
+        ];
+        yield return
+        [
             new Dictionary<string, object>
             {
                 { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
                 { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
             new Dictionary<string, string> { { "header-1", "someval" }, { "header-5", "someval" } }, true
-        };
+        ];
     }
 
     [DataTestMethod]

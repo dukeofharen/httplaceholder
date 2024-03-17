@@ -71,7 +71,7 @@ public class GetMetadataQueryHandlerFacts
             .Returns(fullName);
         mock
             .Setup(m => m.Examples)
-            .Returns(new[] { example });
+            .Returns([example]);
         mock
             .Setup(m => m.GetDescription())
             .Returns(description);

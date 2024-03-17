@@ -23,7 +23,7 @@ public static class ArgsHelper
             if (arg.StartsWith("--"))
             {
                 varPointer = arg.Replace("--", string.Empty);
-                subResult.Add(varPointer, new List<string>());
+                subResult.Add(varPointer, []);
             }
             else
             {

@@ -55,7 +55,7 @@ public class ValidateObjectAttribute : ValidationAttribute
 /// </summary>
 public class CompositeValidationResult : ValidationResult
 {
-    private readonly List<ValidationResult> _results = new();
+    private readonly List<ValidationResult> _results = [];
 
     /// <summary>
     ///     Constructs a <see cref="CompositeValidationResult" />.
