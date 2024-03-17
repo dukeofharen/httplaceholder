@@ -1,5 +1,6 @@
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Web.Shared.Infrastructure.Web;
+using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
 
@@ -39,7 +40,7 @@ public class ClientIpResolverFacts
         _settings.Web.ReadProxyHeaders = shouldReadProxyHeaders;
         _settings.Web.SafeProxyIps = whitelistedIps;
         _mockHttpContext.SetIp(actualIp);
-        _mockHttpContext.Request.Headers.Add("x-forwarded-for", xHeaderValue);
+        _mockHttpContext.Request.Headers.Append("x-forwarded-for", xHeaderValue);
 
         // Act
         var result = resolver.GetClientIp();
@@ -72,7 +73,7 @@ public class ClientIpResolverFacts
         _settings.Web.SafeProxyIps = whitelistedIps;
         _mockHttpContext.SetIp(actualIp);
         _mockHttpContext.SetHost(actualHost);
-        _mockHttpContext.Request.Headers.Add("x-forwarded-host", xHeaderValue);
+        _mockHttpContext.Request.Headers.Append("x-forwarded-host", xHeaderValue);
 
         // Act
         var result = resolver.GetHost();
@@ -105,7 +106,7 @@ public class ClientIpResolverFacts
         _settings.Web.SafeProxyIps = whitelistedIps;
         _mockHttpContext.SetIp(actualIp);
         _mockHttpContext.SetHttps(actualHttps);
-        _mockHttpContext.Request.Headers.Add("x-forwarded-proto", xHeaderValue);
+        _mockHttpContext.Request.Headers.Append("x-forwarded-proto", xHeaderValue);
 
         // Act
         var result = resolver.IsHttps();

@@ -35,7 +35,7 @@ public class ApiAuthorizationServiceFacts
         _settings.Authentication.ApiUsername = username;
         _settings.Authentication.ApiPassword = "password";
 
-        ClaimsPrincipal capturedClaimsPrincipal = null;
+        ClaimsPrincipal? capturedClaimsPrincipal = null;
         mockHttpContextService
             .Setup(m => m.SetUser(It.IsAny<ClaimsPrincipal>()))
             .Callback<ClaimsPrincipal>(p => capturedClaimsPrincipal = p);
@@ -141,7 +141,7 @@ public class ApiAuthorizationServiceFacts
         _settings.Authentication.ApiPassword = "pass";
         SetHeaders(new Dictionary<string, string> { { "Authorization", "Basic dXNlcjpwYXNz" } });
 
-        ClaimsPrincipal capturedClaimsPrincipal = null;
+        ClaimsPrincipal? capturedClaimsPrincipal = null;
         mockHttpContextService
             .Setup(m => m.SetUser(It.IsAny<ClaimsPrincipal>()))
             .Callback<ClaimsPrincipal>(p => capturedClaimsPrincipal = p);
@@ -159,7 +159,7 @@ public class ApiAuthorizationServiceFacts
             .Setup(m => m.GetHeaders())
             .Returns(headers);
 
-    private static void AssertUser(string username, ClaimsPrincipal principal)
+    private static void AssertUser(string username, ClaimsPrincipal? principal)
     {
         Assert.IsNotNull(principal);
 

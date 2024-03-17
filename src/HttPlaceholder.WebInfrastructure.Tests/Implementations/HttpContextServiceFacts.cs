@@ -309,7 +309,7 @@ public class HttpContextServiceFacts
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
 
-        _mockHttpContext.Response.Headers.Add("key1", "val1");
+        _mockHttpContext.Response.Headers.Append("key1", "val1");
 
         // Act
         var result = service.TryAddHeader("key1", "val1");
@@ -324,7 +324,7 @@ public class HttpContextServiceFacts
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
 
-        _mockHttpContext.Response.Headers.Add("key1", "val1");
+        _mockHttpContext.Response.Headers.Append("key1", "val1");
 
         // Act
         var result = service.TryAddHeader("key2", "val2");

@@ -156,7 +156,7 @@ public class MockHttpContext : HttpContext
     public void SetRequestHeader(string key, string value) =>
         HttpRequestMock
             .Object
-            .Headers.Add(key, value);
+            .Headers.Append(key, value);
 
     public void SetForm(Dictionary<string, StringValues> form) =>
         HttpRequestMock
