@@ -56,7 +56,8 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             new Mock<ILogger<YamlFileStubSource>>().Object,
             Options,
             new Mock<IStubModelValidator>().Object,
-            new Mock<IStubNotify>().Object);
+            new Mock<IStubNotify>().Object,
+            DateTimeMock.Object);
 
         MockHttp = new MockHttpMessageHandler();
         var mockHttpClientFactory = new Mock<IHttpClientFactory>();
