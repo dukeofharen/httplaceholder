@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -24,14 +25,8 @@ public class DeleteStubCommand(string stubId) : IRequest<Unit>
 public class DeleteStubCommandHandler(IStubContext stubContext) : IRequestHandler<DeleteStubCommand, Unit>
 {
     /// <inheritdoc />
-    public async Task<Unit> Handle(DeleteStubCommand request, CancellationToken cancellationToken)
-    {
-        // TODO
-        if (!await stubContext.DeleteStubAsync(request.StubId, cancellationToken))
-        {
-            throw new NotFoundException(nameof(StubModel), request.StubId);
-        }
-
-        return Unit.Value;
-    }
+    public async Task<Unit> Handle(DeleteStubCommand request, CancellationToken cancellationToken) =>
+        await stubContext.DeleteStubAsync(request.StubId, cancellationToken)
+            .IfFalseAsync(() => throw new NotFoundException(nameof(StubModel), request.StubId))
+            .MapAsync(_ => Unit.Value);
 }

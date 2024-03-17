@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Authentication;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -26,15 +27,8 @@ public class GetUserDataQuery(string username) : IRequest<UserModel>
 public class GetUserDataQueryHandler(IUserContext userContext) : IRequestHandler<GetUserDataQuery, UserModel>
 {
     /// <inheritdoc />
-    public Task<UserModel> Handle(GetUserDataQuery request, CancellationToken cancellationToken)
-    {
-        var nameClaim = userContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
-        // TODO
-        if (!string.IsNullOrWhiteSpace(nameClaim?.Value) && request.Username != nameClaim.Value)
-        {
-            throw new ForbiddenException();
-        }
-
-        return Task.FromResult(new UserModel { Username = request.Username });
-    }
+    public Task<UserModel> Handle(GetUserDataQuery request, CancellationToken cancellationToken) =>
+        userContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)
+            .If(c => !string.IsNullOrWhiteSpace(c?.Value) && request.Username != c.Value, _ => throw new ForbiddenException())
+            .Map(_ => Task.FromResult(new UserModel { Username = request.Username }));
 }

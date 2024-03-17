@@ -68,7 +68,7 @@ public class RequestController : BaseApiController
     public async Task<ActionResult<RequestResultDto>> GetRequest([FromRoute] string correlationId,
         CancellationToken cancellationToken) =>
         Ok(Mapper.Map<RequestResultDto>(
-            await Mediator.Send(new GetRequestQuery { CorrelationId = correlationId }, cancellationToken)));
+            await Mediator.Send(new GetRequestQuery(correlationId), cancellationToken)));
 
     /// <summary>
     ///     Gets a specific response by request correlation ID.

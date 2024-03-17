@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -28,12 +29,9 @@ public class AddStubCommandHandler(IStubContext stubContext, IStubModelValidator
     /// <inheritdoc />
     public async Task<FullStubModel> Handle(AddStubCommand request, CancellationToken cancellationToken)
     {
-        var validationResults = stubModelValidator.ValidateStubModel(request.Stub).ToArray();
-        // TODO
-        if (validationResults.Any())
-        {
-            throw new ValidationException(validationResults);
-        }
+        stubModelValidator
+            .ValidateStubModel(request.Stub)
+            .If(r => r.Any(), r => throw new ValidationException(r));
 
         // Delete stub with same ID.
         await stubContext.DeleteStubAsync(request.Stub.Id, cancellationToken);

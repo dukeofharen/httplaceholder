@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Common.Utilities;
 using MediatR;
 
 namespace HttPlaceholder.Application.Scenarios.Commands;
@@ -23,15 +24,8 @@ public class DeleteScenarioCommand(string scenarioName) : IRequest<Unit>
 public class DeleteScenarioCommandHandler(IStubContext stubContext) : IRequestHandler<DeleteScenarioCommand, Unit>
 {
     /// <inheritdoc />
-    public async Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
-    {
-        // TODO
-        if (!await stubContext.DeleteScenarioAsync(request.ScenarioName, cancellationToken))
-        {
-            throw new NotFoundException($"Scenario '{request.ScenarioName}' not found.");
-        }
-
-        // TODO
-        return Unit.Value;
-    }
+    public async Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken) =>
+        await stubContext.DeleteScenarioAsync(request.ScenarioName, cancellationToken)
+            .IfFalseAsync(() => throw new NotFoundException($"Scenario '{request.ScenarioName}' not found."))
+            .MapAsync(_ => Unit.Value);
 }

@@ -560,7 +560,7 @@ public class FileSystemStubSourceFacts
 
         // Act
         var result =
-            (await source.GetRequestResultsAsync(new PagingModel { FromIdentifier = "request-01" },
+            (await source.GetRequestResultsAsync(PagingModel.Create("request-01", null),
                 withDistributionKey ? DistrubutionKey : null,
                 CancellationToken.None)).ToArray();
 
@@ -609,7 +609,7 @@ public class FileSystemStubSourceFacts
 
         // Act
         var result =
-            (await source.GetRequestResultsAsync(new PagingModel { FromIdentifier = "request-02", ItemsPerPage = 2 },
+            (await source.GetRequestResultsAsync(PagingModel.Create("request-02", 2),
                 withDistributionKey ? DistrubutionKey : null,
                 CancellationToken.None)).ToArray();
 

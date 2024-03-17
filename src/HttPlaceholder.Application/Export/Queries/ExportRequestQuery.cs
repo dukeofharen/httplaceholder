@@ -58,7 +58,7 @@ public class ExportRequestQueryHandler : IRequestHandler<ExportRequestQuery, str
     public async Task<string> Handle(ExportRequestQuery request, CancellationToken cancellationToken)
     {
         var requestResult = await _stubContext.GetRequestResultAsync(request.CorrelationId, cancellationToken)
-            .IfNull(() => throw new NotFoundException("request", request.CorrelationId));
+            .IfNullAsync(() => throw new NotFoundException("request", request.CorrelationId));
         var response = await _stubContext.GetResponseAsync(request.CorrelationId, cancellationToken);
         switch (request.RequestExportType)
         {

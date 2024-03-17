@@ -27,5 +27,5 @@ public class GetRequestQueryHandler(IStubContext stubContext) : IRequestHandler<
     /// <inheritdoc />
     public async Task<RequestResultModel> Handle(GetRequestQuery request, CancellationToken cancellationToken) =>
         await stubContext.GetRequestResultAsync(request.CorrelationId, cancellationToken)
-            .IfNull(() => throw new NotFoundException("request", request.CorrelationId));
+            .IfNullAsync(() => throw new NotFoundException("request", request.CorrelationId));
 }

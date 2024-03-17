@@ -598,7 +598,7 @@ public class RelationalDbStubSourceFacts
 
         // Act
         var result =
-            (await stubSource.GetRequestResultsAsync(new PagingModel { FromIdentifier = ids[1] },
+            (await stubSource.GetRequestResultsAsync(PagingModel.Create(ids[1], null),
                 withDistributionKey ? DistributionKey : null, CancellationToken.None))
             .ToArray();
 
@@ -674,7 +674,7 @@ public class RelationalDbStubSourceFacts
 
         // Act
         var result =
-            (await stubSource.GetRequestResultsAsync(new PagingModel { FromIdentifier = ids[1], ItemsPerPage = 2 },
+            (await stubSource.GetRequestResultsAsync(PagingModel.Create(ids[1], 2),
                 withDistributionKey ? DistributionKey : null,
                 CancellationToken.None))
             .ToArray();

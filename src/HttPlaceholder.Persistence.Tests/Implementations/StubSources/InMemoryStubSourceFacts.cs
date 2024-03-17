@@ -339,7 +339,7 @@ public class InMemoryStubSourceFacts
         item.RequestResultModels.Add(request3);
 
         // Act
-        var result = (await source.GetRequestResultsAsync(new PagingModel { FromIdentifier = request2.CorrelationId },
+        var result = (await source.GetRequestResultsAsync(PagingModel.Create(request2.CorrelationId, null),
             key,
             CancellationToken.None)).ToArray();
 
@@ -370,7 +370,7 @@ public class InMemoryStubSourceFacts
         // Act
         var result =
             (await source.GetRequestResultsAsync(
-                new PagingModel { FromIdentifier = request3.CorrelationId, ItemsPerPage = 2 }, key,
+                PagingModel.Create(request3.CorrelationId, 2 ), key,
                 CancellationToken.None))
             .ToArray();
 

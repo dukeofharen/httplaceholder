@@ -21,7 +21,7 @@ public class GetRequestQueryHandlerFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var query = new GetRequestQuery { CorrelationId = correlationId };
+        var query = new GetRequestQuery(correlationId);
 
         _mockStubContext
             .Setup(m => m.GetRequestResultAsync(correlationId, It.IsAny<CancellationToken>()))
@@ -36,7 +36,7 @@ public class GetRequestQueryHandlerFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var query = new GetRequestQuery { CorrelationId = correlationId };
+        var query = new GetRequestQuery(correlationId);
 
         var expectedResult = new RequestResultModel { CorrelationId = correlationId };
         _mockStubContext
