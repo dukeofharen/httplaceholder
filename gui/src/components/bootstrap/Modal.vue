@@ -2,7 +2,7 @@
   <div class="modal fade" tabindex="-1" ref="modal" @keyup.enter="onYesClick">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header d-flex justify-content-between">
           <h5 class="modal-title">{{ title }}</h5>
           <button
             type="button"
