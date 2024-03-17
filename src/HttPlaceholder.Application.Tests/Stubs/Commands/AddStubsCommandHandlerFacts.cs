@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.Stubs.Commands.AddStubs;
+using HttPlaceholder.Application.Stubs.Commands;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Commands;
 

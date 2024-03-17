@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.Application.Configuration.Queries.GetConfiguration;
+using HttPlaceholder.Application.Configuration.Queries;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.Extensions.Configuration;
 

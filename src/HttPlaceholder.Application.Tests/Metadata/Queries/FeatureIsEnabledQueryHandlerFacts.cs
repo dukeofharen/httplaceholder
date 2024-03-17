@@ -1,5 +1,5 @@
 ﻿using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Metadata.Queries.FeatureIsEnabled;
+using HttPlaceholder.Application.Metadata.Queries;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.TestUtilities.Options;
 

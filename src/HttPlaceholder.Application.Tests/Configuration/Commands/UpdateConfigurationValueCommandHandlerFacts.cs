@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationValue;
+﻿using HttPlaceholder.Application.Configuration.Commands;
 using HttPlaceholder.Application.Configuration.Provider;
 using HttPlaceholder.Application.Exceptions;
 using Microsoft.Extensions.Configuration;

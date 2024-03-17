@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.ScheduledJobs.Commands.ExecuteScheduledJob;
+using HttPlaceholder.Application.ScheduledJobs.Commands;
 using HttPlaceholder.Application.ScheduledJobs.Queries.GetScheduledJobNames;
 using HttPlaceholder.Web.Shared.Authorization;
 using HttPlaceholder.Web.Shared.Dto.v1.ScheduledJobs;

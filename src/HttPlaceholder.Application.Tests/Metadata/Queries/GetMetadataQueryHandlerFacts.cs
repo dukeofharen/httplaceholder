@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.Application.Metadata.Queries.GetMetadata;
+using HttPlaceholder.Application.Metadata.Queries;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Common;
 

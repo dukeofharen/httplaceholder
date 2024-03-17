@@ -4,7 +4,7 @@ using HttPlaceholder.Common;
 using HttPlaceholder.TestUtilities.Logging;
 using Microsoft.Extensions.Logging;
 
-namespace HttPlaceholder.Web.Shared.Tests.HostedServices;
+namespace HttPlaceholder.Application.Tests.ScheduledJobs;
 
 [TestClass]
 public class BackgroundServiceFacts

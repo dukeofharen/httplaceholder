@@ -1,13 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
-using HttPlaceholder.Application.Requests.Commands.DeleteAllRequests;
-using HttPlaceholder.Application.Requests.Commands.DeleteRequest;
-using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
-using HttPlaceholder.Application.Requests.Queries.GetRequest;
-using HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
-using HttPlaceholder.Application.Requests.Queries.GetResponse;
+using HttPlaceholder.Application.Requests.Commands;
+using HttPlaceholder.Application.Requests.Queries;
 using HttPlaceholder.Web.Shared.Authorization;
 using HttPlaceholder.Web.Shared.Dto.v1.Requests;
 using HttPlaceholder.Web.Shared.Dto.v1.Stubs;

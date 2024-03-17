@@ -1,6 +1,6 @@
 ﻿using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Export;
-using HttPlaceholder.Application.Export.Queries.ExportRequest;
+using HttPlaceholder.Application.Export.Queries;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Enums;
 

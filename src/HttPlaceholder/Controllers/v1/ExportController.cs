@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.Export.Queries.ExportRequest;
+using HttPlaceholder.Application.Export.Queries;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Web.Shared.Dto.v1.Export;
 using Microsoft.AspNetCore.Http;

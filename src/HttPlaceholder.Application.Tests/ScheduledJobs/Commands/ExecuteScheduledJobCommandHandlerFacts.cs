@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.ScheduledJobs;
-using HttPlaceholder.Application.ScheduledJobs.Commands.ExecuteScheduledJob;
+using HttPlaceholder.Application.ScheduledJobs.Commands;
 
 namespace HttPlaceholder.Application.Tests.ScheduledJobs.Commands;
 

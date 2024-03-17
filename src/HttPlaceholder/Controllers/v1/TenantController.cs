@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant;
-using HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
-using HttPlaceholder.Application.Tenants.Queries.GetStubsInTenant;
-using HttPlaceholder.Application.Tenants.Queries.GetTenantNames;
+using HttPlaceholder.Application.Tenants.Commands;
+using HttPlaceholder.Application.Tenants.Queries;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Web.Shared.Authorization;
 using HttPlaceholder.Web.Shared.Dto.v1.Stubs;

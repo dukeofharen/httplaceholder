@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
+﻿using HttPlaceholder.Application.Requests.Queries;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Models;
 

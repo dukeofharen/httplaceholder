@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationValue;
-using HttPlaceholder.Application.Configuration.Queries.GetConfiguration;
+using HttPlaceholder.Application.Configuration.Commands;
+using HttPlaceholder.Application.Configuration.Queries;
 using HttPlaceholder.Web.Shared.Authorization;
 using HttPlaceholder.Web.Shared.Dto.v1.Configuration;
 using Microsoft.AspNetCore.Http;

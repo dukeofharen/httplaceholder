@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
-using HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
-using HttPlaceholder.Application.Scenarios.Commands.SetScenario;
-using HttPlaceholder.Application.Scenarios.Queries.GetAllScenarios;
-using HttPlaceholder.Application.Scenarios.Queries.GetScenario;
+using HttPlaceholder.Application.Scenarios.Commands;
+using HttPlaceholder.Application.Scenarios.Queries;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Web.Shared.Authorization;

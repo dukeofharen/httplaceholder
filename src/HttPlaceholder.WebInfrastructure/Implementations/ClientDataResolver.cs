@@ -5,7 +5,7 @@ using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.Extensions.Options;
 using NetTools;
 
-namespace HttPlaceholder.Web.Shared.Infrastructure.Web;
+namespace HttPlaceholder.WebInfrastructure.Implementations;
 
 internal class ClientDataResolver : IClientDataResolver, ISingletonService
 {

@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Metadata.Queries.FeatureIsEnabled;
-using HttPlaceholder.Application.Metadata.Queries.GetMetadata;
+using HttPlaceholder.Application.Metadata.Queries;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Web.Shared.Dto.v1.Metadata;
 using Microsoft.AspNetCore.Http;
