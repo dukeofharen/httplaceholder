@@ -75,7 +75,7 @@ public class StubResponseBuilderFacts
     {
         // Act
         var response = StubResponseBuilder.Begin()
-            .WithBase64ResponseBody(new byte[] {1, 2, 3})
+            .WithBase64ResponseBody(new byte[] { 1, 2, 3 })
             .Build();
 
         // Assert
@@ -99,7 +99,7 @@ public class StubResponseBuilderFacts
     {
         // Act
         var response = StubResponseBuilder.Begin()
-            .WithJsonBody(new {key = "val"})
+            .WithJsonBody(new { key = "val" })
             .Build();
 
         // Assert
@@ -212,7 +212,7 @@ public class StubResponseBuilderFacts
     {
         // Act
         var response = StubResponseBuilder.Begin()
-            .WithExtraDuration(new StubExtraDurationDto {Min = 10000, Max = 15000})
+            .WithExtraDuration(new StubExtraDurationDto { Min = 10000, Max = 15000 })
             .Build();
 
         // Assert

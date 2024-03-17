@@ -16,7 +16,7 @@ public class AbortConnectionResponseWriterFacts
         // Arrange
         var writer = _mocker.CreateInstance<AbortConnectionResponseWriter>();
 
-        var stub = new StubModel {Response = new StubResponseModel {AbortConnection = false}};
+        var stub = new StubModel { Response = new StubResponseModel { AbortConnection = false } };
         var response = new ResponseModel();
 
         // Act
@@ -33,7 +33,7 @@ public class AbortConnectionResponseWriterFacts
         // Arrange
         var writer = _mocker.CreateInstance<AbortConnectionResponseWriter>();
 
-        var stub = new StubModel {Response = new StubResponseModel {AbortConnection = true}};
+        var stub = new StubModel { Response = new StubResponseModel { AbortConnection = true } };
         var response = new ResponseModel();
 
         // Act

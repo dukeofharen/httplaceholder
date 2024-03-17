@@ -56,7 +56,7 @@ internal static class Program
             // Create stub.
             var createdStub = await client.CreateStubAsync(new StubDto
             {
-                Id = "test-stub-123", Response = new StubResponseDto {Text = "Let's go yeah!"}
+                Id = "test-stub-123", Response = new StubResponseDto { Text = "Let's go yeah!" }
             });
 
             // Create stub using a builder.
@@ -67,16 +67,16 @@ internal static class Program
                     .WithPath(StringEquals("/test-path"))
                     .WithHttpMethod(HttpMethod.Get))
                 .WithResponse(StubResponseBuilder.Begin()
-                    .WithJsonBody(new {key1 = "val1", key2 = "val2"})));
+                    .WithJsonBody(new { key1 = "val1", key2 = "val2" })));
 
             // Create multiple stubs.
             var createdStubs = await client.CreateStubsAsync(
-                new StubDto {Id = "test-stub-1", Response = new StubResponseDto {Text = "Let's go yeah!"}},
-                new StubDto {Id = "test-stub-2", Response = new StubResponseDto {Text = "Let's go yeah!"}});
+                new StubDto { Id = "test-stub-1", Response = new StubResponseDto { Text = "Let's go yeah!" } },
+                new StubDto { Id = "test-stub-2", Response = new StubResponseDto { Text = "Let's go yeah!" } });
 
             // Update stub.
             await client.UpdateStubAsync(
-                new StubDto {Id = "test-stub-123", Response = new StubResponseDto {Text = "Let's go yeah!!"}},
+                new StubDto { Id = "test-stub-123", Response = new StubResponseDto { Text = "Let's go yeah!!" } },
                 "test-stub-123");
 
             // Get all stubs.
@@ -102,8 +102,8 @@ internal static class Program
             await client.UpdateAllStubsByTenantAsync("test-tenant",
                 new[]
                 {
-                    new StubDto {Id = "tenant-stub-1", Response = new StubResponseDto {Text = "response 1"}},
-                    new StubDto {Id = "tenant-stub-2", Response = new StubResponseDto {Text = "response 2"}}
+                    new StubDto { Id = "tenant-stub-1", Response = new StubResponseDto { Text = "response 1" } },
+                    new StubDto { Id = "tenant-stub-2", Response = new StubResponseDto { Text = "response 2" } }
                 });
 
             // Get stubs by tenant.
@@ -126,7 +126,7 @@ internal static class Program
 
             // Set scenario.
             await client.SetScenarioAsync("scenario-1",
-                new ScenarioStateInputDto {State = "new-state", HitCount = 1});
+                new ScenarioStateInputDto { State = "new-state", HitCount = 1 });
 
             // Get scenario.
             var scenarioState = await client.GetScenarioStateAsync("scenario-1");
@@ -193,7 +193,7 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
 
             // Update configuration
             await client.UpdateConfigurationValueAsync(
-                new UpdateConfigurationValueInputDto {ConfigurationKey = "storeResponses", NewValue = "false"});
+                new UpdateConfigurationValueInputDto { ConfigurationKey = "storeResponses", NewValue = "false" });
 
             // Retrieve the configuration.
             var config = await client.GetConfigurationAsync();

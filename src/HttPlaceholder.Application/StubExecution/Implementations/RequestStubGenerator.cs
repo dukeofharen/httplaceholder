@@ -33,7 +33,7 @@ internal class RequestStubGenerator(
         var httpResponseModel = mapper.Map<HttpResponseModel>(response);
         var stubResponse = httpResponseModel != null
             ? await httpResponseToStubResponseService.ConvertToResponseAsync(httpResponseModel, cancellationToken)
-            : new StubResponseModel {Text = "OK!"};
+            : new StubResponseModel { Text = "OK!" };
         var stub = new StubModel
         {
             Conditions = await httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken),
@@ -46,7 +46,7 @@ internal class RequestStubGenerator(
         FullStubModel result;
         if (doNotCreateStub)
         {
-            result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
+            result = new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
         }
         else
         {

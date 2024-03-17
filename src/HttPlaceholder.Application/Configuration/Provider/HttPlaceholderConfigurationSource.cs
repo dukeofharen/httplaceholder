@@ -16,5 +16,5 @@ public class HttPlaceholderConfigurationSource : IConfigurationSource
 
     /// <inheritdoc />
     public IConfigurationProvider Build(IConfigurationBuilder builder) =>
-        new HttPlaceholderConfigurationProvider(new MemoryConfigurationSource {InitialData = InitialData});
+        new HttPlaceholderConfigurationProvider(new MemoryConfigurationSource { InitialData = InitialData });
 }

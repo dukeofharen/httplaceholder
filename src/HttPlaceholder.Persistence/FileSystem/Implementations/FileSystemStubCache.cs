@@ -144,7 +144,7 @@ internal class FileSystemStubCache(
         FileStorageMetadataModel model;
         lock (_cacheUpdateLock)
         {
-            model = new FileStorageMetadataModel {StubUpdateTrackingId = Guid.NewGuid().ToString()};
+            model = new FileStorageMetadataModel { StubUpdateTrackingId = Guid.NewGuid().ToString() };
             fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
         }
 

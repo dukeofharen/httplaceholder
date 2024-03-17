@@ -21,6 +21,6 @@ public class StubFormDto : IMapFrom<StubFormModel>, IMapTo<StubFormModel>
     ///     Gets or sets the value.
     /// </summary>
     [YamlMember(Alias = "value")]
-    [OneOf(Types = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
+    [OneOf(Types = new[] { typeof(string), typeof(StubConditionStringCheckingDto) })]
     public object Value { get; set; }
 }

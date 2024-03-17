@@ -35,7 +35,7 @@ internal class BasicAuthenticationHandler : IRequestToStubConditionsHandler, ISi
             return Task.FromResult(false);
         }
 
-        conditions.BasicAuthentication = new StubBasicAuthenticationModel {Username = parts[0], Password = parts[1]};
+        conditions.BasicAuthentication = new StubBasicAuthenticationModel { Username = parts[0], Password = parts[1] };
 
         // Make sure the original Authorization header is removed here.
         conditions.Headers = conditions.Headers

@@ -23,7 +23,7 @@ internal class HostHandler : IRequestToStubConditionsHandler, ISingletonService
             host += $":{uri.Port}";
         }
 
-        conditions.Host = new StubConditionStringCheckingModel {StringEquals = host};
+        conditions.Host = new StubConditionStringCheckingModel { StringEquals = host };
         return Task.FromResult(true);
     }
 

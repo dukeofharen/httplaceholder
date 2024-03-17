@@ -690,7 +690,10 @@ public class StubContextFacts
 
         stubSource
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] { GetTuple(stub1), GetTuple(stub2), GetTuple(stub3), GetTuple(stub4), GetTuple(stub5) });
+            .ReturnsAsync(new[]
+            {
+                GetTuple(stub1), GetTuple(stub2), GetTuple(stub3), GetTuple(stub4), GetTuple(stub5)
+            });
 
         _stubSources.Add(stubSource.Object);
 

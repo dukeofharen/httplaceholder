@@ -30,7 +30,7 @@ internal class JsonHandler(ILogger<JsonHandler> logger) : IRequestToStubConditio
             return Task.FromResult(false);
         }
 
-        var supportedContentTypes = new[] {MimeTypes.JsonMime};
+        var supportedContentTypes = new[] { MimeTypes.JsonMime };
         if (!supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
         {
             return Task.FromResult(false);

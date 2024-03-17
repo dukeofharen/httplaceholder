@@ -5,14 +5,14 @@ using System.IO;
 namespace HttPlaceholder.Common.FileWatchers;
 
 /// <summary>
-///     Describes a class that is used to build a <see cref="FileSystemWatcher"/>.
+///     Describes a class that is used to build a <see cref="FileSystemWatcher" />.
 /// </summary>
 public interface IFileWatcherBuilder
 {
     /// <summary>
-    /// Sets the <see cref="NotifyFilters"/>.
+    ///     Sets the <see cref="NotifyFilters" />.
     /// </summary>
-    /// <param name="filters">The <see cref="NotifyFilters"/></param>
+    /// <param name="filters">The <see cref="NotifyFilters" /></param>
     void SetNotifyFilters(NotifyFilters filters);
 
     /// <summary>
@@ -57,8 +57,8 @@ public interface IFileWatcherBuilder
     void SetOnError(Action<object, ErrorEventArgs> action);
 
     /// <summary>
-    ///     Builds the <see cref="FileSystemWatcher"/>.
+    ///     Builds the <see cref="FileSystemWatcher" />.
     /// </summary>
-    /// <returns>The <see cref="FileSystemWatcher"/>.</returns>
+    /// <returns>The <see cref="FileSystemWatcher" />.</returns>
     FileSystemWatcher Build();
 }

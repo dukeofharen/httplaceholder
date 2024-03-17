@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.Export.Queries.ExportRequest;
 public class ExportRequestQuery : IRequest<string>
 {
     /// <summary>
-    ///     Constructs a <see cref="ExportRequestQuery"/> instance.
+    ///     Constructs a <see cref="ExportRequestQuery" /> instance.
     /// </summary>
     public ExportRequestQuery(string correlationId, RequestExportType requestExportType)
     {

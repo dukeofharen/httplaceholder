@@ -64,7 +64,7 @@ public class StubResponseDto : IMapFrom<StubResponseModel>, IMapTo<StubResponseM
     ///     Gets or sets the duration of the extra.
     /// </summary>
     [YamlMember(Alias = "extraDuration")]
-    [OneOf(Types = new[] {typeof(int), typeof(StubExtraDurationDto)})]
+    [OneOf(Types = new[] { typeof(int), typeof(StubExtraDurationDto) })]
     public object ExtraDuration { get; set; }
 
     /// <summary>

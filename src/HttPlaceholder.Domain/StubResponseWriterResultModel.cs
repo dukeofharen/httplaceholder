@@ -26,7 +26,7 @@ public class StubResponseWriterResultModel
     /// <param name="responseWriterName">The response writer name.</param>
     /// <returns>The <see cref="StubResponseWriterResultModel" />.</returns>
     public static StubResponseWriterResultModel IsNotExecuted(string responseWriterName) =>
-        new() {Executed = false, ResponseWriterName = responseWriterName};
+        new() { Executed = false, ResponseWriterName = responseWriterName };
 
     /// <summary>
     ///     Returns an "executed" response.
@@ -34,7 +34,7 @@ public class StubResponseWriterResultModel
     /// <param name="responseWriterName">The response writer name.</param>
     /// <returns>The <see cref="StubResponseWriterResultModel" />.</returns>
     public static StubResponseWriterResultModel IsExecuted(string responseWriterName) =>
-        new() {Executed = true, ResponseWriterName = responseWriterName};
+        new() { Executed = true, ResponseWriterName = responseWriterName };
 
     /// <summary>
     ///     Returns an "executed" response.
@@ -43,5 +43,5 @@ public class StubResponseWriterResultModel
     /// <param name="log">The log line.</param>
     /// <returns>The <see cref="StubResponseWriterResultModel" />.</returns>
     public static StubResponseWriterResultModel IsExecuted(string responseWriterName, string log) =>
-        new() {Executed = true, ResponseWriterName = responseWriterName, Log = log};
+        new() { Executed = true, ResponseWriterName = responseWriterName, Log = log };
 }

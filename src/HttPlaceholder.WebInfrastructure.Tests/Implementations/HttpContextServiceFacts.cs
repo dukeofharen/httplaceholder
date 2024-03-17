@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using HttPlaceholder.Web.Shared.Infrastructure.Web;
 using HttPlaceholder.WebInfrastructure.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;

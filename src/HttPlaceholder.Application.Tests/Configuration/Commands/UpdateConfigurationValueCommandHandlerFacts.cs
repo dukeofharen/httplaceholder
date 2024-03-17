@@ -94,7 +94,7 @@ public class UpdateConfigurationValueCommandHandlerFacts
 
         _configurationRootMock
             .Setup(m => m.Providers)
-            .Returns(new[] {_provider});
+            .Returns(new[] { _provider });
 
         // Act
         await handler.Handle(request, CancellationToken.None);

@@ -12,7 +12,7 @@ public class ConversionUtilitiesFacts
     public void Convert_ConditionIsDictionary_ShouldConvert()
     {
         // Arrange
-        var dict = new Dictionary<object, object> {{"equals", "/path"}, {"notcontainsci", "somestring"}};
+        var dict = new Dictionary<object, object> { { "equals", "/path" }, { "notcontainsci", "somestring" } };
 
         // Act
         var result = ConversionUtilities.Convert<StubConditionStringCheckingModel>(dict);
@@ -42,7 +42,7 @@ public class ConversionUtilitiesFacts
     public void Convert_ConditionIsModel_ShouldReturnAsIs()
     {
         // Arrange
-        var model = new StubConditionStringCheckingModel {StringEquals = "123"};
+        var model = new StubConditionStringCheckingModel { StringEquals = "123" };
 
         // Act
         var result = ConversionUtilities.Convert<StubConditionStringCheckingModel>(model);
@@ -76,7 +76,7 @@ public class ConversionUtilitiesFacts
     public void ConvertEnumerable_InputIsObjectList_ShouldConvert()
     {
         // Arrange
-        var input = new List<object> {"string1", "string2"};
+        var input = new List<object> { "string1", "string2" };
 
         // Act
         var result = ConversionUtilities.ConvertEnumerable<string>(input).ToArray();

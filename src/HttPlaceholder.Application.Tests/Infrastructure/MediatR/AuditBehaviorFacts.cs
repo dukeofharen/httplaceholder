@@ -15,8 +15,8 @@ public class AuditBehaviorFacts
     private readonly MockLogger<AuditBehavior<TestRequest, TestResponse>> _logger = new();
 
     private readonly AutoMocker _mocker = new();
-    private readonly TestResponse _response = new() {Output = "Output"};
-    private readonly SettingsModel _settings = new() {Logging = new LoggingSettingsModel()};
+    private readonly TestResponse _response = new() { Output = "Output" };
+    private readonly SettingsModel _settings = new() { Logging = new LoggingSettingsModel() };
 
     [TestInitialize]
     public void Setup()
@@ -61,7 +61,7 @@ public class AuditBehaviorFacts
             .Returns(ip);
 
         // Act
-        var result = await behavior.Handle(new TestRequest {Input = "Input"}, () =>
+        var result = await behavior.Handle(new TestRequest { Input = "Input" }, () =>
         {
             nextCalled = true;
             return Task.FromResult(_response);
@@ -94,7 +94,7 @@ Duration: 0 ms"));
             .Returns(ip);
 
         // Act
-        await Assert.ThrowsExceptionAsync<Exception>(() => behavior.Handle(new TestRequest {Input = "Input"}, () =>
+        await Assert.ThrowsExceptionAsync<Exception>(() => behavior.Handle(new TestRequest { Input = "Input" }, () =>
         {
             nextCalled = true;
             throw new Exception("ERROR!");

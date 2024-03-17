@@ -21,7 +21,7 @@ public class StubBasicAuthIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Get,
             RequestUri = new Uri(url),
-            Headers = {{"Authorization", "Basic ZHVjbzpnZWhlaW0="}}
+            Headers = { { "Authorization", "Basic ZHVjbzpnZWhlaW0=" } }
         };
 
         // act / assert
@@ -41,7 +41,7 @@ public class StubBasicAuthIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Get,
             RequestUri = new Uri(url),
-            Headers = {{"Authorization", "Basic ZHVjbzpnZWhlaW0x"}}
+            Headers = { { "Authorization", "Basic ZHVjbzpnZWhlaW0x" } }
         };
 
         // act / assert

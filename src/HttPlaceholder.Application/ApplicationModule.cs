@@ -29,7 +29,7 @@ public static class ApplicationModule
         // Add other modules
         services.AddHttpClient("proxy")
             .ConfigurePrimaryHttpMessageHandler(() =>
-                new HttpClientHandler {ServerCertificateCustomValidationCallback = (_, _, _, _) => true});
+                new HttpClientHandler { ServerCertificateCustomValidationCallback = (_, _, _, _) => true });
 
         return services;
     }

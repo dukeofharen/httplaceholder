@@ -24,11 +24,11 @@ public class BasicAuthenticationConditionCheckerFacts
         BasicAuthenticationConditionChecker_ValidateAsync_StubsFound_ButNoBasicAuthenticationCondition_ShouldReturnNotExecuted()
     {
         // arrange
-        var conditions = new StubConditionsModel {BasicAuthentication = null};
+        var conditions = new StubConditionsModel { BasicAuthentication = null };
 
         // act
         var result =
-            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await _checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -41,12 +41,12 @@ public class BasicAuthenticationConditionCheckerFacts
         // arrange
         var conditions = new StubConditionsModel
         {
-            BasicAuthentication = new StubBasicAuthenticationModel {Username = null, Password = null}
+            BasicAuthentication = new StubBasicAuthenticationModel { Username = null, Password = null }
         };
 
         // act
         var result =
-            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await _checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -58,10 +58,10 @@ public class BasicAuthenticationConditionCheckerFacts
         // arrange
         var conditions = new StubConditionsModel
         {
-            BasicAuthentication = new StubBasicAuthenticationModel {Username = "username", Password = "password"}
+            BasicAuthentication = new StubBasicAuthenticationModel { Username = "username", Password = "password" }
         };
 
-        var headers = new Dictionary<string, string> {{"X-Api-Key", "1"}};
+        var headers = new Dictionary<string, string> { { "X-Api-Key", "1" } };
 
         _httpContextServiceMock
             .Setup(m => m.GetHeaders())
@@ -69,7 +69,7 @@ public class BasicAuthenticationConditionCheckerFacts
 
         // act
         var result =
-            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await _checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -82,10 +82,10 @@ public class BasicAuthenticationConditionCheckerFacts
         // arrange
         var conditions = new StubConditionsModel
         {
-            BasicAuthentication = new StubBasicAuthenticationModel {Username = "username", Password = "password"}
+            BasicAuthentication = new StubBasicAuthenticationModel { Username = "username", Password = "password" }
         };
 
-        var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmRk"}};
+        var headers = new Dictionary<string, string> { { "Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmRk" } };
 
         _httpContextServiceMock
             .Setup(m => m.GetHeaders())
@@ -93,7 +93,7 @@ public class BasicAuthenticationConditionCheckerFacts
 
         // act
         var result =
-            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await _checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -105,10 +105,10 @@ public class BasicAuthenticationConditionCheckerFacts
         // arrange
         var conditions = new StubConditionsModel
         {
-            BasicAuthentication = new StubBasicAuthenticationModel {Username = "username", Password = "password"}
+            BasicAuthentication = new StubBasicAuthenticationModel { Username = "username", Password = "password" }
         };
 
-        var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmQ="}};
+        var headers = new Dictionary<string, string> { { "Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmQ=" } };
 
         _httpContextServiceMock
             .Setup(m => m.GetHeaders())
@@ -116,7 +116,7 @@ public class BasicAuthenticationConditionCheckerFacts
 
         // act
         var result =
-            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await _checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

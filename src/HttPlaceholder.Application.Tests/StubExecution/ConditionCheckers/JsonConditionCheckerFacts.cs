@@ -50,11 +50,11 @@ public class JsonConditionCheckerFacts
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonConditionChecker>();
-        var conditions = new StubConditionsModel {Json = null};
+        var conditions = new StubConditionsModel { Json = null };
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -67,7 +67,7 @@ public class JsonConditionCheckerFacts
         var checker = _mocker.CreateInstance<JsonConditionChecker>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         var jsonConditions = CreateObjectStubConditions();
-        var conditions = new StubConditionsModel {Json = jsonConditions};
+        var conditions = new StubConditionsModel { Json = jsonConditions };
 
         mockHttpContextService
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -75,7 +75,7 @@ public class JsonConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -88,8 +88,8 @@ public class JsonConditionCheckerFacts
         // Arrange
         var checker = _mocker.CreateInstance<JsonConditionChecker>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
-        var jsonConditions = new Dictionary<object, object> {{"boolValue", "^(true|false)$"}};
-        var conditions = new StubConditionsModel {Json = jsonConditions};
+        var jsonConditions = new Dictionary<object, object> { { "boolValue", "^(true|false)$" } };
+        var conditions = new StubConditionsModel { Json = jsonConditions };
 
         mockHttpContextService
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -97,7 +97,7 @@ public class JsonConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -114,7 +114,7 @@ public class JsonConditionCheckerFacts
         var jsonConditions = CreateObjectStubConditions();
         ((IDictionary<object, object>)jsonConditions["subObject"])["intValue"] = "4";
 
-        var conditions = new StubConditionsModel {Json = jsonConditions};
+        var conditions = new StubConditionsModel { Json = jsonConditions };
 
         mockHttpContextService
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -122,7 +122,7 @@ public class JsonConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -140,7 +140,7 @@ public class JsonConditionCheckerFacts
         var jsonConditions = CreateObjectStubConditions();
         ((IDictionary<object, object>)jsonConditions["subObject"])["intValue"] = "4";
 
-        var conditions = new StubConditionsModel {Json = jsonConditions};
+        var conditions = new StubConditionsModel { Json = jsonConditions };
 
         mockHttpContextService
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -148,7 +148,7 @@ public class JsonConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -162,7 +162,7 @@ public class JsonConditionCheckerFacts
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
 
         var jsonConditions = CreateArrayStubConditions();
-        var conditions = new StubConditionsModel {Json = jsonConditions};
+        var conditions = new StubConditionsModel { Json = jsonConditions };
 
         mockHttpContextService
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -170,7 +170,7 @@ public class JsonConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -187,7 +187,7 @@ public class JsonConditionCheckerFacts
         var jsonConditions = CreateArrayStubConditions();
         jsonConditions[1] = "4";
 
-        var conditions = new StubConditionsModel {Json = jsonConditions};
+        var conditions = new StubConditionsModel { Json = jsonConditions };
 
         mockHttpContextService
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -195,7 +195,7 @@ public class JsonConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -314,17 +314,17 @@ public class JsonConditionCheckerFacts
     private static IDictionary<object, object> CreateObjectStubConditions() =>
         new Dictionary<object, object>
         {
-            {"username", "^username$"},
+            { "username", "^username$" },
             {
                 "subObject",
                 new Dictionary<object, object>
                 {
-                    {"strValue", "stringInput"},
-                    {"boolValue", "true"},
-                    {"doubleValue", "1.23"},
-                    {"dateTimeValue", "2021-04-16T21:23:03"},
-                    {"intValue", "3"},
-                    {"nullValue", null},
+                    { "strValue", "stringInput" },
+                    { "boolValue", "true" },
+                    { "doubleValue", "1.23" },
+                    { "dateTimeValue", "2021-04-16T21:23:03" },
+                    { "intValue", "3" },
+                    { "nullValue", null },
                     {
                         "arrayValue",
                         new List<object>
@@ -332,7 +332,7 @@ public class JsonConditionCheckerFacts
                             "val1",
                             new Dictionary<object, object>
                             {
-                                {"subKey1", "subValue1"}, {"subKey2", "subValue2"}
+                                { "subKey1", "subValue1" }, { "subKey2", "subValue2" }
                             }
                         }
                     }
@@ -347,6 +347,6 @@ public class JsonConditionCheckerFacts
             "3",
             "1.46",
             "2021-04-17T13:16:54",
-            new Dictionary<object, object> {{"stringVal", "val1"}, {"intVal", "55"}}
+            new Dictionary<object, object> { { "stringVal", "val1" }, { "intVal", "55" } }
         };
 }

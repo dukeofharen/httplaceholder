@@ -20,7 +20,7 @@ public class DynamicResponseWriterFacts
     public async Task DynamicResponseWriter_WriteToResponseAsync_EnableDynamicModeIsFalse_ShouldReturnFalse()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {EnableDynamicMode = false}};
+        var stub = new StubModel { Response = new StubResponseModel { EnableDynamicMode = false } };
         var response = new ResponseModel();
 
         // act
@@ -34,7 +34,7 @@ public class DynamicResponseWriterFacts
     public async Task DynamicResponseWriter_WriteToResponseAsync_NoBodyAndHeaders_ShouldNotCallParse()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {EnableDynamicMode = true}};
+        var stub = new StubModel { Response = new StubResponseModel { EnableDynamicMode = true } };
         var response = new ResponseModel();
 
         // act
@@ -50,9 +50,9 @@ public class DynamicResponseWriterFacts
     public async Task DynamicResponseWriter_WriteToResponseAsync_OnlyBodySet_ShouldParseBody()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {EnableDynamicMode = true}};
+        var stub = new StubModel { Response = new StubResponseModel { EnableDynamicMode = true } };
         const string body = "this is the body";
-        var response = new ResponseModel {Body = Encoding.UTF8.GetBytes(body)};
+        var response = new ResponseModel { Body = Encoding.UTF8.GetBytes(body) };
 
         _variableParserMock
             .Setup(m => m.ParseAsync(It.IsAny<string>(), stub, It.IsAny<CancellationToken>()))
@@ -70,8 +70,8 @@ public class DynamicResponseWriterFacts
     public async Task DynamicResponseWriter_WriteToResponseAsync_OnlyBodySet_BodyIsBinary_ShouldNotParseBody()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {EnableDynamicMode = true}};
-        var response = new ResponseModel {Body = new byte[] {1, 2, 3}, BodyIsBinary = true};
+        var stub = new StubModel { Response = new StubResponseModel { EnableDynamicMode = true } };
+        var response = new ResponseModel { Body = new byte[] { 1, 2, 3 }, BodyIsBinary = true };
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
@@ -86,11 +86,12 @@ public class DynamicResponseWriterFacts
     public async Task DynamicResponseWriter_WriteToResponseAsync_BodyAndHeadersSet_ShouldParseBodyAndHeaders()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {EnableDynamicMode = true}};
+        var stub = new StubModel { Response = new StubResponseModel { EnableDynamicMode = true } };
         const string body = "this is the body";
         var response = new ResponseModel
         {
-            Body = Encoding.UTF8.GetBytes(body), Headers = {{"X-Header-1", "Header1"}, {"X-Header-2", "Header2"}}
+            Body = Encoding.UTF8.GetBytes(body),
+            Headers = { { "X-Header-1", "Header1" }, { "X-Header-2", "Header2" } }
         };
 
         _variableParserMock

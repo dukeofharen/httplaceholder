@@ -30,7 +30,7 @@ public class RelationalDbMigratorFacts
         var expectedRootFolder = Path.Combine(ExecutingAssemblyRootPath, "SqlScripts/Migrations/mysql");
         SetupConfig(MysqlDbConnectionFactory.ConnectionStringKey);
         SetupMigrations(expectedRootFolder,
-            new[] {new TestMigrationInput {Key = "001_initial", CheckFileFound = false, CheckResult = 0}});
+            new[] { new TestMigrationInput { Key = "001_initial", CheckFileFound = false, CheckResult = 0 } });
 
         var migrator = _mocker.CreateInstance<RelationalDbMigrator>();
 
@@ -52,8 +52,8 @@ public class RelationalDbMigratorFacts
         SetupMigrations(expectedRootFolder,
             new[]
             {
-                new TestMigrationInput {Key = "001_initial", CheckFileFound = true, CheckResult = 1},
-                new TestMigrationInput {Key = "002_new_table", CheckFileFound = true, CheckResult = 0}
+                new TestMigrationInput { Key = "001_initial", CheckFileFound = true, CheckResult = 1 },
+                new TestMigrationInput { Key = "002_new_table", CheckFileFound = true, CheckResult = 0 }
             });
 
         var migrator = _mocker.CreateInstance<RelationalDbMigrator>();
@@ -149,7 +149,7 @@ public class RelationalDbMigratorFacts
     {
         var config = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>
         {
-            {$"ConnectionStrings:{connectionStringKey}", "connection string"}
+            { $"ConnectionStrings:{connectionStringKey}", "connection string" }
         }).Build();
         _mocker.Use<IConfiguration>(config);
     }

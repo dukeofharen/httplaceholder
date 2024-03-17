@@ -66,5 +66,5 @@ internal class ApiAuthorizationService(
 
     private void AddUserContext(string username) =>
         httpContextService.SetUser(
-            new ClaimsPrincipal(new ClaimsIdentity(new[] {new Claim(ClaimTypes.Name, username)})));
+            new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, username) })));
 }

@@ -35,7 +35,7 @@ internal class LoginCookieService(
     public void SetLoginCookie(string username, string password) => httpContextService.AppendCookie(
         LoginCookieKey,
         CreateHash(username, password),
-        new CookieOptions {HttpOnly = false, SameSite = SameSiteMode.Lax});
+        new CookieOptions { HttpOnly = false, SameSite = SameSiteMode.Lax });
 
     private static string CreateHash(string username, string password) =>
         HashingUtilities.GetSha512String($"{Salt}:{username}:{password}");

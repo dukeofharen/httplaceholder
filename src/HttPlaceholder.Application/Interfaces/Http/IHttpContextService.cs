@@ -29,6 +29,11 @@ public interface IHttpContextService
     string FullPath { get; }
 
     /// <summary>
+    ///     Gets whether the current request has a form content type.
+    /// </summary>
+    bool HasFormContentType { get; }
+
+    /// <summary>
     ///     Gets the posted body as string.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -81,11 +86,6 @@ public interface IHttpContextService
     /// <param name="key">The item key.</param>
     /// <returns>True if the item was found and deleted; false otherwise.</returns>
     bool DeleteItem(string key);
-
-    /// <summary>
-    ///     Gets whether the current request has a form content type.
-    /// </summary>
-    bool HasFormContentType { get; }
 
     /// <summary>
     ///     Gets the posted form values as tuple list of string and <see cref="StringValues" />.

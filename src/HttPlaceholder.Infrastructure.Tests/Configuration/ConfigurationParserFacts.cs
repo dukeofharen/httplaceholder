@@ -30,7 +30,7 @@ public class ConfigurationParserFacts
 
     private readonly IDictionary<string, string> _exampleEnv = new Dictionary<string, string>
     {
-        {"port", "9999"}, {"oldRequestsQueueLength", "100"}
+        { "port", "9999" }, { "oldRequestsQueueLength", "100" }
     };
 
     private readonly Mock<IFileService> _fileServiceMock = new();
@@ -158,7 +158,7 @@ public class ConfigurationParserFacts
     {
         // Arrange
         var args = "--POrT 5001 --httpsPORT 5051".Split(' ');
-        var env = new Dictionary<string, string> {{"FILEStorageLocation", "/tmp/stubs"}};
+        var env = new Dictionary<string, string> { { "FILEStorageLocation", "/tmp/stubs" } };
 
         _envServiceMock
             .Setup(m => m.GetEnvironmentVariables())

@@ -20,7 +20,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests");
@@ -49,8 +49,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
         {
             Headers =
             {
-                {"x-from-identifier", StubSource.GetCollection(null).RequestResultModels[2].CorrelationId},
-                {"x-items-per-page", "2"}
+                { "x-from-identifier", StubSource.GetCollection(null).RequestResultModels[2].CorrelationId },
+                { "x-items-per-page", "2" }
             }
         };
 
@@ -71,7 +71,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}1");
@@ -85,7 +85,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}");
@@ -102,7 +102,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        var request = new RequestResultModel {CorrelationId = correlation};
+        var request = new RequestResultModel { CorrelationId = correlation };
         var responseModel = new ResponseModel();
         StubSource.GetCollection(null).RequestResultModels.Add(request);
         StubSource.GetCollection(null).StubResponses.Add(responseModel);
@@ -120,8 +120,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        var request = new RequestResultModel {CorrelationId = correlation};
-        var responseModel = new ResponseModel {Body = new byte[] {1, 2, 3}, StatusCode = 200, BodyIsBinary = true};
+        var request = new RequestResultModel { CorrelationId = correlation };
+        var responseModel = new ResponseModel { Body = new byte[] { 1, 2, 3 }, StatusCode = 200, BodyIsBinary = true };
         StubSource.GetCollection(null).RequestResultModels.Add(request);
         StubSource.GetCollection(null).StubResponses.Add(responseModel);
         StubSource.GetCollection(null).RequestResponseMap.Add(request, responseModel);
@@ -143,7 +143,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/overview");
@@ -172,8 +172,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
         {
             Headers =
             {
-                {"x-from-identifier", StubSource.GetCollection(null).RequestResultModels[2].CorrelationId},
-                {"x-items-per-page", "2"}
+                { "x-from-identifier", StubSource.GetCollection(null).RequestResultModels[2].CorrelationId },
+                { "x-items-per-page", "2" }
             }
         };
 
@@ -193,8 +193,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_Request_GetByStubId()
     {
         // Arrange
-        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
-        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
+        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub2" });
+        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub1" });
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/stubs/stub1/requests");
@@ -211,8 +211,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_Request_DeleteAllRequests()
     {
         // Perform a few requests.
-        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
-        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
+        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub2" });
+        StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub1" });
 
         // Act
         using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/requests");
@@ -227,9 +227,9 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Perform a few requests.
         var request1 =
-            new RequestResultModel {ExecutingStubId = "stub1", CorrelationId = Guid.NewGuid().ToString()};
+            new RequestResultModel { ExecutingStubId = "stub1", CorrelationId = Guid.NewGuid().ToString() };
         var request2 =
-            new RequestResultModel {ExecutingStubId = "stub2", CorrelationId = Guid.NewGuid().ToString()};
+            new RequestResultModel { ExecutingStubId = "stub2", CorrelationId = Guid.NewGuid().ToString() };
         StubSource.GetCollection(null).RequestResultModels.Add(request1);
         StubSource.GetCollection(null).RequestResultModels.Add(request2);
 

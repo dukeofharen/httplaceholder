@@ -51,7 +51,7 @@ public class ApiExceptionHandlingMiddleware
             }
             catch (ArgumentException ex)
             {
-                await WriteResponseBody(new[] {ex.Message}, HttpStatusCode.BadRequest, cancellationToken);
+                await WriteResponseBody(new[] { ex.Message }, HttpStatusCode.BadRequest, cancellationToken);
             }
             catch (ValidationException ex)
             {

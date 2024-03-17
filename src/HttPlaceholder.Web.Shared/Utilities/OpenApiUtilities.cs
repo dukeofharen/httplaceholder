@@ -63,7 +63,7 @@ public static class OpenApiUtilities
 
         schemaToUpdate.OneOf.Add(isPrimitiveOrString
             ? oneOfTypeSchema
-            : new JsonSchema {Reference = oneOfTypeSchema});
+            : new JsonSchema { Reference = oneOfTypeSchema });
     }
 
     private static bool IsPrimitiveOrString(Type oneOfType) => oneOfType.IsPrimitive || oneOfType == typeof(string);

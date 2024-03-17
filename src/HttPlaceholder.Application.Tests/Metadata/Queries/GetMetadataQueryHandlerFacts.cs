@@ -33,7 +33,7 @@ public class GetMetadataQueryHandlerFacts
 
         serviceProviderMock
             .Setup(m => m.GetService(typeof(IEnumerable<IResponseVariableParsingHandler>)))
-            .Returns(new[] {mock1.Object, mock2.Object});
+            .Returns(new[] { mock1.Object, mock2.Object });
 
         const string runtimeVersion = ".NET 8.0.0";
         envServiceMock
@@ -71,7 +71,7 @@ public class GetMetadataQueryHandlerFacts
             .Returns(fullName);
         mock
             .Setup(m => m.Examples)
-            .Returns(new[] {example});
+            .Returns(new[] { example });
         mock
             .Setup(m => m.GetDescription())
             .Returns(description);

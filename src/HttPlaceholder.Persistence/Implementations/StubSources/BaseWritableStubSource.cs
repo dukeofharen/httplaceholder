@@ -15,15 +15,18 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 public abstract class BaseWritableStubSource : IWritableStubSource
 {
     /// <inheritdoc />
-    public abstract Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(string distributionKey = null,
+    public abstract Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
+        string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     /// <inheritdoc />
-    public abstract Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default);
+    public abstract Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
+        GetStubsOverviewAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default);
 
     /// <inheritdoc />
-    public abstract Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId, string distributionKey = null,
+    public abstract Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId,
+        string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     /// <inheritdoc />

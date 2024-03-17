@@ -24,22 +24,25 @@ internal abstract class BaseFileStubSource(
     IStubModelValidator stubModelValidator)
     : IStubSource
 {
-    private static readonly string[] _extensions = {".yml", ".yaml"};
-    protected readonly ILogger<BaseFileStubSource> Logger = logger;
+    private static readonly string[] _extensions = { ".yml", ".yaml" };
     protected readonly IFileService FileService = fileService;
+    protected readonly ILogger<BaseFileStubSource> Logger = logger;
 
-    public abstract Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(string distributionKey = null,
+    protected IEnumerable<string> SupportedExtensions => _extensions;
+
+    public abstract Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
+        string distributionKey = null,
         CancellationToken cancellationToken = default);
 
-    public abstract Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default);
+    public abstract Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
+        GetStubsOverviewAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default);
 
-    public abstract Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId, string distributionKey = null,
+    public abstract Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId,
+        string distributionKey = null,
         CancellationToken cancellationToken = default);
 
     public abstract Task PrepareStubSourceAsync(CancellationToken cancellationToken);
-
-    protected IEnumerable<string> SupportedExtensions => _extensions;
 
     private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
 
@@ -47,7 +50,7 @@ internal abstract class BaseFileStubSource(
     {
         var location = part.Trim();
         Logger.LogInformation($"Reading location '{location}'.");
-        return FileService.IsDirectory(location) ? FileService.GetFiles(location, _extensions) : new[] {location};
+        return FileService.IsDirectory(location) ? FileService.GetFiles(location, _extensions) : new[] { location };
     }
 
     protected IEnumerable<string> GetInputLocations()
@@ -75,7 +78,7 @@ internal abstract class BaseFileStubSource(
         }
         else
         {
-            stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
+            stubs = new[] { YamlUtilities.Parse<StubModel>(input) };
         }
 
         return ValidateStubs(file, stubs);

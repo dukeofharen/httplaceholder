@@ -19,7 +19,7 @@ internal class HarStubGenerator(
     IStubContext stubContext)
     : IHarStubGenerator, ISingletonService
 {
-    private static readonly string[] _responseHeadersToStrip = {"content-length", "content-encoding"};
+    private static readonly string[] _responseHeadersToStrip = { "content-length", "content-encoding" };
 
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant,
@@ -52,7 +52,7 @@ internal class HarStubGenerator(
     {
         if (doNotCreateStub)
         {
-            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
+            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
         }
 
         await stubContext.DeleteStubAsync(stub.Id, cancellationToken);

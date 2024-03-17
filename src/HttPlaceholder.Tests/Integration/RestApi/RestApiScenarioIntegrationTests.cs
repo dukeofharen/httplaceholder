@@ -33,7 +33,7 @@ public class RestApiScenarioIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         const string scenario = "scenario-1";
-        var input = new ScenarioStateInputDto {State = "new-state", HitCount = 20};
+        var input = new ScenarioStateInputDto { State = "new-state", HitCount = 20 };
         using var setScenarioResponse = await SetScenarioAsync(scenario, input);
         setScenarioResponse.EnsureSuccessStatusCode();
 
@@ -82,7 +82,7 @@ public class RestApiScenarioIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         const string scenario = "scenario-1";
         using var setScenarioResponse =
-            await SetScenarioAsync(scenario, new ScenarioStateInputDto {State = "new-state", HitCount = 20});
+            await SetScenarioAsync(scenario, new ScenarioStateInputDto { State = "new-state", HitCount = 20 });
         setScenarioResponse.EnsureSuccessStatusCode();
 
         // Act
@@ -100,7 +100,7 @@ public class RestApiScenarioIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         const string scenario = "scenario-1";
         using var setScenarioResponse =
-            await SetScenarioAsync(scenario, new ScenarioStateInputDto {State = "new-state", HitCount = 20});
+            await SetScenarioAsync(scenario, new ScenarioStateInputDto { State = "new-state", HitCount = 20 });
         setScenarioResponse.EnsureSuccessStatusCode();
 
         // Act

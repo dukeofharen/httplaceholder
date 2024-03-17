@@ -33,7 +33,7 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
             Log = new Log
             {
                 Version = "1.2",
-                Creator = new Creator {Name = creator, Version = version},
+                Creator = new Creator { Name = creator, Version = version },
                 Pages =
                     new[]
                     {
@@ -58,7 +58,7 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                             HttpVersion = httpVersion,
                             Headers =
                                 requestParams.Headers
-                                    .Select(h => new Header {Name = h.Key, Value = h.Value}).ToArray(),
+                                    .Select(h => new Header { Name = h.Key, Value = h.Value }).ToArray(),
                             Cookies = Array.Empty<Cookie>(),
                             PostData = new PostData
                             {
@@ -67,28 +67,27 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                                     Encoding.UTF8.GetString(requestParams.BinaryBody ??
                                                             Array.Empty<byte>())
                             },
-                            QueryString = query.Select(q => new Query
-                            {
-                                Name = q.Key, Value = q.Value.FirstOrDefault()
-                            }).ToArray()
+                            QueryString =
+                                query.Select(q => new Query { Name = q.Key, Value = q.Value.FirstOrDefault() })
+                                    .ToArray()
                         },
                         Response = new Response
                         {
                             Status = response.StatusCode,
                             StatusText = ReasonPhrases.GetReasonPhrase(response.StatusCode),
                             HttpVersion = httpVersion,
-                            Headers = response.Headers.Select(h => new Header
-                            {
-                                Name = h.Key,
-                                Value = h.Value
-                            }).ToArray(),
+                            Headers =
+                                response.Headers.Select(h => new Header { Name = h.Key, Value = h.Value })
+                                    .ToArray(),
                             Cookies = Array.Empty<Cookie>(),
                             Content = new Content
                             {
                                 Encoding = response.BodyIsBinary ? "base64" : null,
                                 MimeType = responseContentType,
                                 Size = responseBody.Length,
-                                Text = response.BodyIsBinary ? ConvertUtil.ToBase64String(responseBody) : Encoding.UTF8.GetString(responseBody)
+                                Text = response.BodyIsBinary
+                                    ? ConvertUtil.ToBase64String(responseBody)
+                                    : Encoding.UTF8.GetString(responseBody)
                             },
                             RedirectUrl = string.Empty
                         },
@@ -101,9 +100,7 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                 }
             }
         };
-        return JsonConvert.SerializeObject(har, settings: new JsonSerializerSettings
-        {
-            NullValueHandling = NullValueHandling.Ignore
-        });
+        return JsonConvert.SerializeObject(har,
+            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     }
 }

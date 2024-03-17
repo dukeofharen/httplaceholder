@@ -94,7 +94,7 @@ public class CreateStubForRequestFacts : BaseClientTest
 
         // Act
         var result = await client.CreateStubForRequestAsync(correlationId,
-            new CreateStubForRequestInputDto {DoNotCreateStub = true});
+            new CreateStubForRequestInputDto { DoNotCreateStub = true });
 
         // Assert
         Assert.IsNotNull(result.Stub);

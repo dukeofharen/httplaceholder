@@ -43,7 +43,7 @@ public class FileSystemStubSourceFacts
         var responsesFolder = withDistributionKey
             ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
             : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
-        var request = new RequestResultModel {CorrelationId = "bla123"};
+        var request = new RequestResultModel { CorrelationId = "bla123" };
         var millis = 1234;
         var requestFilePath = Path.Combine(requestsFolder, $"{millis}-{request.CorrelationId}.json");
         var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
@@ -81,8 +81,8 @@ public class FileSystemStubSourceFacts
         var responsesFolder = withDistributionKey
             ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
             : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
-        var request = new RequestResultModel {CorrelationId = "bla123"};
-        var response = new ResponseModel {StatusCode = 200};
+        var request = new RequestResultModel { CorrelationId = "bla123" };
+        var response = new ResponseModel { StatusCode = 200 };
         var millis = 1234;
         var requestFilePath = Path.Combine(requestsFolder, $"{millis}-{request.CorrelationId}.json");
         var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
@@ -117,7 +117,7 @@ public class FileSystemStubSourceFacts
         var stubsFolder = withDistributionKey
             ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.StubsFolderName)
             : Path.Combine(StorageFolder, FileNames.StubsFolderName);
-        var stub = new StubModel {Id = "situation-01"};
+        var stub = new StubModel { Id = "situation-01" };
         var filePath = Path.Combine(stubsFolder, $"{stub.Id}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -180,7 +180,7 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(true);
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(expectedPath, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = correlationId}));
+            .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = correlationId }));
 
         // Act
         var result = await source.GetRequestAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
@@ -237,7 +237,7 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(true);
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(expectedPath, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(JsonConvert.SerializeObject(new ResponseModel {StatusCode = 200}));
+            .ReturnsAsync(JsonConvert.SerializeObject(new ResponseModel { StatusCode = 200 }));
 
         // Act
         var result = await source.GetResponseAsync(correlationId, withDistributionKey ? DistrubutionKey : null,
@@ -509,8 +509,8 @@ public class FileSystemStubSourceFacts
 
         var requestFileContents = new[]
         {
-            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-01"}),
-            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-02"})
+            JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = "request-01" }),
+            JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = "request-02" })
         };
 
         for (var i = 0; i < files.Length; i++)
@@ -556,11 +556,11 @@ public class FileSystemStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-02"}));
+            .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = "request-02" }));
 
         // Act
         var result =
-            (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = "request-01"},
+            (await source.GetRequestResultsAsync(new PagingModel { FromIdentifier = "request-01" },
                 withDistributionKey ? DistrubutionKey : null,
                 CancellationToken.None)).ToArray();
 
@@ -593,9 +593,9 @@ public class FileSystemStubSourceFacts
 
         var requestFileContents = new[]
         {
-            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-01"}),
-            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-02"}),
-            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-03"})
+            JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = "request-01" }),
+            JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = "request-02" }),
+            JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = "request-03" })
         };
 
         for (var i = 0; i < 2; i++)
@@ -609,7 +609,7 @@ public class FileSystemStubSourceFacts
 
         // Act
         var result =
-            (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = "request-02", ItemsPerPage = 2},
+            (await source.GetRequestResultsAsync(new PagingModel { FromIdentifier = "request-02", ItemsPerPage = 2 },
                 withDistributionKey ? DistrubutionKey : null,
                 CancellationToken.None)).ToArray();
 
@@ -635,7 +635,7 @@ public class FileSystemStubSourceFacts
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
             Path.Combine(requestsFolder, "request-03.json")
         };
-        var folders = new[] {Path.Combine(requestsFolder, "folder1"), Path.Combine(requestsFolder, "folder2")};
+        var folders = new[] { Path.Combine(requestsFolder, "folder1"), Path.Combine(requestsFolder, "folder2") };
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -687,7 +687,7 @@ public class FileSystemStubSourceFacts
     public async Task GetStubsAsync_HappyFlow(bool withDistributionKey)
     {
         // Arrange
-        var stubs = new[] {new StubModel {Id = "stub1"}};
+        var stubs = new[] { new StubModel { Id = "stub1" } };
 
         var fileSystemStubCacheMock = _mocker.GetMock<IFileSystemStubCache>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -710,7 +710,7 @@ public class FileSystemStubSourceFacts
     public async Task GetStubAsync_StubFound_ShouldReturnStub(bool withDistributionKey)
     {
         // Arrange
-        var stubs = new[] {new StubModel {Id = "stub1"}, new StubModel {Id = "stub2"}};
+        var stubs = new[] { new StubModel { Id = "stub1" }, new StubModel { Id = "stub2" } };
 
         var fileSystemStubCacheMock = _mocker.GetMock<IFileSystemStubCache>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -735,7 +735,7 @@ public class FileSystemStubSourceFacts
     public async Task GetStubAsync_StubNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
-        var stubs = new[] {new StubModel {Id = "stub1"}, new StubModel {Id = "stub2"}};
+        var stubs = new[] { new StubModel { Id = "stub1" }, new StubModel { Id = "stub2" } };
 
         var fileSystemStubCacheMock = _mocker.GetMock<IFileSystemStubCache>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -761,8 +761,8 @@ public class FileSystemStubSourceFacts
         // Arrange
         var stubs = new[]
         {
-            new StubModel {Id = "stub1", Tenant = "tenant1", Enabled = true},
-            new StubModel {Id = "stub2", Tenant = "tenant2", Enabled = false}
+            new StubModel { Id = "stub1", Tenant = "tenant1", Enabled = true },
+            new StubModel { Id = "stub2", Tenant = "tenant2", Enabled = false }
         };
 
         var fileSystemStubCacheMock = _mocker.GetMock<IFileSystemStubCache>();
@@ -866,7 +866,7 @@ public class FileSystemStubSourceFacts
             .ReturnsAsync(false);
 
         var expectedFile = $"1-{correlationId}.json";
-        var files = new[] {expectedFile};
+        var files = new[] { expectedFile };
         fileServiceMock
             .Setup(m => m.GetFilesAsync(requestsPath, $"*-{correlationId}.json",
                 It.IsAny<CancellationToken>()))
@@ -1024,7 +1024,7 @@ public class FileSystemStubSourceFacts
             .Setup(m => m.WriteAllTextAsync(expectedPath, It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Callback<string, string, CancellationToken>((_, jsonString, _) => capturedJsonString = jsonString);
 
-        var input = new ScenarioStateModel(scenario) {State = "state-1", HitCount = 12};
+        var input = new ScenarioStateModel(scenario) { State = "state-1", HitCount = 12 };
 
         // Act
         var result = await source.AddScenarioAsync(scenario, input, withDistributionKey ? DistrubutionKey : null,
@@ -1087,7 +1087,7 @@ public class FileSystemStubSourceFacts
             .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
-        var input = new ScenarioStateModel(scenario) {State = "state-1", HitCount = 12};
+        var input = new ScenarioStateModel(scenario) { State = "state-1", HitCount = 12 };
         string capturedJsonString = null;
         fileServiceMock
             .Setup(m => m.WriteAllTextAsync(expectedPath, It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -1118,7 +1118,7 @@ public class FileSystemStubSourceFacts
             ? Path.Join(StorageFolder, DistrubutionKey, FileNames.ScenariosFolderName)
             : Path.Join(StorageFolder, FileNames.ScenariosFolderName);
 
-        var files = new[] {Path.Join(scenariosPath, "scenario-sc1.json")};
+        var files = new[] { Path.Join(scenariosPath, "scenario-sc1.json") };
         fileServiceMock
             .Setup(m => m.GetFilesAsync(scenariosPath, "*.json", It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);

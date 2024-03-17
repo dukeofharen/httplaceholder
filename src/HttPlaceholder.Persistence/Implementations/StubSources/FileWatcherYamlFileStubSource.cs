@@ -35,6 +35,14 @@ internal class FileWatcherYamlFileStubSource(
     // A dictionary that contains all the loaded stubs, grouped by file the stub is in.
     internal readonly ConcurrentDictionary<string, IEnumerable<StubModel>> Stubs = new();
 
+    public void Dispose()
+    {
+        foreach (var watcher in FileSystemWatchers.Values)
+        {
+            watcher.Dispose();
+        }
+    }
+
     /// <inheritdoc />
     public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
         string distributionKey = null,
@@ -65,14 +73,6 @@ internal class FileWatcherYamlFileStubSource(
     {
         SetupStubs();
         return Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        foreach (var watcher in FileSystemWatchers.Values)
-        {
-            watcher.Dispose();
-        }
     }
 
     /// <inheritdoc />
@@ -115,7 +115,7 @@ internal class FileWatcherYamlFileStubSource(
         {
             Logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
             var stubs = ParseAndValidateStubs(input, file);
-            Stubs.AddOrUpdate(file, (k) => stubs, (k, v) => stubs);
+            Stubs.AddOrUpdate(file, k => stubs, (k, v) => stubs);
         }
         catch (YamlException ex)
         {

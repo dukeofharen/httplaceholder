@@ -30,7 +30,7 @@ internal class JsonPathResponseVariableParsingHandler(
     public override string FullName => "JSONPath";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
+    public override string[] Examples => new[] { $"(({Name}:$.values[1].title))" };
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,

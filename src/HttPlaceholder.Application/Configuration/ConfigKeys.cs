@@ -146,12 +146,12 @@ public static class ConfigKeys
 
     private static readonly IDictionary<ConfigKeyType, string> _configKeyTypes = new Dictionary<ConfigKeyType, string>
     {
-        {ConfigKeyType.Authentication, "Authentication"},
-        {ConfigKeyType.Web, "Web"},
-        {ConfigKeyType.Storage, "Storage"},
-        {ConfigKeyType.Gui, "GUI"},
-        {ConfigKeyType.Stub, "Stub"},
-        {ConfigKeyType.Configuration, "Configuration"}
+        { ConfigKeyType.Authentication, "Authentication" },
+        { ConfigKeyType.Web, "Web" },
+        { ConfigKeyType.Storage, "Storage" },
+        { ConfigKeyType.Gui, "GUI" },
+        { ConfigKeyType.Stub, "Stub" },
+        { ConfigKeyType.Configuration, "Configuration" }
     };
 
     private static readonly ConfigMetadataModel[] _configMetadata =

@@ -17,7 +17,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Boolean()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "boolean"};
+        var schema = new OpenApiSchema { Type = "boolean" };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -30,7 +30,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Null()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "null"};
+        var schema = new OpenApiSchema { Type = "null" };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -43,7 +43,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Default()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "unknown"};
+        var schema = new OpenApiSchema { Type = "unknown" };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -58,7 +58,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_StringValue_ByteAndBinary(string format)
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string", Format = format};
+        var schema = new OpenApiSchema { Type = "string", Format = format };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -72,7 +72,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_StringValue_Date()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string", Format = "date"};
+        var schema = new OpenApiSchema { Type = "string", Format = "date" };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -86,7 +86,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_StringValue_DateTime()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string", Format = "date-time"};
+        var schema = new OpenApiSchema { Type = "string", Format = "date-time" };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -100,7 +100,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_StringValue_Default()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string", Format = string.Empty};
+        var schema = new OpenApiSchema { Type = "string", Format = string.Empty };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -135,7 +135,7 @@ public class OpenApiFakeDataGeneratorFacts
         // Arrange
         var schema = new OpenApiSchema
         {
-            OneOf = new List<OpenApiSchema> {new() {Type = "string", Format = string.Empty}}
+            OneOf = new List<OpenApiSchema> { new() { Type = "string", Format = string.Empty } }
         };
 
         // Act
@@ -151,7 +151,7 @@ public class OpenApiFakeDataGeneratorFacts
         // Arrange
         var schema = new OpenApiSchema
         {
-            AllOf = new List<OpenApiSchema> {new() {Type = "string", Format = string.Empty}}
+            AllOf = new List<OpenApiSchema> { new() { Type = "string", Format = string.Empty } }
         };
 
         // Act
@@ -168,7 +168,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Integer(string format)
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "integer", Format = format};
+        var schema = new OpenApiSchema { Type = "integer", Format = format };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -184,7 +184,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Number(string format)
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "number", Format = format};
+        var schema = new OpenApiSchema { Type = "number", Format = format };
 
         // Act
         var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
@@ -202,8 +202,8 @@ public class OpenApiFakeDataGeneratorFacts
             Type = "object",
             Properties = new Dictionary<string, OpenApiSchema>
             {
-                {"stringKey", new OpenApiSchema {Type = "string"}},
-                {"intKey", new OpenApiSchema {Type = "integer"}}
+                { "stringKey", new OpenApiSchema { Type = "string" } },
+                { "intKey", new OpenApiSchema { Type = "integer" } }
             }
         };
 
@@ -225,8 +225,8 @@ public class OpenApiFakeDataGeneratorFacts
             Type = null,
             Properties = new Dictionary<string, OpenApiSchema>
             {
-                {"stringKey", new OpenApiSchema {Type = "string"}},
-                {"intKey", new OpenApiSchema {Type = "integer"}}
+                { "stringKey", new OpenApiSchema { Type = "string" } },
+                { "intKey", new OpenApiSchema { Type = "integer" } }
             }
         };
 
@@ -251,8 +251,8 @@ public class OpenApiFakeDataGeneratorFacts
                 Type = "object",
                 Properties = new Dictionary<string, OpenApiSchema>
                 {
-                    {"stringKey", new OpenApiSchema {Type = "string"}},
-                    {"intKey", new OpenApiSchema {Type = "integer"}}
+                    { "stringKey", new OpenApiSchema { Type = "string" } },
+                    { "intKey", new OpenApiSchema { Type = "integer" } }
                 }
             }
         };
@@ -274,7 +274,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomStringValue_HappyFlow()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "integer"};
+        var schema = new OpenApiSchema { Type = "integer" };
 
         // Act
         var result = _generator.GetRandomStringValue(schema);
@@ -287,7 +287,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomStringValue_HappyFlow_Null()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "null"};
+        var schema = new OpenApiSchema { Type = "null" };
 
         // Act
         var result = _generator.GetRandomStringValue(schema);
@@ -300,7 +300,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomJsonStringValue_HappyFlow()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string"};
+        var schema = new OpenApiSchema { Type = "string" };
 
         // Act
         var result = _generator.GetRandomJsonStringValue(schema);
@@ -314,7 +314,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetResponseJsonExample_NoExamples_ShouldReturnNull()
     {
         // Arrange
-        var mediaType = new OpenApiMediaType {Examples = null};
+        var mediaType = new OpenApiMediaType { Examples = null };
 
         // Act
         var result = _generator.GetJsonExample(mediaType);
@@ -329,7 +329,7 @@ public class OpenApiFakeDataGeneratorFacts
         // Arrange
         var mediaType = new OpenApiMediaType
         {
-            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = null}}}
+            Examples = new Dictionary<string, OpenApiExample> { { "foo", new OpenApiExample { Value = null } } }
         };
 
         // Act
@@ -343,8 +343,8 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetResponseJsonExample_Example_ExampleIsOpenApiObject_ShouldReturnJsonString()
     {
         // Arrange
-        var obj = new OpenApiObject {{"key", new OpenApiString("val")}};
-        var mediaType = new OpenApiMediaType {Example = obj};
+        var obj = new OpenApiObject { { "key", new OpenApiString("val") } };
+        var mediaType = new OpenApiMediaType { Example = obj };
 
         // Act
         var result = _generator.GetJsonExample(mediaType);
@@ -359,10 +359,10 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetResponseJsonExample_Examples_ExampleIsOpenApiObject_ShouldReturnJsonString()
     {
         // Arrange
-        var obj = new OpenApiObject {{"key", new OpenApiString("val")}};
+        var obj = new OpenApiObject { { "key", new OpenApiString("val") } };
         var mediaType = new OpenApiMediaType
         {
-            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = obj}}}
+            Examples = new Dictionary<string, OpenApiExample> { { "foo", new OpenApiExample { Value = obj } } }
         };
 
         // Act
@@ -383,7 +383,7 @@ public class OpenApiFakeDataGeneratorFacts
 }");
         var mediaType = new OpenApiMediaType
         {
-            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = obj}}}
+            Examples = new Dictionary<string, OpenApiExample> { { "foo", new OpenApiExample { Value = obj } } }
         };
 
         // Act
@@ -432,7 +432,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void ExtractOpenApiPrimitiveValue_Binary()
     {
         // Arrange
-        var any = new OpenApiBinary(new byte[] {1, 2, 3});
+        var any = new OpenApiBinary(new byte[] { 1, 2, 3 });
 
         // Act
         var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Binary);
@@ -445,7 +445,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void ExtractOpenApiPrimitiveValue_Byte()
     {
         // Arrange
-        var any = new OpenApiByte(new byte[] {1, 2, 3});
+        var any = new OpenApiByte(new byte[] { 1, 2, 3 });
 
         // Act
         var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Byte);
@@ -590,9 +590,9 @@ public class OpenApiFakeDataGeneratorFacts
             Example = null,
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = null}
+            Schema = new OpenApiSchema { Example = null }
         };
 
         // Act
@@ -611,9 +611,9 @@ public class OpenApiFakeDataGeneratorFacts
             Example = null,
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
+            Schema = new OpenApiSchema { Example = new OpenApiInteger(789) }
         };
 
         // Act
@@ -632,9 +632,9 @@ public class OpenApiFakeDataGeneratorFacts
             Example = new OpenApiInteger(456),
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
+            Schema = new OpenApiSchema { Example = new OpenApiInteger(789) }
         };
 
         // Act
@@ -648,7 +648,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetExampleForHeader_NoExampleFound_ShouldReturnNull()
     {
         // Arrange
-        var input = new OpenApiHeader {Example = null, Examples = null};
+        var input = new OpenApiHeader { Example = null, Examples = null };
 
         // Act
         var result = _generator.GetExampleForHeader(input);
@@ -666,9 +666,9 @@ public class OpenApiFakeDataGeneratorFacts
             Example = null,
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = null}
+            Schema = new OpenApiSchema { Example = null }
         };
 
         // Act
@@ -687,9 +687,9 @@ public class OpenApiFakeDataGeneratorFacts
             Example = null,
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
+            Schema = new OpenApiSchema { Example = new OpenApiInteger(789) }
         };
 
         // Act
@@ -708,9 +708,9 @@ public class OpenApiFakeDataGeneratorFacts
             Example = new OpenApiInteger(456),
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
+            Schema = new OpenApiSchema { Example = new OpenApiInteger(789) }
         };
 
         // Act
@@ -724,7 +724,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetExampleForParameter_NoExampleFound_ShouldReturnNull()
     {
         // Arrange
-        var input = new OpenApiParameter {Example = null, Examples = null};
+        var input = new OpenApiParameter { Example = null, Examples = null };
 
         // Act
         var result = _generator.GetExampleForParameter(input);

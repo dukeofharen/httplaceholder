@@ -12,7 +12,7 @@ public class HostHandlerFacts
     public async Task HostHandler_HandleStubGenerationAsync_Port80_NoPortInHost()
     {
         // Arrange
-        var request = new HttpRequestModel {Url = "http://httplaceholder.com"};
+        var request = new HttpRequestModel { Url = "http://httplaceholder.com" };
         var conditions = new StubConditionsModel();
 
         // Act
@@ -27,7 +27,7 @@ public class HostHandlerFacts
     public async Task HostHandler_HandleStubGenerationAsync_Port443_NoPortInHost()
     {
         // Arrange
-        var request = new HttpRequestModel {Url = "https://httplaceholder.com"};
+        var request = new HttpRequestModel { Url = "https://httplaceholder.com" };
         var conditions = new StubConditionsModel();
 
         // Act
@@ -42,7 +42,7 @@ public class HostHandlerFacts
     public async Task HostHandler_HandleStubGenerationAsync_Port5000_PortInHost()
     {
         // Arrange
-        var request = new HttpRequestModel {Url = "https://httplaceholder.com:5000"};
+        var request = new HttpRequestModel { Url = "https://httplaceholder.com:5000" };
         var conditions = new StubConditionsModel();
 
         // Act

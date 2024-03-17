@@ -13,7 +13,7 @@ public class JsonResponseWriterFacts
     public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {Json = null}};
+        var stub = new StubModel { Response = new StubResponseModel { Json = null } };
 
         var response = new ResponseModel();
 
@@ -31,7 +31,7 @@ public class JsonResponseWriterFacts
         // arrange
         const string responseText = "{}";
         var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
-        var stub = new StubModel {Response = new StubResponseModel {Json = responseText}};
+        var stub = new StubModel { Response = new StubResponseModel { Json = responseText } };
 
         var response = new ResponseModel();
 
@@ -51,7 +51,7 @@ public class JsonResponseWriterFacts
         // arrange
         const string responseText = "{}";
         var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
-        var stub = new StubModel {Response = new StubResponseModel {Json = responseText}};
+        var stub = new StubModel { Response = new StubResponseModel { Json = responseText } };
 
         var response = new ResponseModel();
         response.Headers.Add(HeaderKeys.ContentType, MimeTypes.TextMime);

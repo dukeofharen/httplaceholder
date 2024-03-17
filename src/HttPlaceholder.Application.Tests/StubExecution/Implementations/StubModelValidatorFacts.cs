@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 [TestClass]
 public class StubModelValidatorFacts
 {
-    private readonly SettingsModel _settings = new() {Stub = new StubSettingsModel()};
+    private readonly SettingsModel _settings = new() { Stub = new StubSettingsModel() };
 
     private StubModelValidator _validator;
 
@@ -22,7 +22,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_IdNotSet_ShouldReturnError()
     {
         // Arrange
-        var model = new StubModel {Id = null};
+        var model = new StubModel { Id = null };
 
         // Act
         var result = _validator.ValidateStubModel(model);
@@ -35,7 +35,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ResponseNotSet_ShouldReturnError()
     {
         // Arrange
-        var model = new StubModel {Id = "stub-1", Response = null};
+        var model = new StubModel { Id = "stub-1", Response = null };
 
         // Act
         var result = _validator.ValidateStubModel(model);
@@ -56,7 +56,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateStatusCodes(int? statusCode, bool shouldSucceed)
     {
         // Arrange
-        var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {StatusCode = statusCode}};
+        var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { StatusCode = statusCode } };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();
@@ -81,7 +81,7 @@ public class StubModelValidatorFacts
     {
         // Arrange
         _settings.Stub.MaximumExtraDurationMillis = configuredMillis;
-        var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {ExtraDuration = stubMillis}};
+        var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { ExtraDuration = stubMillis } };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();
@@ -106,7 +106,7 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Min = min, Max = max}}
+            Response = new StubResponseModel { ExtraDuration = new StubExtraDurationModel { Min = min, Max = max } }
         };
 
         // Act
@@ -128,7 +128,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateLineEndings(LineEndingType? lineEndingType, bool shouldSucceed)
     {
         // Arrange
-        var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {LineEndings = lineEndingType}};
+        var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { LineEndings = lineEndingType } };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();
@@ -155,7 +155,10 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel {Image = new StubResponseImageModel {BackgroundColor = colorHexCode}}
+            Response = new StubResponseModel
+            {
+                Image = new StubResponseImageModel { BackgroundColor = colorHexCode }
+            }
         };
 
         // Act
@@ -184,7 +187,7 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel {Image = new StubResponseImageModel {FontColor = colorHexCode}}
+            Response = new StubResponseModel { Image = new StubResponseImageModel { FontColor = colorHexCode } }
         };
 
         // Act
@@ -210,7 +213,7 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel {Image = new StubResponseImageModel {JpegQuality = jpegQuality}}
+            Response = new StubResponseModel { Image = new StubResponseImageModel { JpegQuality = jpegQuality } }
         };
 
         // Act
@@ -351,7 +354,7 @@ public class StubModelValidatorFacts
         // Arrange
         var model = new StubModel
         {
-            Id = "stub", Response = new StubResponseModel {StatusCode = statusCode, Text = "Some response"}
+            Id = "stub", Response = new StubResponseModel { StatusCode = statusCode, Text = "Some response" }
         };
 
         // Act
@@ -423,7 +426,7 @@ public class StubModelValidatorFacts
         {
             Text = text, Regex = regex, IgnoreCase = ignoreCase, ReplaceWith = replaceWith
         };
-        var model = new StubModel {Id = "stub", Response = new StubResponseModel {Replace = new[] {dto}}};
+        var model = new StubModel { Id = "stub", Response = new StubResponseModel { Replace = new[] { dto } } };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();

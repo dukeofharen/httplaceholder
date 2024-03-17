@@ -19,11 +19,11 @@ public class FullPathConditionCheckerFacts
         // Arrange
         var checker = _mocker.CreateInstance<FullPathConditionChecker>();
 
-        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {FullPath = null}};
+        var conditions = new StubConditionsModel { Url = new StubUrlConditionModel { FullPath = null } };
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -39,7 +39,8 @@ public class FullPathConditionCheckerFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stringCheckerMock = _mocker.GetMock<IStringChecker>();
 
-        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {FullPath = "/login?success=false"}};
+        var conditions =
+            new StubConditionsModel { Url = new StubUrlConditionModel { FullPath = "/login?success=false" } };
 
         httpContextServiceMock
             .Setup(m => m.FullPath)
@@ -52,7 +53,7 @@ public class FullPathConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -68,7 +69,8 @@ public class FullPathConditionCheckerFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stringCheckerMock = _mocker.GetMock<IStringChecker>();
 
-        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {FullPath = "/login?success=true"}};
+        var conditions =
+            new StubConditionsModel { Url = new StubUrlConditionModel { FullPath = "/login?success=true" } };
 
         httpContextServiceMock
             .Setup(m => m.FullPath)
@@ -81,7 +83,7 @@ public class FullPathConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

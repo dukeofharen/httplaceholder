@@ -25,7 +25,7 @@ internal class QueryStringResponseVariableParsingHandler(
     public override string FullName => "Query string";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:query_string_key))"};
+    public override string[] Examples => new[] { $"(({Name}:query_string_key))" };
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,

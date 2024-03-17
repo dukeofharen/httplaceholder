@@ -16,8 +16,8 @@ namespace HttPlaceholder.Application.Metadata.Queries.GetMetadata;
 public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, MetadataModel>
 {
     private readonly IAssemblyService _assemblyService;
-    private readonly IServiceProvider _serviceProvider;
     private readonly IEnvService _envService;
+    private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
     ///     Constructs a <see cref="GetMetadataQueryHandler" /> instance.

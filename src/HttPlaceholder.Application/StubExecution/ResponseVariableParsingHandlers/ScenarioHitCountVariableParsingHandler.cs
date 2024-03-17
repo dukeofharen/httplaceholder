@@ -25,7 +25,7 @@ internal class ScenarioHitCountVariableParsingHandler(
     /// <inheritdoc />
     public override string FullName => "Scenario hit count";
 
-    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
+    public override string[] Examples => new[] { $"(({Name}))", $"(({Name}:scenario name))" };
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,

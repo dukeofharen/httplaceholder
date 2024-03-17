@@ -161,7 +161,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator, ISingletonS
         using var stringWriter = new StringWriter();
         example.Write(
             new OpenApiJsonWriter(stringWriter,
-                new OpenApiWriterSettings {InlineExternalReferences = true, InlineLocalReferences = true}),
+                new OpenApiWriterSettings { InlineExternalReferences = true, InlineLocalReferences = true }),
             OpenApiSpecVersion.OpenApi3_0);
         var result = stringWriter.ToString();
         return result;

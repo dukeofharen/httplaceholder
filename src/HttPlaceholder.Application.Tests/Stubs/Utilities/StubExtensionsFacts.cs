@@ -9,7 +9,7 @@ public class StubExtensionsFacts
     public void EnsureStubId_StubIdAlreadySet_ShouldNotSetItAgain()
     {
         // Arrange
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
 
         // Act
         var result = stub.EnsureStubId();
@@ -26,8 +26,8 @@ public class StubExtensionsFacts
         var stub = new StubModel
         {
             Id = null,
-            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/path"}},
-            Response = new StubResponseModel {Text = "OK!!"}
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = "/path" } },
+            Response = new StubResponseModel { Text = "OK!!" }
         };
 
         // Act
@@ -44,7 +44,7 @@ public class StubExtensionsFacts
     public void EnsureStubId_StubIdPrefix(string currentStubId, string prefix, string expectedResult)
     {
         // Arrange
-        var stub = new StubModel {Id = currentStubId};
+        var stub = new StubModel { Id = currentStubId };
 
         // Act
         var result = stub.EnsureStubId(prefix);

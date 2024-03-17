@@ -13,7 +13,7 @@ public class ContentTypeHandlerFacts
     public async Task HandleStubGenerationAsync_NoContentTypeHeaderSet_ShouldReturnFalse()
     {
         // Arrange
-        var response = new HttpResponseModel {Headers = {{"x-api-key", "1223"}}};
+        var response = new HttpResponseModel { Headers = { { "x-api-key", "1223" } } };
         var stubResponse = new StubResponseModel();
 
         // Act
@@ -33,7 +33,7 @@ public class ContentTypeHandlerFacts
         // Arrange
         var response = new HttpResponseModel
         {
-            Headers = {{"x-api-key", "1223"}, {headerKey, $"{MimeTypes.JsonMime}; charset=UTF-8"}}
+            Headers = { { "x-api-key", "1223" }, { headerKey, $"{MimeTypes.JsonMime}; charset=UTF-8" } }
         };
         var stubResponse = new StubResponseModel();
 

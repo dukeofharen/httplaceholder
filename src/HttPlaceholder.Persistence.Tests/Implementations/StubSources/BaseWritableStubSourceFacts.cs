@@ -24,7 +24,7 @@ public class BaseWritableStubSourceFacts
             HasResponse = true
         };
         var source = new TestStubSource();
-        source.SetRequests(new[] {request});
+        source.SetRequests(new[] { request });
 
         // Act
         var result = (await source.GetRequestResultsOverviewAsync(null, "key", CancellationToken.None)).ToArray();
@@ -49,7 +49,7 @@ public class BaseWritableStubSourceFacts
         // Arrange
         var request = new RequestResultModel
         {
-            RequestParameters = new RequestParametersModel {Method = "GET", Url = "/url"},
+            RequestParameters = new RequestParametersModel { Method = "GET", Url = "/url" },
             CorrelationId = Guid.NewGuid().ToString(),
             StubTenant = "tenant1",
             ExecutingStubId = "stub1",
@@ -58,7 +58,7 @@ public class BaseWritableStubSourceFacts
             HasResponse = true
         };
         var source = new TestStubSource();
-        source.SetRequests(new[] {request});
+        source.SetRequests(new[] { request });
 
         // Act
         var result = (await source.GetRequestResultsOverviewAsync(null, "key", CancellationToken.None)).ToArray();
@@ -83,13 +83,16 @@ public class BaseWritableStubSourceFacts
 
         public void SetRequests(IEnumerable<RequestResultModel> requests) => _requests = requests;
 
-        public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(string distributionKey = null,
+        public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
+            string distributionKey = null,
             CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
-            CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public override Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
+            GetStubsOverviewAsync(string distributionKey = null,
+                CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
-        public override Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId, string distributionKey = null,
+        public override Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId,
+            string distributionKey = null,
             CancellationToken cancellationToken = default) => throw new NotImplementedException();
 
         public override Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>

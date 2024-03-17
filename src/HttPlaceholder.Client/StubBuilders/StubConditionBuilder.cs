@@ -263,7 +263,7 @@ public sealed class StubConditionBuilder
         var formConditions = _conditions.Form != null
             ? (List<StubFormDto>)_conditions.Form
             : new List<StubFormDto>();
-        formConditions.Add(new StubFormDto {Key = key, Value = value});
+        formConditions.Add(new StubFormDto { Key = key, Value = value });
         _conditions.Form = formConditions;
         return this;
     }
@@ -280,7 +280,7 @@ public sealed class StubConditionBuilder
         var formConditions = _conditions.Form != null
             ? (List<StubFormDto>)_conditions.Form
             : new List<StubFormDto>();
-        formConditions.Add(new StubFormDto {Key = key, Value = checkingDto});
+        formConditions.Add(new StubFormDto { Key = key, Value = checkingDto });
         _conditions.Form = formConditions;
         return this;
     }
@@ -297,7 +297,7 @@ public sealed class StubConditionBuilder
         var formConditions = _conditions.Form != null
             ? (List<StubFormDto>)_conditions.Form
             : new List<StubFormDto>();
-        formConditions.Add(new StubFormDto {Key = key, Value = builder.Build()});
+        formConditions.Add(new StubFormDto { Key = key, Value = builder.Build() });
         _conditions.Form = formConditions;
         return this;
     }
@@ -357,7 +357,7 @@ public sealed class StubConditionBuilder
         var xpathConditions = _conditions.Xpath != null
             ? (List<StubXpathDto>)_conditions.Xpath
             : new List<StubXpathDto>();
-        xpathConditions.Add(new StubXpathDto {QueryString = xpath, Namespaces = namespaces});
+        xpathConditions.Add(new StubXpathDto { QueryString = xpath, Namespaces = namespaces });
         _conditions.Xpath = xpathConditions;
         return this;
     }
@@ -379,7 +379,7 @@ public sealed class StubConditionBuilder
             ? (List<object>)_conditions.JsonPath
             : new List<object>();
         jsonpathConditions.Add(!string.IsNullOrWhiteSpace(expectedValue)
-            ? new StubJsonPathModel {Query = query, ExpectedValue = expectedValue}
+            ? new StubJsonPathModel { Query = query, ExpectedValue = expectedValue }
             : query);
         _conditions.JsonPath = jsonpathConditions;
         return this;
@@ -393,7 +393,7 @@ public sealed class StubConditionBuilder
     /// <returns>The current <see cref="StubConditionBuilder" />.</returns>
     public StubConditionBuilder WithBasicAuthentication(string username, string password)
     {
-        _conditions.BasicAuthentication = new StubBasicAuthenticationDto {Username = username, Password = password};
+        _conditions.BasicAuthentication = new StubBasicAuthenticationDto { Username = username, Password = password };
         return this;
     }
 

@@ -33,6 +33,6 @@ public class GetUserDataQueryHandler : IRequestHandler<GetUserDataQuery, UserMod
             throw new ForbiddenException();
         }
 
-        return Task.FromResult(new UserModel {Username = request.Username});
+        return Task.FromResult(new UserModel { Username = request.Username });
     }
 }

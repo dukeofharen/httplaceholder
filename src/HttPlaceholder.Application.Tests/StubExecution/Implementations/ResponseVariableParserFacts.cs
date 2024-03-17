@@ -16,7 +16,7 @@ public class ResponseVariableParserFacts
     [TestInitialize]
     public void Initialize()
     {
-        _parser = new ResponseVariableParser(new[] {_handler1.Object, _handler2.Object});
+        _parser = new ResponseVariableParser(new[] { _handler1.Object, _handler2.Object });
 
         _handler1
             .Setup(m => m.Name)

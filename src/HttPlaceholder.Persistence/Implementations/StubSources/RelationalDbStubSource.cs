@@ -305,15 +305,17 @@ internal class RelationalDbStubSource(
     }
 
     /// <inheritdoc />
-    public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>> GetStubsOverviewAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default) =>
+    public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
+        GetStubsOverviewAsync(string distributionKey = null,
+            CancellationToken cancellationToken = default) =>
         (await GetStubsAsync(distributionKey, cancellationToken))
         .Select(s => (new StubOverviewModel { Id = s.Stub.Id, Tenant = s.Stub.Tenant, Enabled = s.Stub.Enabled },
             s.Metadata))
         .ToArray();
 
     /// <inheritdoc />
-    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId, string distributionKey = null,
+    public override async Task<(StubModel Stub, Dictionary<string, string> Metadata)?> GetStubAsync(string stubId,
+        string distributionKey = null,
         CancellationToken cancellationToken = default)
     {
         using var ctx = databaseContextFactory.CreateDatabaseContext();

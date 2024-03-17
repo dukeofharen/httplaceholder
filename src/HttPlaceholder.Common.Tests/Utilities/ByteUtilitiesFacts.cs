@@ -33,7 +33,7 @@ public class ByteUtilitiesFacts
     public void IsValidAscii_OnlyPartiallyAscii_ShouldReturnFalse()
     {
         // Arrange
-        var input = new byte[] {1, 2, 3, 200, 201};
+        var input = new byte[] { 1, 2, 3, 200, 201 };
 
         // Act
         var result = input.IsValidAscii();
@@ -46,7 +46,7 @@ public class ByteUtilitiesFacts
     public void IsValidAscii_NoneAscii_ShouldReturnFalse()
     {
         // Arrange
-        var input = new byte[] {200, 201, 203, 204};
+        var input = new byte[] { 200, 201, 203, 204 };
 
         // Act
         var result = input.IsValidAscii();

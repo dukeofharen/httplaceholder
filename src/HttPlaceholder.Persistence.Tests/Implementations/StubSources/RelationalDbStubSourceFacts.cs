@@ -20,7 +20,7 @@ public class RelationalDbStubSourceFacts
 
     private readonly SettingsModel _settings = new()
     {
-        Storage = new StorageSettingsModel {OldRequestsQueueLength = 100}
+        Storage = new StorageSettingsModel { OldRequestsQueueLength = 100 }
     };
 
     [TestInitialize]
@@ -122,8 +122,8 @@ public class RelationalDbStubSourceFacts
         };
         var responseModel = new ResponseModel
         {
-            Body = new byte[] {1, 2, 3},
-            Headers = {{HeaderKeys.ContentType, "text/plain"}},
+            Body = new byte[] { 1, 2, 3 },
+            Headers = { { HeaderKeys.ContentType, "text/plain" } },
             StatusCode = 200,
             BodyIsBinary = true
         };
@@ -165,7 +165,7 @@ public class RelationalDbStubSourceFacts
             .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(1);
 
-        var stub = new StubModel {Id = "stub-id"};
+        var stub = new StubModel { Id = "stub-id" };
 
         // Act
         await stubSource.AddStubAsync(stub, withDistributionKey ? DistributionKey : null, CancellationToken.None);
@@ -202,7 +202,7 @@ public class RelationalDbStubSourceFacts
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
-        var keys = new[] {"", "key1"};
+        var keys = new[] { "", "key1" };
         _mockDatabaseContext
             .Setup(m => m.QueryAsync<string>(distinctKeysQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
             .ReturnsAsync(keys);
@@ -238,7 +238,7 @@ public class RelationalDbStubSourceFacts
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         var correlationIdInput = Guid.NewGuid().ToString();
-        var request = new DbRequestModel {Json = $@"{{""CorrelationId"": ""{correlationIdInput}""}}"};
+        var request = new DbRequestModel { Json = $@"{{""CorrelationId"": ""{correlationIdInput}""}}" };
         object capturedParam = null;
         _mockDatabaseContext
             .Setup(m => m.QueryFirstOrDefaultAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(),
@@ -338,7 +338,7 @@ public class RelationalDbStubSourceFacts
             Id = 1,
             Body = Convert.ToBase64String(Encoding.UTF8.GetBytes("555")),
             Headers = JsonConvert.SerializeObject(
-                new Dictionary<string, string> {{HeaderKeys.ContentType, "text/plain"}}),
+                new Dictionary<string, string> { { HeaderKeys.ContentType, "text/plain" } }),
             StatusCode = 200,
             BodyIsBinary = false
         };
@@ -572,7 +572,7 @@ public class RelationalDbStubSourceFacts
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
-        var ids = new[] {Guid.NewGuid().ToString(), Guid.NewGuid().ToString()};
+        var ids = new[] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
         _mockDatabaseContext
             .Setup(m => m.QueryAsync<string>(correlationIdsQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
             .ReturnsAsync(ids);
@@ -598,7 +598,7 @@ public class RelationalDbStubSourceFacts
 
         // Act
         var result =
-            (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1]},
+            (await stubSource.GetRequestResultsAsync(new PagingModel { FromIdentifier = ids[1] },
                 withDistributionKey ? DistributionKey : null, CancellationToken.None))
             .ToArray();
 
@@ -674,7 +674,7 @@ public class RelationalDbStubSourceFacts
 
         // Act
         var result =
-            (await stubSource.GetRequestResultsAsync(new PagingModel {FromIdentifier = ids[1], ItemsPerPage = 2},
+            (await stubSource.GetRequestResultsAsync(new PagingModel { FromIdentifier = ids[1], ItemsPerPage = 2 },
                 withDistributionKey ? DistributionKey : null,
                 CancellationToken.None))
             .ToArray();
@@ -698,7 +698,7 @@ public class RelationalDbStubSourceFacts
     public async Task GetStubsAsync_ShouldReturnStubsCorrectly(bool withDistributionKey)
     {
         // Arrange
-        var stubs = new[] {new StubModel {Id = "stub-id"}};
+        var stubs = new[] { new StubModel { Id = "stub-id" } };
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
@@ -724,8 +724,8 @@ public class RelationalDbStubSourceFacts
         // Arrange
         var stubs = new[]
         {
-            new StubModel {Id = "stub-id1", Tenant = "tenant1", Enabled = true},
-            new StubModel {Id = "stub-id2", Tenant = "tenant2", Enabled = false}
+            new StubModel { Id = "stub-id1", Tenant = "tenant1", Enabled = true },
+            new StubModel { Id = "stub-id2", Tenant = "tenant2", Enabled = false }
         };
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
@@ -760,7 +760,7 @@ public class RelationalDbStubSourceFacts
     {
         // Arrange
         const string stubId = "stub-id";
-        var cachedStubs = new[] {new StubModel {Id = "other-stub-id"}, new StubModel {Id = stubId}};
+        var cachedStubs = new[] { new StubModel { Id = "other-stub-id" }, new StubModel { Id = stubId } };
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
@@ -785,7 +785,7 @@ public class RelationalDbStubSourceFacts
     public async Task GetStubAsync_StubNotFound_ShouldReturnNull(bool withDistributionKey)
     {
         // Arrange
-        var stubs = new[] {new StubModel {Id = "stub-id"}};
+        var stubs = new[] { new StubModel { Id = "stub-id" } };
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
@@ -922,7 +922,7 @@ public class RelationalDbStubSourceFacts
             .Setup(m => m.ExecuteAsync(addQuery, It.IsAny<CancellationToken>(), Capture.In(addCaptured)))
             .ReturnsAsync(1);
 
-        var input = new ScenarioStateModel(scenario) {State = Guid.NewGuid().ToString(), HitCount = 11};
+        var input = new ScenarioStateModel(scenario) { State = Guid.NewGuid().ToString(), HitCount = 11 };
 
         // Act
         var result = await source.AddScenarioAsync(scenario, input,
@@ -1011,7 +1011,7 @@ public class RelationalDbStubSourceFacts
             .Setup(m => m.ExecuteAsync(updateQuery, It.IsAny<CancellationToken>(), Capture.In(updateCaptured)))
             .ReturnsAsync(1);
 
-        var input = new ScenarioStateModel(scenario) {State = Guid.NewGuid().ToString(), HitCount = 11};
+        var input = new ScenarioStateModel(scenario) { State = Guid.NewGuid().ToString(), HitCount = 11 };
 
         // Act
         await source.UpdateScenarioAsync(scenario, input,

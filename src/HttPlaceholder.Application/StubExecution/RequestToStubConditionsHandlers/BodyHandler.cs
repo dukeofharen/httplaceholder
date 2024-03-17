@@ -25,7 +25,7 @@ internal class BodyHandler : IRequestToStubConditionsHandler, ISingletonService
             return Task.FromResult(false);
         }
 
-        conditions.Body = new[] {new StubConditionStringCheckingModel {StringEquals = request.Body}};
+        conditions.Body = new[] { new StubConditionStringCheckingModel { StringEquals = request.Body } };
         return Task.FromResult(true);
     }
 

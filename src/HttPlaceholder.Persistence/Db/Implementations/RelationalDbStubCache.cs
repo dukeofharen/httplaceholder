@@ -74,7 +74,7 @@ internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalD
                 StubUpdateTrackingId = newId;
                 ctx.Execute(
                     queryStore.InsertStubUpdateTrackingIdQuery,
-                    new {StubUpdateTrackingId = newId});
+                    new { StubUpdateTrackingId = newId });
                 shouldUpdateCache = true;
             }
         }
@@ -118,7 +118,7 @@ internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalD
 
     private IList<StubModel> GetStubs(IDatabaseContext ctx, string distributionKey)
     {
-        var queryResults = ctx.Query<DbStubModel>(queryStore.GetStubsQuery, new {DistributionKey = distributionKey});
+        var queryResults = ctx.Query<DbStubModel>(queryStore.GetStubsQuery, new { DistributionKey = distributionKey });
 
         return queryResults.Select(queryResult => queryResult.StubType switch
             {
@@ -142,7 +142,7 @@ internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalD
     {
         var newId = Guid.NewGuid().ToString();
         await ctx.ExecuteAsync(queryStore.UpdateStubUpdateTrackingIdQuery, cancellationToken,
-            new {StubUpdateTrackingId = newId});
+            new { StubUpdateTrackingId = newId });
         return newId;
     }
 }

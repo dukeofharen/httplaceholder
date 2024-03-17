@@ -13,7 +13,7 @@ public class ExecuteScheduledJobCommandHandlerFacts
     private readonly Mock<ICustomHostedService> _mockJob2 = CreateCustomHostedServiceMock("job2");
 
     [TestInitialize]
-    public void Setup() => _mocker.Use<IEnumerable<ICustomHostedService>>(new[] {_mockJob1.Object, _mockJob2.Object});
+    public void Setup() => _mocker.Use<IEnumerable<ICustomHostedService>>(new[] { _mockJob1.Object, _mockJob2.Object });
 
     [TestMethod]
     public async Task Handle_JobNotFound_ShouldThrowNotFoundException()

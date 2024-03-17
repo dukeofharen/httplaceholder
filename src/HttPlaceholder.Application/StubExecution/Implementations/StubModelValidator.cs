@@ -65,7 +65,7 @@ internal class StubModelValidator(
                 result.Add(string.Format(errorTemplate, "ExtraDuration.Max", allowedMillis));
             }
 
-            if (extraDurationModel is {Min: { }} && extraDurationModel.Max.HasValue &&
+            if (extraDurationModel is { Min: not null } && extraDurationModel.Max.HasValue &&
                 extraDurationModel.Min > extraDurationModel.Max)
             {
                 result.Add("ExtraDuration.Min should be lower than or equal to ExtraDuration.Max.");

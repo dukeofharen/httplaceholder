@@ -19,7 +19,7 @@ public class ReverseProxyResponseWriterFacts
     {
         // Arrange
         var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
-        var stub = new StubModel {Response = new StubResponseModel {ReverseProxy = null}};
+        var stub = new StubModel { Response = new StubResponseModel { ReverseProxy = null } };
 
         // Act
         var result = await writer.WriteToResponseAsync(stub, null, CancellationToken.None);
@@ -35,7 +35,10 @@ public class ReverseProxyResponseWriterFacts
         var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var stub = new StubModel
         {
-            Response = new StubResponseModel {ReverseProxy = new StubResponseReverseProxyModel {Url = string.Empty}}
+            Response = new StubResponseModel
+            {
+                ReverseProxy = new StubResponseReverseProxyModel { Url = string.Empty }
+            }
         };
 
         // Act
@@ -93,7 +96,7 @@ public class ReverseProxyResponseWriterFacts
         var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
-            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = pathCondition}},
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = pathCondition } },
             Response = new StubResponseModel
             {
                 ReverseProxy = new StubResponseReverseProxyModel
@@ -157,14 +160,14 @@ public class ReverseProxyResponseWriterFacts
 
         var headers = new Dictionary<string, string>
         {
-            {HeaderKeys.ContentType, MimeTypes.JsonMime},
-            {HeaderKeys.ContentLength, "111"},
-            {HeaderKeys.Host, "localhost:5000"},
-            {"X-Api-Key", "abc123"},
-            {"Connection", "keep-alive"},
-            {HeaderKeys.AcceptEncoding, "utf-8"},
-            {"Accept", MimeTypes.JsonMime},
-            {"User-Agent", "WordPress/6.2.2; http://localhost:8010"}
+            { HeaderKeys.ContentType, MimeTypes.JsonMime },
+            { HeaderKeys.ContentLength, "111" },
+            { HeaderKeys.Host, "localhost:5000" },
+            { "X-Api-Key", "abc123" },
+            { "Connection", "keep-alive" },
+            { HeaderKeys.AcceptEncoding, "utf-8" },
+            { "Accept", MimeTypes.JsonMime },
+            { "User-Agent", "WordPress/6.2.2; http://localhost:8010" }
         };
         mockHttpContextService
             .Setup(m => m.GetHeaders())
@@ -224,11 +227,11 @@ public class ReverseProxyResponseWriterFacts
         var mockHttp = new MockHttpMessageHandler();
         var responseHeaders = new Dictionary<string, string>
         {
-            {"Token", "abc123"},
-            {"Some-Date", "2020-08-16"},
-            {HeaderKeys.XHttPlaceholderCorrelation, "correlation"},
-            {HeaderKeys.XHttPlaceholderExecutedStub, "stub-id"},
-            {HeaderKeys.TransferEncoding, "chunked"}
+            { "Token", "abc123" },
+            { "Some-Date", "2020-08-16" },
+            { HeaderKeys.XHttPlaceholderCorrelation, "correlation" },
+            { HeaderKeys.XHttPlaceholderExecutedStub, "stub-id" },
+            { HeaderKeys.TransferEncoding, "chunked" }
         };
         mockHttp
             .When("http://example.com")
@@ -294,7 +297,7 @@ public class ReverseProxyResponseWriterFacts
 
         mockHttpContextService
             .Setup(m => m.GetHeaders())
-            .Returns(new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}});
+            .Returns(new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.JsonMime } });
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp
@@ -349,7 +352,7 @@ public class ReverseProxyResponseWriterFacts
 
         mockHttpContextService
             .Setup(m => m.GetHeaders())
-            .Returns(new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}});
+            .Returns(new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.JsonMime } });
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp
@@ -404,7 +407,7 @@ public class ReverseProxyResponseWriterFacts
         var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
-            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = pathCondition}},
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = pathCondition } },
             Response = new StubResponseModel
             {
                 ReverseProxy = new StubResponseReverseProxyModel
@@ -434,7 +437,7 @@ public class ReverseProxyResponseWriterFacts
             .When(HttpMethod.Get, $"{proxyUrl}/**")
             .Respond(
                 HttpStatusCode.OK,
-                new Dictionary<string, string> {{"X-Url", proxyUrl}},
+                new Dictionary<string, string> { { "X-Url", proxyUrl } },
                 MimeTypes.TextMime,
                 proxyUrl);
 
@@ -467,7 +470,7 @@ public class ReverseProxyResponseWriterFacts
         const string path = "/todoitems/todos/1";
         var stub = new StubModel
         {
-            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/proxy"}},
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = "/proxy" } },
             Response = new StubResponseModel
             {
                 ReverseProxy = new StubResponseReverseProxyModel
@@ -511,7 +514,10 @@ public class ReverseProxyResponseWriterFacts
     public void GetPath_PathIsNull_ShouldReturnNull()
     {
         // Arrange
-        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = null}}};
+        var stub = new StubModel
+        {
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = null } }
+        };
 
         // Act
         var result = ReverseProxyResponseWriter.GetPath(stub);
@@ -526,7 +532,7 @@ public class ReverseProxyResponseWriterFacts
         // Arrange
         var stub = new StubModel
         {
-            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/path"}}
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = "/path" } }
         };
 
         // Act
@@ -540,8 +546,11 @@ public class ReverseProxyResponseWriterFacts
     public void GetPath_PathIsModel_StringEquals()
     {
         // Arrange
-        var path = new StubConditionStringCheckingModel {StringEquals = "/path"};
-        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = path}}};
+        var path = new StubConditionStringCheckingModel { StringEquals = "/path" };
+        var stub = new StubModel
+        {
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = path } }
+        };
 
         // Act
         var result = ReverseProxyResponseWriter.GetPath(stub);
@@ -554,8 +563,11 @@ public class ReverseProxyResponseWriterFacts
     public void GetPath_PathIsModel_StringEqualsCi()
     {
         // Arrange
-        var path = new StubConditionStringCheckingModel {StringEqualsCi = "/path"};
-        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = path}}};
+        var path = new StubConditionStringCheckingModel { StringEqualsCi = "/path" };
+        var stub = new StubModel
+        {
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = path } }
+        };
 
         // Act
         var result = ReverseProxyResponseWriter.GetPath(stub);
@@ -568,8 +580,11 @@ public class ReverseProxyResponseWriterFacts
     public void GetPath_PathIsModel_StartsWith()
     {
         // Arrange
-        var path = new StubConditionStringCheckingModel {StartsWith = "/path"};
-        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = path}}};
+        var path = new StubConditionStringCheckingModel { StartsWith = "/path" };
+        var stub = new StubModel
+        {
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = path } }
+        };
 
         // Act
         var result = ReverseProxyResponseWriter.GetPath(stub);
@@ -582,8 +597,11 @@ public class ReverseProxyResponseWriterFacts
     public void GetPath_PathIsModel_StartsWithCi()
     {
         // Arrange
-        var path = new StubConditionStringCheckingModel {StartsWithCi = "/path"};
-        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = path}}};
+        var path = new StubConditionStringCheckingModel { StartsWithCi = "/path" };
+        var stub = new StubModel
+        {
+            Conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Path = path } }
+        };
 
         // Act
         var result = ReverseProxyResponseWriter.GetPath(stub);

@@ -92,7 +92,7 @@ public class SetScenarioStateResponseWriterFacts
         var writer = _mocker.CreateInstance<SetScenarioStateResponseWriter>();
         var stubContextMock = _mocker.GetMock<IStubContext>();
 
-        var currentScenarioState = new ScenarioStateModel(scenario) {State = Constants.DefaultScenarioState};
+        var currentScenarioState = new ScenarioStateModel(scenario) { State = Constants.DefaultScenarioState };
         stubContextMock
             .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(currentScenarioState);
@@ -114,7 +114,7 @@ public class SetScenarioStateResponseWriterFacts
             Scenario = scenario,
             Response = new StubResponseModel
             {
-                Scenario = new StubResponseScenarioModel {SetScenarioState = setScenarioState}
+                Scenario = new StubResponseScenarioModel { SetScenarioState = setScenarioState }
             }
         };
 }

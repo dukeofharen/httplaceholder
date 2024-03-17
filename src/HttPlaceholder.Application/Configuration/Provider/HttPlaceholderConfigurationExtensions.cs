@@ -15,5 +15,5 @@ public static class HttPlaceholderConfigurationExtensions
     /// <param name="args">Initial data.</param>
     /// <returns>The configuration builder.</returns>
     public static IConfigurationBuilder AddCustomInMemoryCollection(this IConfigurationBuilder builder,
-        IDictionary<string, string> args) => builder.Add(new HttPlaceholderConfigurationSource {InitialData = args});
+        IDictionary<string, string> args) => builder.Add(new HttPlaceholderConfigurationSource { InitialData = args });
 }

@@ -198,7 +198,8 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     {
         var item = GetCollection(distributionKey);
         var stub = item.StubModels.FirstOrDefault(s => s.Id == stubId);
-        (StubModel, Dictionary<string, string>)? result = stub != null ? (stub, new Dictionary<string, string>()) : null;
+        (StubModel, Dictionary<string, string>)?
+            result = stub != null ? (stub, new Dictionary<string, string>()) : null;
         return Task.FromResult(result);
     }
 

@@ -37,7 +37,7 @@ public class StubJsonConditionsIntegrationTests : StubIntegrationTestBase
 ";
 
         var url = $"{TestServer.BaseAddress}json";
-        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(jsonToPost)};
+        var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(jsonToPost) };
 
         // Act
         var response = await Client.SendAsync(request);
@@ -74,7 +74,7 @@ public class StubJsonConditionsIntegrationTests : StubIntegrationTestBase
 ";
 
         var url = $"{TestServer.BaseAddress}json";
-        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(jsonToPost)};
+        var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(jsonToPost) };
 
         // Act
         var response = await Client.SendAsync(request);
@@ -100,7 +100,7 @@ public class StubJsonConditionsIntegrationTests : StubIntegrationTestBase
 ";
 
         var url = $"{TestServer.BaseAddress}json";
-        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(jsonToPost)};
+        var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(jsonToPost) };
 
         // Act
         var response = await Client.SendAsync(request);
@@ -129,7 +129,7 @@ public class StubJsonConditionsIntegrationTests : StubIntegrationTestBase
 ";
 
         var url = $"{TestServer.BaseAddress}json";
-        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(jsonToPost)};
+        var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(jsonToPost) };
 
         // Act
         var response = await Client.SendAsync(request);

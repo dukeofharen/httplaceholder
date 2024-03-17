@@ -17,7 +17,7 @@ internal class PathHandler : IRequestToStubConditionsHandler, ISingletonService
         CancellationToken cancellationToken)
     {
         var uri = new Uri(request.Url);
-        conditions.Url.Path = new StubConditionStringCheckingModel {StringEquals = uri.LocalPath};
+        conditions.Url.Path = new StubConditionStringCheckingModel { StringEquals = uri.LocalPath };
         return Task.FromResult(true);
     }
 

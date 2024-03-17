@@ -30,7 +30,7 @@ internal class StubRootPathResolver(
         if (string.IsNullOrWhiteSpace(inputFile) && string.IsNullOrWhiteSpace(fileStorageLocation))
         {
             // If no input file was provided, return the assembly path instead.
-            return new[] {assemblyService.GetEntryAssemblyRootPath()};
+            return new[] { assemblyService.GetEntryAssemblyRootPath() };
         }
 
         IEnumerable<string> result = !string.IsNullOrWhiteSpace(inputFile)
@@ -40,7 +40,7 @@ internal class StubRootPathResolver(
             : Array.Empty<string>();
         if (!string.IsNullOrWhiteSpace(fileStorageLocation))
         {
-            result = result.Concat(new[] {fileStorageLocation});
+            result = result.Concat(new[] { fileStorageLocation });
         }
 
         return result.Distinct();

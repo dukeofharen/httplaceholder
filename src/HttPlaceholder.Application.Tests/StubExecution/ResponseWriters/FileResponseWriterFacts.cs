@@ -28,7 +28,7 @@ public class FileResponseWriterFacts
     {
         // Arrange
         var writer = _mocker.CreateInstance<FileResponseWriter>();
-        var stub = new StubModel {Response = new StubResponseModel()};
+        var stub = new StubModel { Response = new StubResponseModel() };
         if (textFile)
         {
             stub.Response.TextFile = null;
@@ -60,7 +60,7 @@ public class FileResponseWriterFacts
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
         const string path = @"C:\tmp\image.png";
-        var stub = new StubModel {Response = new StubResponseModel()};
+        var stub = new StubModel { Response = new StubResponseModel() };
         if (textFile)
         {
             stub.Response.TextFile = path;
@@ -97,9 +97,9 @@ public class FileResponseWriterFacts
         var mimeServiceMock = _mocker.GetMock<IMimeService>();
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
-        var body = new byte[] {1, 2, 3};
+        var body = new byte[] { 1, 2, 3 };
         const string path = @"C:\tmp\image.png";
-        var stub = new StubModel {Response = new StubResponseModel()};
+        var stub = new StubModel { Response = new StubResponseModel() };
         if (textFile)
         {
             stub.Response.TextFile = path;
@@ -149,10 +149,10 @@ public class FileResponseWriterFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
-        var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
+        var stubRootPaths = new[] { "/var/stubs1", "/var/stubs2" };
         var expectedPath = Path.Combine(stubRootPaths[1], actualFile);
-        var body = new byte[] {1, 2, 3};
-        var stub = new StubModel {Response = new StubResponseModel()};
+        var body = new byte[] { 1, 2, 3 };
+        var stub = new StubModel { Response = new StubResponseModel() };
         if (textFile)
         {
             stub.Response.TextFile = file;
@@ -199,9 +199,9 @@ public class FileResponseWriterFacts
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
         const string file = "image.png";
-        var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
+        var stubRootPaths = new[] { "/var/stubs1", "/var/stubs2" };
         var expectedFolder = Path.Combine(stubRootPaths[0], file);
-        var stub = new StubModel {Response = new StubResponseModel {File = file}};
+        var stub = new StubModel { Response = new StubResponseModel { File = file } };
 
         var response = new ResponseModel();
 

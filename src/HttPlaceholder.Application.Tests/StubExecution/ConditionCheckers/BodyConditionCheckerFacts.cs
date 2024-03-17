@@ -19,11 +19,11 @@ public class BodyConditionCheckerFacts
     {
         // arrange
         var checker = _mocker.CreateInstance<BodyConditionChecker>();
-        var conditions = new StubConditionsModel {Body = null};
+        var conditions = new StubConditionsModel { Body = null };
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -38,7 +38,7 @@ public class BodyConditionCheckerFacts
         var checker = _mocker.CreateInstance<BodyConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
 
-        var conditions = new StubConditionsModel {Body = new[] {@"\bthat\b", @"\btree\b"}};
+        var conditions = new StubConditionsModel { Body = new[] { @"\bthat\b", @"\btree\b" } };
 
         httpContextServiceMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -46,7 +46,7 @@ public class BodyConditionCheckerFacts
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -62,7 +62,7 @@ public class BodyConditionCheckerFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stringCheckerMock = _mocker.GetMock<IStringChecker>();
 
-        var conditions = new StubConditionsModel {Body = new[] {@"\bthis\b", @"\btree\b"}};
+        var conditions = new StubConditionsModel { Body = new[] { @"\bthis\b", @"\btree\b" } };
 
         httpContextServiceMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -78,7 +78,7 @@ public class BodyConditionCheckerFacts
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -94,7 +94,7 @@ public class BodyConditionCheckerFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stringCheckerMock = _mocker.GetMock<IStringChecker>();
 
-        var conditions = new StubConditionsModel {Body = new[] {"this is a test"}};
+        var conditions = new StubConditionsModel { Body = new[] { "this is a test" } };
 
         httpContextServiceMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
@@ -107,7 +107,7 @@ public class BodyConditionCheckerFacts
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

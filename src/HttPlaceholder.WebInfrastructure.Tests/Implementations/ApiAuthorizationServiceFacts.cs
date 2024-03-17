@@ -12,7 +12,7 @@ public class ApiAuthorizationServiceFacts
 {
     private readonly AutoMocker _mocker = new();
     private readonly MockLogger<ApiAuthorizationService> _mockLogger = new();
-    private readonly SettingsModel _settings = new() {Authentication = new AuthenticationSettingsModel()};
+    private readonly SettingsModel _settings = new() { Authentication = new AuthenticationSettingsModel() };
 
     [TestInitialize]
     public void Initialize()
@@ -76,7 +76,7 @@ public class ApiAuthorizationServiceFacts
         mockLoginService
             .Setup(m => m.CheckLoginCookie())
             .Returns(false);
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjpwYXNzOm9uemlu"}});
+        SetHeaders(new Dictionary<string, string> { { "Authorization", "Basic dXNlcjpwYXNzOm9uemlu" } });
 
         // Act
         var result = service.CheckAuthorization();
@@ -97,7 +97,7 @@ public class ApiAuthorizationServiceFacts
             .Returns(false);
         _settings.Authentication.ApiUsername = "user";
         _settings.Authentication.ApiPassword = "pass";
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjE6cGFzczE="}});
+        SetHeaders(new Dictionary<string, string> { { "Authorization", "Basic dXNlcjE6cGFzczE=" } });
 
         // Act
         var result = service.CheckAuthorization();
@@ -116,7 +116,7 @@ public class ApiAuthorizationServiceFacts
         mockLoginService
             .Setup(m => m.CheckLoginCookie())
             .Returns(false);
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic ()*&"}});
+        SetHeaders(new Dictionary<string, string> { { "Authorization", "Basic ()*&" } });
 
         // Act
         var result = service.CheckAuthorization();
@@ -139,7 +139,7 @@ public class ApiAuthorizationServiceFacts
             .Returns(false);
         _settings.Authentication.ApiUsername = "user";
         _settings.Authentication.ApiPassword = "pass";
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjpwYXNz"}});
+        SetHeaders(new Dictionary<string, string> { { "Authorization", "Basic dXNlcjpwYXNz" } });
 
         ClaimsPrincipal capturedClaimsPrincipal = null;
         mockHttpContextService

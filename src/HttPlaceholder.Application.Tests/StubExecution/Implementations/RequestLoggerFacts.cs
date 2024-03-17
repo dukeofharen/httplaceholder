@@ -88,7 +88,7 @@ public class RequestLoggerFacts
         {
             CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.NotExecuted
         };
-        var conditions = new[] {condition1, condition2, condition3};
+        var conditions = new[] { condition1, condition2, condition3 };
 
         // act
         _logger.SetStubExecutionResult(stubId, false, conditions);

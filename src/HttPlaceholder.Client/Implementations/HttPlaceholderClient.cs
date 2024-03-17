@@ -113,7 +113,7 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         }
 
         var result = JsonConvert.DeserializeObject<FeatureResultDto>(content);
-        return result is {Enabled: true};
+        return result is { Enabled: true };
     }
 
     /// <inheritdoc />
@@ -734,7 +734,7 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         var validationMessage = passed
             ? string.Empty
             : $"Validation failed. {string.Join(" ", validationMessages)}";
-        var result = new VerificationResultModel {Message = validationMessage, Passed = passed, Requests = requests};
+        var result = new VerificationResultModel { Message = validationMessage, Passed = passed, Requests = requests };
         if (!passed)
         {
             throw new StubVerificationFailedException(validationMessage, result);

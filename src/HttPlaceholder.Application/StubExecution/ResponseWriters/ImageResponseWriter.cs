@@ -75,7 +75,7 @@ internal class ImageResponseWriter(IAssemblyService assemblyService, IFileServic
                     await image.SaveAsGifAsync(ms, cancellationToken);
                     break;
                 case ResponseImageType.Jpeg:
-                    await image.SaveAsJpegAsync(ms, new JpegEncoder {Quality = stubImage.JpegQuality},
+                    await image.SaveAsJpegAsync(ms, new JpegEncoder { Quality = stubImage.JpegQuality },
                         cancellationToken);
                     break;
                 default:

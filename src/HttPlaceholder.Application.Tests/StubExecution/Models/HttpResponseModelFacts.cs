@@ -12,7 +12,7 @@ public class HttpResponseModelFacts
     public void ResponseBodyIsBinary_ShouldConvertToBase64()
     {
         // Arrange
-        var response = new ResponseModel {BodyIsBinary = true, Body = new byte[] {1, 2, 3}};
+        var response = new ResponseModel { BodyIsBinary = true, Body = new byte[] { 1, 2, 3 } };
 
         // Act
         var result = _mapper.Map<HttpResponseModel>(response);
@@ -26,7 +26,7 @@ public class HttpResponseModelFacts
     public void ResponseBodyIsNotBinary_ShouldConvertToStringAsIs()
     {
         // Arrange
-        var response = new ResponseModel {BodyIsBinary = false, Body = "some text"u8.ToArray()};
+        var response = new ResponseModel { BodyIsBinary = false, Body = "some text"u8.ToArray() };
 
         // Act
         var result = _mapper.Map<HttpResponseModel>(response);

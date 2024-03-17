@@ -8,7 +8,7 @@ public class ClientIpResolverFacts
 {
     private readonly AutoMocker _mocker = new();
     private readonly MockHttpContext _mockHttpContext = new();
-    private readonly SettingsModel _settings = new() {Web = new WebSettingsModel()};
+    private readonly SettingsModel _settings = new() { Web = new WebSettingsModel() };
 
     [TestInitialize]
     public void Initialize()

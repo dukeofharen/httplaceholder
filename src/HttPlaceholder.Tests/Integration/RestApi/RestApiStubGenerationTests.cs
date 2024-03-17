@@ -99,7 +99,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
             Content = new StringContent(
-                JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}),
+                JsonConvert.SerializeObject(new CreateStubForRequestInputDto { DoNotCreateStub = true }),
                 Encoding.UTF8, MimeTypes.JsonMime)
         };
         response = await Client.SendAsync(apiRequest);
@@ -135,7 +135,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         };
         StubSource.GetCollection(null).RequestResultModels.Add(requestResult);
         StubSource.GetCollection(null).RequestResponseMap
-            .Add(requestResult, new ResponseModel {Body = "the content"u8.ToArray()});
+            .Add(requestResult, new ResponseModel { Body = "the content"u8.ToArray() });
 
         // Register a new stub for the request
         var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
@@ -144,7 +144,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
             Content = new StringContent(
-                JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}),
+                JsonConvert.SerializeObject(new CreateStubForRequestInputDto { DoNotCreateStub = true }),
                 Encoding.UTF8, MimeTypes.JsonMime)
         };
         var response = await Client.SendAsync(apiRequest);
@@ -166,7 +166,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
             Method = HttpMethod.Post,
             Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                {"form1", "val1"}, {"form2", "val2"}
+                { "form1", "val1" }, { "form2", "val2" }
             })
         };
         clientRequest.Headers.Add("X-Api-Key", "abc123");

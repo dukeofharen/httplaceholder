@@ -20,7 +20,7 @@ public class CreateCurlStubCommandHandlerFacts
 
         const string tenant = "tenant1";
         var request = new CreateCurlStubCommand("curl bladibla", true, tenant, "prefix");
-        var expectedResult = new[] {new FullStubModel()};
+        var expectedResult = new[] { new FullStubModel() };
         curlStubGeneratorMock
             .Setup(m => m.GenerateStubsAsync(request.Input, request.DoNotCreateStub, tenant, "prefix",
                 It.IsAny<CancellationToken>()))
@@ -41,7 +41,7 @@ public class CreateCurlStubCommandHandlerFacts
         var handler = _mocker.CreateInstance<CreateCurlStubCommandHandler>();
 
         var request = new CreateCurlStubCommand("curl bladibla", true, null, "prefix");
-        var expectedResult = new[] {new FullStubModel()};
+        var expectedResult = new[] { new FullStubModel() };
         string capturedTenant = null;
         curlStubGeneratorMock
             .Setup(m => m.GenerateStubsAsync(request.Input, request.DoNotCreateStub, It.IsAny<string>(), "prefix",

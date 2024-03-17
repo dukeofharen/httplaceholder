@@ -42,7 +42,7 @@ public class IndexHtmlMiddleware
     public async Task Invoke(HttpContext context)
     {
         var path = _httpContextService.Path;
-        var parts = new[] {"/ph-ui", "/ph-ui/", "/ph-ui/index.html"};
+        var parts = new[] { "/ph-ui", "/ph-ui/", "/ph-ui/index.html" };
         if (parts.Any(p => path.Equals(p, StringComparison.OrdinalIgnoreCase)))
         {
             var cancellationToken = context?.RequestAborted ?? CancellationToken.None;

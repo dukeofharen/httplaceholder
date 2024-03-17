@@ -22,7 +22,7 @@ internal class UuidResponseVariableParsingHandler(IFileService fileService)
     public override string FullName => "UUID";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}))"};
+    public override string[] Examples => new[] { $"(({Name}))" };
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,

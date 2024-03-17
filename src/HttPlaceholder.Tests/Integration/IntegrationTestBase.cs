@@ -31,9 +31,9 @@ public abstract class IntegrationTestBase
         var config = new ConfigurationBuilder()
             .AddCustomInMemoryCollection(new Dictionary<string, string>
             {
-                {"Storage:InputFile", @"C:\tmp"},
-                {"Storage:CleanOldRequestsInBackgroundJob", "true"},
-                {"Gui:EnableUserInterface", "true"}
+                { "Storage:InputFile", @"C:\tmp" },
+                { "Storage:CleanOldRequestsInBackgroundJob", "true" },
+                { "Gui:EnableUserInterface", "true" }
             })
             .Build();
         servicesToReplace = servicesToReplace.Concat(new (Type, object)[]

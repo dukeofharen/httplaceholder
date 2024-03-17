@@ -14,12 +14,12 @@ namespace HttPlaceholder.Application.Export.Queries.ExportRequest;
 /// </summary>
 public class ExportRequestQueryHandler : IRequestHandler<ExportRequestQuery, string>
 {
-    private readonly IStubContext _stubContext;
     private readonly IRequestToCurlCommandService _requestToCurlCommandService;
     private readonly IRequestToHarService _requestToHarService;
+    private readonly IStubContext _stubContext;
 
     /// <summary>
-    ///     Constructs an <see cref="ExportRequestQueryHandler"/> instance.
+    ///     Constructs an <see cref="ExportRequestQueryHandler" /> instance.
     /// </summary>
     public ExportRequestQueryHandler(IStubContext stubContext, IRequestToCurlCommandService requestToCurlCommandService,
         IRequestToHarService requestToHarService)

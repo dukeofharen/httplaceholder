@@ -14,7 +14,7 @@ public class InMemoryStubSourceFacts
     private const string DistributionKey = "username";
     private static readonly Faker _faker = new();
     private readonly AutoMocker _mocker = new();
-    private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
+    private readonly SettingsModel _settings = new() { Storage = new StorageSettingsModel() };
 
     [TestInitialize]
     public void Initialize() => _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
@@ -339,7 +339,7 @@ public class InMemoryStubSourceFacts
         item.RequestResultModels.Add(request3);
 
         // Act
-        var result = (await source.GetRequestResultsAsync(new PagingModel {FromIdentifier = request2.CorrelationId},
+        var result = (await source.GetRequestResultsAsync(new PagingModel { FromIdentifier = request2.CorrelationId },
             key,
             CancellationToken.None)).ToArray();
 
@@ -370,7 +370,7 @@ public class InMemoryStubSourceFacts
         // Act
         var result =
             (await source.GetRequestResultsAsync(
-                new PagingModel {FromIdentifier = request3.CorrelationId, ItemsPerPage = 2}, key,
+                new PagingModel { FromIdentifier = request3.CorrelationId, ItemsPerPage = 2 }, key,
                 CancellationToken.None))
             .ToArray();
 
@@ -637,11 +637,11 @@ public class InMemoryStubSourceFacts
         const string scenario = "scenario-1";
         var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
 
-        var currentStateModel = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        var currentStateModel = new ScenarioStateModel(scenario) { HitCount = 11, State = Guid.NewGuid().ToString() };
         var collection = source.GetCollection(key);
         Assert.IsTrue(collection.Scenarios.TryAdd(scenario, currentStateModel));
 
-        var newStateModel = new ScenarioStateModel(scenario) {HitCount = 12, State = Guid.NewGuid().ToString()};
+        var newStateModel = new ScenarioStateModel(scenario) { HitCount = 12, State = Guid.NewGuid().ToString() };
 
         // Act
         await source.UpdateScenarioAsync(scenario, newStateModel, key, CancellationToken.None);
@@ -663,7 +663,7 @@ public class InMemoryStubSourceFacts
         const string scenario = "scenario-1";
         var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
 
-        var currentStateModel = new ScenarioStateModel(scenario) {HitCount = 11, State = Guid.NewGuid().ToString()};
+        var currentStateModel = new ScenarioStateModel(scenario) { HitCount = 11, State = Guid.NewGuid().ToString() };
         var collection = source.GetCollection(key);
         Assert.IsTrue(collection.Scenarios.TryAdd(scenario, currentStateModel));
 
@@ -754,14 +754,14 @@ public class InMemoryStubSourceFacts
 
     private static RequestResultModel CreateRequestResultModel()
     {
-        var methods = new[] {"GET", "POST", "PUT", "DELETE"};
+        var methods = new[] { "GET", "POST", "PUT", "DELETE" };
         return new RequestResultModel
         {
             CorrelationId = _faker.Random.Guid().ToString(),
             RequestParameters = new RequestParametersModel
             {
                 Body = _faker.Random.Words(),
-                Headers = new Dictionary<string, string> {{"X-Api-Key", _faker.Random.Guid().ToString()}},
+                Headers = new Dictionary<string, string> { { "X-Api-Key", _faker.Random.Guid().ToString() } },
                 Method = _faker.PickRandom(methods),
                 Url = _faker.Internet.Url(),
                 ClientIp = _faker.Internet.Ip()
@@ -783,7 +783,7 @@ public class InMemoryStubSourceFacts
     {
         Body = _faker.Random.Bytes(100),
         BodyIsBinary = true,
-        Headers = {{_faker.Random.Word(), _faker.Random.Word()}},
+        Headers = { { _faker.Random.Word(), _faker.Random.Word() } },
         StatusCode = _faker.Random.Int(100, 599)
     };
 }

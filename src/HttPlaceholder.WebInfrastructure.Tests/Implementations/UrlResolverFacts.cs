@@ -40,7 +40,7 @@ public class UrlResolverFacts
         {
             var options = MockSettingsFactory.GetOptionsMonitor(new SettingsModel
             {
-                Web = new WebSettingsModel {PublicUrl = configuredPublicUrl}
+                Web = new WebSettingsModel { PublicUrl = configuredPublicUrl }
             });
             _mocker.Use(options);
         }
@@ -80,7 +80,7 @@ public class UrlResolverFacts
         {
             var options = MockSettingsFactory.GetOptionsMonitor(new SettingsModel
             {
-                Web = new WebSettingsModel {PublicUrl = configuredPublicUrl}
+                Web = new WebSettingsModel { PublicUrl = configuredPublicUrl }
             });
             _mocker.Use(options);
         }

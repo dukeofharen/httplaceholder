@@ -50,7 +50,7 @@ public class FeatureIsEnabledQueryHandlerFacts
     public async Task Handle_Authentication(string username, string password, bool expectedResult)
     {
         // Arrange
-        _settings.Authentication = new AuthenticationSettingsModel {ApiPassword = password, ApiUsername = username};
+        _settings.Authentication = new AuthenticationSettingsModel { ApiPassword = password, ApiUsername = username };
         var query = new FeatureIsEnabledQuery(FeatureFlagType.Authentication);
 
         // Act

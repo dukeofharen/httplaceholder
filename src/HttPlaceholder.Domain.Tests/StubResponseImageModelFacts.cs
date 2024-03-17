@@ -36,7 +36,7 @@ public class StubResponseImageModelFacts
     public void ContentTypeHeaderValue_ShouldBeConvertedCorrectly(ResponseImageType? type, string mimeType)
     {
         // Arrange
-        var model = new StubResponseImageModel {Type = type};
+        var model = new StubResponseImageModel { Type = type };
 
         // Act / Assert
         Assert.AreEqual(mimeType, model.ContentTypeHeaderValue);

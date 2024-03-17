@@ -38,7 +38,8 @@ public class ExportRequestQueryHandlerFacts
     [DataTestMethod]
     [DataRow(RequestExportType.Hurl)]
     [DataRow(RequestExportType.NotSet)]
-    public async Task Handle_RequestExportTypeNotSupported_ShouldThrowNotImplementedException(RequestExportType requestExportType)
+    public async Task Handle_RequestExportTypeNotSupported_ShouldThrowNotImplementedException(
+        RequestExportType requestExportType)
     {
         // Arrange
         var stubContextMock = _mocker.GetMock<IStubContext>();

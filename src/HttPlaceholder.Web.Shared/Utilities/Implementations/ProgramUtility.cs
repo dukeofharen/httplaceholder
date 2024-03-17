@@ -48,7 +48,7 @@ public class ProgramUtility : IProgramUtility
     /// <inheritdoc />
     public IEnumerable<string> GetHostnames()
     {
-        var result = new List<string> {"127.0.0.1", "localhost"};
+        var result = new List<string> { "127.0.0.1", "localhost" };
         var localIp = _ipService.GetLocalIpAddress();
         if (!string.IsNullOrWhiteSpace(localIp))
         {

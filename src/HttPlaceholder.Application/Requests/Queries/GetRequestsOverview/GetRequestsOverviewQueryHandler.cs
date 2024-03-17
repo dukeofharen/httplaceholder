@@ -30,7 +30,7 @@ public class
         CancellationToken cancellationToken)
     {
         var pagingModel = !string.IsNullOrWhiteSpace(request.FromIdentifier) || request.ItemsPerPage.HasValue
-            ? new PagingModel {FromIdentifier = request.FromIdentifier, ItemsPerPage = request.ItemsPerPage}
+            ? new PagingModel { FromIdentifier = request.FromIdentifier, ItemsPerPage = request.ItemsPerPage }
             : null;
         return await _stubContext.GetRequestResultsOverviewAsync(pagingModel, cancellationToken);
     }

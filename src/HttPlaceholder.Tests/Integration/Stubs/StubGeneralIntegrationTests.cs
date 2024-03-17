@@ -22,7 +22,7 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}test";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // Act
         using var response = await Client.SendAsync(request);

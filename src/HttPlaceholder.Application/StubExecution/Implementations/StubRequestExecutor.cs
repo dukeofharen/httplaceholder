@@ -85,7 +85,7 @@ internal class StubRequestExecutor(
         await stubContext.IncreaseHitCountAsync(finalStub.Scenario, cancellationToken);
         requestLogger.SetExecutingStubId(finalStub.Id);
         var response = await stubResponseGenerator.GenerateResponseAsync(finalStub, cancellationToken);
-        await mediator.Publish(new BeforeStubResponseReturnedNotification {Response = response}, cancellationToken);
+        await mediator.Publish(new BeforeStubResponseReturnedNotification { Response = response }, cancellationToken);
         return response;
     }
 

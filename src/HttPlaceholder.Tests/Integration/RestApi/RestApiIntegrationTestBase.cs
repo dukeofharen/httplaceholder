@@ -16,8 +16,8 @@ public abstract class RestApiIntegrationTestBase : IntegrationTestBase
         ReadOnlyStubSource = new Mock<IStubSource>();
 
         InitializeIntegrationTest(
-            new (Type, object)[] {(typeof(IClientDataResolver), ClientDataResolverMock.Object)},
-            new[] {StubSource, ReadOnlyStubSource.Object});
+            new (Type, object)[] { (typeof(IClientDataResolver), ClientDataResolverMock.Object) },
+            new[] { StubSource, ReadOnlyStubSource.Object });
     }
 
     protected void CleanupRestApiIntegrationTest() => CleanupIntegrationTest();
