@@ -22,7 +22,8 @@ internal class YamlFileStubSource(
     ILogger<YamlFileStubSource> logger,
     IOptionsMonitor<SettingsModel> options,
     IStubModelValidator stubModelValidator,
-    IStubNotify stubNotify)
+    IStubNotify stubNotify,
+    IDateTime dateTime)
     : BaseFileStubSource(logger, fileService, options, stubModelValidator)
 {
     private DateTime _stubLoadDateTime;
@@ -103,7 +104,7 @@ internal class YamlFileStubSource(
         try
         {
             var stubs = ParseAndValidateStubs(input, file);
-            _stubLoadDateTime = DateTime.Now;
+            _stubLoadDateTime = dateTime.Now;
             return stubs;
         }
         catch (YamlException ex)

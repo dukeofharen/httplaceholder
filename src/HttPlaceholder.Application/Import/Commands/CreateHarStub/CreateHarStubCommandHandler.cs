@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -14,14 +15,15 @@ namespace HttPlaceholder.Application.Import.Commands.CreateHarStub;
 public class CreateHarStubCommandHandler : IRequestHandler<CreateHarStubCommand, IEnumerable<FullStubModel>>
 {
     private readonly IHarStubGenerator _harStubGenerator;
+    private readonly IDateTime _dateTime;
 
     /// <summary>
     ///     Constructs a <see cref="CreateHarStubCommandHandler" /> instance.
     /// </summary>
-    /// <param name="harStubGenerator"></param>
-    public CreateHarStubCommandHandler(IHarStubGenerator harStubGenerator)
+    public CreateHarStubCommandHandler(IHarStubGenerator harStubGenerator, IDateTime dateTime)
     {
         _harStubGenerator = harStubGenerator;
+        _dateTime = dateTime;
     }
 
     /// <inheritdoc />
@@ -29,7 +31,7 @@ public class CreateHarStubCommandHandler : IRequestHandler<CreateHarStubCommand,
         CancellationToken cancellationToken)
     {
         var tenant = string.IsNullOrWhiteSpace(request.Tenant)
-            ? $"har-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
+            ? $"har-import-{_dateTime.Now:yyyy-MM-dd-HH-mm-ss}"
             : request.Tenant;
         return await _harStubGenerator.GenerateStubsAsync(request.Input, request.DoNotCreateStub, tenant,
             request.StubIdPrefix,

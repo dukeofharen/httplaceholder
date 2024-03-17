@@ -78,7 +78,7 @@ public abstract class BackgroundService : ICustomHostedService
         try
         {
             // Signal cancellation to the executing method.
-            StoppingCts.Cancel();
+            await StoppingCts.CancelAsync();
         }
         finally
         {
