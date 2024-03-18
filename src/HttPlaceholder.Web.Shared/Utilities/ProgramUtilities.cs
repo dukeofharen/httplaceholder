@@ -28,7 +28,7 @@ public static class ProgramUtilities
     ///     Configure the logging.
     /// </summary>
     /// <param name="args">The command line arguments.</param>
-    public static void ConfigureLogging(string[] args)
+    public static void ConfigureLogging(IEnumerable<string> args)
     {
         var verbose = CliArgs.IsVerbose(args);
         var loggingConfig = new LoggerConfiguration();

@@ -13,12 +13,12 @@ public class PathUtilitiesFacts
     [DataRow("", "")]
     [DataRow(null, null)]
     [DataRow("Folder/../File.png", "Folder/File.png")]
-    [DataRow("Folder\\..\\File.png", "Folder/File.png")]
+    [DataRow(@"Folder\..\File.png", "Folder/File.png")]
     [DataRow("Folder/$/File.png", "Folder/File.png")]
-    [DataRow("Folder\\$\\File.png", "Folder/File.png")]
+    [DataRow(@"Folder\$\File.png", "Folder/File.png")]
     [DataRow("Folder/?/File.png", "Folder/File.png")]
-    [DataRow("Folder\\?\\File.png", "Folder/File.png")]
-    [DataRow("..\\Folder\\?\\File.png", "Folder/File.png")]
+    [DataRow(@"Folder\?\File.png", "Folder/File.png")]
+    [DataRow(@"..\Folder\?\File.png", "Folder/File.png")]
     public void CleanPath_HappyFlow(string input, string expectedOutput)
     {
         // Act

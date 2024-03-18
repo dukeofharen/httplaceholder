@@ -29,7 +29,7 @@ public class Base64ResponseWriterFacts
     public async Task Base64ResponseWriter_WriteToResponseAsync_HappyFlow()
     {
         // arrange
-        var expectedBytes = Encoding.UTF8.GetBytes("TEST!!1!");
+        var expectedBytes = "TEST!!1!"u8.ToArray();
 
         var stub = new StubModel { Response = new StubResponseModel { Base64 = "VEVTVCEhMSE=" } };
 

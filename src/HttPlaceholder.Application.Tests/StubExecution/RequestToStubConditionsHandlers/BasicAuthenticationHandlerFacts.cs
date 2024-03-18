@@ -37,7 +37,7 @@ public class BasicAuthenticationHandlerFacts
             Headers = new Dictionary<string, string>
             {
                 {
-                    "Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("user:pass:rubble"))
+                    "Authorization", "Basic " + Convert.ToBase64String("user:pass:rubble"u8.ToArray())
                 }
             }
         };

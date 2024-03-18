@@ -28,7 +28,7 @@ internal abstract class BaseFileStubSource(
     protected readonly IFileService FileService = fileService;
     protected readonly ILogger<BaseFileStubSource> Logger = logger;
 
-    protected IEnumerable<string> SupportedExtensions => _extensions;
+    protected static IEnumerable<string> SupportedExtensions => _extensions;
 
     public abstract Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
         string distributionKey = null,

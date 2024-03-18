@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -30,7 +31,7 @@ internal class RequestBodyResponseVariableParsingHandler(
     public override string[] Examples => [$"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'"];
 
     /// <inheritdoc />
-    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
         var body = await httpContextService.GetBodyAsync(cancellationToken);

@@ -25,7 +25,7 @@ internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalD
     public async Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel,
         CancellationToken cancellationToken)
     {
-        var item = StubCache.ContainsKey(stubModel.Id) ? StubCache[stubModel.Id] : null;
+        var item = StubCache.TryGetValue(stubModel.Id, out var value) ? value : null;
         if (item != null)
         {
             StubCache.Remove(stubModel.Id, out _);

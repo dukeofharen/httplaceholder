@@ -18,7 +18,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : BaseWritableStubSource
 {
     private static readonly object _lock = new();
-    private readonly ConcurrentDictionary<string, StubRequestCollectionItem> CollectionItems = new();
+    private readonly ConcurrentDictionary<string, StubRequestCollectionItem> _collectionItems = new();
 
     /// <inheritdoc />
     public override Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
@@ -76,9 +76,8 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
             }
 
             var item = GetCollection(distributionKey);
-            return !item.RequestResponseMap.ContainsKey(request)
-                ? nullValue
-                : Task.FromResult(item.RequestResponseMap[request]);
+            return !item.RequestResponseMap.TryGetValue(request, out var value) ? nullValue
+                : Task.FromResult(value);
         }
     }
 
@@ -208,7 +207,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     {
         lock (_lock)
         {
-            foreach (var item in CollectionItems)
+            foreach (var item in _collectionItems)
             {
                 var maxLength = options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
                 var requests = item.Value.RequestResultModels
@@ -236,7 +235,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
 
         var lookupKey = scenario.ToLower();
         var item = GetCollection(distributionKey);
-        var result = !item.Scenarios.ContainsKey(lookupKey) ? null : item.Scenarios[lookupKey].Copy();
+        var result = !item.Scenarios.TryGetValue(lookupKey, out var value) ? null : value.Copy();
         return Task.FromResult(result);
     }
 
@@ -263,14 +262,13 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     {
         var lookupKey = scenario.ToLower();
         var item = GetCollection(distributionKey);
-        if (!item.Scenarios.ContainsKey(lookupKey))
+        if (!item.Scenarios.TryGetValue(lookupKey, out var value))
         {
             return Task.CompletedTask;
         }
 
-        var existingScenarioState = item.Scenarios[lookupKey];
         var newScenarioState = scenarioStateModel.Copy();
-        if (!item.Scenarios.TryUpdate(lookupKey, newScenarioState, existingScenarioState))
+        if (!item.Scenarios.TryUpdate(lookupKey, newScenarioState, value))
         {
             throw new InvalidOperationException(
                 $"Something went wrong with updating scenario with key '{lookupKey}'.");
@@ -316,13 +314,12 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     private void RemoveResponse(RequestResultModel request, string distributionKey)
     {
         var item = GetCollection(distributionKey);
-        if (!item.RequestResponseMap.ContainsKey(request))
+        if (!item.RequestResponseMap.TryGetValue(request, out var value))
         {
             return;
         }
 
-        var response = item.RequestResponseMap[request];
-        item.StubResponses.Remove(response);
+        item.StubResponses.Remove(value);
         item.RequestResponseMap.Remove(request);
     }
 
@@ -333,7 +330,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     }
 
     internal StubRequestCollectionItem GetCollection(string distributionKey) =>
-        CollectionItems.GetOrAdd(distributionKey ?? string.Empty,
+        _collectionItems.GetOrAdd(distributionKey ?? string.Empty,
             key => new StubRequestCollectionItem(key));
 }
 

@@ -33,7 +33,7 @@ public class ObjectUtilitiesFacts
     public void IfNull_Value_ResultIsNotNull()
     {
         // Arrange
-        var value = "test123";
+        const string value = "test123";
 
         // Act
         var result = value.IfNull(() => throw new InvalidOperationException());

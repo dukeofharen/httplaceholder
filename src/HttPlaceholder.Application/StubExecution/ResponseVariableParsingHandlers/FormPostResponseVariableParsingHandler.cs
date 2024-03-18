@@ -26,7 +26,7 @@ internal class FormPostResponseVariableParsingHandler(IHttpContextService httpCo
     public override string[] Examples => [$"(({Name}:form_key))"];
 
     /// <inheritdoc />
-    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
         var formValues = await httpContextService.GetFormValuesAsync(cancellationToken);

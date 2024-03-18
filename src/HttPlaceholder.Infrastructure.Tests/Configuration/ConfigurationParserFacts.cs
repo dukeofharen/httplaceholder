@@ -106,7 +106,7 @@ public class ConfigurationParserFacts
     }
 
     [DataTestMethod]
-    [DataRow("WINDOWS", "C:\\Users\\duco", "C:\\Users\\duco\\.httplaceholder", true)]
+    [DataRow("WINDOWS", @"C:\Users\duco", @"C:\Users\duco\.httplaceholder", true)]
     [DataRow("LINUX", "/home/duco", "/home/duco/.httplaceholder", true)]
     [DataRow("OSX", "/home/duco", "/home/duco/.httplaceholder", true)]
     [DataRow(null, "", "", false)]

@@ -20,7 +20,7 @@ public class ByteUtilitiesFacts
     public void IsValidAscii_EverythingAscii_ShouldReturnTrue()
     {
         // Arrange
-        var input = "abc123";
+        const string input = "abc123";
 
         // Act
         var result = Encoding.UTF8.GetBytes(input).IsValidAscii();

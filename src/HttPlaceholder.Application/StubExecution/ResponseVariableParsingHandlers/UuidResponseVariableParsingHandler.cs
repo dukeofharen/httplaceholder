@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -25,7 +26,7 @@ internal class UuidResponseVariableParsingHandler(IFileService fileService)
     public override string[] Examples => [$"(({Name}))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>
         Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)

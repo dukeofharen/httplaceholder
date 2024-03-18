@@ -31,7 +31,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in file storage configuration.
 echo "Testing HttPlaceholder with file storage configuration"
-FILE_STORAGE_PATH="/tmp/httplaceholder_stubs"
+FILE_STORAGE_PATH="$DIR/temp"
 if [ ! -d "$FILE_STORAGE_PATH" ]; then
   echo "Creating folder $FILE_STORAGE_PATH"
   mkdir $FILE_STORAGE_PATH

@@ -22,7 +22,7 @@ public static class Constants
     /// <summary>
     ///     The number of seconds a regex can execute before timing out.
     /// </summary>
-    public static readonly int RegexTimeoutSeconds = 10;
+    public const int RegexTimeoutSeconds = 10;
 }
 
 /// <summary>

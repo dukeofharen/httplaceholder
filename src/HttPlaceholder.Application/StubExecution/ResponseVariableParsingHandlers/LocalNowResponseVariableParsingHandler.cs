@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -27,7 +28,7 @@ internal class LocalNowResponseVariableParsingHandler(IDateTime dateTime, IFileS
     public override string[] Examples => [$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
         var now = dateTime.Now;

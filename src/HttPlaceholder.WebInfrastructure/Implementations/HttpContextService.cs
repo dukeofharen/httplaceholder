@@ -147,13 +147,13 @@ internal class HttpContextService : IHttpContextService, ISingletonService
 
     /// <inheritdoc />
     public async Task WriteAsync(byte[] body, CancellationToken cancellationToken) =>
-        await GetContext().Response.Body.WriteAsync(body, 0, body.Length, cancellationToken);
+        await GetContext().Response.Body.WriteAsync(body, cancellationToken);
 
     /// <inheritdoc />
     public async Task WriteAsync(string body, CancellationToken cancellationToken)
     {
         var bodyBytes = Encoding.UTF8.GetBytes(body);
-        await GetContext().Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken);
+        await GetContext().Response.Body.WriteAsync(bodyBytes, cancellationToken);
     }
 
     /// <inheritdoc />

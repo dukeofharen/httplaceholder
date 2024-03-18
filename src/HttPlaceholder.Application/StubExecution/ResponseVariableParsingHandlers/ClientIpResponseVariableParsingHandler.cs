@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ internal class ClientIpResponseVariableParsingHandler(IClientDataResolver client
     public override string[] Examples => [$"(({Name}))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
         var ip = clientDataResolver.GetClientIp();

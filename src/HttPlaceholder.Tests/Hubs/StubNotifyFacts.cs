@@ -48,13 +48,13 @@ public class StubNotifyFacts
         var key = withDistributionKey ? "dist-key" : null;
         var notify = CreateNotify(key);
 
-        var stubId = "stub-id";
+        const string stubId = "stub-id";
 
         // Act
         await notify.StubDeletedAsync(stubId, key, CancellationToken.None);
 
         // Assert
-        _clientProxyMock.Verify(m => m.SendCoreAsync("StubDeleted", It.Is<object[]>(o => o.Single() == stubId),
+        _clientProxyMock.Verify(m => m.SendCoreAsync("StubDeleted", It.Is<object[]>(o => (string)o.Single() == stubId),
             It.IsAny<CancellationToken>()));
     }
 

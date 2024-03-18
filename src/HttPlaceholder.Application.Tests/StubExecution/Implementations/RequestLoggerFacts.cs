@@ -40,7 +40,7 @@ public class RequestLoggerFacts
         // arrange
         const string method = "POST";
         const string url = "https://google.com";
-        var body = Encoding.UTF8.GetBytes("HACKING GOOGLE!");
+        var body = "HACKING GOOGLE!"u8.ToArray();
         const string clientIp = "127.0.0.1";
         var headers = new Dictionary<string, string>();
 

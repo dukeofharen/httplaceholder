@@ -336,7 +336,7 @@ public class RelationalDbStubSourceFacts
         var expectedResponse = new DbResponseModel
         {
             Id = 1,
-            Body = Convert.ToBase64String(Encoding.UTF8.GetBytes("555")),
+            Body = Convert.ToBase64String("555"u8.ToArray()),
             Headers = JsonConvert.SerializeObject(
                 new Dictionary<string, string> { { HeaderKeys.ContentType, "text/plain" } }),
             StatusCode = 200,
@@ -1138,7 +1138,7 @@ public class RelationalDbStubSourceFacts
         CheckDbParam(addInput, "$.DistributionKey", withDistributionKey ? DistributionKey : string.Empty);
     }
 
-    private void CheckDbParam<TResultType>(object input, string jsonPath, TResultType expectedValue)
+    private static void CheckDbParam<TResultType>(object input, string jsonPath, TResultType expectedValue)
     {
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(input));
         var result = parsedParam.SelectToken(jsonPath);

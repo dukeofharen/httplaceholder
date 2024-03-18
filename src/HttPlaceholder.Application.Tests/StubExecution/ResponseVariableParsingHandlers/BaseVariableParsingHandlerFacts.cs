@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Common;
 using Match = System.Text.RegularExpressions.Match;
@@ -41,7 +42,7 @@ public class BaseVariableParsingHandlerFacts
         public override string FullName { get; }
         public override string[] Examples { get; }
 
-        protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
             CancellationToken cancellationToken) => throw new NotImplementedException();
     }
 }

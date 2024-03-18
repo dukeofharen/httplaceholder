@@ -78,7 +78,7 @@ internal class FileSystemStubCache(
     /// <inheritdoc />
     public void AddOrReplaceStub(StubModel stubModel)
     {
-        var item = StubCache.ContainsKey(stubModel.Id) ? StubCache[stubModel.Id] : null;
+        var item = StubCache.TryGetValue(stubModel.Id, out var value) ? value : null;
         if (item != null)
         {
             StubCache.Remove(stubModel.Id, out _);

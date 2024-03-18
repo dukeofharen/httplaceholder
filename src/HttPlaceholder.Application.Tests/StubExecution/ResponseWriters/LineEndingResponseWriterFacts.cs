@@ -28,7 +28,7 @@ public class LineEndingResponseWriterFacts
     {
         // Arrange
         var stub = new StubModel { Response = new StubResponseModel { LineEndings = LineEndingType.Unix } };
-        var response = new ResponseModel { Body = Encoding.UTF8.GetBytes("the\r\ncontent\r\n") };
+        var response = new ResponseModel { Body = "the\r\ncontent\r\n"u8.ToArray() };
 
         // Act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
@@ -44,7 +44,7 @@ public class LineEndingResponseWriterFacts
     {
         // Arrange
         var stub = new StubModel { Response = new StubResponseModel { LineEndings = LineEndingType.Windows } };
-        var response = new ResponseModel { Body = Encoding.UTF8.GetBytes("the\ncontent\n") };
+        var response = new ResponseModel { Body = "the\ncontent\n"u8.ToArray() };
 
         // Act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);

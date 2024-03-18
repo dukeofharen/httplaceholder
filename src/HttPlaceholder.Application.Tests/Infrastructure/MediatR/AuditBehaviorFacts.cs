@@ -54,7 +54,7 @@ public class AuditBehaviorFacts
         _settings.Logging.VerboseLoggingEnabled = true;
         var nextCalled = false;
 
-        var ip = "1.2.3.4";
+        const string ip = "1.2.3.4";
         var clientDataResolverMock = _mocker.GetMock<IClientDataResolver>();
         clientDataResolverMock
             .Setup(m => m.GetClientIp())
@@ -89,7 +89,7 @@ public class AuditBehaviorFacts
         _settings.Logging.VerboseLoggingEnabled = true;
         var nextCalled = false;
 
-        var ip = "1.2.3.4";
+        const string ip = "1.2.3.4";
         var clientDataResolverMock = _mocker.GetMock<IClientDataResolver>();
         clientDataResolverMock
             .Setup(m => m.GetClientIp())

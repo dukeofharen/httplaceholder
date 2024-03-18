@@ -82,7 +82,7 @@ public class FileResponseWriterFacts
 
         // Assert
         Assert.AreEqual(
-            "Path 'C:\\tmp\\image.png' found, but can't be used because setting 'allowGlobalFileSearch' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.",
+            @"Path 'C:\tmp\image.png' found, but can't be used because setting 'allowGlobalFileSearch' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.",
             exception.Message);
     }
 

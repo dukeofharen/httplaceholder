@@ -44,7 +44,7 @@ public class FileSystemStubSourceFacts
             ? Path.Combine(StorageFolder, DistrubutionKey, FileNames.ResponsesFolderName)
             : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var request = new RequestResultModel { CorrelationId = "bla123" };
-        var millis = 1234;
+        const int millis = 1234;
         var requestFilePath = Path.Combine(requestsFolder, $"{millis}-{request.CorrelationId}.json");
         var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -83,7 +83,7 @@ public class FileSystemStubSourceFacts
             : Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var request = new RequestResultModel { CorrelationId = "bla123" };
         var response = new ResponseModel { StatusCode = 200 };
-        var millis = 1234;
+        const int millis = 1234;
         var requestFilePath = Path.Combine(requestsFolder, $"{millis}-{request.CorrelationId}.json");
         var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
         var fileServiceMock = _mocker.GetMock<IFileService>();

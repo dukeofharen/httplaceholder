@@ -27,9 +27,9 @@ public static class ArgsHelper
             }
             else
             {
-                if (subResult.ContainsKey(varPointer))
+                if (subResult.TryGetValue(varPointer, out var value))
                 {
-                    subResult[varPointer].Add(arg);
+                    value.Add(arg);
                 }
             }
         }

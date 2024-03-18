@@ -30,7 +30,7 @@ public class BackgroundServiceFacts
 
         var service = _mocker.CreateInstance<SucceedingBackgroundService>();
 
-        service.StoppingCts.Cancel();
+        await service.StoppingCts.CancelAsync();
 
         // Act
         await service.StartAsync(CancellationToken.None);
@@ -54,7 +54,7 @@ public class BackgroundServiceFacts
             .Setup(m => m.Now)
             .Returns(new DateTime(2022, 2, 6, 4, 5, 1));
 
-        service.StoppingCts.Cancel();
+        await service.StoppingCts.CancelAsync();
 
         // Act
         await service.StartAsync(CancellationToken.None);
@@ -78,7 +78,7 @@ public class BackgroundServiceFacts
             .Setup(m => m.Now)
             .Returns(new DateTime(2022, 2, 6, 4, 5, 1));
 
-        service.StoppingCts.Cancel();
+        await service.StoppingCts.CancelAsync();
 
         // Act
         await service.StartAsync(CancellationToken.None);
