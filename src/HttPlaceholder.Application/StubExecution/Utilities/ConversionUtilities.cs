@@ -43,19 +43,14 @@ public static class ConversionUtilities
     /// <param name="input">The input.</param>
     /// <typeparam name="T">The type the input should be converted to.</typeparam>
     /// <returns>The converted input.</returns>
-    public static IEnumerable<T> ConvertEnumerable<T>(object input)
-    {
-        switch (input)
+    public static IEnumerable<T> ConvertEnumerable<T>(object input) =>
+        input switch
         {
-            case JArray jArray:
-                return jArray.ToObject<T[]>();
-            case IList<object> list:
-                return list.Select(i => (T)i);
-            default:
-                throw new InvalidOperationException(
-                    $"Object of type '{input.GetType()}' not supported for serializing to '{typeof(T)}'.");
-        }
-    }
+            JArray jArray => jArray.ToObject<T[]>(),
+            IList<object> list => list.Select(i => (T)i),
+            _ => throw new InvalidOperationException(
+                $"Object of type '{input.GetType()}' not supported for serializing to '{typeof(T)}'.")
+        };
 
     /// <summary>
     ///     Accepts an object as input and parsed it to a nullable int.

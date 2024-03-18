@@ -470,22 +470,6 @@ public class InMemoryStubSourceFacts
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var item = source.GetCollection(null);
 
-        RequestResultModel CreateAndAddRequestResultModel(DateTime requestEndDate)
-        {
-            var request = CreateRequestResultModel();
-            request.RequestEndTime = requestEndDate;
-            item.RequestResultModels.Add(request);
-            return request;
-        }
-
-        ResponseModel CreateAndAddResponseModel(RequestResultModel request)
-        {
-            var response = CreateResponseModel();
-            item.StubResponses.Add(response);
-            item.RequestResponseMap.Add(request, response);
-            return response;
-        }
-
         var now = DateTime.Now;
         var request1 = CreateAndAddRequestResultModel(now.AddSeconds(-1));
         var response1 = CreateAndAddResponseModel(request1);
@@ -510,6 +494,23 @@ public class InMemoryStubSourceFacts
 
         Assert.IsTrue(item.RequestResultModels.Contains(request3));
         Assert.IsFalse(item.RequestResponseMap.Any(r => r.Key == request3));
+        return;
+
+        ResponseModel CreateAndAddResponseModel(RequestResultModel request)
+        {
+            var response = CreateResponseModel();
+            item.StubResponses.Add(response);
+            item.RequestResponseMap.Add(request, response);
+            return response;
+        }
+
+        RequestResultModel CreateAndAddRequestResultModel(DateTime requestEndDate)
+        {
+            var request = CreateRequestResultModel();
+            request.RequestEndTime = requestEndDate;
+            item.RequestResultModels.Add(request);
+            return request;
+        }
     }
 
     [TestMethod]

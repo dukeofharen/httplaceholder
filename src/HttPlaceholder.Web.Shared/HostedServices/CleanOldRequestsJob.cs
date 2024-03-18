@@ -7,7 +7,7 @@ namespace HttPlaceholder.Web.Shared.HostedServices;
 /// <summary>
 ///     A background that is used to clean old requests
 /// </summary>
-public class CleanOldRequestsJob : BackgroundService
+public sealed class CleanOldRequestsJob : BackgroundService
 {
     private readonly IStubContext _stubContext;
 

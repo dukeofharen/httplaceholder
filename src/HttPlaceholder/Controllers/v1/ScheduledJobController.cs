@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.ScheduledJobs.Commands;
-using HttPlaceholder.Application.ScheduledJobs.Queries.GetScheduledJobNames;
+using HttPlaceholder.Application.ScheduledJobs.Queries;
 using HttPlaceholder.Web.Shared.Authorization;
 using HttPlaceholder.Web.Shared.Dto.v1.ScheduledJobs;
 using Microsoft.AspNetCore.Http;

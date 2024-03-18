@@ -35,7 +35,7 @@ internal class FileSystemStubSource(
 
         var requestsFolder = GetRequestsFolder(distributionKey);
         var responsesFolder = GetResponsesFolder(distributionKey);
-        await StoreResponseAsync(requestResult, responseModel, cancellationToken, responsesFolder);
+        await StoreResponseAsync(requestResult, responseModel, responsesFolder, cancellationToken);
 
         var requestFilePath = Path.Combine(requestsFolder, ConstructRequestFilename(requestResult.CorrelationId));
         var requestContents = JsonConvert.SerializeObject(requestResult);
@@ -392,8 +392,8 @@ internal class FileSystemStubSource(
     private async Task StoreResponseAsync(
         RequestResultModel requestResult,
         ResponseModel responseModel,
-        CancellationToken cancellationToken,
-        string responsesFolder)
+        string responsesFolder,
+        CancellationToken cancellationToken)
     {
         if (responseModel != null)
         {

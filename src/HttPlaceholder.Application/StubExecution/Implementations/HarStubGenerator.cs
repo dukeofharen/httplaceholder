@@ -64,7 +64,7 @@ internal class HarStubGenerator(
         Method = entry.Request.Method,
         Body = entry.Request.PostData?.Text,
         Headers = entry.Request.Headers
-            .Where(h => !h.Name.StartsWith(":"))
+            .Where(h => !h.Name.StartsWith(':'))
             .ToDictionary(h => h.Name, h => h.Value),
         Url = entry.Request.Url
     };

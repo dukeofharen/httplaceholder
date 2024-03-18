@@ -116,7 +116,7 @@ internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalD
         return StubCache.Values;
     }
 
-    private IList<StubModel> GetStubs(IDatabaseContext ctx, string distributionKey)
+    private List<StubModel> GetStubs(IDatabaseContext ctx, string distributionKey)
     {
         var queryResults = ctx.Query<DbStubModel>(queryStore.GetStubsQuery, new { DistributionKey = distributionKey });
 

@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace HttPlaceholder.Application.ScheduledJobs.Queries.GetScheduledJobNames;
+namespace HttPlaceholder.Application.ScheduledJobs.Queries;
 
 /// <summary>
 ///     A query for retrieving all scheduled job names.

@@ -38,7 +38,7 @@ internal class RelationalDbMigrator(
                 throw new InvalidOperationException($"Could not find file {checkFilePath}");
             }
 
-            await ExecuteMigrationAsync(ctx, cancellationToken, checkFilePath, checkFileName, file);
+            await ExecuteMigrationAsync(ctx, checkFilePath, checkFileName, file, cancellationToken);
         }
     }
 
@@ -73,10 +73,10 @@ internal class RelationalDbMigrator(
 
     private async Task ExecuteMigrationAsync(
         IDatabaseContext ctx,
-        CancellationToken cancellationToken,
         string checkFilePath,
         string checkFileName,
-        string file)
+        string file,
+        CancellationToken cancellationToken)
     {
         // The check script will be loaded. It is expected that the script returns an 1 or higher if the migration should NOT be executed and a "0" if the migration SHOULD be executed.
         var checkScript = await fileService.ReadAllTextAsync(checkFilePath, cancellationToken);

@@ -119,9 +119,7 @@ internal class ReverseProxyResponseWriter(
     private static IDictionary<string, string> GetResponseHeaders(HttpResponseMessage responseMessage,
         Dictionary<string, string> rawResponseHeaders)
     {
-        var contentHeaders = responseMessage.Content != null
-            ? responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First())
-            : new Dictionary<string, string>();
+        var contentHeaders = responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First());
         return rawResponseHeaders
             .Concat(contentHeaders)
             .Where(h => !_excludedResponseHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))

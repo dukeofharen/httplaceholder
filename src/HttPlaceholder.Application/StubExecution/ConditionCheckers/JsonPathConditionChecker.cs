@@ -89,19 +89,6 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
 
     internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)
     {
-        static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict)
-        {
-            return new StubJsonPathModel
-            {
-                Query = conditionDict.ContainsKey("query")
-                    ? conditionDict["query"].ToString()
-                    : string.Empty,
-                ExpectedValue = conditionDict.ContainsKey("expectedValue")
-                    ? conditionDict["expectedValue"].ToString()
-                    : string.Empty
-            };
-        }
-
         var jsonPathCondition = condition switch
         {
             JObject conditionObject => conditionObject.ToObject<StubJsonPathModel>(),
@@ -118,5 +105,18 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
         }
 
         return jsonPathCondition;
+
+        static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict)
+        {
+            return new StubJsonPathModel
+            {
+                Query = conditionDict.ContainsKey("query")
+                    ? conditionDict["query"].ToString()
+                    : string.Empty,
+                ExpectedValue = conditionDict.ContainsKey("expectedValue")
+                    ? conditionDict["expectedValue"].ToString()
+                    : string.Empty
+            };
+        }
     }
 }

@@ -12,13 +12,16 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
+internal partial class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
     : ICurlToHttpRequestMapper, ISingletonService
 {
+    [GeneratedRegex(
+        @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
+        RegexOptions.Compiled)]
+    private static partial Regex UrlRegex();
+
     private static readonly Regex _urlRegex =
-        new(
-            @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
-            RegexOptions.Compiled);
+        UrlRegex();
 
     /// <inheritdoc />
     public IEnumerable<HttpRequestModel> MapCurlCommandsToHttpRequest(string commands)
@@ -200,7 +203,7 @@ internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
                 continue;
             }
 
-            if (part[0] == boundaryCharacter && !part.StartsWith(escapedBoundaryCharacter) && part.EndsWith(":"))
+            if (part[0] == boundaryCharacter && !part.StartsWith(escapedBoundaryCharacter) && part.EndsWith(':'))
             {
                 // The first part in a header string is the key.
                 key = new string(part.ToCharArray().Skip(1).ToArray()).TrimEnd(':');
@@ -214,7 +217,7 @@ internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
             else
             {
                 // Some part within.
-                headerBuilder.Append(part).Append(" ");
+                headerBuilder.Append(part).Append(' ');
             }
         }
 
@@ -234,19 +237,6 @@ internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
         }
 
         var escapedBoundaryCharacter = $@"\{boundaryCharacter}";
-
-        bool PartStartsWithBoundaryChar(string part)
-        {
-            return !string.IsNullOrWhiteSpace(part) && part[0] == boundaryCharacter &&
-                   !part.StartsWith(escapedBoundaryCharacter);
-        }
-
-        bool PartEndsWithBoundaryChar(string part)
-        {
-            return !string.IsNullOrWhiteSpace(part) &&
-                   part[^1] == boundaryCharacter &&
-                   !part.EndsWith(escapedBoundaryCharacter);
-        }
 
         var bodyBuilder = new StringBuilder(); // Hah nice
         var counter = 0;
@@ -268,7 +258,7 @@ internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
             if (PartStartsWithBoundaryChar(part))
             {
                 // The first part is found. Remove the boundary character and continue.
-                bodyBuilder.Append(new string(part.ToCharArray().Skip(1).ToArray())).Append(" ");
+                bodyBuilder.Append(new string(part.ToCharArray().Skip(1).ToArray())).Append(' ');
             }
             else if (PartEndsWithBoundaryChar(part))
             {
@@ -279,7 +269,7 @@ internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
             else
             {
                 // Some part within.
-                bodyBuilder.Append(part).Append(" ");
+                bodyBuilder.Append(part).Append(' ');
             }
 
             counter++;
@@ -287,5 +277,18 @@ internal class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
 
         bodyBuilder.Replace(escapedBoundaryCharacter, boundaryCharacter.ToString());
         return (bodyBuilder.ToString(), needle + counter);
+
+        bool PartEndsWithBoundaryChar(string part)
+        {
+            return !string.IsNullOrWhiteSpace(part) &&
+                   part[^1] == boundaryCharacter &&
+                   !part.EndsWith(escapedBoundaryCharacter);
+        }
+
+        bool PartStartsWithBoundaryChar(string part)
+        {
+            return !string.IsNullOrWhiteSpace(part) && part[0] == boundaryCharacter &&
+                   !part.StartsWith(escapedBoundaryCharacter);
+        }
     }
 }

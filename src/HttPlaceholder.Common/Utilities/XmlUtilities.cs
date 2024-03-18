@@ -6,9 +6,12 @@ namespace HttPlaceholder.Common.Utilities;
 /// <summary>
 ///     A utility class for working with XML.
 /// </summary>
-public static class XmlUtilities
+public static partial class XmlUtilities
 {
-    private static Regex NamespaceRegex { get; } = new("xmlns:(.*?)=\"(.*?)\"", RegexOptions.Compiled);
+    [GeneratedRegex("xmlns:(.*?)=\"(.*?)\"", RegexOptions.Compiled)]
+    private static partial Regex CompiledNamespaceRegex();
+
+    private static Regex NamespaceRegex { get; } = CompiledNamespaceRegex();
 
     /// <summary>
     ///     Parses a given body and assign the found namespaces to the <see cref="XmlNamespaceManager" />.

@@ -117,7 +117,7 @@ public class BackgroundServiceFacts
         Assert.IsTrue(service.StoppingCts.IsCancellationRequested);
     }
 
-    private class SucceedingBackgroundService(
+    private sealed class SucceedingBackgroundService(
         ILogger<BackgroundService> logger,
         IDateTime dateTime,
         IAsyncService asyncService)
@@ -138,7 +138,7 @@ public class BackgroundServiceFacts
         }
     }
 
-    private class FailingBackgroundService(
+    private sealed class FailingBackgroundService(
         ILogger<BackgroundService> logger,
         IDateTime dateTime,
         IAsyncService asyncService)

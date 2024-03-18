@@ -10,10 +10,13 @@ using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
-internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenerator)
+internal partial class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenerator)
     : IOpenApiDataFiller, ISingletonService
 {
-    private static readonly Regex _statusCodeRegex = new("^[1-5]{1}[0-9]{2}$", RegexOptions.Compiled);
+    [GeneratedRegex("^[1-5]{1}[0-9]{2}$", RegexOptions.Compiled)]
+    private static partial Regex StatusCodeRegex();
+
+    private static readonly Regex _statusCodeRegex = StatusCodeRegex();
 
     /// <inheritdoc />
     public string BuildServerUrl(OpenApiServer server)
@@ -59,12 +62,6 @@ internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenera
     /// <inheritdoc />
     public IDictionary<string, string> BuildResponseHeaders(OpenApiResponse response)
     {
-        string GetHeaderValue(KeyValuePair<string, OpenApiHeader> h)
-        {
-            var example = openApiFakeDataGenerator.GetExampleForHeader(h.Value);
-            return example?.ToString() ?? openApiFakeDataGenerator.GetRandomStringValue(h.Value.Schema);
-        }
-
         var result = response.Headers?.Any() == true
             ? response.Headers.ToDictionary(h => h.Key, GetHeaderValue)
             : new Dictionary<string, string>();
@@ -76,6 +73,12 @@ internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenera
         }
 
         return result;
+
+        string GetHeaderValue(KeyValuePair<string, OpenApiHeader> h)
+        {
+            var example = openApiFakeDataGenerator.GetExampleForHeader(h.Value);
+            return example?.ToString() ?? openApiFakeDataGenerator.GetRandomStringValue(h.Value.Schema);
+        }
     }
 
     /// <inheritdoc />
@@ -105,23 +108,6 @@ internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenera
     /// <inheritdoc />
     public string BuildRelativeRequestPath(OpenApiOperation operation, string basePath)
     {
-        string GetUrlValue(OpenApiParameter parameter)
-        {
-            var example = openApiFakeDataGenerator.GetExampleForParameter(parameter);
-            if (example != null)
-            {
-                return example.ToString();
-            }
-
-            var schema = parameter.Schema;
-            if (parameter.Schema.Items != null)
-            {
-                schema = parameter.Schema.Items;
-            }
-
-            return openApiFakeDataGenerator.GetRandomStringValue(schema);
-        }
-
         var relativePath = basePath;
         var parameters = operation.Parameters;
 
@@ -153,6 +139,23 @@ internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenera
         }
 
         return $"{relativePath}?{queryString}";
+
+        string GetUrlValue(OpenApiParameter parameter)
+        {
+            var example = openApiFakeDataGenerator.GetExampleForParameter(parameter);
+            if (example != null)
+            {
+                return example.ToString();
+            }
+
+            var schema = parameter.Schema;
+            if (parameter.Schema.Items != null)
+            {
+                schema = parameter.Schema.Items;
+            }
+
+            return openApiFakeDataGenerator.GetRandomStringValue(schema);
+        }
     }
 
     /// <inheritdoc />

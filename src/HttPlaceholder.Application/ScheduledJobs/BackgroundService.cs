@@ -17,7 +17,7 @@ public abstract class BackgroundService : ICustomHostedService
     private readonly IAsyncService _asyncService;
 
     private readonly IDateTime _dateTime;
-    private readonly CrontabSchedule _schedule;
+    private CrontabSchedule _schedule;
 
     /// <summary>
     ///     The logger.
@@ -35,17 +35,22 @@ public abstract class BackgroundService : ICustomHostedService
         IDateTime dateTime,
         IAsyncService asyncService)
     {
-        _schedule = CrontabSchedule.Parse(Schedule);
         Logger = logger;
         _dateTime = dateTime;
         _asyncService = asyncService;
-        NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
-        Logger.LogDebug(
-            $"New hosted service with name '{GetType().Name}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'");
+        Initialize();
     }
 
     /// <inheritdoc />
     public abstract string Schedule { get; }
+
+    private void Initialize()
+    {
+        _schedule = CrontabSchedule.Parse(Schedule);
+        NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
+        Logger.LogDebug(
+            $"New hosted service with name '{GetType().Name}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'");
+    }
 
     /// <inheritdoc />
     public abstract string Key { get; }
