@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Import.Commands;
 using HttPlaceholder.Web.Shared.Authorization;
@@ -29,7 +28,6 @@ public class ImportController : BaseApiController
     ///     will be generated.
     /// </param>
     /// <param name="stubIdPrefix">A piece of text that will be prefixed before the stub ID.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("curl")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -37,11 +35,9 @@ public class ImportController : BaseApiController
         [FromBody] string input,
         [FromQuery] bool doNotCreateStub,
         [FromQuery] string tenant,
-        [FromQuery] string stubIdPrefix,
-        CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<FullStubDto>>(
-            await Mediator.Send(new CreateCurlStubCommand(input, doNotCreateStub, tenant, stubIdPrefix),
-                cancellationToken)));
+        [FromQuery] string stubIdPrefix) =>
+        Ok(Map<IEnumerable<FullStubDto>>(
+            await Send(new CreateCurlStubCommand(input, doNotCreateStub, tenant, stubIdPrefix))));
 
     /// <summary>
     ///     An endpoint that is used for creating stubs based on a HAR file (HTTP Archive).
@@ -56,7 +52,6 @@ public class ImportController : BaseApiController
     ///     will be generated.
     /// </param>
     /// <param name="stubIdPrefix">A piece of text that will be prefixed before the stub ID.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("har")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,11 +59,9 @@ public class ImportController : BaseApiController
         [FromBody] string input,
         [FromQuery] bool doNotCreateStub,
         [FromQuery] string tenant,
-        [FromQuery] string stubIdPrefix,
-        CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<FullStubDto>>(
-            await Mediator.Send(new CreateHarStubCommand(input, doNotCreateStub, tenant, stubIdPrefix),
-                cancellationToken)));
+        [FromQuery] string stubIdPrefix) =>
+        Ok(Map<IEnumerable<FullStubDto>>(
+            await Send(new CreateHarStubCommand(input, doNotCreateStub, tenant, stubIdPrefix))));
 
     /// <summary>
     ///     An endpoint that is used for creating stubs based on a OpenAPI definition.
@@ -84,7 +77,6 @@ public class ImportController : BaseApiController
     ///     will be generated.
     /// </param>
     /// <param name="stubIdPrefix">A piece of text that will be prefixed before the stub ID.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("openapi")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -92,9 +84,7 @@ public class ImportController : BaseApiController
         [FromBody] string input,
         [FromQuery] bool doNotCreateStub,
         [FromQuery] string tenant,
-        [FromQuery] string stubIdPrefix,
-        CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<FullStubDto>>(
-            await Mediator.Send(new CreateOpenApiStubCommand(input, doNotCreateStub, tenant, stubIdPrefix),
-                cancellationToken)));
+        [FromQuery] string stubIdPrefix) =>
+        Ok(Map<IEnumerable<FullStubDto>>(
+            await Send(new CreateOpenApiStubCommand(input, doNotCreateStub, tenant, stubIdPrefix))));
 }

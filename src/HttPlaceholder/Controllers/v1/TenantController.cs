@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Tenants.Commands;
 using HttPlaceholder.Application.Tenants.Queries;
@@ -21,41 +20,36 @@ public class TenantController : BaseApiController
     /// <summary>
     ///     Gets all available tenant names.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>All available tenant names.</returns>
     [HttpGet]
     [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<string>>> GetTenantNames(CancellationToken cancellationToken) =>
-        Ok(await Mediator.Send(new GetTenantNamesQuery(), cancellationToken));
+    public async Task<ActionResult<IEnumerable<string>>> GetTenantNames() =>
+        Ok(await Send(new GetTenantNamesQuery()));
 
     /// <summary>
     ///     Gets all stubs in a specific tenant.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>All stubs in the tenant.</returns>
     [HttpGet]
     [Route("{tenant}/stubs")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll([FromRoute] string tenant,
-        CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetStubsInTenantQuery(tenant),
-            cancellationToken)));
+    public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll([FromRoute] string tenant) =>
+        Ok(Map<IEnumerable<FullStubDto>>(await Send(new GetStubsInTenantQuery(tenant))));
 
     /// <summary>
     ///     Deletes all stubs in a specific tenant.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, but no content</returns>
     [HttpDelete]
     [Route("{tenant}/stubs")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> DeleteAll([FromRoute] string tenant, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteAll([FromRoute] string tenant)
     {
-        await Mediator.Send(new DeleteStubsInTenantCommand(tenant), cancellationToken);
+        await Send(new DeleteStubsInTenantCommand(tenant));
         return NoContent();
     }
 
@@ -65,17 +59,14 @@ public class TenantController : BaseApiController
     /// </summary>
     /// <param name="tenant">The tenant.</param>
     /// <param name="stubs">The stubs to update.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, but no content</returns>
     [HttpPut]
     [Route("{tenant}/stubs")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> UpdateAll([FromRoute] string tenant, [FromBody] IEnumerable<StubDto> stubs,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateAll([FromRoute] string tenant, [FromBody] IEnumerable<StubDto> stubs)
     {
-        await Mediator.Send(new UpdateStubsInTenantCommand(Mapper.Map<IEnumerable<StubModel>>(stubs), tenant),
-            cancellationToken);
+        await Send(new UpdateStubsInTenantCommand(Map<IEnumerable<StubModel>>(stubs), tenant));
         return NoContent();
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Scenarios.Commands;
 using HttPlaceholder.Application.Scenarios.Queries;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Web.Shared.Authorization;
 using HttPlaceholder.Web.Shared.Dto.v1.Scenarios;
@@ -22,43 +20,36 @@ public class ScenarioController : BaseApiController
     /// <summary>
     ///     Gets all scenarios.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with all scenarios.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ScenarioStateDto>>> GetAllScenarioStates(
-        CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<ScenarioStateDto>>(await Mediator.Send(new GetAllScenariosQuery(),
-            cancellationToken)));
+    public async Task<ActionResult<IEnumerable<ScenarioStateDto>>> GetAllScenarioStates() =>
+        Ok(Map<IEnumerable<ScenarioStateDto>>(await Send(new GetAllScenariosQuery())));
 
     /// <summary>
     ///     Gets a specific scenario.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The <see cref="ScenarioStateDto" />.</returns>
     [HttpGet("{scenario}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ScenarioStateDto>> GetScenario([FromRoute] string scenario,
-        CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<ScenarioStateDto>(await Mediator.Send(new GetScenarioQuery(scenario), cancellationToken)));
+    public async Task<ActionResult<ScenarioStateDto>> GetScenario([FromRoute] string scenario) =>
+        Ok(Map<ScenarioStateDto>(await Send(new GetScenarioQuery(scenario))));
 
     /// <summary>
     ///     Sets the scenario state to a new value.
     /// </summary>
     /// <param name="scenarioState">The new scenario state.</param>
     /// <param name="scenario">The scenario name.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>No content.</returns>
     [HttpPut("{scenario}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> SetScenario([FromBody] ScenarioStateInputDto scenarioState,
-        [FromRoute] string scenario,
-        CancellationToken cancellationToken)
+        [FromRoute] string scenario)
     {
-        var input = Mapper.MapAndSet<ScenarioStateModel>(scenarioState, s => s.Scenario = scenario);
-        await Mediator.Send(new SetScenarioCommand(input, scenario), cancellationToken);
+        var input = MapAndSet<ScenarioStateModel>(scenarioState, s => s.Scenario = scenario);
+        await Send(new SetScenarioCommand(input, scenario));
         return NoContent();
     }
 
@@ -66,27 +57,25 @@ public class ScenarioController : BaseApiController
     ///     Deletes / clears a scenario.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>No content.</returns>
     [HttpDelete("{scenario}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> DeleteScenario([FromRoute] string scenario, CancellationToken cancellationToken)
+    public async Task<ActionResult> DeleteScenario([FromRoute] string scenario)
     {
-        await Mediator.Send(new DeleteScenarioCommand(scenario), cancellationToken);
+        await Send(new DeleteScenarioCommand(scenario));
         return NoContent();
     }
 
     /// <summary>
     ///     Deletes all scenarios.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>No content.</returns>
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> DeleteAllScenarios(CancellationToken cancellationToken)
+    public async Task<ActionResult> DeleteAllScenarios()
     {
-        await Mediator.Send(new DeleteAllScenariosCommand(), cancellationToken);
+        await Send(new DeleteAllScenariosCommand());
         return NoContent();
     }
 }

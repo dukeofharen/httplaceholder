@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Threading.Tasks;
+using AutoMapper;
+using HttPlaceholder.Common.Utilities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +22,36 @@ public abstract class BaseApiController : Controller
     /// <summary>
     ///     Gets the AutoMapper instance.
     /// </summary>
-    protected IMapper Mapper => _mapper ??= HttpContext.RequestServices.GetRequiredService<IMapper>();
+    private IMapper Mapper => _mapper ??= HttpContext.RequestServices.GetRequiredService<IMapper>();
 
     /// <summary>
     ///     Gets the Mediator instance.
     /// </summary>
-    protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
+    private IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
+
+    /// <summary>
+    ///     Sends a request to MediatR.
+    /// </summary>
+    /// <param name="request">The request.</param>
+    /// <returns>The MediatR response.</returns>
+    protected Task<TResponse> Send<TResponse>(IRequest<TResponse> request) =>
+        Mediator.Send(request, HttpContext.RequestAborted);
+
+    /// <summary>
+    ///     Maps an object to another object.
+    /// </summary>
+    /// <param name="source">The object to map.</param>
+    /// <returns>The mapped object.</returns>
+    protected TDestination Map<TDestination>(object source) => Mapper.Map<TDestination>(source);
+
+    /// <summary>
+    ///     Maps an object to another object.
+    /// </summary>
+    /// <param name="source">The object to map.</param>
+    /// <param name="action">An extra mapping action on top of the base mapping.</param>
+    /// <returns>The mapped object.</returns>
+    protected TDestination MapAndSet<TDestination>(
+        object source,
+        Action<TDestination> action) =>
+        Mapper.MapAndSet(source, action);
 }

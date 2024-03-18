@@ -22,15 +22,14 @@ public class ScheduledJobController : BaseApiController
     ///     Runs a specified scheduled job.
     /// </summary>
     /// <param name="jobName">The name of the scheduled job to run.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK.</returns>
     [HttpPost("{jobName}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> RunScheduledJob([FromRoute] string jobName, CancellationToken cancellationToken)
+    public async Task<ActionResult> RunScheduledJob([FromRoute] string jobName)
     {
-        var result = await Mediator.Send(new ExecuteScheduledJobCommand(jobName), cancellationToken);
+        var result = await Send(new ExecuteScheduledJobCommand(jobName));
         var statusCode = result.Failed ? HttpStatusCode.InternalServerError : HttpStatusCode.OK;
 
         return StatusCode((int)statusCode, new JobExecutionResultDto(result.Message));
@@ -43,5 +42,5 @@ public class ScheduledJobController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<string>>> GetScheduledJobNames() =>
-        Ok(await Mediator.Send(new GetScheduledJobNamesQuery()));
+        Ok(await Send(new GetScheduledJobNamesQuery()));
 }
