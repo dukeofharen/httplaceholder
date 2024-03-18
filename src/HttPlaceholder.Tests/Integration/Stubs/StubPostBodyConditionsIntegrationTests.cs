@@ -19,7 +19,7 @@ public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}api/users";
-        const string body = @"{""username"": ""john""}";
+        const string body = """{"username": "john"}""";
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body),
@@ -47,7 +47,7 @@ public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}api/users";
-        const string body = @"{""username"": ""jack""}";
+        const string body = """{"username": "jack"}""";
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body),

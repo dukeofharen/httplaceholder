@@ -61,7 +61,7 @@ public class ObjectUtilitiesFacts
 
         // Act / Assert
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
-            input.IfAsync(i => !string.IsNullOrWhiteSpace(i), i => throw new InvalidOperationException()));
+            input.IfAsync(i => !string.IsNullOrWhiteSpace(i), _ => throw new InvalidOperationException()));
     }
 
     [TestMethod]
@@ -85,7 +85,7 @@ public class ObjectUtilitiesFacts
 
         // Act / Assert
         Assert.ThrowsException<InvalidOperationException>(() =>
-            input.If(i => !string.IsNullOrWhiteSpace(i), i => throw new InvalidOperationException()));
+            input.If(i => !string.IsNullOrWhiteSpace(i), _ => throw new InvalidOperationException()));
     }
 
     [TestMethod]

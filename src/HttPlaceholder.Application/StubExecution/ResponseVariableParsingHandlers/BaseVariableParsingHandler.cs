@@ -46,7 +46,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
         CancellationToken cancellationToken)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
+        if (enumerable.Length == 0)
         {
             return input;
         }

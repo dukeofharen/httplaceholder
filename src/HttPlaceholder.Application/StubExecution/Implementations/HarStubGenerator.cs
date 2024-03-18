@@ -109,7 +109,7 @@ internal class HarStubGenerator(
             throw new ValidationException("har.log is not set.");
         }
 
-        if (har.Log.Entries == null || !har.Log.Entries.Any())
+        if (har.Log.Entries == null || har.Log.Entries.Length == 0)
         {
             throw new ValidationException("No entries set in HAR.");
         }

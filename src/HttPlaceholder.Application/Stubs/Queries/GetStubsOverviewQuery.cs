@@ -10,9 +10,7 @@ namespace HttPlaceholder.Application.Stubs.Queries;
 /// <summary>
 ///     A query for retrieving a stub overview.
 /// </summary>
-public class GetStubsOverviewQuery : IRequest<IEnumerable<FullStubOverviewModel>>
-{
-}
+public class GetStubsOverviewQuery : IRequest<IEnumerable<FullStubOverviewModel>>;
 
 /// <summary>
 ///     A query handler for retrieving a stub overview.

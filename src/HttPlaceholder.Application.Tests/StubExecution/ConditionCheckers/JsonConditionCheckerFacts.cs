@@ -9,36 +9,40 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 [TestClass]
 public class JsonConditionCheckerFacts
 {
-    private const string PostedObjectJson = @"{
-  ""username"": ""username"",
-  ""subObject"": {
-    ""strValue"": ""stringInput"",
-    ""boolValue"": true,
-    ""doubleValue"": 1.23,
-    ""dateTimeValue"": ""2021-04-16T21:23:03"",
-    ""intValue"": 3,
-    ""nullValue"": null,
-    ""arrayValue"": [
-      ""val1"",
-      {
-        ""subKey1"": ""subValue1"",
-        ""subKey2"": ""subValue2""
-      }
-    ]
-  }
-}
-";
+    private const string PostedObjectJson = """
+                                            {
+                                              "username": "username",
+                                              "subObject": {
+                                                "strValue": "stringInput",
+                                                "boolValue": true,
+                                                "doubleValue": 1.23,
+                                                "dateTimeValue": "2021-04-16T21:23:03",
+                                                "intValue": 3,
+                                                "nullValue": null,
+                                                "arrayValue": [
+                                                  "val1",
+                                                  {
+                                                    "subKey1": "subValue1",
+                                                    "subKey2": "subValue2"
+                                                  }
+                                                ]
+                                              }
+                                            }
 
-    private const string PostedArrayJson = @"[
-    ""val1"",
-    3,
-    1.46,
-    ""2021-04-17T13:16:54"",
-    {
-        ""stringVal"": ""val1"",
-        ""intVal"": 55
-    }
-]";
+                                            """;
+
+    private const string PostedArrayJson = """
+                                           [
+                                               "val1",
+                                               3,
+                                               1.46,
+                                               "2021-04-17T13:16:54",
+                                               {
+                                                   "stringVal": "val1",
+                                                   "intVal": 55
+                                               }
+                                           ]
+                                           """;
 
     private readonly AutoMocker _mocker = new();
 
@@ -93,7 +97,7 @@ public class JsonConditionCheckerFacts
 
         mockHttpContextService
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(@"{""boolValue"": true}");
+            .ReturnsAsync("""{"boolValue": true}""");
 
         // Act
         var result =
@@ -271,7 +275,7 @@ public class JsonConditionCheckerFacts
     public void ConvertJsonConditions_InputIsJObject_ShouldConvertCorrectly()
     {
         // Arrange
-        var jObject = JObject.Parse(@"{""key1"": ""val1"", ""key2"": ""val2""}");
+        var jObject = JObject.Parse("""{"key1": "val1", "key2": "val2"}""");
 
         // Act
         var result = JsonConditionChecker.ConvertJsonConditions(jObject);

@@ -18,26 +18,28 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}users";
-        const string body = @"{
-  ""firstName"": ""John"",
-  ""lastName"" : ""doe"",
-  ""age""      : 26,
-  ""address""  : {
-    ""streetAddress"": ""naist street"",
-    ""city""         : ""Nara"",
-    ""postalCode""   : ""630-0192""
-  },
-  ""phoneNumbers"": [
-    {
-      ""type""  : ""iPhone"",
-      ""number"": ""0123-4567-8888""
-    },
-    {
-      ""type""  : ""home"",
-      ""number"": ""0123-4567-8910""
-    }
-  ]
-}";
+        const string body = """
+                            {
+                              "firstName": "John",
+                              "lastName" : "doe",
+                              "age"      : 26,
+                              "address"  : {
+                                "streetAddress": "naist street",
+                                "city"         : "Nara",
+                                "postalCode"   : "630-0192"
+                              },
+                              "phoneNumbers": [
+                                {
+                                  "type"  : "iPhone",
+                                  "number": "0123-4567-8888"
+                                },
+                                {
+                                  "type"  : "home",
+                                  "number": "0123-4567-8910"
+                                }
+                              ]
+                            }
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime),
@@ -57,26 +59,28 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}users";
-        const string body = @"{
-  ""firstName"": ""John"",
-  ""lastName"" : ""doe"",
-  ""age""      : 26,
-  ""address""  : {
-    ""streetAddress"": ""naist street"",
-    ""city""         : ""Nara"",
-    ""postalCode""   : ""630-0192""
-  },
-  ""phoneNumbers"": [
-    {
-      ""type""  : ""Android"",
-      ""number"": ""0123-4567-8888""
-    },
-    {
-      ""type""  : ""home"",
-      ""number"": ""0123-4567-8910""
-    }
-  ]
-}";
+        const string body = """
+                            {
+                              "firstName": "John",
+                              "lastName" : "doe",
+                              "age"      : 26,
+                              "address"  : {
+                                "streetAddress": "naist street",
+                                "city"         : "Nara",
+                                "postalCode"   : "630-0192"
+                              },
+                              "phoneNumbers": [
+                                {
+                                  "type"  : "Android",
+                                  "number": "0123-4567-8888"
+                                },
+                                {
+                                  "type"  : "home",
+                                  "number": "0123-4567-8910"
+                                }
+                              ]
+                            }
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime),
@@ -94,15 +98,17 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}users";
-        const string body = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""age"": 29,
-  ""achievements"": [
-    {
-      ""name"": ""Just an average guy""
-    }
-  ]
-}]}";
+        const string body = """
+                            {"people": [{
+                              "firstName": "John",
+                              "age": 29,
+                              "achievements": [
+                                {
+                                  "name": "Just an average guy"
+                                }
+                              ]
+                            }]}
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime),
@@ -122,15 +128,17 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}users";
-        const string body = @"{""people"": [{
-  ""firstName"": ""Marc"",
-  ""age"": 29,
-  ""achievements"": [
-    {
-      ""name"": ""Just an average guy""
-    }
-  ]
-}]}";
+        const string body = """
+                            {"people": [{
+                              "firstName": "Marc",
+                              "age": 29,
+                              "achievements": [
+                                {
+                                  "name": "Just an average guy"
+                                }
+                              ]
+                            }]}
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime),

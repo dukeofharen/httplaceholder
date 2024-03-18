@@ -438,7 +438,7 @@ internal class FileSystemStubSource(
         }
 
         var files = await fileService.GetFilesAsync(requestsFolder, $"*-{correlationId}.json", cancellationToken);
-        return !files.Any() ? null : files[0];
+        return files.Length == 0 ? null : files[0];
     }
 
     private static string ConstructResponseFilename(string correlationId) => $"{correlationId}.json";

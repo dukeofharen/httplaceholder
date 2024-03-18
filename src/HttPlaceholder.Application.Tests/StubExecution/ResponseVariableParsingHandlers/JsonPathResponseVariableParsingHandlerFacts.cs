@@ -54,16 +54,18 @@ public class JsonPathResponseVariableParsingHandlerFacts
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         mockHttpContextService
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(@"{
-    ""values"": [
-        {
-            ""title"": ""Value1""
-        },
-        {
-            ""title"": ""Value2""
-        }
-    ]
-}");
+            .ReturnsAsync("""
+                          {
+                              "values": [
+                                  {
+                                      "title": "Value1"
+                                  },
+                                  {
+                                      "title": "Value2"
+                                  }
+                              ]
+                          }
+                          """);
 
         var handler = _mocker.CreateInstance<JsonPathResponseVariableParsingHandler>();
 

@@ -13,9 +13,7 @@ namespace HttPlaceholder.Application.Metadata.Queries;
 /// <summary>
 ///     A query for retrieving metadata about the currently running instance of HttPlaceholder.
 /// </summary>
-public class GetMetadataQuery : IRequest<MetadataModel>
-{
-}
+public class GetMetadataQuery : IRequest<MetadataModel>;
 
 /// <summary>
 ///     A query handler for retrieving metadata about the currently running instance of HttPlaceholder.

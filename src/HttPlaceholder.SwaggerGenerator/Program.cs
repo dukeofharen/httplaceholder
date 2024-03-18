@@ -15,7 +15,7 @@ internal static class Program
     public static async Task Main(string[] args)
     {
         var pathToSave = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), "swagger.json");
-        if (args.Any())
+        if (args.Length != 0)
         {
             var firstArg = args[0];
             if (Directory.Exists(Path.GetDirectoryName(firstArg)))
@@ -47,7 +47,7 @@ internal static class Program
         }
 
         var content = await response.Content.ReadAsStringAsync();
-        Console.WriteLine($@"Saving Swagger file to {pathToSave}");
+        Console.WriteLine($"Saving Swagger file to {pathToSave}");
         await File.WriteAllTextAsync(pathToSave, content);
     }
 }

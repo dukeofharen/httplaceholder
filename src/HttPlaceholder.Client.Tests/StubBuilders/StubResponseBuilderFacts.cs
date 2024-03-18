@@ -103,7 +103,7 @@ public class StubResponseBuilderFacts
             .Build();
 
         // Assert
-        Assert.AreEqual(@"{""key"":""val""}", response.Json);
+        Assert.AreEqual("""{"key":"val"}""", response.Json);
     }
 
     [TestMethod]

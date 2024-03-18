@@ -10,9 +10,7 @@ namespace HttPlaceholder.Application.Scenarios.Queries;
 /// <summary>
 ///     A query for retrieving all scenarios.
 /// </summary>
-public class GetAllScenariosQuery : IRequest<IEnumerable<ScenarioStateModel>>
-{
-}
+public class GetAllScenariosQuery : IRequest<IEnumerable<ScenarioStateModel>>;
 
 /// <summary>
 ///     A query handler for retrieving all scenarios.

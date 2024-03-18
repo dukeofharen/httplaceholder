@@ -74,7 +74,7 @@ internal class StubRequestExecutor(
             }
         }
 
-        if (!foundStubs.Any())
+        if (foundStubs.Count == 0)
         {
             // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
             throw new RequestValidationException(

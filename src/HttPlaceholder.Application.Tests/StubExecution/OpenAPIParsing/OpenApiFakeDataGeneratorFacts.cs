@@ -378,9 +378,11 @@ public class OpenApiFakeDataGeneratorFacts
         var result = generator.GetJsonExample(mediaType);
 
         // Assert
-        Assert.AreEqual(@"{
-  ""key"": ""val""
-}", result);
+        Assert.AreEqual("""
+                        {
+                          "key": "val"
+                        }
+                        """, result);
     }
 
     [TestMethod]
@@ -398,18 +400,22 @@ public class OpenApiFakeDataGeneratorFacts
         var result = generator.GetJsonExample(mediaType);
 
         // Assert
-        Assert.AreEqual(@"{
-  ""key"": ""val""
-}", result);
+        Assert.AreEqual("""
+                        {
+                          "key": "val"
+                        }
+                        """, result);
     }
 
     [TestMethod]
     public void GetResponseJsonExample_Examples_ExampleIsOpenApiString_ShouldReturnJsonString()
     {
         // Arrange
-        var obj = new OpenApiString(@"{
-  ""key"": ""val""
-}");
+        var obj = new OpenApiString("""
+                                    {
+                                      "key": "val"
+                                    }
+                                    """);
         var mediaType = new OpenApiMediaType
         {
             Examples = new Dictionary<string, OpenApiExample> { { "foo", new OpenApiExample { Value = obj } } }
@@ -420,9 +426,11 @@ public class OpenApiFakeDataGeneratorFacts
         var result = generator.GetJsonExample(mediaType);
 
         // Assert
-        Assert.AreEqual(@"{
-  ""key"": ""val""
-}", result);
+        Assert.AreEqual("""
+                        {
+                          "key": "val"
+                        }
+                        """, result);
     }
 
     [DataTestMethod]

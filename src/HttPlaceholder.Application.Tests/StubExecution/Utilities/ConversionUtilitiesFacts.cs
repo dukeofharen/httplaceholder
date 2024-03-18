@@ -27,7 +27,7 @@ public class ConversionUtilitiesFacts
     public void Convert_ConditionIsJObject_ShouldConvert()
     {
         // Arrange
-        const string jsonString = @"{""equals"": ""/path"", ""notcontainsci"": ""somestring""}";
+        const string jsonString = """{"equals": "/path", "notcontainsci": "somestring"}""";
 
         // Act
         var result = ConversionUtilities.Convert<StubConditionStringCheckingModel>(JObject.Parse(jsonString));
@@ -61,7 +61,7 @@ public class ConversionUtilitiesFacts
     public void ConvertEnumerable_InputIsJArray_ShouldConvert()
     {
         // Arrange
-        var input = JArray.Parse(@"[""string1"", ""string2""]");
+        var input = JArray.Parse("""["string1", "string2"]""");
 
         // Act
         var result = ConversionUtilities.ConvertEnumerable<string>(input).ToArray();

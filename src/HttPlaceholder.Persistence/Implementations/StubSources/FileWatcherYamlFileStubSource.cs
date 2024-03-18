@@ -115,7 +115,7 @@ internal class FileWatcherYamlFileStubSource(
         {
             Logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
             var stubs = ParseAndValidateStubs(input, file);
-            Stubs.AddOrUpdate(file, k => stubs, (k, v) => stubs);
+            Stubs.AddOrUpdate(file, _ => stubs, (_, _) => stubs);
         }
         catch (YamlException ex)
         {

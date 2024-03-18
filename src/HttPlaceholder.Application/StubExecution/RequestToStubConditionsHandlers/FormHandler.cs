@@ -34,7 +34,7 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
 
         var reader = new FormReader(request.Body);
         var form = reader.ReadForm();
-        if (!form.Any())
+        if (form.Count == 0)
         {
             return Task.FromResult(false);
         }

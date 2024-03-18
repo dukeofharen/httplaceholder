@@ -9,9 +9,7 @@ namespace HttPlaceholder.Application.Tenants.Queries;
 /// <summary>
 ///     A query for retrieving all tenant names.
 /// </summary>
-public class GetTenantNamesQuery : IRequest<IEnumerable<string>>
-{
-}
+public class GetTenantNamesQuery : IRequest<IEnumerable<string>>;
 
 /// <summary>
 ///     A query handler for retrieving all tenant names.

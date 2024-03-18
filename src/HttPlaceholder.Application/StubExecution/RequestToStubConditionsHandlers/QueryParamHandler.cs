@@ -20,7 +20,7 @@ internal class QueryParamHandler : IRequestToStubConditionsHandler, ISingletonSe
     {
         var uri = new Uri(request.Url);
         var query = QueryHelpers.ParseQuery(uri.Query);
-        if (!query.Any())
+        if (query.Count == 0)
         {
             return Task.FromResult(false);
         }

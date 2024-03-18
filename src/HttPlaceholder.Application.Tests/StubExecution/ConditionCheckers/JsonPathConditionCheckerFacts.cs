@@ -58,14 +58,16 @@ public class JsonPathConditionCheckerFacts
             JsonPath = new[] { "$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]" }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""achievements"": [
-    {
-      ""name"": ""Man of the year""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "achievements": [
+                                {
+                                  "name": "Man of the year"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
@@ -90,14 +92,16 @@ public class JsonPathConditionCheckerFacts
             JsonPath = new[] { "$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]" }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""achievements"": [
-    {
-      ""name"": ""Just an average guy""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "achievements": [
+                                {
+                                  "name": "Just an average guy"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
@@ -129,14 +133,16 @@ public class JsonPathConditionCheckerFacts
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""achievements"": [
-    {
-      ""name"": ""Man of the year""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "achievements": [
+                                {
+                                  "name": "Man of the year"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
@@ -168,14 +174,16 @@ public class JsonPathConditionCheckerFacts
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""achievements"": [
-    {
-      ""name"": ""Just an average guy""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "achievements": [
+                                {
+                                  "name": "Just an average guy"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
@@ -207,14 +215,16 @@ public class JsonPathConditionCheckerFacts
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""Marc"",
-  ""achievements"": [
-    {
-      ""name"": ""Man of the year""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "Marc",
+                              "achievements": [
+                                {
+                                  "name": "Man of the year"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
@@ -250,15 +260,17 @@ public class JsonPathConditionCheckerFacts
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""age"": 29,
-  ""achievements"": [
-    {
-      ""name"": ""Man of the year""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "age": 29,
+                              "achievements": [
+                                {
+                                  "name": "Man of the year"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
@@ -294,15 +306,17 @@ public class JsonPathConditionCheckerFacts
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""age"": 29,
-  ""achievements"": [
-    {
-      ""name"": ""Just an average guy""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "age": 29,
+                              "achievements": [
+                                {
+                                  "name": "Just an average guy"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);

@@ -236,7 +236,7 @@ public class RelationalDbStubCacheFacts
 
         // Assert
         Assert.AreEqual(2, result.Length);
-        Assert.IsFalse(cache.StubCache.Any());
+        Assert.IsFalse(!cache.StubCache.IsEmpty);
 
         Assert.IsTrue(result.All(s => s.Id is "stub-1" or "stub-2"));
         Assert.IsNotNull(capturedParam);

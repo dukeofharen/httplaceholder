@@ -159,7 +159,7 @@ internal class ReverseProxyResponseWriter(
         CancellationToken cancellationToken)
     {
         var requestBody = await httpContextService.GetBodyAsBytesAsync(cancellationToken);
-        if (!requestBody.Any())
+        if (requestBody.Length == 0)
         {
             return;
         }

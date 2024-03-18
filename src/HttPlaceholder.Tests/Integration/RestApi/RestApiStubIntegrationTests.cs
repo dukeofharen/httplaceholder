@@ -25,23 +25,25 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        const string body = @"id: situation-01
-conditions:
-  method: GET
-  url:
-    path: /users
-    query:
-      id: 12
-      filter: first_name
-response:
-  statusCode: 200
-  text: |
-    {
-      ""first_name"": ""John""
-    }
-  headers:
-    Content-Type: application/json
-";
+        const string body = """
+                            id: situation-01
+                            conditions:
+                              method: GET
+                              url:
+                                path: /users
+                                query:
+                                  id: 12
+                                  filter: first_name
+                            response:
+                              statusCode: 200
+                              text: |
+                                {
+                                  "first_name": "John"
+                                }
+                              headers:
+                                Content-Type: application/json
+
+                            """;
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
@@ -63,26 +65,28 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        const string body = @"{
-  ""id"": ""situation-01"",
-  ""conditions"": {
-    ""method"": ""GET"",
-    ""url"": {
-      ""path"": ""/users"",
-      ""query"": {
-        ""id"": 12,
-        ""filter"": ""first_name""
-      }
-    }
-  },
-  ""response"": {
-    ""statusCode"": 200,
-    ""text"": ""{\n  \""\""first_name\""\"": \""\""John\""\""\n}\n"",
-    ""headers"": {
-      ""Content-Type"": ""application/json""
-    }
-  }
-}";
+        const string body = """
+                            {
+                              "id": "situation-01",
+                              "conditions": {
+                                "method": "GET",
+                                "url": {
+                                  "path": "/users",
+                                  "query": {
+                                    "id": 12,
+                                    "filter": "first_name"
+                                  }
+                                }
+                              },
+                              "response": {
+                                "statusCode": 200,
+                                "text": "{\n  \"\"first_name\"\": \"\"John\"\"\n}\n",
+                                "headers": {
+                                  "Content-Type": "application/json"
+                                }
+                              }
+                            }
+                            """;
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
@@ -104,40 +108,42 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs/multiple";
-        const string body = @"[
-    {
-        ""id"": ""test-situation1"",
-        ""conditions"": {
-            ""method"": ""GET"",
-            ""url"": {
-                ""path"": ""/testtesttest1"",
-                ""query"": {
-                    ""id"": ""13""
-                }
-            }
-        },
-        ""response"": {
-            ""statusCode"": 200,
-            ""text"": ""OK my dude! 1""
-        }
-    },
-    {
-        ""id"": ""test-situation2"",
-        ""conditions"": {
-            ""method"": ""GET"",
-            ""url"": {
-                ""path"": ""/testtesttest2"",
-                ""query"": {
-                    ""id"": ""13""
-                }
-            }
-        },
-        ""response"": {
-            ""statusCode"": 200,
-            ""text"": ""OK my dude! 2""
-        }
-    }
-]";
+        const string body = """
+                            [
+                                {
+                                    "id": "test-situation1",
+                                    "conditions": {
+                                        "method": "GET",
+                                        "url": {
+                                            "path": "/testtesttest1",
+                                            "query": {
+                                                "id": "13"
+                                            }
+                                        }
+                                    },
+                                    "response": {
+                                        "statusCode": 200,
+                                        "text": "OK my dude! 1"
+                                    }
+                                },
+                                {
+                                    "id": "test-situation2",
+                                    "conditions": {
+                                        "method": "GET",
+                                        "url": {
+                                            "path": "/testtesttest2",
+                                            "query": {
+                                                "id": "13"
+                                            }
+                                        }
+                                    },
+                                    "response": {
+                                        "statusCode": 200,
+                                        "text": "OK my dude! 2"
+                                    }
+                                }
+                            ]
+                            """;
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
@@ -161,15 +167,17 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        const string body = @"{
-  ""response"": {
-    ""statusCode"": 200,
-    ""text"": ""{\n  \""\""first_name\""\"": \""\""John\""\""\n}\n"",
-    ""headers"": {
-      ""Content-Type"": ""application/json""
-    }
-  }
-}";
+        const string body = """
+                            {
+                              "response": {
+                                "statusCode": 200,
+                                "text": "{\n  \"\"first_name\"\": \"\"John\"\"\n}\n",
+                                "headers": {
+                                  "Content-Type": "application/json"
+                                }
+                              }
+                            }
+                            """;
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
@@ -380,23 +388,25 @@ response:
         // Add
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        var body = @"id: situation-01
-conditions:
-  method: GET
-  url:
-    path: /users
-    query:
-      id: 12
-      filter: first_name
-response:
-  statusCode: 200
-  text: |
-    {
-      ""first_name"": ""John""
-    }
-  headers:
-    Content-Type: application/json
-";
+        var body = """
+                   id: situation-01
+                   conditions:
+                     method: GET
+                     url:
+                       path: /users
+                       query:
+                         id: 12
+                         filter: first_name
+                   response:
+                     statusCode: 200
+                     text: |
+                       {
+                         "first_name": "John"
+                       }
+                     headers:
+                       Content-Type: application/json
+
+                   """;
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
@@ -415,23 +425,25 @@ response:
         // Update
         // Arrange
         url = $"{TestServer.BaseAddress}ph-api/stubs/situation-01";
-        body = @"id: NEW-STUB-ID
-conditions:
-  method: GET
-  url:
-    path: /users
-    query:
-      id: 12
-      filter: first_name
-response:
-  statusCode: 200
-  text: |
-    {
-      ""first_name"": ""John""
-    }
-  headers:
-    Content-Type: application/json
-";
+        body = """
+               id: NEW-STUB-ID
+               conditions:
+                 method: GET
+                 url:
+                   path: /users
+                   query:
+                     id: 12
+                     filter: first_name
+               response:
+                 statusCode: 200
+                 text: |
+                   {
+                     "first_name": "John"
+                   }
+                 headers:
+                   Content-Type: application/json
+
+               """;
         request = new HttpRequestMessage
         {
             Method = HttpMethod.Put,
@@ -453,26 +465,28 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        var body = @"{
-  ""id"": ""situation-01"",
-  ""conditions"": {
-    ""method"": ""GET"",
-    ""url"": {
-      ""path"": ""/users"",
-      ""query"": {
-        ""id"": 12,
-        ""filter"": ""first_name""
-      }
-    }
-  },
-  ""response"": {
-    ""statusCode"": 200,
-    ""text"": ""{\n  \""\""first_name\""\"": \""\""John\""\""\n}\n"",
-    ""headers"": {
-      ""Content-Type"": ""application/json""
-    }
-  }
-}";
+        var body = """
+                   {
+                     "id": "situation-01",
+                     "conditions": {
+                       "method": "GET",
+                       "url": {
+                         "path": "/users",
+                         "query": {
+                           "id": 12,
+                           "filter": "first_name"
+                         }
+                       }
+                     },
+                     "response": {
+                       "statusCode": 200,
+                       "text": "{\n  \"\"first_name\"\": \"\"John\"\"\n}\n",
+                       "headers": {
+                         "Content-Type": "application/json"
+                       }
+                     }
+                   }
+                   """;
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
@@ -491,26 +505,28 @@ response:
         // Update
         // Arrange
         url = $"{TestServer.BaseAddress}ph-api/stubs/situation-01";
-        body = @"{
-  ""id"": ""NEW-STUB-ID"",
-  ""conditions"": {
-    ""method"": ""GET"",
-    ""url"": {
-      ""path"": ""/users"",
-      ""query"": {
-        ""id"": 12,
-        ""filter"": ""first_name""
-      }
-    }
-  },
-  ""response"": {
-    ""statusCode"": 200,
-    ""text"": ""{\n  \""\""first_name\""\"": \""\""John\""\""\n}\n"",
-    ""headers"": {
-      ""Content-Type"": ""application/json""
-    }
-  }
-}";
+        body = """
+               {
+                 "id": "NEW-STUB-ID",
+                 "conditions": {
+                   "method": "GET",
+                   "url": {
+                     "path": "/users",
+                     "query": {
+                       "id": 12,
+                       "filter": "first_name"
+                     }
+                   }
+                 },
+                 "response": {
+                   "statusCode": 200,
+                   "text": "{\n  \"\"first_name\"\": \"\"John\"\"\n}\n",
+                   "headers": {
+                     "Content-Type": "application/json"
+                   }
+                 }
+               }
+               """;
         request = new HttpRequestMessage
         {
             Method = HttpMethod.Put,

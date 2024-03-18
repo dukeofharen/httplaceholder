@@ -38,7 +38,7 @@ internal class RequestToCurlCommandService : IRequestToCurlCommandService, ISing
                 .Select(h => $"-H '{h.Key}: {h.Value}'");
 
     private static IEnumerable<string> AddRequestBody(RequestParametersModel reqParams) =>
-        reqParams?.BinaryBody == null || reqParams?.BinaryBody?.Any() == false
+        reqParams?.BinaryBody == null || reqParams.BinaryBody.Length == 0
             ? Array.Empty<string>()
             : ["-d", $"'{Encoding.UTF8.GetString(reqParams.BinaryBody)}'"];
 }

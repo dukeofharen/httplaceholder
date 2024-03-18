@@ -9,7 +9,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetScheduledJobNamesFacts : BaseClientTest
 {
-    private const string GetScheduledJobsJson = @"[""CleanOldRequestsJob""]";
+    private const string GetScheduledJobsJson = """["CleanOldRequestsJob"]""";
 
     [TestMethod]
     public async Task ExecuteScheduledJobAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

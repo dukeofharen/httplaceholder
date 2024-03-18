@@ -18,7 +18,7 @@ public class BodyConditionChecker(IHttpContextService httpContextService, IStrin
     {
         var result = new ConditionCheckResultModel();
         var bodyConditions = stub.Conditions?.Body?.ToArray();
-        if (bodyConditions == null || bodyConditions?.Any() != true)
+        if (bodyConditions == null || bodyConditions.Length == 0)
         {
             return result;
         }

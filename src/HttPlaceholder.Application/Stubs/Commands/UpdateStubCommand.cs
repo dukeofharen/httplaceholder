@@ -34,7 +34,7 @@ public class UpdateStubCommandHandler(IStubContext stubContext, IStubModelValida
     public async Task<Unit> Handle(UpdateStubCommand request, CancellationToken cancellationToken)
     {
         var validationResults = stubModelValidator.ValidateStubModel(request.Stub).ToArray();
-        if (validationResults.Any())
+        if (validationResults.Length != 0)
         {
             throw new ValidationException(validationResults);
         }

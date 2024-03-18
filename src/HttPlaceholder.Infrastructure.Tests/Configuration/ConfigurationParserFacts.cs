@@ -12,19 +12,23 @@ public class ConfigurationParserFacts
     private const string ExampleArgs =
         "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --configJsonLocation /var/httpl_config.json";
 
-    private const string ExampleConfigJson = @"
-{
-    ""enableUserInterface"": true,
-    ""storeResponses"": false,
-    ""oldRequestsQueueLength"": 101
-}";
+    private const string ExampleConfigJson = """
 
-    private const string ExampleConfigWithWeirdCasing = @"
-{
-    ""APIUSERNAME"": ""user"",
-    ""apipassword"": ""pass"",
-    ""enableUserInterface"": false
-}";
+                                             {
+                                                 "enableUserInterface": true,
+                                                 "storeResponses": false,
+                                                 "oldRequestsQueueLength": 101
+                                             }
+                                             """;
+
+    private const string ExampleConfigWithWeirdCasing = """
+
+                                                        {
+                                                            "APIUSERNAME": "user",
+                                                            "apipassword": "pass",
+                                                            "enableUserInterface": false
+                                                        }
+                                                        """;
 
     private readonly Mock<IEnvService> _envServiceMock = new();
 

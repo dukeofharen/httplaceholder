@@ -374,7 +374,7 @@ public static class ConfigKeys
             null),
         Create(
             HealthcheckOnRootUrl,
-            @"whether the root URL of HttPlaceholder (so ""/"") can be configured as stub or always returns 200 OK. Defaults to false.",
+            """whether the root URL of HttPlaceholder (so "/") can be configured as stub or always returns 200 OK. Defaults to false.""",
             "true",
             "Stub:HealthcheckOnRootUrl",
             ConfigKeyType.Stub,

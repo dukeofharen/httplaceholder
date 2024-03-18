@@ -71,7 +71,7 @@ public class FileSystemStubCacheFacts
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
 
-        var metadataContents = @$"{{""StubUpdateTrackingId"": ""{trackingId}""}}";
+        var metadataContents = $$"""{"StubUpdateTrackingId": "{{trackingId}}"}""";
         mockFileService
             .Setup(m => m.ReadAllText(expectedPath))
             .Returns(metadataContents);
@@ -116,7 +116,7 @@ public class FileSystemStubCacheFacts
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsFalse(cache.StubCache.Any());
+        Assert.IsFalse(!cache.StubCache.IsEmpty);
         Assert.IsNull(cache.StubUpdateTrackingId);
     }
 
@@ -309,7 +309,7 @@ public class FileSystemStubCacheFacts
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
 
-        var metadataContents = @$"{{""StubUpdateTrackingId"": ""{trackingId}""}}";
+        var metadataContents = $$"""{"StubUpdateTrackingId": "{{trackingId}}"}""";
         mockFileService
             .Setup(m => m.ReadAllText(expectedPath))
             .Returns(metadataContents);

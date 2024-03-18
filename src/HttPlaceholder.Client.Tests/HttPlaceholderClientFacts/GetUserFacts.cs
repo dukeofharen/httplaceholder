@@ -8,9 +8,11 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetUserFacts : BaseClientTest
 {
-    private const string GetUserResponse = @"{
-    ""username"": ""user""
-}";
+    private const string GetUserResponse = """
+                                           {
+                                               "username": "user"
+                                           }
+                                           """;
 
     [TestMethod]
     public async Task GetRequestAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

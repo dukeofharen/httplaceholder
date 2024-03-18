@@ -238,7 +238,7 @@ public class RelationalDbStubSourceFacts
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         var correlationIdInput = Guid.NewGuid().ToString();
-        var request = new DbRequestModel { Json = $@"{{""CorrelationId"": ""{correlationIdInput}""}}" };
+        var request = new DbRequestModel { Json = $$"""{"CorrelationId": "{{correlationIdInput}}"}""" };
         object capturedParam = null;
         _mockDatabaseContext
             .Setup(m => m.QueryFirstOrDefaultAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(),
@@ -531,7 +531,7 @@ public class RelationalDbStubSourceFacts
             new DbRequestModel
             {
                 Id = 1,
-                Json = @"{""CorrelationId"": ""12345""}",
+                Json = """{"CorrelationId": "12345"}""",
                 CorrelationId = Guid.NewGuid().ToString(),
                 ExecutingStubId = "stub1",
                 RequestBeginTime = DateTime.Today,
@@ -582,7 +582,7 @@ public class RelationalDbStubSourceFacts
             new DbRequestModel
             {
                 Id = 1,
-                Json = @"{""CorrelationId"": ""12345""}",
+                Json = """{"CorrelationId": "12345"}""",
                 CorrelationId = ids[1],
                 ExecutingStubId = "stub1",
                 RequestBeginTime = DateTime.Today,
@@ -649,7 +649,7 @@ public class RelationalDbStubSourceFacts
             new DbRequestModel
             {
                 Id = 1,
-                Json = @"{""CorrelationId"": ""12345""}",
+                Json = """{"CorrelationId": "12345"}""",
                 CorrelationId = ids[1],
                 ExecutingStubId = "stub1",
                 RequestBeginTime = DateTime.Today,
@@ -658,7 +658,7 @@ public class RelationalDbStubSourceFacts
             new DbRequestModel
             {
                 Id = 2,
-                Json = @"{""CorrelationId"": ""54321""}",
+                Json = """{"CorrelationId": "54321"}""",
                 CorrelationId = ids[2],
                 ExecutingStubId = "stub1",
                 RequestBeginTime = DateTime.Today,

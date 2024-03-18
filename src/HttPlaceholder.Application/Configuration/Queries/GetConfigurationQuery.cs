@@ -12,9 +12,7 @@ namespace HttPlaceholder.Application.Configuration.Queries;
 /// <summary>
 ///     A query for retrieving the configuration
 /// </summary>
-public class GetConfigurationQuery : IRequest<IEnumerable<ConfigurationModel>>
-{
-}
+public class GetConfigurationQuery : IRequest<IEnumerable<ConfigurationModel>>;
 
 /// <summary>
 ///     A handler for retrieving the configuration.

@@ -8,9 +8,7 @@ namespace HttPlaceholder.Application.Requests.Commands;
 /// <summary>
 ///     A command for deleting all requests.
 /// </summary>
-public class DeleteAllRequestsCommand : IRequest<Unit>
-{
-}
+public class DeleteAllRequestsCommand : IRequest<Unit>;
 
 /// <summary>
 ///     A command handler for deleting all requests.

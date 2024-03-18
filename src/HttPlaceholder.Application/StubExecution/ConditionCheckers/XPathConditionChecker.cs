@@ -22,7 +22,7 @@ public class XPathConditionChecker(IHttpContextService httpContextService) : ICo
     {
         var result = new ConditionCheckResultModel();
         var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? Array.Empty<StubXpathModel>();
-        if (!xpathConditions.Any())
+        if (xpathConditions.Length == 0)
         {
             return result;
         }

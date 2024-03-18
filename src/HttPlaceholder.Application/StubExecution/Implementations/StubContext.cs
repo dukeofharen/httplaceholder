@@ -282,7 +282,7 @@ internal class StubContext(
         }
 
         var key = stubRequestContext.DistributionKey ?? string.Empty;
-        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        await ExecuteLockedScenarioAction(key, cancellationToken, async () =>
         {
             var stubSource = GetWritableStubSource();
             var scenarioStateModel = await GetOrAddScenarioState(scenario, key, cancellationToken);
@@ -304,7 +304,7 @@ internal class StubContext(
         }
 
         var key = stubRequestContext.DistributionKey ?? string.Empty;
-        var result = await ExecuteLockedScenarioAction(scenario, key, cancellationToken,
+        var result = await ExecuteLockedScenarioAction(key, cancellationToken,
             async () => await GetOrAddScenarioState(scenario, key, cancellationToken));
         return result.HitCount;
     }
@@ -336,7 +336,7 @@ internal class StubContext(
         }
 
         var key = stubRequestContext.DistributionKey ?? string.Empty;
-        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        await ExecuteLockedScenarioAction(key, cancellationToken, async () =>
         {
             var stubSource = GetWritableStubSource();
             var existingScenario = await stubSource.GetScenarioAsync(scenario, key, cancellationToken);
@@ -384,7 +384,7 @@ internal class StubContext(
         var result = false;
         var stubSource = GetWritableStubSource();
         var key = stubRequestContext.DistributionKey ?? string.Empty;
-        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        await ExecuteLockedScenarioAction(key, cancellationToken, async () =>
         {
             result = await stubSource.DeleteScenarioAsync(scenario, key, cancellationToken);
             cacheService.DeleteScopedItem(CachingKeys.ScenarioState);
@@ -404,11 +404,11 @@ internal class StubContext(
         await scenarioNotify.AllScenariosDeletedAsync(key, cancellationToken);
     }
 
-    private async Task<ScenarioStateModel> ExecuteLockedScenarioAction(string scenario, string distributionKey,
+    private static async Task<ScenarioStateModel> ExecuteLockedScenarioAction(string distributionKey,
         CancellationToken cancellationToken,
         Func<Task<ScenarioStateModel>> func)
     {
-        var semaphore = _scenarioLocks.GetOrAdd(distributionKey, k => new SemaphoreSlim(1, 1));
+        var semaphore = _scenarioLocks.GetOrAdd(distributionKey, _ => new SemaphoreSlim(1, 1));
         await semaphore.WaitAsync(cancellationToken);
         try
         {

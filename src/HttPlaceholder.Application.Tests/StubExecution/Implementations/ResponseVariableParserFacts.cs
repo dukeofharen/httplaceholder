@@ -30,9 +30,11 @@ public class ResponseVariableParserFacts
     public async Task VariableParser_Parse_HappyFlow()
     {
         // arrange
-        const string input = @"((handler1:value1)) ((handler2))
-((handler1:bla))
-((handler-x))";
+        const string input = """
+                             ((handler1:value1)) ((handler2))
+                             ((handler1:bla))
+                             ((handler-x))
+                             """;
 
         var stub = new StubModel();
         _handler1
@@ -66,8 +68,10 @@ public class ResponseVariableParserFacts
     public void VariableParser_VarRegex_HappyFlow()
     {
         // Arrange
-        const string input = @"Query var 1: ((query:value)), query var 2: ((query)), query var 3: ((query))
-((request_body:'key2=([a-z0-9]*)')) ((request_body:key2=([a-z0-9]*) ))((request_body:key2=([a-z0-9]*) ))";
+        const string input = """
+                             Query var 1: ((query:value)), query var 2: ((query)), query var 3: ((query))
+                             ((request_body:'key2=([a-z0-9]*)')) ((request_body:key2=([a-z0-9]*) ))((request_body:key2=([a-z0-9]*) ))
+                             """;
         var expectedResults = new[]
         {
             ("((query:value))", "query", "value"), ("((query))", "query", string.Empty),

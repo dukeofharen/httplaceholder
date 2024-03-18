@@ -72,7 +72,7 @@ public class PathConditionCheckerFacts
 
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel { Path = @"/locatieserver/v3/suggest" }
+            Url = new StubUrlConditionModel { Path = "/locatieserver/v3/suggest" }
         };
 
         httpContextServiceMock

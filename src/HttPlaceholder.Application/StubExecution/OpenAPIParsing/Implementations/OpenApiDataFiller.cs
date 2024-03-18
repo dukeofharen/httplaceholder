@@ -129,7 +129,7 @@ internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenera
         var pathParams = parameters
             .Where(p => p.In == ParameterLocation.Path)
             .ToArray();
-        if (pathParams.Any())
+        if (pathParams.Length != 0)
         {
             relativePath = pathParams
                 .Aggregate(
@@ -141,7 +141,7 @@ internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenera
         var queryParams = parameters
             .Where(p => p.In == ParameterLocation.Query)
             .ToArray();
-        if (!queryParams.Any())
+        if (queryParams.Length == 0)
         {
             return relativePath;
         }
@@ -162,7 +162,7 @@ internal class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenera
         var headerParams = operation.Parameters
             .Where(p => p.In == ParameterLocation.Header)
             .ToArray();
-        var result = headerParams.Any()
+        var result = headerParams.Length != 0
             ? headerParams.ToDictionary(p => p.Name, p => openApiFakeDataGenerator.GetRandomStringValue(p.Schema))
             : new Dictionary<string, string>();
         if (operation.RequestBody?.Content != null && operation.RequestBody.Content.Any())

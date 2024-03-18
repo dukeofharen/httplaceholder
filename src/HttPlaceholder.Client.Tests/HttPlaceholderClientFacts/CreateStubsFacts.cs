@@ -13,54 +13,56 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class CreateStubsFacts : BaseClientTest
 {
-    private const string CreateStubResponse = @"[
-    {
-        ""stub"": {
-            ""id"": ""test-situation1"",
-            ""conditions"": {
-                ""method"": ""GET"",
-                ""url"": {
-                    ""path"": ""/testtesttest1"",
-                    ""query"": {
-                        ""id"": ""13""
-                    }
-                }
-            },
-            ""response"": {
-                ""statusCode"": 200,
-                ""text"": ""OK my dude! 1""
-            },
-            ""priority"": 0,
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    },
-    {
-        ""stub"": {
-            ""id"": ""test-situation2"",
-            ""conditions"": {
-                ""method"": ""GET"",
-                ""url"": {
-                    ""path"": ""/testtesttest2"",
-                    ""query"": {
-                        ""id"": ""13""
-                    }
-                }
-            },
-            ""response"": {
-                ""statusCode"": 200,
-                ""text"": ""OK my dude! 2""
-            },
-            ""priority"": 0,
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    }
-]";
+    private const string CreateStubResponse = """
+                                              [
+                                                  {
+                                                      "stub": {
+                                                          "id": "test-situation1",
+                                                          "conditions": {
+                                                              "method": "GET",
+                                                              "url": {
+                                                                  "path": "/testtesttest1",
+                                                                  "query": {
+                                                                      "id": "13"
+                                                                  }
+                                                              }
+                                                          },
+                                                          "response": {
+                                                              "statusCode": 200,
+                                                              "text": "OK my dude! 1"
+                                                          },
+                                                          "priority": 0,
+                                                          "enabled": true
+                                                      },
+                                                      "metadata": {
+                                                          "readOnly": false
+                                                      }
+                                                  },
+                                                  {
+                                                      "stub": {
+                                                          "id": "test-situation2",
+                                                          "conditions": {
+                                                              "method": "GET",
+                                                              "url": {
+                                                                  "path": "/testtesttest2",
+                                                                  "query": {
+                                                                      "id": "13"
+                                                                  }
+                                                              }
+                                                          },
+                                                          "response": {
+                                                              "statusCode": 200,
+                                                              "text": "OK my dude! 2"
+                                                          },
+                                                          "priority": 0,
+                                                          "enabled": true
+                                                      },
+                                                      "metadata": {
+                                                          "readOnly": false
+                                                      }
+                                                  }
+                                              ]
+                                              """;
 
     [TestMethod]
     public async Task CreateStubsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

@@ -10,38 +10,40 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class CreateStubForRequestFacts : BaseClientTest
 {
-    private const string CreateStubResult = @"{
-    ""stub"": {
-        ""id"": ""generated-be3ac75bbea159e0ca1224336ce23aff"",
-        ""conditions"": {
-            ""method"": ""GET"",
-            ""url"": {
-                ""path"": ""/test.html"",
-                ""query"": {},
-                ""isHttps"": false
-            },
-            ""headers"": {
-                ""Connection"": ""keep-alive"",
-                ""Accept"": ""text/html,application/xhtml\\+xml,application/xml;q=0\\.9,image/webp,\\*/\\*;q=0\\.8"",
-                ""Accept-Encoding"": ""gzip,\\ deflate"",
-                ""Accept-Language"": ""en-US,en;q=0\\.5"",
-                ""User-Agent"": ""Mozilla/5\\.0\\ \\(X11;\\ Ubuntu;\\ Linux\\ x86_64;\\ rv:88\\.0\\)\\ Gecko/20100101\\ Firefox/88\\.0"",
-                ""Upgrade-Insecure-Requests"": ""1""
-            },
-            ""clientIp"": ""127.0.0.1"",
-            ""host"": ""localhost:5000""
-        },
-        ""response"": {
-            ""text"": ""OK!"",
-            ""headers"": {}
-        },
-        ""priority"": 0,
-        ""enabled"": true
-    },
-    ""metadata"": {
-        ""readOnly"": false
-    }
-}";
+    private const string CreateStubResult = """
+                                            {
+                                                "stub": {
+                                                    "id": "generated-be3ac75bbea159e0ca1224336ce23aff",
+                                                    "conditions": {
+                                                        "method": "GET",
+                                                        "url": {
+                                                            "path": "/test.html",
+                                                            "query": {},
+                                                            "isHttps": false
+                                                        },
+                                                        "headers": {
+                                                            "Connection": "keep-alive",
+                                                            "Accept": "text/html,application/xhtml\\+xml,application/xml;q=0\\.9,image/webp,\\*/\\*;q=0\\.8",
+                                                            "Accept-Encoding": "gzip,\\ deflate",
+                                                            "Accept-Language": "en-US,en;q=0\\.5",
+                                                            "User-Agent": "Mozilla/5\\.0\\ \\(X11;\\ Ubuntu;\\ Linux\\ x86_64;\\ rv:88\\.0\\)\\ Gecko/20100101\\ Firefox/88\\.0",
+                                                            "Upgrade-Insecure-Requests": "1"
+                                                        },
+                                                        "clientIp": "127.0.0.1",
+                                                        "host": "localhost:5000"
+                                                    },
+                                                    "response": {
+                                                        "text": "OK!",
+                                                        "headers": {}
+                                                    },
+                                                    "priority": 0,
+                                                    "enabled": true
+                                                },
+                                                "metadata": {
+                                                    "readOnly": false
+                                                }
+                                            }
+                                            """;
 
     [TestMethod]
     public async Task CreateStubForRequestAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
@@ -89,7 +91,7 @@ public class CreateStubForRequestFacts : BaseClientTest
         const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
         var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
-            .WithContent(@"{""DoNotCreateStub"":true}")
+            .WithContent("""{"DoNotCreateStub":true}""")
             .Respond("application/json", CreateStubResult)));
 
         // Act

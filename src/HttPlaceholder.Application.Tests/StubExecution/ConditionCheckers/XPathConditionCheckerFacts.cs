@@ -37,17 +37,19 @@ public class XPathConditionCheckerFacts
     public async Task XPathConditionChecker_ValidateAsync_StubsFound_XmlIsCorrupt_ShouldReturnInvalid()
     {
         // arrange
-        const string body = @"<?xml version=""1.0""?>
-<soap:Envelope>
-  <soap:Header>
-  </soap:Header>
-  <soap:Body>
-    <m:GetStockPrice>
-      <m:StockName>Umbrella</m:StockName>
-      <m:Description>An umbrella</m:Description>
-    </m:GetStockPrice>
-  </soap:Body>
-</soap:Envelope>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <soap:Envelope>
+                              <soap:Header>
+                              </soap:Header>
+                              <soap:Body>
+                                <m:GetStockPrice>
+                                  <m:StockName>Umbrella</m:StockName>
+                                  <m:Description>An umbrella</m:Description>
+                                </m:GetStockPrice>
+                              </soap:Body>
+                            </soap:Envelope>
+                            """;
         var conditions = new StubConditionsModel
         {
             Xpath = new[]
@@ -81,17 +83,19 @@ public class XPathConditionCheckerFacts
     public async Task XPathConditionChecker_ValidateAsync_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
     {
         // arrange
-        const string body = @"<?xml version=""1.0""?>
-<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
-  <soap:Header>
-  </soap:Header>
-  <soap:Body>
-    <m:GetStockPrice>
-      <m:StockName>Umbrella</m:StockName>
-      <m:Description>An umbrella</m:Description>
-    </m:GetStockPrice>
-  </soap:Body>
-</soap:Envelope>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org/stock/Reddy">
+                              <soap:Header>
+                              </soap:Header>
+                              <soap:Body>
+                                <m:GetStockPrice>
+                                  <m:StockName>Umbrella</m:StockName>
+                                  <m:Description>An umbrella</m:Description>
+                                </m:GetStockPrice>
+                              </soap:Body>
+                            </soap:Envelope>
+                            """;
         var conditions = new StubConditionsModel
         {
             Xpath = new[]
@@ -134,17 +138,19 @@ public class XPathConditionCheckerFacts
     public async Task XPathConditionChecker_ValidateAsync_StubsFound_OnlyOneXPathConditionCorrect_ShouldReturnInvalid()
     {
         // arrange
-        const string body = @"<?xml version=""1.0""?>
-<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
-  <soap:Header>
-  </soap:Header>
-  <soap:Body>
-    <m:GetStockPrice>
-      <m:StockName>Umbrella</m:StockName>
-      <m:Description>An umbrella</m:Description>
-    </m:GetStockPrice>
-  </soap:Body>
-</soap:Envelope>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org/stock/Reddy">
+                              <soap:Header>
+                              </soap:Header>
+                              <soap:Body>
+                                <m:GetStockPrice>
+                                  <m:StockName>Umbrella</m:StockName>
+                                  <m:Description>An umbrella</m:Description>
+                                </m:GetStockPrice>
+                              </soap:Body>
+                            </soap:Envelope>
+                            """;
         var conditions = new StubConditionsModel
         {
             Xpath = new[]
@@ -188,17 +194,19 @@ public class XPathConditionCheckerFacts
     public async Task XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithNamespaces()
     {
         // arrange
-        const string body = @"<?xml version=""1.0""?>
-<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
-  <soap:Header>
-  </soap:Header>
-  <soap:Body>
-    <m:GetStockPrice>
-      <m:StockName>Umbrella</m:StockName>
-      <m:Description>An umbrella</m:Description>
-    </m:GetStockPrice>
-  </soap:Body>
-</soap:Envelope>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org/stock/Reddy">
+                              <soap:Header>
+                              </soap:Header>
+                              <soap:Body>
+                                <m:GetStockPrice>
+                                  <m:StockName>Umbrella</m:StockName>
+                                  <m:Description>An umbrella</m:Description>
+                                </m:GetStockPrice>
+                              </soap:Body>
+                            </soap:Envelope>
+                            """;
         var conditions = new StubConditionsModel
         {
             Xpath = new[]
@@ -242,17 +250,19 @@ public class XPathConditionCheckerFacts
     public async Task XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithNamespaces_FilteredByRegex()
     {
         // arrange
-        const string body = @"<?xml version=""1.0""?>
-<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
-  <soap:Header>
-  </soap:Header>
-  <soap:Body>
-    <m:GetStockPrice>
-      <m:StockName>Umbrella</m:StockName>
-      <m:Description>An umbrella</m:Description>
-    </m:GetStockPrice>
-  </soap:Body>
-</soap:Envelope>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org/stock/Reddy">
+                              <soap:Header>
+                              </soap:Header>
+                              <soap:Body>
+                                <m:GetStockPrice>
+                                  <m:StockName>Umbrella</m:StockName>
+                                  <m:Description>An umbrella</m:Description>
+                                </m:GetStockPrice>
+                              </soap:Body>
+                            </soap:Envelope>
+                            """;
         var conditions = new StubConditionsModel
         {
             Xpath = new[]
@@ -286,11 +296,13 @@ public class XPathConditionCheckerFacts
     public async Task XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithoutNamespaces()
     {
         // arrange
-        const string body = @"<?xml version=""1.0""?>
-<object>
-	<a>TEST</a>
-	<b>TEST2</b>
-</object>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <object>
+                            	<a>TEST</a>
+                            	<b>TEST2</b>
+                            </object>
+                            """;
         var conditions = new StubConditionsModel
         {
             Xpath = new[]

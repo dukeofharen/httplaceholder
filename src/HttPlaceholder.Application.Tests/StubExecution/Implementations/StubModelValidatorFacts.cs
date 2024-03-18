@@ -289,7 +289,7 @@ public class StubModelValidatorFacts
         var result = _validator.ValidateStubModel(model).ToArray();
         if (expectedError == null)
         {
-            Assert.IsFalse(result.Any(),
+            Assert.IsFalse(result.Length != 0,
                 $"No validation errors expected, but got at least one: {string.Join(Environment.NewLine, result)}");
         }
         else
@@ -390,7 +390,7 @@ public class StubModelValidatorFacts
             Id = "stub",
             Response = new StubResponseModel
             {
-                Text = "Some response", Headers = headers.Split(',').ToDictionary(h => h, h => "headerValue")
+                Text = "Some response", Headers = headers.Split(',').ToDictionary(h => h, _ => "headerValue")
             }
         };
 

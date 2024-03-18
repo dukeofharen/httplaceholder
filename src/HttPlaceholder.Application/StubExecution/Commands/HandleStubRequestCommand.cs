@@ -8,9 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.Commands;
 /// <summary>
 ///     A command that is used to execute the request against the registered stubs.
 /// </summary>
-public class HandleStubRequestCommand : IRequest<ResponseModel>
-{
-}
+public class HandleStubRequestCommand : IRequest<ResponseModel>;
 
 /// <summary>
 ///     A command handler that is used to execute the request against the registered stubs.

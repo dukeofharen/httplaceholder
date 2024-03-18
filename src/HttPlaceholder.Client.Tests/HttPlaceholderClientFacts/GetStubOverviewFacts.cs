@@ -9,28 +9,30 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetStubOverviewFacts : BaseClientTest
 {
-    private const string GetStubOverviewResponse = @"[
-    {
-        ""stub"": {
-            ""id"": ""post-with-json-object-checker"",
-            ""tenant"": ""integration"",
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    },
-    {
-        ""stub"": {
-            ""id"": ""temporary-redirect"",
-            ""tenant"": ""integration"",
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    }
-]";
+    private const string GetStubOverviewResponse = """
+                                                   [
+                                                       {
+                                                           "stub": {
+                                                               "id": "post-with-json-object-checker",
+                                                               "tenant": "integration",
+                                                               "enabled": true
+                                                           },
+                                                           "metadata": {
+                                                               "readOnly": false
+                                                           }
+                                                       },
+                                                       {
+                                                           "stub": {
+                                                               "id": "temporary-redirect",
+                                                               "tenant": "integration",
+                                                               "enabled": true
+                                                           },
+                                                           "metadata": {
+                                                               "readOnly": false
+                                                           }
+                                                       }
+                                                   ]
+                                                   """;
 
     [TestMethod]
     public async Task GetStubOverviewAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

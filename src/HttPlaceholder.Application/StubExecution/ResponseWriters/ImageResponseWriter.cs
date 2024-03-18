@@ -88,7 +88,7 @@ internal class ImageResponseWriter(IAssemblyService assemblyService, IFileServic
         }
 
         response.Body = bytes;
-        response.BodyIsBinary = bytes.Any();
+        response.BodyIsBinary = bytes.Length != 0;
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 

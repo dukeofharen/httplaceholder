@@ -42,7 +42,7 @@ public class AddStubsCommandHandler(IStubContext stubContext, IStubModelValidato
         var validationResults = stubsToAdd
             .SelectMany(Validate)
             .ToArray();
-        if (validationResults.Any())
+        if (validationResults.Length != 0)
         {
             throw new ValidationException(validationResults);
         }
@@ -54,7 +54,7 @@ public class AddStubsCommandHandler(IStubContext stubContext, IStubModelValidato
             .Where(g => g.Count() > 1)
             .Select(g => g.Key)
             .ToArray();
-        if (duplicateIds.Any())
+        if (duplicateIds.Length != 0)
         {
             throw new ArgumentException(
                 $"The following stub IDs are posted more than once: {string.Join(", ", duplicateIds)}");
@@ -64,7 +64,7 @@ public class AddStubsCommandHandler(IStubContext stubContext, IStubModelValidato
         var stubsFromReadonlySource = await stubContext.GetStubsFromReadOnlySourcesAsync(cancellationToken);
         var duplicateStubs = stubsFromReadonlySource.Where(r =>
             stubsToAdd.Any(s => string.Equals(s.Id, r.Stub.Id, StringComparison.OrdinalIgnoreCase))).ToArray();
-        if (duplicateStubs.Any())
+        if (duplicateStubs.Length != 0)
         {
             throw new ValidationException(duplicateStubs.Select(s => $"Stub with ID already exists: {s.Stub.Id}"));
         }

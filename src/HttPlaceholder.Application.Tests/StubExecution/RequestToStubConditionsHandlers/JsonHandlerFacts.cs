@@ -71,7 +71,7 @@ public class JsonHandlerFacts
         var request = new HttpRequestModel
         {
             Headers = { { HeaderKeys.ContentType, MimeTypes.JsonMime } },
-            Body = @"[""value1"",44,false,{""key1"":""val1""},[""1"",2]]"
+            Body = """["value1",44,false,{"key1":"val1"},["1",2]]"""
         };
         var conditions = new StubConditionsModel();
 

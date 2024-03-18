@@ -72,11 +72,13 @@ public class AuditBehaviorFacts
         Assert.AreEqual(_response, result);
 
         var entry = _logger.Entries.Single();
-        Assert.IsTrue(entry.State.Contains(@"Audit:
-Handling request 'HttPlaceholder.Application.Tests.Infrastructure.MediatR.AuditBehaviorFacts+TestRequest'
-Input: {""Input"":""Input""}
-IP: 1.2.3.4
-Duration: 0 ms"));
+        Assert.IsTrue(entry.State.Contains("""
+                                           Audit:
+                                           Handling request 'HttPlaceholder.Application.Tests.Infrastructure.MediatR.AuditBehaviorFacts+TestRequest'
+                                           Input: {"Input":"Input"}
+                                           IP: 1.2.3.4
+                                           Duration: 0 ms
+                                           """));
     }
 
     [TestMethod]
@@ -104,11 +106,13 @@ Duration: 0 ms"));
         Assert.IsTrue(nextCalled);
 
         var entry = _logger.Entries.Single();
-        Assert.IsTrue(entry.State.Contains(@"Audit:
-Handling request 'HttPlaceholder.Application.Tests.Infrastructure.MediatR.AuditBehaviorFacts+TestRequest'
-Input: {""Input"":""Input""}
-IP: 1.2.3.4
-System.Exception thrown: System.Exception: ERROR!"));
+        Assert.IsTrue(entry.State.Contains("""
+                                           Audit:
+                                           Handling request 'HttPlaceholder.Application.Tests.Infrastructure.MediatR.AuditBehaviorFacts+TestRequest'
+                                           Input: {"Input":"Input"}
+                                           IP: 1.2.3.4
+                                           System.Exception thrown: System.Exception: ERROR!
+                                           """));
     }
 
     private class TestRequest : IRequest<TestResponse>

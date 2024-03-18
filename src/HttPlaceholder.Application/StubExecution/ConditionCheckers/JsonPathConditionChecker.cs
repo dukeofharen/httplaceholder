@@ -22,7 +22,7 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
     {
         var result = new ConditionCheckResultModel();
         var jsonPathConditions = stub.Conditions?.JsonPath?.ToArray();
-        if (jsonPathConditions == null || jsonPathConditions?.Any() != true)
+        if (jsonPathConditions == null || jsonPathConditions.Length == 0)
         {
             return result;
         }

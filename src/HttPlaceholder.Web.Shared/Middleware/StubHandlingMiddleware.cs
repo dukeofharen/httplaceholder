@@ -78,7 +78,7 @@ public class StubHandlingMiddleware(
         var enableRequestLogging = settings?.Storage?.EnableRequestLogging ?? false;
         if (enableRequestLogging)
         {
-            logger.LogInformation($"Request: {JObject.FromObject(loggingResult)}");
+            logger.LogInformation("Request: {Result}", JObject.FromObject(loggingResult));
         }
 
         await stubContext.AddRequestResultAsync(loggingResult, response, cancellationToken);

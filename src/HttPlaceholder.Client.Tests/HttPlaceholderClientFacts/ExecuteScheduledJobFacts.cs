@@ -9,9 +9,11 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class ExecuteScheduledJobFacts : BaseClientTest
 {
-    private const string ExecuteJobJson = @"{
-    ""message"": ""OK""
-}";
+    private const string ExecuteJobJson = """
+                                          {
+                                              "message": "OK"
+                                          }
+                                          """;
 
     [TestMethod]
     public async Task ExecuteScheduledJobAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

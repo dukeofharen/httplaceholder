@@ -32,8 +32,8 @@ public class IndexHtmlMiddleware(
             var doc = htmlService.ReadHtml(indexHtml);
             var headNode = doc.DocumentNode.SelectSingleNode("//html/head");
             headNode.PrependChild(HtmlNode.CreateNode(
-                @$"<script type=""text/javascript"">window.rootUrl = ""{rootUrl}"";</script>"));
-            headNode.PrependChild(HtmlNode.CreateNode(@$"<base href=""{rootUrl}/ph-ui/"">"));
+                $"""<script type="text/javascript">window.rootUrl = "{rootUrl}";</script>"""));
+            headNode.PrependChild(HtmlNode.CreateNode($"""<base href="{rootUrl}/ph-ui/">"""));
             httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
             await httpContextService.WriteAsync(doc.DocumentNode.OuterHtml, cancellationToken);
         }

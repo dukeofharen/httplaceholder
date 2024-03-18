@@ -21,7 +21,7 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
     {
         var result = new ConditionCheckResultModel();
         var formConditions = stub.Conditions?.Form?.ToArray() ?? Array.Empty<StubFormModel>();
-        if (!formConditions.Any())
+        if (formConditions.Length == 0)
         {
             return result;
         }

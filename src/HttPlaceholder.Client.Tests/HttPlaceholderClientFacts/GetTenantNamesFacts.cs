@@ -9,10 +9,12 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetTenantNamesFacts : BaseClientTest
 {
-    private const string GetTenantNamesResponse = @"[
-    ""01-get"",
-    ""02-post""
-]";
+    private const string GetTenantNamesResponse = """
+                                                  [
+                                                      "01-get",
+                                                      "02-post"
+                                                  ]
+                                                  """;
 
     [TestMethod]
     public async Task GetTenantNamesAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

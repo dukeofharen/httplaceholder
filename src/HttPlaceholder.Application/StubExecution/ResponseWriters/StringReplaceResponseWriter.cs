@@ -22,7 +22,7 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
         CancellationToken cancellationToken)
     {
         var replace = stub.Response?.Replace?.ToArray();
-        if (replace == null || !replace.Any() || response.Body == null || !response.Body.Any())
+        if (replace == null || replace.Length == 0 || response.Body == null || response.Body.Length == 0)
         {
             return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
         }

@@ -86,8 +86,8 @@ public class ProgramUtility(
 
     private void EnsureNoPortsAreTaken(IEnumerable<int> ports)
     {
-        var portsTaken = ports.Where(p => tcpService.PortIsTaken(p)).ToArray();
-        if (portsTaken.Any())
+        var portsTaken = ports.Where(tcpService.PortIsTaken).ToArray();
+        if (portsTaken.Length != 0)
         {
             throw new ArgumentException($"The following ports are already taken: {string.Join(", ", portsTaken)}");
         }

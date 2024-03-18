@@ -118,9 +118,11 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         // Arrange
         const string expectedResult = "Posted: value2";
         var url = $"{TestServer.BaseAddress}dynamic-request-body-regex.txt";
-        const string body = @"key1=value1
-key2=value2
-key3=value3";
+        const string body = """
+                            key1=value1
+                            key2=value2
+                            key3=value3
+                            """;
 
         var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(body) };
 
@@ -288,16 +290,18 @@ key3=value3";
         // Arrange
         const string expectedResult = "JSONPath result: Value2";
         var url = $"{TestServer.BaseAddress}dynamic-mode-jsonpath.txt";
-        const string body = @"{
-    ""values"": [
-        {
-            ""title"": ""Value1""
-        },
-        {
-            ""title"": ""Value2""
-        }
-    ]
-}";
+        const string body = """
+                            {
+                                "values": [
+                                    {
+                                        "title": "Value1"
+                                    },
+                                    {
+                                        "title": "Value2"
+                                    }
+                                ]
+                            }
+                            """;
 
         var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(body) };
 
