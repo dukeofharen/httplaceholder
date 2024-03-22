@@ -27,6 +27,6 @@ public class DeleteStubCommandHandler(IStubContext stubContext) : IRequestHandle
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteStubCommand request, CancellationToken cancellationToken) =>
         await stubContext.DeleteStubAsync(request.StubId, cancellationToken)
-            .IfFalseAsync(() => throw new NotFoundException(nameof(StubModel), request.StubId))
+            .IfAsync(r => !r, _ => throw new NotFoundException(nameof(StubModel), request.StubId))
             .MapAsync(_ => Unit.Value);
 }

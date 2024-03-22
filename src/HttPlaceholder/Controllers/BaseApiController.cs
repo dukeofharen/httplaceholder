@@ -52,6 +52,10 @@ public abstract class BaseApiController : Controller
     /// <returns>The mapped object.</returns>
     protected TDestination MapAndSet<TDestination>(
         object source,
-        Action<TDestination> action) =>
-        Mapper.MapAndSet(source, action);
+        Action<TDestination> action)
+    {
+        var destination = Mapper.Map<TDestination>(source);
+        action(destination);
+        return destination;
+    }
 }

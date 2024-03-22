@@ -64,58 +64,6 @@ public static class ObjectUtilities
     }
 
     /// <summary>
-    ///     A method that accepts an action that will be executed if the input value is true.
-    ///     Handy for one line fetches and checks.
-    /// </summary>
-    /// <param name="task">The input value.</param>
-    /// <param name="action">The action to execute when the function returns true.</param>
-    /// <returns>The original input value.</returns>
-    public static async Task<bool> IfTrueAsync(this Task<bool> task, Action action) => IfTrue(await task, action);
-
-    /// <summary>
-    ///     A method that accepts an action that will be executed if the input value is true.
-    ///     Handy for one line fetches and checks.
-    /// </summary>
-    /// <param name="value">The input value.</param>
-    /// <param name="action">The action to execute when the function returns true.</param>
-    /// <returns>The original input value.</returns>
-    public static bool IfTrue(this bool value, Action action)
-    {
-        if (value)
-        {
-            action();
-        }
-
-        return value;
-    }
-
-    /// <summary>
-    ///     A method that accepts an action that will be executed if the input value is true.
-    ///     Handy for one line fetches and checks.
-    /// </summary>
-    /// <param name="task">The input value.</param>
-    /// <param name="action">The action to execute when the function returns true.</param>
-    /// <returns>The original input value.</returns>
-    public static async Task<bool> IfFalseAsync(this Task<bool> task, Action action) => IfFalse(await task, action);
-
-    /// <summary>
-    ///     A method that accepts an action that will be executed if the input value is false.
-    ///     Handy for one line fetches and checks.
-    /// </summary>
-    /// <param name="value">The input value.</param>
-    /// <param name="action">The action to execute when the function returns true.</param>
-    /// <returns>The original input value.</returns>
-    public static bool IfFalse(this bool value, Action action)
-    {
-        if (!value)
-        {
-            action();
-        }
-
-        return value;
-    }
-
-    /// <summary>
     ///     Maps the input to the given output.
     /// </summary>
     /// <param name="task">The value to map.</param>

@@ -88,8 +88,7 @@ public class ConfigurationParser(
             throw new FileNotFoundException($"File '{configJsonPath}' not found.");
         }
 
-        ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green,
-            ConsoleColor.Black);
+        Console.WriteLine($"Reading configuration from '{configJsonPath}'.");
         var config = fileService.ReadAllText(configJsonPath);
         return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
     }
