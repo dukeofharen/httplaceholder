@@ -377,13 +377,42 @@ public class FileWatcherYamlFileStubSourceFacts
         var factoryMock = _mocker.GetMock<IFileWatcherBuilderFactory>();
         var watcher = new FileSystemWatcher();
         var builderMock = new Mock<IFileWatcherBuilder>();
-        builderMock
-            .Setup(m => m.Build())
-            .Returns(watcher);
 
         factoryMock
             .Setup(m => m.CreateBuilder())
             .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.SetPathOrFilters(It.IsAny<string>(), It.IsAny<IEnumerable<string>>()))
+            .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.SetNotifyFilters(It.IsAny<NotifyFilters>()))
+            .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.SetOnChanged(It.IsAny<Action<object, FileSystemEventArgs>>()))
+            .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.SetOnCreated(It.IsAny<Action<object, FileSystemEventArgs>>()))
+            .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.SetOnDeleted(It.IsAny<Action<object, FileSystemEventArgs>>()))
+            .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.SetOnRenamed(It.IsAny<Action<object, RenamedEventArgs>>()))
+            .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.SetOnError(It.IsAny<Action<object, ErrorEventArgs>>()))
+            .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.Build())
+            .Returns(watcher);
 
         return (builderMock, watcher);
     }

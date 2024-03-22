@@ -123,24 +123,22 @@ internal class FileWatcherYamlFileStubSource(
         }
     }
 
-    internal void SetupWatcherForLocation(string location)
-    {
-        var builder = fileWatcherBuilderFactory.CreateBuilder();
-        builder.SetPathOrFilters(location, SupportedExtensions);
-        builder.SetNotifyFilters(NotifyFilters.CreationTime
-                                 | NotifyFilters.DirectoryName
-                                 | NotifyFilters.FileName
-                                 | NotifyFilters.LastWrite
-                                 | NotifyFilters.Size
-                                 | NotifyFilters.Attributes
-                                 | NotifyFilters.Security);
-        builder.SetOnChanged(OnInputLocationUpdated);
-        builder.SetOnCreated(OnInputLocationUpdated);
-        builder.SetOnDeleted(OnInputLocationUpdated);
-        builder.SetOnRenamed(OnInputLocationUpdated);
-        builder.SetOnError(OnError);
-        FileSystemWatchers.TryAdd(location, builder.Build());
-    }
+    internal void SetupWatcherForLocation(string location) =>
+        FileSystemWatchers.TryAdd(location, fileWatcherBuilderFactory.CreateBuilder()
+            .SetPathOrFilters(location, SupportedExtensions)
+            .SetNotifyFilters(NotifyFilters.CreationTime
+                              | NotifyFilters.DirectoryName
+                              | NotifyFilters.FileName
+                              | NotifyFilters.LastWrite
+                              | NotifyFilters.Size
+                              | NotifyFilters.Attributes
+                              | NotifyFilters.Security)
+            .SetOnChanged(OnInputLocationUpdated)
+            .SetOnCreated(OnInputLocationUpdated)
+            .SetOnDeleted(OnInputLocationUpdated)
+            .SetOnRenamed(OnInputLocationUpdated)
+            .SetOnError(OnError)
+            .Build());
 
     private void OnError(object sender, ErrorEventArgs e) =>
         Logger.LogWarning(e.GetException(), "Error occurred in file watcher.");
