@@ -11,16 +11,16 @@ internal class RequestToCurlCommandService : IRequestToCurlCommandService, ISing
 {
     private static readonly string[] _methodsToSkip = ["GET", "POST"];
     private static readonly string[] _headersToSkip = ["Content-Length"];
+    private static readonly string[] _startParts = ["curl"];
 
     public string Convert(RequestResultModel request)
     {
-        var result = new List<string> { "curl" };
         var reqParams = request.RequestParameters;
-        result.AddRange(AddMethod(reqParams));
-        result.AddRange(AddUrl(reqParams));
-        result.AddRange(AddHeaders(reqParams));
-        result.AddRange(AddRequestBody(reqParams));
-        return string.Join(' ', result);
+        return string.Join(' ', _startParts
+            .Concat(AddMethod(reqParams))
+            .Concat(AddUrl(reqParams))
+            .Concat(AddHeaders(reqParams))
+            .Concat(AddRequestBody(reqParams)));
     }
 
     private static IEnumerable<string> AddMethod(RequestParametersModel reqParams) =>
