@@ -29,11 +29,6 @@ public interface IHttpContextService
     string FullPath { get; }
 
     /// <summary>
-    ///     Gets whether the current request has a form content type.
-    /// </summary>
-    bool HasFormContentType { get; }
-
-    /// <summary>
     ///     Gets the posted body as string.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>

@@ -22,10 +22,10 @@ public static class SignalRModule
             .AddSignalR()
             .AddNewtonsoftJsonProtocol(options =>
                 options.PayloadSerializerSettings.ContractResolver = new CamelCaseExceptDictionaryKeysResolver());
-        services.AddTransient<IRequestNotify, RequestNotify>();
-        services.AddTransient<IScenarioNotify, ScenarioNotify>();
-        services.AddTransient<IStubNotify, StubNotify>();
-        return services;
+        return services
+            .AddTransient<IRequestNotify, RequestNotify>()
+            .AddTransient<IScenarioNotify, ScenarioNotify>()
+            .AddTransient<IStubNotify, StubNotify>();
     }
 
     /// <summary>
