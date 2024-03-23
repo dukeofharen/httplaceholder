@@ -76,6 +76,13 @@ public static class StringHelper
         strings.AsQueryable().Count(s => !string.IsNullOrWhiteSpace(s));
 
     /// <summary>
+    ///     A method which receives a list of strings and checks that all strings are null or whitespace. Returns true if this is the case.
+    /// </summary>
+    /// <param name="strings">The list of strings.</param>
+    /// <returns>True if all strings are null or whitespace; false otherwise.</returns>
+    public static bool AllAreNullOrWhitespace(params string[] strings) => strings.All(string.IsNullOrWhiteSpace);
+
+    /// <summary>
     ///     Splits a string on newline characters.
     /// </summary>
     /// <param name="input">The input.</param>

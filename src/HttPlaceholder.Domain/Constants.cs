@@ -244,6 +244,11 @@ public static class HeaderKeys
     ///     The location header key.
     /// </summary>
     public const string Location = "Location";
+
+    /// <summary>
+    ///     The authorization header key.
+    /// </summary>
+    public const string Authorization = "Authorization";
 }
 
 /// <summary>

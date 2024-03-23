@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -12,16 +13,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that is used to verify incoming basic authentication credentials.
 /// </summary>
-public class BasicAuthenticationConditionChecker(IHttpContextService httpContextService) : IConditionChecker, ISingletonService
+public class BasicAuthenticationConditionChecker(IHttpContextService httpContextService)
+    : IConditionChecker, ISingletonService
 {
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
-        var basicAuthenticationCondition = stub.Conditions?.BasicAuthentication;
-        if (basicAuthenticationCondition == null ||
-            (string.IsNullOrWhiteSpace(basicAuthenticationCondition.Username) &&
-             string.IsNullOrWhiteSpace(basicAuthenticationCondition.Password)))
+        var condition = stub.Conditions?.BasicAuthentication;
+        if (condition == null ||
+            StringHelper.AllAreNullOrWhitespace(condition.Username, condition.Password))
         {
             return Task.FromResult(result);
         }
@@ -29,7 +30,7 @@ public class BasicAuthenticationConditionChecker(IHttpContextService httpContext
         var headers = httpContextService.GetHeaders();
 
         // Try to retrieve the Authorization header.
-        if (!headers.TryGetValue("Authorization", out var authorization))
+        if (!headers.TryGetCaseInsensitive(HeaderKeys.Authorization, out var authorization))
         {
             result.ConditionValidation = ConditionValidationType.Invalid;
             result.Log = "No Authorization header found in request.";
@@ -38,7 +39,7 @@ public class BasicAuthenticationConditionChecker(IHttpContextService httpContext
         {
             var expectedBase64UsernamePassword = Convert.ToBase64String(
                 Encoding.UTF8.GetBytes(
-                    $"{basicAuthenticationCondition.Username}:{basicAuthenticationCondition.Password}"));
+                    $"{condition.Username}:{condition.Password}"));
             var expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
             if (expectedAuthorizationHeader == authorization)
             {

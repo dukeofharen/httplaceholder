@@ -115,6 +115,22 @@ public class StringHelperFacts
         Assert.AreEqual("text", result[2]);
     }
 
+    [DataTestMethod]
+    [DataRow("not|empty|or|null", false)]
+    [DataRow("|||null", false)]
+    [DataRow("|||", true)]
+    public void AllAreNullOrWhitespace_HappyFlow(string input, bool expectedResult)
+    {
+        // Arrange
+        var strings = input.Split('|');
+
+        // Act
+        var result = StringHelper.AllAreNullOrWhitespace(strings);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
+
     [TestMethod]
     [DynamicData(nameof(GetFirstNonWhitespaceStringTestData))]
     public void GetFirstNonWhitespaceString_HappyFlow(string[] input, string expectedOutput)
