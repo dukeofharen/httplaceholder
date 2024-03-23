@@ -1,5 +1,4 @@
 ﻿using HttPlaceholder.Application.Configuration.Commands;
-using HttPlaceholder.Application.Configuration.Provider;
 using HttPlaceholder.Application.Exceptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
@@ -11,7 +10,7 @@ public class UpdateConfigurationValueCommandHandlerFacts
 {
     private readonly Mock<IConfigurationRoot> _configurationRootMock = new();
     private readonly AutoMocker _mocker = new();
-    private readonly HttPlaceholderConfigurationProvider _provider = new(new MemoryConfigurationSource());
+    private readonly MemoryConfigurationProvider _provider = new(new MemoryConfigurationSource());
 
     [TestInitialize]
     public void Initialize() => _mocker.Use<IConfiguration>(_configurationRootMock.Object);
@@ -102,5 +101,6 @@ public class UpdateConfigurationValueCommandHandlerFacts
         // Assert
         Assert.IsTrue(_provider.TryGet("Storage:StoreResponses", out var foundValue));
         Assert.AreEqual(value, foundValue);
+        _configurationRootMock.Verify(m => m.Reload());
     }
 }

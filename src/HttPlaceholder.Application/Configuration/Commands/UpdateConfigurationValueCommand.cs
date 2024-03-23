@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration.Provider;
 using HttPlaceholder.Application.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Memory;
 
 namespace HttPlaceholder.Application.Configuration.Commands;
 
@@ -46,7 +46,8 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
     ///     Constructs a <see cref="UpdateConfigurationValueCommandHandler" /> object.
     /// </summary>
     /// <param name="configuration"></param>
-    public UpdateConfigurationValueCommandHandler(IConfiguration configuration)
+    public UpdateConfigurationValueCommandHandler(
+        IConfiguration configuration)
     {
         _configuration = (IConfigurationRoot)configuration;
     }
@@ -74,7 +75,7 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
                 $"Configuration value with key '{request.ConfigurationKey}' is of type boolean, but no boolean value was passed.");
         }
 
-        var type = typeof(HttPlaceholderConfigurationProvider);
+        var type = typeof(MemoryConfigurationProvider);
         var provider = _configuration.Providers.FirstOrDefault(p => p.GetType() == type);
         if (provider == null)
         {
@@ -83,7 +84,7 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
         }
 
         provider.Set(metadata.Path, request.NewValue);
-        provider.Load();
+        _configuration.Reload();
         return Unit.Task;
     }
 }
