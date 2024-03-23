@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
-using MediatR;
 
 namespace HttPlaceholder.Application.Import.Commands;
 
@@ -12,7 +7,7 @@ namespace HttPlaceholder.Application.Import.Commands;
 ///     A command for creating stubs based on OpenAPI definitions.
 /// </summary>
 public class CreateOpenApiStubCommand(string input, bool doNotCreateStub, string tenant, string stubIdPrefix)
-    : IRequest<IEnumerable<FullStubModel>>, IImportStubsCommand
+    : IImportStubsCommand
 {
     /// <inheritdoc />
     public string Input { get; } = input;
@@ -30,18 +25,9 @@ public class CreateOpenApiStubCommand(string input, bool doNotCreateStub, string
 /// <summary>
 ///     A command handler for creating stubs based on OpenAPI definitions.
 /// </summary>
-public class CreateOpenApiStubCommandHandler(IOpenApiStubGenerator openApiStubGenerator, IDateTime dateTime) : IRequestHandler<CreateOpenApiStubCommand, IEnumerable<FullStubModel>>
+public class CreateOpenApiStubCommandHandler(IOpenApiStubGenerator openApiStubGenerator, IDateTime dateTime)
+    : BaseImportCommandHandler(openApiStubGenerator, dateTime)
 {
-    /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> Handle(
-        CreateOpenApiStubCommand request,
-        CancellationToken cancellationToken)
-    {
-        var tenant = string.IsNullOrWhiteSpace(request.Tenant)
-            ? $"openapi-import-{dateTime.Now:yyyy-MM-dd-HH-mm-ss}"
-            : request.Tenant;
-        return await openApiStubGenerator.GenerateStubsAsync(request.Input, request.DoNotCreateStub, tenant,
-            request.StubIdPrefix,
-            cancellationToken);
-    }
+    /// <inheritdoc/>
+    protected override string GetTenantPrefix() => "openapi-import";
 }

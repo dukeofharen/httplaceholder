@@ -1,9 +1,13 @@
-﻿namespace HttPlaceholder.Application.Import.Commands;
+﻿using System.Collections.Generic;
+using HttPlaceholder.Domain;
+using MediatR;
+
+namespace HttPlaceholder.Application.Import.Commands;
 
 /// <summary>
 ///     An interface used to describe a class that is used to import stubs.
 /// </summary>
-public interface IImportStubsCommand
+public interface IImportStubsCommand : IRequest<IEnumerable<FullStubModel>>
 {
     /// <summary>
     ///     Gets the import input.
