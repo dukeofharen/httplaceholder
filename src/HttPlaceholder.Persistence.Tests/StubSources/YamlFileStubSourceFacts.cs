@@ -51,11 +51,11 @@ public class YamlFileStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile1);
+            .ReturnsAsync(YamlTestResources.YamlFile1);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[1], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile2);
+            .ReturnsAsync(YamlTestResources.YamlFile2);
 
         // Act
         var result = await source.GetStubsAsync(null, CancellationToken.None);
@@ -112,11 +112,11 @@ public class YamlFileStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile1);
+            .ReturnsAsync(YamlTestResources.YamlFile1);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[1], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile2);
+            .ReturnsAsync(YamlTestResources.YamlFile2);
 
         // Act
         var result = await source.GetStubsAsync(null, CancellationToken.None);
@@ -147,7 +147,7 @@ public class YamlFileStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile1);
+            .ReturnsAsync(YamlTestResources.YamlFile1);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[1], It.IsAny<CancellationToken>()))
@@ -191,11 +191,11 @@ public class YamlFileStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile1);
+            .ReturnsAsync(YamlTestResources.YamlFile1);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[1], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile2);
+            .ReturnsAsync(YamlTestResources.YamlFile2);
 
         // Act
         var result = await source.GetStubsAsync(null, CancellationToken.None);
@@ -235,7 +235,7 @@ public class YamlFileStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile3);
+            .ReturnsAsync(YamlTestResources.YamlFile3);
 
         // Act
         var result = await source.GetStubsAsync(null, CancellationToken.None);
@@ -275,7 +275,7 @@ public class YamlFileStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile4);
+            .ReturnsAsync(YamlTestResources.YamlFile4);
 
         // Act
         var result = await source.GetStubsAsync(null, CancellationToken.None);
@@ -307,7 +307,7 @@ public class YamlFileStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(inputFile, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile1);
+            .ReturnsAsync(YamlTestResources.YamlFile1);
 
         stubModelValidatorMock
             .Setup(m => m.ValidateStubModel(It.IsAny<StubModel>()))
@@ -344,7 +344,7 @@ public class YamlFileStubSourceFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(inputFile, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(TestResources.YamlFile1);
+            .ReturnsAsync(YamlTestResources.YamlFile1);
 
         // Act
         var result = (await source.GetStubsOverviewAsync(null, CancellationToken.None)).ToArray();
