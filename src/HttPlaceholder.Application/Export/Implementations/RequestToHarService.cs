@@ -4,6 +4,7 @@ using System.Text;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models.HAR;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
@@ -17,23 +18,20 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
     public string Convert(RequestResultModel request, ResponseModel response)
     {
         var requestParams = request.RequestParameters;
-        var requestContentType = requestParams.Headers.FirstOrDefault(h =>
-            h.Key.Equals(HeaderKeys.ContentType, StringComparison.OrdinalIgnoreCase)).Value;
-        var responseContentType = response.Headers.FirstOrDefault(h =>
-            h.Key.Equals(HeaderKeys.ContentType, StringComparison.OrdinalIgnoreCase)).Value;
-        var responseBody = response.Body ?? Array.Empty<byte>();
+        var requestContentType = requestParams.Headers.CaseInsensitiveSearch(HeaderKeys.ContentType);
+        var responseContentType = response.Headers.CaseInsensitiveSearch(HeaderKeys.ContentType);
+        var responseBody = response.Body ?? [];
         var uri = new Uri(requestParams.Url);
         var query = QueryHelpers.ParseQuery(uri.Query);
-        const string creator = "HttPlaceholder";
-        const string httpVersion = "HTTP/1.1";
         var pageId = $"page_{request.CorrelationId}";
         var version = assemblyService.GetAssemblyVersion();
+        const string httpVersion = "HTTP/1.1";
         var har = new Har
         {
             Log = new Log
             {
                 Version = "1.2",
-                Creator = new Creator { Name = creator, Version = version },
+                Creator = new Creator { Name = "HttPlaceholder", Version = version },
                 Pages =
                 [
                     new Page

@@ -1,4 +1,3 @@
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.WebInfrastructure.Implementations;
 using Microsoft.AspNetCore.Http;

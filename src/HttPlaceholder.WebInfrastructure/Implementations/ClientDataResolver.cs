@@ -3,7 +3,9 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using NetTools;
 
 namespace HttPlaceholder.WebInfrastructure.Implementations;
@@ -59,56 +61,62 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
         Func<HttpContext, T> getDefaultValueFunc,
         Func<string[], T> parseResultFunc)
     {
-        var httpContext = _httpContextAccessor.HttpContext;
+        var httpContext =
+            ThrowHelper.ThrowIfNull<HttpContext, InvalidOperationException>(_httpContextAccessor.HttpContext);
         var settings = _options.CurrentValue;
         if (settings.Web?.ReadProxyHeaders == false)
         {
             return getDefaultValueFunc(httpContext);
         }
 
-        var ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress;
-        var (key, value) = httpContext.Request.Headers.FirstOrDefault(h =>
-            h.Key.Equals(headerKey, StringComparison.OrdinalIgnoreCase));
-        if (string.IsNullOrWhiteSpace(key) || !IpIsAllowed(ip))
+        var ip = httpContext.Connection.RemoteIpAddress;
+        var proxyValue = httpContext.Request.Headers.CaseInsensitiveSearch(headerKey);
+        if (proxyValue == default(StringValues) || !IpIsAllowed(ip))
         {
             return getDefaultValueFunc(httpContext);
         }
 
-        string headerValue = value;
+        string headerValue = proxyValue;
         var parts = headerValue.Split(',', StringSplitOptions.TrimEntries);
         return parseResultFunc(parts);
     }
 
     private bool IpIsAllowed(IPAddress ip)
     {
-        if (!_parsedProxyIpsInitialized)
+        if (_parsedProxyIpsInitialized)
         {
-            var settings = _options.CurrentValue;
-            var safeProxyIps = settings.Web?.SafeProxyIps?.Split(",", StringSplitOptions.TrimEntries) ??
-                               Array.Empty<string>();
-            foreach (var proxyIp in safeProxyIps)
-            {
-                if (proxyIp.Contains('/'))
-                {
-                    // Input is probably a CIDR, so parse it to a range.
-                    if (IPAddressRange.TryParse(proxyIp, out var range))
-                    {
-                        _parsedProxyIps.AddRange(range);
-                    }
-                }
-                else if (IPAddress.TryParse(proxyIp, out var parsedIp))
-                {
-                    _parsedProxyIps.Add(parsedIp);
-                }
-                else
-                {
-                    _logger.LogWarning($"Could not parse IP '{proxyIp}'.");
-                }
-            }
-
-            _parsedProxyIpsInitialized = true;
+            return IpIsAllowedInternal(ip);
         }
 
-        return IPAddress.IsLoopback(ip) || ip.Equals(NginxProxyIp) || _parsedProxyIps.Contains(ip);
+        var settings = _options.CurrentValue;
+        var safeProxyIps = settings.Web?.SafeProxyIps?.Split(",", StringSplitOptions.TrimEntries) ??
+                           Array.Empty<string>();
+        foreach (var proxyIp in safeProxyIps)
+        {
+            if (proxyIp.Contains('/'))
+            {
+                // Input is probably a CIDR, so parse it to a range.
+                if (IPAddressRange.TryParse(proxyIp, out var range))
+                {
+                    _parsedProxyIps.AddRange(range);
+                }
+            }
+            else if (IPAddress.TryParse(proxyIp, out var parsedIp))
+            {
+                _parsedProxyIps.Add(parsedIp);
+            }
+            else
+            {
+                _logger.LogWarning($"Could not parse IP '{proxyIp}'.");
+            }
+        }
+
+        _parsedProxyIpsInitialized = true;
+
+        return IpIsAllowedInternal(ip);
+
+        bool IpIsAllowedInternal(IPAddress ipAddress) => IPAddress.IsLoopback(ipAddress) ||
+                                                         ip.Equals(NginxProxyIp) ||
+                                                         _parsedProxyIps.Contains(ipAddress);
     }
 }
