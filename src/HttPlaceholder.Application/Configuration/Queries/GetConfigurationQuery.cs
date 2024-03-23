@@ -32,31 +32,15 @@ public class GetConfigurationQueryHandler : IRequestHandler<GetConfigurationQuer
     /// <inheritdoc />
     public Task<IEnumerable<ConfigurationModel>> Handle(
         GetConfigurationQuery request,
-        CancellationToken cancellationToken)
-    {
-        var configMetadata = ConfigKeys.GetConfigMetadata();
-        var result = new List<ConfigurationModel>();
-        var configItems = _configuration.AsEnumerable().ToArray();
-        foreach (var item in configMetadata)
-        {
-            var configItem =
-                configItems.FirstOrDefault(i => string.Equals(item.Path, i.Key, StringComparison.OrdinalIgnoreCase));
-            if (configItem.Value == null)
-            {
-                continue;
-            }
-
-            var value = item.IsSecretValue == true ? "***" : configItem.Value;
-            result.Add(new ConfigurationModel
-            {
-                Key = item.Key,
-                Path = item.Path,
-                ConfigKeyType = item.ConfigKeyType,
-                Description = item.Description,
-                Value = value
-            });
-        }
-
-        return Task.FromResult(result.AsEnumerable());
-    }
+        CancellationToken cancellationToken) =>
+        Task.FromResult(from item in ConfigKeys.GetConfigMetadata()
+            let configItem =
+                _configuration.AsEnumerable().FirstOrDefault(i => string.Equals(item.Path, i.Key, StringComparison.OrdinalIgnoreCase))
+            where configItem.Value != null
+            select new ConfigurationModel(
+                item.Key,
+                item.Path,
+                item.Description,
+                item.ConfigKeyType,
+                item.IsSecretValue == true ? "***" : configItem.Value));
 }
