@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace HttPlaceholder.Application.Interfaces.Mappings;
+namespace HttPlaceholder.Application.Infrastructure.AutoMapper;
 
 /// <summary>
 ///     Describes a class that has a custom AutoMapper mapping.

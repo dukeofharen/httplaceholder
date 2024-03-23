@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Web.Shared.Dto.v1.Scenarios;

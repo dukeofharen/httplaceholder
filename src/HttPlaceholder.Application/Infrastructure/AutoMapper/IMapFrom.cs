@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Application.Interfaces.Mappings;
+﻿namespace HttPlaceholder.Application.Infrastructure.AutoMapper;
 
 /// <summary>
 ///     When a class implements this, a configuration will be added to AutoMapper for this class to be mapped from TEntity.
