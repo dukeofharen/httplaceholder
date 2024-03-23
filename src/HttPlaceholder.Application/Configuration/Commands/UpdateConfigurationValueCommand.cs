@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Common.Utilities;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Memory;
@@ -55,36 +56,45 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
     /// <inheritdoc />
     public Task<Unit> Handle(UpdateConfigurationValueCommand request, CancellationToken cancellationToken)
     {
-        var metadata = ConfigKeys.GetConfigMetadata().FirstOrDefault(m =>
-            string.Equals(m.Key, request.ConfigurationKey, StringComparison.OrdinalIgnoreCase));
-        if (metadata == null)
-        {
-            throw new NotFoundException($"Configuration value with key '{request.ConfigurationKey}'.");
-        }
+        var metadata = GetConfigMetadata(request.ConfigurationKey);
+        EnsureCanBeMutated(metadata);
+        CheckBoolValue(request.NewValue, metadata);
 
-        if (metadata.CanBeMutated != true)
-        {
-            throw new InvalidOperationException(
-                $"Configuration value with key '{request.ConfigurationKey}' can not be mutated at this moment.");
-        }
-
-        if (metadata.IsBoolValue == true &&
-            !_expectedBoolValues.Any(v => string.Equals(v, request.NewValue, StringComparison.OrdinalIgnoreCase)))
-        {
-            throw new ArgumentException(
-                $"Configuration value with key '{request.ConfigurationKey}' is of type boolean, but no boolean value was passed.");
-        }
-
-        var type = typeof(MemoryConfigurationProvider);
-        var provider = _configuration.Providers.FirstOrDefault(p => p.GetType() == type);
-        if (provider == null)
-        {
-            throw new InvalidOperationException(
-                $"Configuration provider with type '{type.Name}' unexpectedly not found.");
-        }
-
+        var provider = GetMemoryConfigurationProvider();
         provider.Set(metadata.Path, request.NewValue);
         _configuration.Reload();
         return Unit.Task;
+    }
+
+    private static ConfigMetadataModel GetConfigMetadata(string key) =>
+        ConfigKeys.GetConfigMetadata().FirstOrDefault(m =>
+                m.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
+            .IfNull(() => throw new NotFoundException($"Configuration value with key '{key}'."));
+
+    private static void EnsureCanBeMutated(ConfigMetadataModel metadata)
+    {
+        if (metadata.CanBeMutated != true)
+        {
+            throw new InvalidOperationException(
+                $"Configuration value with key '{metadata.Key}' can not be mutated at this moment.");
+        }
+    }
+
+    private static void CheckBoolValue(string newValue, ConfigMetadataModel metadata)
+    {
+        if (metadata.IsBoolValue == true &&
+            !_expectedBoolValues.Any(v => string.Equals(v, newValue, StringComparison.OrdinalIgnoreCase)))
+        {
+            throw new ArgumentException(
+                $"Configuration value with key '{metadata.Key}' is of type boolean, but no boolean value was passed.");
+        }
+    }
+
+    private MemoryConfigurationProvider GetMemoryConfigurationProvider()
+    {
+        var type = typeof(MemoryConfigurationProvider);
+        return (MemoryConfigurationProvider)_configuration.Providers.FirstOrDefault(p => p.GetType() == type)
+            .IfNull(() => throw new InvalidOperationException(
+                $"Configuration provider with type '{type.Name}' unexpectedly not found."));
     }
 }
