@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
+namespace HttPlaceholder.Persistence.Tests.StubSources;
 
 [TestClass]
 public class RelationalDbStubSourceFacts

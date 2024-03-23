@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Bogus;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain.Entities;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
+namespace HttPlaceholder.Persistence.Tests.StubSources;
 
 [TestClass]
 public class InMemoryStubSourceFacts

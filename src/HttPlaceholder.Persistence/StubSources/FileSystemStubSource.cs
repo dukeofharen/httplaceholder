@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common;
@@ -15,7 +14,7 @@ using HttPlaceholder.Persistence.FileSystem;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Persistence.Implementations.StubSources;
+namespace HttPlaceholder.Persistence.StubSources;
 
 /// <summary>
 ///     A stub source that is used to store and read data on the file system.

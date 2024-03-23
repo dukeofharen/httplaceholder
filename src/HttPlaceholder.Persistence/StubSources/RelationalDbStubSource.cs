@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
@@ -12,7 +11,7 @@ using HttPlaceholder.Persistence.Db;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Persistence.Implementations.StubSources;
+namespace HttPlaceholder.Persistence.StubSources;
 
 /// <summary>
 ///     A stub source that is used to store and read data from a relational database.

@@ -1,16 +1,15 @@
 ﻿using System.IO;
 using System.Linq;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.FileSystem;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
+namespace HttPlaceholder.Persistence.Tests.StubSources;
 
 [TestClass]
 public class FileSystemStubSourceFacts

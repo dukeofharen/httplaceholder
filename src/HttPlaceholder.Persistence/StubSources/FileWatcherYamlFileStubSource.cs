@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
@@ -16,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SharpYaml;
 
-namespace HttPlaceholder.Persistence.Implementations.StubSources;
+namespace HttPlaceholder.Persistence.StubSources;
 
 /// <summary>
 ///     A stub source that is used to read data from one or several YAML files, from possibly multiple locations.

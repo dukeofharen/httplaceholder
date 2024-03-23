@@ -25,18 +25,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Implementations\StubSources\TestResources.Designer.cs">
-            <DependentUpon>TestResources.resx</DependentUpon>
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Implementations\StubSources\TestResources.resx">
-            <LastGenOutput>TestResources.Designer.cs</LastGenOutput>
-            <Generator>ResXFileCodeGenerator</Generator>
-        </EmbeddedResource>
+      <EmbeddedResource Update="StubSources\TestResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>TestResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
 </Project>

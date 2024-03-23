@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.FileWatchers;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
+namespace HttPlaceholder.Persistence.Tests.StubSources;
 
 [TestClass]
 public class FileWatcherYamlFileStubSourceFacts

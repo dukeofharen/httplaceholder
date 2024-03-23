@@ -5,7 +5,7 @@ using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
 using Microsoft.Extensions.Configuration;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations;
+namespace HttPlaceholder.Persistence.Tests.Db;
 
 [TestClass]
 public class RelationalDbMigratorFacts

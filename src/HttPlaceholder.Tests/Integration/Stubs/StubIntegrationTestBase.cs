@@ -8,7 +8,7 @@ using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 using HttPlaceholder.Web.Shared.Dto.v1.Scenarios;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 using Microsoft.OpenApi.Readers;
 
 namespace HttPlaceholder.Tests.Integration;

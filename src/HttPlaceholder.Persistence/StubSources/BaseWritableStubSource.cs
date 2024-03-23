@@ -7,7 +7,7 @@ using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
-namespace HttPlaceholder.Persistence.Implementations.StubSources;
+namespace HttPlaceholder.Persistence.StubSources;
 
 /// <summary>
 ///     An abstract class that is used to implement a stub source types that also writes its data to a data source.
