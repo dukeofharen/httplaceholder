@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Application.Infrastructure.MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Application;
@@ -17,11 +16,7 @@ public static class ApplicationModule
     public static IServiceCollection AddApplicationModule(this IServiceCollection services)
     {
         // Add MediatR
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(ApplicationModule).Assembly);
-            cfg.AddOpenBehavior(typeof(AuditBehavior<,>));
-        });
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationModule).Assembly));
 
         // Register implementations
         services.Scan(scan => scan.FromCallingAssembly().RegisterDependencies());

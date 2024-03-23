@@ -200,28 +200,4 @@ public class ConfigurationParserFacts
         Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
         Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
     }
-
-    [DataTestMethod]
-    [DataRow("-V", true)]
-    [DataRow("--verbose", true)]
-    [DataRow("-v", false)]
-    public void ArgsArray_Verbose(string arg, bool shouldBeVerbose)
-    {
-        // Arrange
-        var args = $"{arg} --port 80".Split(' ');
-
-        // Act
-        var result = _parser.ParseConfiguration(args);
-
-        // Assert
-        const string key = "Logging:VerboseLoggingEnabled";
-        if (shouldBeVerbose)
-        {
-            Assert.AreEqual("True", result[key]);
-        }
-        else
-        {
-            Assert.IsFalse(result.Keys.Any(k => k == key));
-        }
-    }
 }

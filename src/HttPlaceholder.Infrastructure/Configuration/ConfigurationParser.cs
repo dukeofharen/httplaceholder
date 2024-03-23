@@ -144,11 +144,6 @@ public class ConfigurationParser(
             }
         }
 
-        if (CliArgs.IsVerbose(args))
-        {
-            finalResult.Add("Logging:VerboseLoggingEnabled", "True");
-        }
-
         return finalResult;
     }
 
