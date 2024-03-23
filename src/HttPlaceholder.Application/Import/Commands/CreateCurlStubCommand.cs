@@ -26,7 +26,7 @@ public class CreateCurlStubCommand(string input, bool doNotCreateStub, string te
 ///     A command handler for creating stubs based on cURL commands.
 /// </summary>
 public class CreateCurlStubCommandHandler(ICurlStubGenerator curlStubGenerator, IDateTime dateTime)
-    : BaseImportCommandHandler(curlStubGenerator, dateTime)
+    : BaseImportCommandHandler<CreateCurlStubCommand>(curlStubGenerator, dateTime)
 {
     /// <inheritdoc/>
     protected override string GetTenantPrefix() => "curl-import";

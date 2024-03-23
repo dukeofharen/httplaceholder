@@ -26,7 +26,7 @@ public class CreateOpenApiStubCommand(string input, bool doNotCreateStub, string
 ///     A command handler for creating stubs based on OpenAPI definitions.
 /// </summary>
 public class CreateOpenApiStubCommandHandler(IOpenApiStubGenerator openApiStubGenerator, IDateTime dateTime)
-    : BaseImportCommandHandler(openApiStubGenerator, dateTime)
+    : BaseImportCommandHandler<CreateOpenApiStubCommand>(openApiStubGenerator, dateTime)
 {
     /// <inheritdoc/>
     protected override string GetTenantPrefix() => "openapi-import";

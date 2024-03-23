@@ -26,7 +26,7 @@ public class CreateHarStubCommand(string input, bool doNotCreateStub, string ten
 ///     A command handler for creating stubs based on HTTP archive (HAR).
 /// </summary>
 public class CreateHarStubCommandHandler(IHarStubGenerator harStubGenerator, IDateTime dateTime)
-    : BaseImportCommandHandler(harStubGenerator, dateTime)
+    : BaseImportCommandHandler<CreateHarStubCommand>(harStubGenerator, dateTime)
 {
     /// <inheritdoc />
     protected override string GetTenantPrefix() => "har-import";
