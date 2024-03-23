@@ -24,4 +24,19 @@ public class NotFoundException : Exception
     public NotFoundException(string message) : base(message)
     {
     }
+
+    /// <summary>
+    ///     Throws an exception if the input is null.
+    /// </summary>
+    /// <param name="input">The input to check.</param>
+    /// <param name="name">The name of the item.</param>
+    /// <param name="key">The key of the item.</param>
+    /// <exception cref="NotFoundException">The exception.</exception>
+    public static void ThrowIfNull(object input, string name, object key)
+    {
+        if (input == null)
+        {
+            throw new NotFoundException(name, key);
+        }
+    }
 }

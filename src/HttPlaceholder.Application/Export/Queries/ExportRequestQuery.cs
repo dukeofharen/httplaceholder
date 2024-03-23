@@ -37,7 +37,9 @@ public class ExportRequestQuery : IRequest<string>
 /// <summary>
 ///     A query handler for exporting a request.
 /// </summary>
-public class ExportRequestQueryHandler(IStubContext stubContext, IRequestToCurlCommandService requestToCurlCommandService,
+public class ExportRequestQueryHandler(
+    IStubContext stubContext,
+    IRequestToCurlCommandService requestToCurlCommandService,
     IRequestToHarService requestToHarService) : IRequestHandler<ExportRequestQuery, string>
 {
     /// <inheritdoc />
@@ -51,11 +53,7 @@ public class ExportRequestQueryHandler(IStubContext stubContext, IRequestToCurlC
             case RequestExportType.Curl:
                 return requestToCurlCommandService.Convert(requestResult);
             case RequestExportType.Har:
-                if (response == null)
-                {
-                    throw new NotFoundException("response", request.CorrelationId);
-                }
-
+                NotFoundException.ThrowIfNull(response, "response", request.CorrelationId);
                 return requestToHarService.Convert(requestResult, response);
             default:
                 throw new NotImplementedException(
