@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.FileWatchers;

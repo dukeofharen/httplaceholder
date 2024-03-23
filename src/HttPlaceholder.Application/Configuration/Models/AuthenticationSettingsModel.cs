@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Application.Configuration;
+﻿namespace HttPlaceholder.Application.Configuration.Models;
 
 /// <summary>
 ///     Settings model that is used to store the API authentication

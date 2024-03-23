@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;

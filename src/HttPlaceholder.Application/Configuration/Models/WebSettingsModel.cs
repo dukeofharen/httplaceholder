@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Application.Configuration;
+﻿namespace HttPlaceholder.Application.Configuration.Models;
 
 /// <summary>
 ///     A model for storing web related settings.

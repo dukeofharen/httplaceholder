@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Persistence.Db;

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.MediatR;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.TestUtilities.Logging;

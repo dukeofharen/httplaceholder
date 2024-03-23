@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations;
 using Microsoft.Extensions.Options;

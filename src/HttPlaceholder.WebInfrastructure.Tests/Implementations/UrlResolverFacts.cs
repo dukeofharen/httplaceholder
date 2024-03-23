@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.WebInfrastructure.Implementations;
 

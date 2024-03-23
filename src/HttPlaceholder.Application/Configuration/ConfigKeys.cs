@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Domain.Enums;
-using static HttPlaceholder.Application.Configuration.ConfigMetadataModel;
+using static HttPlaceholder.Application.Configuration.Models.ConfigMetadataModel;
 
 namespace HttPlaceholder.Application.Configuration;
 

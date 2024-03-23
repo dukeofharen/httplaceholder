@@ -2,6 +2,7 @@
 using System.Linq;
 using Bogus;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Implementations.StubSources;

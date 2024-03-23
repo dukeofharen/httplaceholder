@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Application.Interfaces.Http;

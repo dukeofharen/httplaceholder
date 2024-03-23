@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Web.Shared;
 using HttPlaceholder.Web.Shared.HostedServices;

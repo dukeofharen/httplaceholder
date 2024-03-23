@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Common.Utilities;
 using MediatR;

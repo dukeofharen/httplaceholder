@@ -1,6 +1,6 @@
 using HttPlaceholder.Domain.Enums;
 
-namespace HttPlaceholder.Application.Configuration;
+namespace HttPlaceholder.Application.Configuration.Models;
 
 /// <summary>
 ///     A model used to contain the configuration key metadata.

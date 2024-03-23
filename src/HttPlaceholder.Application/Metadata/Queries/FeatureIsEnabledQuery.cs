@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using MediatR;
