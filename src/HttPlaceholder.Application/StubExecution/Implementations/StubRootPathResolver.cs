@@ -4,15 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Persistence.Implementations;
+namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class StubRootPathResolver(
     IAssemblyService assemblyService,

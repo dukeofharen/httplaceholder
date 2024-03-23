@@ -1,13 +1,13 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
+using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Common;
-using HttPlaceholder.Persistence.Implementations;
+using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations;
+namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
 [TestClass]
 public class StubRootPathResolverFacts

@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HttPlaceholder.Application.Interfaces.Persistence;
+namespace HttPlaceholder.Application.StubExecution;
 
 /// <summary>
 ///     Describes a class that is used to retrieve the root paths of the locations the stub YAML files are located in.
