@@ -33,13 +33,13 @@ public abstract class BaseConditionChecker : IConditionChecker
     /// <inheritdoc/>
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        if (!ShouldBeExecuted(stub))
-        {
-            return await NotExecutedAsync();
-        }
-
         try
         {
+            if (!ShouldBeExecuted(stub))
+            {
+                return await NotExecutedAsync();
+            }
+
             return await PerformValidationAsync(stub, cancellationToken);
         }
         catch (Exception ex)

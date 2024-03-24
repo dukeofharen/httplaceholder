@@ -36,4 +36,16 @@ public static partial class XmlUtilities
             nsManager.AddNamespace(prefix, uri);
         }
     }
+
+    /// <summary>
+    ///     Reads and returns an XML document.
+    /// </summary>
+    /// <param name="xml">The XML.</param>
+    /// <returns>The XML document.</returns>
+    public static XmlDocument LoadXmlDocument(string xml)
+    {
+        var doc = new XmlDocument();
+        doc.LoadXml(xml);
+        return doc;
+    }
 }

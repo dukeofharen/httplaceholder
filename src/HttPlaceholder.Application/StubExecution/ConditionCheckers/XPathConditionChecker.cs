@@ -27,34 +27,26 @@ public class XPathConditionChecker(IHttpContextService httpContextService) : Bas
         var xpathConditions = stub.Conditions.Xpath.ToArray();
         var validXpaths = 0;
         var body = await httpContextService.GetBodyAsync(cancellationToken);
-        try
+        var doc = XmlUtilities.LoadXmlDocument(body);
+        foreach (var condition in xpathConditions)
         {
-            var doc = new XmlDocument();
-            doc.LoadXml(body);
-            foreach (var condition in xpathConditions)
+            var nsManager = GetNamespaces(condition.Namespaces, doc, body);
+            var elements = doc.SelectNodes(condition.QueryString, nsManager);
+            if (elements is { Count: 0 })
             {
-                var nsManager = GetNamespaces(condition.Namespaces, doc, body);
-                var elements = doc.SelectNodes(condition.QueryString, nsManager);
-                if (elements is { Count: 0 })
-                {
-                    // No suitable XML results found.
-                    return await InvalidAsync(
-                        $"No suitable XML results found with XPath query {condition.QueryString}.");
-                }
-
-                validXpaths++;
+                // No suitable XML results found.
+                return await InvalidAsync(
+                    $"No suitable XML results found with XPath query {condition.QueryString}.");
             }
 
-            // If the number of succeeded conditions is equal to the actual number of conditions,
-            // the header condition is passed and the stub ID is passed to the result.
-            return validXpaths == xpathConditions.Length
-                ? await ValidAsync()
-                : await InvalidAsync();
+            validXpaths++;
         }
-        catch (XmlException ex)
-        {
-            return await InvalidAsync(ex.Message);
-        }
+
+        // If the number of succeeded conditions is equal to the actual number of conditions,
+        // the header condition is passed and the stub ID is passed to the result.
+        return validXpaths == xpathConditions.Length
+            ? await ValidAsync()
+            : await InvalidAsync();
     }
 
     /// <inheritdoc />

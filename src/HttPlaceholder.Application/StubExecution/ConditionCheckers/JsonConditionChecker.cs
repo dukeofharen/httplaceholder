@@ -26,18 +26,11 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
         CancellationToken cancellationToken)
     {
         var convertedJsonConditions = ConvertJsonConditions(stub.Conditions.Json);
-        try
-        {
-            var jToken = JToken.Parse(await httpContextService.GetBodyAsync(cancellationToken));
-            var logResults = new List<string>();
-            return CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
-                ? await ValidAsync(string.Join(Environment.NewLine, logResults))
-                : await InvalidAsync(string.Join(Environment.NewLine, logResults));
-        }
-        catch (JsonReaderException ex)
-        {
-            return await InvalidAsync(ex.Message);
-        }
+        var jToken = JToken.Parse(await httpContextService.GetBodyAsync(cancellationToken));
+        var logResults = new List<string>();
+        return CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
+            ? await ValidAsync(string.Join(Environment.NewLine, logResults))
+            : await InvalidAsync(string.Join(Environment.NewLine, logResults));
     }
 
     /// <inheritdoc />
