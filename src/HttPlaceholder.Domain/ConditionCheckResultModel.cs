@@ -11,7 +11,7 @@ public class ConditionCheckResultModel
     /// <summary>
     ///     Gets or sets the name of the checker.
     /// </summary>
-    public string CheckerName { get; set; }
+    public string CheckerName { get; private set; }
 
     /// <summary>
     ///     Gets or sets the condition validation.
@@ -22,6 +22,17 @@ public class ConditionCheckResultModel
     ///     Gets or sets the log.
     /// </summary>
     public string Log { get; private set; }
+
+    /// <summary>
+    ///     Sets the checker name.
+    /// </summary>
+    /// <param name="name">The checker name.</param>
+    /// <returns>The current model.</returns>
+    public ConditionCheckResultModel SetCheckerName(string name)
+    {
+        CheckerName = name;
+        return this;
+    }
 
     /// <summary>
     ///     Creates a valid result.
@@ -79,60 +90,4 @@ public class ConditionCheckResultModel
 
         return model;
     }
-
-    // /// <summary>
-    // ///     Sets the validation status to "not executed".
-    // /// </summary>
-    // /// <param name="logMessage">An optional log message.</param>
-    // public static Task<ConditionCheckResultModel> NotExecutedAsync(string logMessage = null) =>
-    //     Task.FromResult(NotExecuted(logMessage));
-    //
-    // /// <summary>
-    // ///     Sets the validation status to "valid".
-    // /// </summary>
-    // /// <param name="logMessage">An optional log message.</param>
-    // public Task<ConditionCheckResultModel> ValidAsync(string logMessage = null) =>
-    //     Task.FromResult(Valid(logMessage));
-    //
-    // /// <summary>
-    // ///     Sets the validation status to "invalid".
-    // /// </summary>
-    // /// <param name="logMessage">An optional log message.</param>
-    // public Task<ConditionCheckResultModel> InvalidAsync(string logMessage = null) =>
-    //     Task.FromResult(Invalid(logMessage));
-    //
-    // /// <summary>
-    // ///     Sets the validation status to "not executed".
-    // /// </summary>
-    // /// <param name="logMessage">An optional log message.</param>
-    // public static ConditionCheckResultModel NotExecuted(string logMessage = null)
-    // {
-    //     var model = new ConditionCheckResultModel();
-    //     return model.SetValidationStatus(ConditionValidationType.NotExecuted, logMessage);
-    // }
-    //
-    // /// <summary>
-    // ///     Sets the validation status to "valid".
-    // /// </summary>
-    // /// <param name="logMessage">An optional log message.</param>
-    // public ConditionCheckResultModel Valid(string logMessage = null) =>
-    //     SetValidationStatus(ConditionValidationType.Valid, logMessage);
-    //
-    // /// <summary>
-    // ///     Sets the validation status to "invalid".
-    // /// </summary>
-    // /// <param name="logMessage">An optional log message.</param>
-    // public ConditionCheckResultModel Invalid(string logMessage = null) =>
-    //     SetValidationStatus(ConditionValidationType.Invalid, logMessage);
-    //
-    // private ConditionCheckResultModel SetValidationStatus(ConditionValidationType type, string logMessage = null)
-    // {
-    //     ConditionValidation = type;
-    //     if (!string.IsNullOrWhiteSpace(logMessage))
-    //     {
-    //         Log = logMessage;
-    //     }
-    //
-    //     return this;
-    // }
 }

@@ -19,7 +19,7 @@ public class HostConditionChecker(IClientDataResolver clientDataResolver, IStrin
         var hostCondition = stub.Conditions?.Host;
         if (hostCondition == null)
         {
-            return InvalidAsync();
+            return NotExecutedAsync();
         }
 
         return !stringChecker.CheckString(clientDataResolver.GetHost(), hostCondition, out _)

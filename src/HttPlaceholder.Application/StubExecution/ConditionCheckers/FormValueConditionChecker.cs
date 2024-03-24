@@ -22,7 +22,7 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
         var formConditions = stub.Conditions?.Form?.ToArray() ?? [];
         if (formConditions.Length == 0)
         {
-            return await InvalidAsync();
+            return await NotExecutedAsync();
         }
 
         var form = await httpContextService.GetFormValuesAsync(cancellationToken);

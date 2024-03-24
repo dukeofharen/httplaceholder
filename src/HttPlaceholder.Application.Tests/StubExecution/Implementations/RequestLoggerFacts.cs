@@ -76,18 +76,9 @@ public class RequestLoggerFacts
         // arrange
         const string stubId = "stub-01";
 
-        var condition1 = new ConditionCheckResultModel
-        {
-            CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.Invalid
-        };
-        var condition2 = new ConditionCheckResultModel
-        {
-            CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.Valid
-        };
-        var condition3 = new ConditionCheckResultModel
-        {
-            CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.NotExecuted
-        };
+        var condition1 = ConditionCheckResultModel.Invalid().SetCheckerName(Guid.NewGuid().ToString());
+        var condition2 = ConditionCheckResultModel.Valid().SetCheckerName(Guid.NewGuid().ToString());
+        var condition3 = ConditionCheckResultModel.NotExecuted().SetCheckerName(Guid.NewGuid().ToString());
         var conditions = new[] { condition1, condition2, condition3 };
 
         // act

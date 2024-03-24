@@ -48,23 +48,27 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
             {
                 // Condition is an object, so first convert the condition to a StubJsonPathModel before executing the condition checker.
                 var jsonPathCondition = ConvertJsonPathCondition(stub.Id, condition);
-                if (jsonPathCondition != null)
+                if (jsonPathCondition == null)
                 {
-                    var elements = jsonObject.SelectToken(jsonPathCondition.Query);
-                    if (elements != null)
-                    {
-                        // Retrieve the value from the JSONPath result.
-                        var foundValue = JsonUtilities.ConvertFoundValue(elements);
+                    continue;
+                }
 
-                        // If a value is set for the condition, check if the found JSONPath value matches the value in the condition.
-                        if (!string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue) ||
-                            StringHelper.IsRegexMatchOrSubstring(
-                                foundValue,
-                                jsonPathCondition.ExpectedValue))
-                        {
-                            return await InvalidAsync("No suitable JSON results found.");
-                        }
-                    }
+                var elements = jsonObject.SelectToken(jsonPathCondition.Query);
+                if (elements == null)
+                {
+                    continue;
+                }
+
+                // Retrieve the value from the JSONPath result.
+                var foundValue = JsonUtilities.ConvertFoundValue(elements);
+
+                // If a value is set for the condition, check if the found JSONPath value matches the value in the condition.
+                if (!string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue) &&
+                    !StringHelper.IsRegexMatchOrSubstring(
+                        foundValue,
+                        jsonPathCondition.ExpectedValue))
+                {
+                    return await InvalidAsync("No suitable JSON results found.");
                 }
 
                 validJsonPaths++;
