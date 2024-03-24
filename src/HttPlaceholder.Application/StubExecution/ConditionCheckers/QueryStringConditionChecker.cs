@@ -13,17 +13,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker for validating the query strings.
 /// </summary>
 public class QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    : IConditionChecker, ISingletonService
+    : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var queryStringConditions = stub.Conditions?.Url?.Query;
-        if (queryStringConditions == null || queryStringConditions.Any() != true)
-        {
-            return NotExecutedAsync();
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.Query?.Any() == true;
 
+    /// <inheritdoc />
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var queryStringConditions = stub.Conditions.Url.Query;
         var validQueryStrings = 0;
         var queryString = httpContextService.GetQueryStringDictionary();
         foreach (var condition in queryStringConditions)
@@ -68,5 +67,5 @@ public class QueryStringConditionChecker(IHttpContextService httpContextService,
     }
 
     /// <inheritdoc />
-    public int Priority => 8;
+    public override int Priority => 8;
 }

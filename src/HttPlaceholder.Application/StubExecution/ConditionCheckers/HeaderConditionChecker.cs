@@ -14,17 +14,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker that is used to validate the request headers.
 /// </summary>
 public class HeaderConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    : IConditionChecker, ISingletonService
+    : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var headerConditions = stub.Conditions?.Headers;
-        if (headerConditions == null || headerConditions.Any() != true)
-        {
-            return NotExecutedAsync();
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Headers?.Any() == true;
 
+    /// <inheritdoc />
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var headerConditions = stub.Conditions.Headers;
         var validHeaders = 0;
         var headers = httpContextService.GetHeaders();
         foreach (var condition in headerConditions)
@@ -70,5 +69,5 @@ public class HeaderConditionChecker(IHttpContextService httpContextService, IStr
     }
 
     /// <inheritdoc />
-    public int Priority => 8;
+    public override int Priority => 8;
 }

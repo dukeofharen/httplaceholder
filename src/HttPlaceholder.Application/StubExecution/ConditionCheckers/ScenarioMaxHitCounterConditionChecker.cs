@@ -9,17 +9,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker for validating whether the stub scenario has a maximum (exclusive) number of hits.
 /// </summary>
-public class ScenarioMaxHitCounterConditionChecker(IStubContext stubContext) : IConditionChecker, ISingletonService
+public class ScenarioMaxHitCounterConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var maxHits = stub.Conditions?.Scenario?.MaxHits;
-        if (maxHits == null)
-        {
-            return await NotExecutedAsync();
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Scenario?.MaxHits != null;
 
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub, CancellationToken cancellationToken)
+    {
+        var maxHits = stub.Conditions.Scenario.MaxHits;
         var scenario = stub.Scenario;
         var rawHitCount = await stubContext.GetHitCountAsync(scenario, cancellationToken);
         var actualHitCount =
@@ -40,5 +38,5 @@ public class ScenarioMaxHitCounterConditionChecker(IStubContext stubContext) : I
     }
 
     /// <inheritdoc />
-    public int Priority => 8;
+    public override int Priority => 8;
 }

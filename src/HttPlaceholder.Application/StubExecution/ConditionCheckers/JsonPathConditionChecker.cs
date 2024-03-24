@@ -15,17 +15,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that validates the incoming JSON request body against a list of JSONPath expressions.
 /// </summary>
-public class JsonPathConditionChecker(IHttpContextService httpContextService) : IConditionChecker, ISingletonService
+public class JsonPathConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var jsonPathConditions = stub.Conditions?.JsonPath?.ToArray();
-        if (jsonPathConditions == null || jsonPathConditions.Length == 0)
-        {
-            return await NotExecutedAsync();
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.JsonPath?.Count() > 0;
 
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var jsonPathConditions = stub.Conditions.JsonPath.ToArray();
         var validJsonPaths = 0;
         var body = await httpContextService.GetBodyAsync(cancellationToken);
         var jsonObject = JObject.Parse(body);
@@ -81,7 +80,7 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
     }
 
     /// <inheritdoc />
-    public int Priority => 0;
+    public override int Priority => 0;
 
     internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)
     {

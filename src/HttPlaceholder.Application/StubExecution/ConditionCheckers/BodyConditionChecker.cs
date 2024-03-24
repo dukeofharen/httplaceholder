@@ -12,17 +12,19 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker that verifies the incoming request body.
 /// </summary>
 public class BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    : IConditionChecker, ISingletonService
+    : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override bool ShouldBeExecuted(StubModel stub)
     {
         var bodyConditions = stub.Conditions?.Body?.ToArray();
-        if (bodyConditions == null || bodyConditions?.Length == 0)
-        {
-            return await NotExecutedAsync();
-        }
+        return bodyConditions is { Length: > 0 };
+    }
 
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub, CancellationToken cancellationToken)
+    {
+        var bodyConditions = stub.Conditions.Body.ToArray();
         var body = await httpContextService.GetBodyAsync(cancellationToken);
 
         var validBodyConditions = 0;
@@ -47,5 +49,5 @@ public class BodyConditionChecker(IHttpContextService httpContextService, IStrin
     }
 
     /// <inheritdoc />
-    public int Priority => 8;
+    public override int Priority => 8;
 }

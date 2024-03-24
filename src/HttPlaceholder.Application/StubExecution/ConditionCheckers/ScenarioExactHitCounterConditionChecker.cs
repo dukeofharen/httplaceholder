@@ -9,17 +9,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker for validating whether the stub scenario has an exact number of hits.
 /// </summary>
-public class ScenarioExactHitCounterConditionChecker(IStubContext stubContext) : IConditionChecker, ISingletonService
+public class ScenarioExactHitCounterConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Scenario?.ExactHits != null;
+
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
         var exactHits = stub.Conditions?.Scenario?.ExactHits;
-        if (exactHits == null)
-        {
-            return await NotExecutedAsync();
-        }
-
         var scenario = stub.Scenario;
         var rawHitCount = await stubContext.GetHitCountAsync(scenario, cancellationToken);
         var actualHitCount =
@@ -40,5 +39,5 @@ public class ScenarioExactHitCounterConditionChecker(IStubContext stubContext) :
     }
 
     /// <inheritdoc />
-    public int Priority => 8;
+    public override int Priority => 8;
 }

@@ -10,22 +10,18 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that verifies if a request is done over HTTP or HTTPS.
 /// </summary>
-public class IsHttpsConditionChecker(IClientDataResolver clientDataResolver) : IConditionChecker, ISingletonService
+public class IsHttpsConditionChecker(IClientDataResolver clientDataResolver) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var condition = stub.Conditions?.Url?.IsHttps;
-        if (condition == null)
-        {
-            return NotExecutedAsync();
-        }
-
-        return clientDataResolver.IsHttps() == condition.Value
-            ? ValidAsync()
-            : InvalidAsync();
-    }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.IsHttps != null;
 
     /// <inheritdoc />
-    public int Priority => 10;
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken) =>
+        clientDataResolver.IsHttps() == stub.Conditions.Url.IsHttps
+            ? ValidAsync()
+            : InvalidAsync();
+
+    /// <inheritdoc />
+    public override int Priority => 10;
 }

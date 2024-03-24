@@ -14,17 +14,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker that is used to validate a posted form.
 /// </summary>
 public class FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    : IConditionChecker, ISingletonService
+    : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var formConditions = stub.Conditions?.Form?.ToArray() ?? [];
-        if (formConditions.Length == 0)
-        {
-            return await NotExecutedAsync();
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Form?.ToArray()?.Length > 0;
 
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var formConditions = stub.Conditions.Form.ToArray();
         var form = await httpContextService.GetFormValuesAsync(cancellationToken);
         var validConditions = 0;
         foreach (var condition in formConditions)
@@ -67,5 +66,5 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
     }
 
     /// <inheritdoc />
-    public int Priority => 8;
+    public override int Priority => 8;
 }

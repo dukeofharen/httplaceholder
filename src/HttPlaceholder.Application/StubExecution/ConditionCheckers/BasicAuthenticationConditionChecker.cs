@@ -12,18 +12,20 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker that is used to verify incoming basic authentication credentials.
 /// </summary>
 public class BasicAuthenticationConditionChecker(IHttpContextService httpContextService)
-    : IConditionChecker, ISingletonService
+    : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override bool ShouldBeExecuted(StubModel stub)
     {
         var condition = stub.Conditions?.BasicAuthentication;
-        if (condition == null ||
-            StringHelper.AllAreNullOrWhitespace(condition.Username, condition.Password))
-        {
-            return NotExecutedAsync();
-        }
+        return condition != null && StringHelper.NoneAreNullOrWhitespace(condition.Username, condition.Password);
+    }
 
+    /// <inheritdoc />
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var condition = stub.Conditions.BasicAuthentication;
         var headers = httpContextService.GetHeaders();
 
         // Try to retrieve the Authorization header.
@@ -44,5 +46,5 @@ public class BasicAuthenticationConditionChecker(IHttpContextService httpContext
     }
 
     /// <inheritdoc />
-    public int Priority => 9;
+    public override int Priority => 9;
 }

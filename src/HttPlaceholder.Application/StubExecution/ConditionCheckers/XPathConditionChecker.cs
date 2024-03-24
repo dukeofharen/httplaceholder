@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,17 +15,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker for validating whether the XML in the request body corresponds to a given list of XPath
 ///     expressions.
 /// </summary>
-public class XPathConditionChecker(IHttpContextService httpContextService) : IConditionChecker, ISingletonService
+public class XPathConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? Array.Empty<StubXpathModel>();
-        if (xpathConditions.Length == 0)
-        {
-            return await NotExecutedAsync();
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Xpath?.Any() == true;
 
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var xpathConditions = stub.Conditions.Xpath.ToArray();
         var validXpaths = 0;
         var body = await httpContextService.GetBodyAsync(cancellationToken);
         try
@@ -60,7 +58,7 @@ public class XPathConditionChecker(IHttpContextService httpContextService) : ICo
     }
 
     /// <inheritdoc />
-    public int Priority => 0;
+    public override int Priority => 0;
 
     private static XmlNamespaceManager GetNamespaces(
         IDictionary<string, string> namespaces,

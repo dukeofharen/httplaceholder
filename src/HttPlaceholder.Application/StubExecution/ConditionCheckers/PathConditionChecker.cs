@@ -11,23 +11,18 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker that validates the request path (relative path without the query string).
 /// </summary>
 public class PathConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    : IConditionChecker, ISingletonService
+    : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var pathCondition = stub.Conditions?.Url?.Path;
-        if (pathCondition == null)
-        {
-            return NotExecutedAsync();
-        }
-
-        var path = httpContextService.Path;
-        return stringChecker.CheckString(path, pathCondition, out var outputForLogging)
-            ? ValidAsync()
-            : InvalidAsync($"Condition '{outputForLogging}' did not pass for request.");
-    }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.Path != null;
 
     /// <inheritdoc />
-    public int Priority => 8;
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken) =>
+        stringChecker.CheckString(httpContextService.Path, stub.Conditions.Url.Path, out var outputForLogging)
+            ? ValidAsync()
+            : InvalidAsync($"Condition '{outputForLogging}' did not pass for request.");
+
+    /// <inheritdoc />
+    public override int Priority => 8;
 }

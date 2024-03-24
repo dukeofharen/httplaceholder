@@ -11,17 +11,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker that is used to validate the full path (so the relative path + query string).
 /// </summary>
 public class FullPathConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    : IConditionChecker, ISingletonService
+    : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var fullPathCondition = stub.Conditions?.Url?.FullPath;
-        if (fullPathCondition == null)
-        {
-            return NotExecutedAsync();
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.FullPath != null;
 
+    /// <inheritdoc />
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var fullPathCondition = stub.Conditions.Url.FullPath;
         var path = httpContextService.FullPath;
         return stringChecker.CheckString(path, fullPathCondition, out var outputForLogging)
             ? ValidAsync()
@@ -29,5 +28,5 @@ public class FullPathConditionChecker(IHttpContextService httpContextService, IS
     }
 
     /// <inheritdoc />
-    public int Priority => 9;
+    public override int Priority => 9;
 }

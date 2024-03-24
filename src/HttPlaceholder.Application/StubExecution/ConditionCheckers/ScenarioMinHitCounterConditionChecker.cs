@@ -9,17 +9,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker for validating whether the stub scenario has a minimum (inclusive) number of hits.
 /// </summary>
-public class ScenarioMinHitCounterConditionChecker(IStubContext stubContext) : IConditionChecker, ISingletonService
+public class ScenarioMinHitCounterConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var minHits = stub.Conditions?.Scenario?.MinHits;
-        if (minHits == null)
-        {
-            return await NotExecutedAsync();
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Scenario?.MinHits != null;
 
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var minHits = stub.Conditions.Scenario.MinHits;
         var scenario = stub.Scenario;
         var rawHitCount = await stubContext.GetHitCountAsync(scenario, cancellationToken);
         var actualHitCount =
@@ -40,5 +39,5 @@ public class ScenarioMinHitCounterConditionChecker(IStubContext stubContext) : I
     }
 
     /// <inheritdoc />
-    public int Priority => 8;
+    public override int Priority => 8;
 }

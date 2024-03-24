@@ -13,17 +13,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 ///     Condition checker that verifies the client IP address. IP address can be both a single IP or an IP range.
 /// </summary>
-public class ClientIpConditionChecker(IClientDataResolver clientDataResolver) : IConditionChecker, ISingletonService
+public class ClientIpConditionChecker(IClientDataResolver clientDataResolver) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.ClientIp != null;
+
+    /// <inheritdoc />
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
         var clientIpCondition = stub.Conditions?.ClientIp;
-        if (clientIpCondition == null)
-        {
-            return NotExecutedAsync();
-        }
-
         var clientIp = IPAddress.Parse(clientDataResolver.GetClientIp());
         var ranges = IPAddressRange.Parse(clientIpCondition).AsEnumerable();
         return ranges
@@ -33,5 +32,5 @@ public class ClientIpConditionChecker(IClientDataResolver clientDataResolver) : 
     }
 
     /// <inheritdoc />
-    public int Priority => 10;
+    public override int Priority => 10;
 }

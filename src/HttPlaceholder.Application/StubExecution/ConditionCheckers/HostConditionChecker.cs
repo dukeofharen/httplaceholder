@@ -11,22 +11,18 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker that is used to verify the hostname.
 /// </summary>
 public class HostConditionChecker(IClientDataResolver clientDataResolver, IStringChecker stringChecker)
-    : IConditionChecker, ISingletonService
+    : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var hostCondition = stub.Conditions?.Host;
-        if (hostCondition == null)
-        {
-            return NotExecutedAsync();
-        }
-
-        return !stringChecker.CheckString(clientDataResolver.GetHost(), hostCondition, out _)
-            ? InvalidAsync()
-            : ValidAsync();
-    }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Host != null;
 
     /// <inheritdoc />
-    public int Priority => 10;
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken) =>
+        !stringChecker.CheckString(clientDataResolver.GetHost(), stub.Conditions.Host, out _)
+            ? InvalidAsync()
+            : ValidAsync();
+
+    /// <inheritdoc />
+    public override int Priority => 10;
 }
