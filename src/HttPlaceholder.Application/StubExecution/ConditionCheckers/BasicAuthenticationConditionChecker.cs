@@ -26,9 +26,9 @@ public class BasicAuthenticationConditionChecker(IHttpContextService httpContext
         CancellationToken cancellationToken)
     {
         var condition = stub.Conditions.BasicAuthentication;
-        var headers = httpContextService.GetHeaders();
 
         // Try to retrieve the Authorization header.
+        var headers = httpContextService.GetHeaders();
         if (!headers.TryGetCaseInsensitive(HeaderKeys.Authorization, out var authorization))
         {
             return InvalidAsync("No Authorization header found in request.");
@@ -36,13 +36,10 @@ public class BasicAuthenticationConditionChecker(IHttpContextService httpContext
 
         var expectedBase64UsernamePassword = $"{condition.Username}:{condition.Password}".Base64Encode();
         var expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
-        if (expectedAuthorizationHeader == authorization)
-        {
-            return ValidAsync($"Basic authentication condition passed for stub '{stub.Id}'.");
-        }
-
-        return InvalidAsync(
-            $"Basic authentication condition failed for stub '{stub.Id}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.");
+        return expectedAuthorizationHeader == authorization
+            ? ValidAsync($"Basic authentication condition passed for stub '{stub.Id}'.")
+            : InvalidAsync(
+                $"Basic authentication condition failed for stub '{stub.Id}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.");
     }
 
     /// <inheritdoc />

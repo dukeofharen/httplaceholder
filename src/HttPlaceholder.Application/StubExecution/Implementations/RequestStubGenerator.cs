@@ -42,20 +42,12 @@ internal class RequestStubGenerator(
 
         // Generate an ID based on the created stub.
         stub.EnsureStubId();
-
-        FullStubModel result;
         if (doNotCreateStub)
         {
-            result = new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
-        }
-        else
-        {
-            await stubContext.DeleteStubAsync(stub.Id, cancellationToken);
-            result = await stubContext.AddStubAsync(stub, cancellationToken);
+            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
         }
 
-        logger.LogDebug($"Stub with ID '{stub.Id}' generated!");
-
-        return result;
+        await stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+        return await stubContext.AddStubAsync(stub, cancellationToken);
     }
 }

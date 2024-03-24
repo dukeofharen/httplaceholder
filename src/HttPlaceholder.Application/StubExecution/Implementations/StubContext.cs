@@ -52,13 +52,11 @@ internal class StubContext(
         foreach (var source in stubSources)
         {
             var stubSourceIsReadOnly = source is not IWritableStubSource;
-            var fullStubModels =
-                (await source.GetStubsOverviewAsync(stubRequestContext.DistributionKey, cancellationToken))
+            result.AddRange((await source.GetStubsOverviewAsync(stubRequestContext.DistributionKey, cancellationToken))
                 .Select(s => new FullStubOverviewModel
                 {
                     Stub = s.Stub, Metadata = MapMetadata(stubSourceIsReadOnly, s.Metadata)
-                });
-            result.AddRange(fullStubModels);
+                }));
         }
 
         return result;

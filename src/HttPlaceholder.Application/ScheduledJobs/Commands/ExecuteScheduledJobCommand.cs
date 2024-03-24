@@ -31,22 +31,17 @@ public class ExecuteScheduledJobCommandHandler(IEnumerable<ICustomHostedService>
     public async Task<JobExecutionResultModel> Handle(ExecuteScheduledJobCommand request,
         CancellationToken cancellationToken)
     {
-        var message = "OK";
         var job = hostedServices.FirstOrDefault(s =>
                 string.Equals(request.JobName, s.Key, StringComparison.OrdinalIgnoreCase))
             .IfNull(() => throw new NotFoundException($"Hosted service with key '{request.JobName}'."));
-        bool failed;
         try
         {
             await job.ProcessAsync(cancellationToken);
-            failed = false;
+            return new JobExecutionResultModel("OK", false);
         }
         catch (Exception ex)
         {
-            message = ex.ToString();
-            failed = true;
+            return new JobExecutionResultModel(ex.ToString(), true);
         }
-
-        return new JobExecutionResultModel(message, failed);
     }
 }

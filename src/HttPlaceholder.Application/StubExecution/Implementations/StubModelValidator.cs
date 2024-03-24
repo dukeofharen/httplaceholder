@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Utilities;
@@ -26,20 +25,15 @@ internal class StubModelValidator(
     ];
 
     /// <inheritdoc />
-    public IEnumerable<string> ValidateStubModel(StubModel stub)
-    {
-        var validationResults = modelValidator.ValidateModel(stub);
-        var result = new List<string>();
-        result.AddRange(HandleValidationResult(validationResults));
-        result.AddRange(ValidateExtraDuration(stub));
-        result.AddRange(ValidateScenarioVariables(stub));
-        result.AddRange(ValidateResponseBody(stub));
-        result.AddRange(ValidateResponseHeaders(stub));
-        result.AddRange(ValidateStringRegexReplace(stub));
-        return result;
-    }
+    public IEnumerable<string> ValidateStubModel(StubModel stub) =>
+        HandleValidationResult(modelValidator.ValidateModel(stub))
+            .Concat(ValidateExtraDuration(stub))
+            .Concat(ValidateScenarioVariables(stub))
+            .Concat(ValidateResponseBody(stub))
+            .Concat(ValidateResponseHeaders(stub))
+            .Concat(ValidateStringRegexReplace(stub));
 
-    private IEnumerable<string> ValidateExtraDuration(StubModel stub)
+    private List<string> ValidateExtraDuration(StubModel stub)
     {
         var result = new List<string>();
         const string errorTemplate = "Value for '{0}' cannot be higher than '{1}'.";
@@ -76,7 +70,7 @@ internal class StubModelValidator(
         return result;
     }
 
-    private static IEnumerable<string> HandleValidationResult(IEnumerable<ValidationResult> validationResults)
+    private static List<string> HandleValidationResult(IEnumerable<ValidationResult> validationResults)
     {
         var result = new List<string>();
         foreach (var validationResult in validationResults)
@@ -94,7 +88,7 @@ internal class StubModelValidator(
         return result;
     }
 
-    private static IEnumerable<string> ValidateScenarioVariables(StubModel stub)
+    private static List<string> ValidateScenarioVariables(StubModel stub)
     {
         var result = new List<string>();
         var scenarioConditions = stub?.Conditions?.Scenario ?? new StubConditionScenarioModel();
@@ -137,7 +131,7 @@ internal class StubModelValidator(
         return result;
     }
 
-    private static IEnumerable<string> ValidateResponseBody(StubModel stub)
+    private static List<string> ValidateResponseBody(StubModel stub)
     {
         var result = new List<string>();
         var response = stub?.Response;
@@ -162,7 +156,7 @@ internal class StubModelValidator(
         return result;
     }
 
-    private static IEnumerable<string> ValidateResponseHeaders(StubModel stub)
+    private static List<string> ValidateResponseHeaders(StubModel stub)
     {
         var result = new List<string>();
         var headers = stub?.Response?.Headers;
@@ -177,7 +171,7 @@ internal class StubModelValidator(
         return result;
     }
 
-    private static IEnumerable<string> ValidateStringRegexReplace(StubModel stub)
+    private static List<string> ValidateStringRegexReplace(StubModel stub)
     {
         var result = new List<string>();
         if (stub.Response?.Replace == null)
@@ -195,7 +189,7 @@ internal class StubModelValidator(
 
             if (string.IsNullOrEmpty(replace.Text) && string.IsNullOrWhiteSpace(replace.Regex))
             {
-                result.Add($"Replace [{i}]: either 'text' or 'regex' neets to be set.");
+                result.Add($"Replace [{i}]: either 'text' or 'regex' needs to be set.");
             }
 
             if (!string.IsNullOrWhiteSpace(replace.Regex) && replace.IgnoreCase.HasValue)

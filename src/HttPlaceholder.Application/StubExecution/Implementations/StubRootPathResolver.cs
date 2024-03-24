@@ -36,7 +36,7 @@ internal class StubRootPathResolver(
             ? await Task.WhenAll(
                 inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
                     .Select(f => GetDirectoryAsync(f, cancellationToken)))
-            : Array.Empty<string>();
+            : [];
         if (!string.IsNullOrWhiteSpace(fileStorageLocation))
         {
             result = result.Concat(new[] { fileStorageLocation });
