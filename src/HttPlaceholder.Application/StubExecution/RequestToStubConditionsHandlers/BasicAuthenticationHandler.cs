@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -19,16 +20,14 @@ internal class BasicAuthenticationHandler : IRequestToStubConditionsHandler, ISi
         CancellationToken cancellationToken)
     {
         var pair = request.Headers.FirstOrDefault(p =>
-            p.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase));
+            p.Key.Equals(HeaderKeys.Authorization, StringComparison.OrdinalIgnoreCase));
         if (string.IsNullOrWhiteSpace(pair.Value) ||
             !pair.Value.Trim().ToLower().StartsWith("Basic", StringComparison.OrdinalIgnoreCase))
         {
             return Task.FromResult(false);
         }
 
-        var value = pair.Value;
-        value = value.Replace("Basic ", string.Empty);
-        var basicAuth = Encoding.UTF8.GetString(Convert.FromBase64String(value));
+        var basicAuth = pair.Value.Replace("Basic ", string.Empty).Base64Decode();
         var parts = basicAuth.Split(':');
         if (parts.Length != 2)
         {
@@ -39,7 +38,7 @@ internal class BasicAuthenticationHandler : IRequestToStubConditionsHandler, ISi
 
         // Make sure the original Authorization header is removed here.
         conditions.Headers = conditions.Headers
-            .Where(h => !h.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
+            .Where(h => !h.Key.Equals(HeaderKeys.Authorization, StringComparison.OrdinalIgnoreCase))
             .ToDictionary(d => d.Key, d => d.Value);
 
         return Task.FromResult(true);

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.Models.HAR;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -63,7 +64,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("application/json, text/plain, */*", headers["Accept"]);
         Assert.AreEqual("en-US,en;q=0.5", headers["Accept-Language"]);
         Assert.AreEqual("application/json;charset=utf-8", headers[HeaderKeys.ContentType]);
-        Assert.AreEqual("Basic ZHVjbzpibGFkaWJsYQ==", headers["Authorization"]);
+        Assert.AreEqual("Basic ZHVjbzpibGFkaWJsYQ==", headers[HeaderKeys.Authorization]);
         Assert.AreEqual("https://site.com", headers["Origin"]);
         Assert.AreEqual("keep-alive", headers[HeaderKeys.Connection]);
         Assert.AreEqual("empty", headers["Sec-Fetch-Dest"]);
@@ -102,7 +103,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("application/json, text/plain, */*", headers["Accept"]);
         Assert.AreEqual("en-US,en;q=0.5", headers["Accept-Language"]);
         Assert.AreEqual("application/json;charset=utf-8", headers[HeaderKeys.ContentType]);
-        Assert.AreEqual("Bearer VERYLONGSTRING", headers["Authorization"]);
+        Assert.AreEqual("Bearer VERYLONGSTRING", headers[HeaderKeys.Authorization]);
         Assert.AreEqual("https://site.com", headers["Origin"]);
         Assert.AreEqual("keep-alive", headers[HeaderKeys.Connection]);
         Assert.AreEqual("empty", headers["Sec-Fetch-Dest"]);
@@ -141,7 +142,7 @@ public class CurlToHttpRequestMapperFacts
             headers["sec-ch-ua"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["accept"]);
         Assert.AreEqual("application/json;charset=UTF-8", headers[HeaderKeys.ContentType.ToLower()]);
-        Assert.AreEqual("Basic dXNlcjpwYXNz", headers["authorization"]);
+        Assert.AreEqual("Basic dXNlcjpwYXNz", headers[HeaderKeys.Authorization.ToLower()]);
         Assert.AreEqual("?0", headers["sec-ch-ua-mobile"]);
         Assert.AreEqual(
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
@@ -186,7 +187,7 @@ public class CurlToHttpRequestMapperFacts
             headers["sec-ch-ua"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["accept"]);
         Assert.AreEqual("application/json;charset=UTF-8", headers[HeaderKeys.ContentType.ToLower()]);
-        Assert.AreEqual("Bearer VERYLONGSTRING", headers["authorization"]);
+        Assert.AreEqual("Bearer VERYLONGSTRING", headers[HeaderKeys.Authorization.ToLower()]);
         Assert.AreEqual("?0", headers["sec-ch-ua-mobile"]);
         Assert.AreEqual(
             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
@@ -314,6 +315,6 @@ public class CurlToHttpRequestMapperFacts
         var req1 = result[0];
         Assert.AreEqual("GET", req1.Method);
         Assert.AreEqual("https://api.site.com/request-path", req1.Url);
-        Assert.AreEqual("Basic dXNlcjpwYXNz", req1.Headers["Authorization"]);
+        Assert.AreEqual("Basic dXNlcjpwYXNz", req1.Headers[HeaderKeys.Authorization]);
     }
 }

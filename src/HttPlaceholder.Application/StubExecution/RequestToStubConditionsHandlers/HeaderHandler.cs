@@ -25,7 +25,7 @@ internal class HeaderHandler : IRequestToStubConditionsHandler, ISingletonServic
             return Task.FromResult(false);
         }
 
-        // Do a Regex escape here, if we don do this it might give some strange results later on
+        // Do a Regex escape here, if we don't do this it might give some strange results later on
         // and filter some headers out.
         conditions.Headers = request.Headers
             .Where(h => !_headersToStrip.Contains(h.Key, StringComparer.OrdinalIgnoreCase))

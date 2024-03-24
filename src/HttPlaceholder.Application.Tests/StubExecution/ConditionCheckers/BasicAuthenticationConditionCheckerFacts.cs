@@ -85,7 +85,7 @@ public class BasicAuthenticationConditionCheckerFacts
             BasicAuthentication = new StubBasicAuthenticationModel { Username = "username", Password = "password" }
         };
 
-        var headers = new Dictionary<string, string> { { "Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmRk" } };
+        var headers = new Dictionary<string, string> { { HeaderKeys.Authorization, "Basic dXNlcm5hbWU6cGFzc3dvcmRk" } };
 
         _httpContextServiceMock
             .Setup(m => m.GetHeaders())
@@ -108,7 +108,7 @@ public class BasicAuthenticationConditionCheckerFacts
             BasicAuthentication = new StubBasicAuthenticationModel { Username = "username", Password = "password" }
         };
 
-        var headers = new Dictionary<string, string> { { "Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmQ=" } };
+        var headers = new Dictionary<string, string> { { HeaderKeys.Authorization, "Basic dXNlcm5hbWU6cGFzc3dvcmQ=" } };
 
         _httpContextServiceMock
             .Setup(m => m.GetHeaders())

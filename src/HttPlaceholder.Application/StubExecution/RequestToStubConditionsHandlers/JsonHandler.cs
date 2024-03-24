@@ -18,6 +18,8 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// </summary>
 internal class JsonHandler(ILogger<JsonHandler> logger) : IRequestToStubConditionsHandler, ISingletonService
 {
+    private static readonly string[] _supportedContentTypes = [MimeTypes.JsonMime];
+
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
         CancellationToken cancellationToken)
@@ -25,13 +27,9 @@ internal class JsonHandler(ILogger<JsonHandler> logger) : IRequestToStubConditio
         var pair = request.Headers.FirstOrDefault(p =>
             p.Key.Equals(HeaderKeys.ContentType, StringComparison.OrdinalIgnoreCase));
         var contentType = pair.Value;
-        if (string.IsNullOrWhiteSpace(contentType))
-        {
-            return Task.FromResult(false);
-        }
-
-        var supportedContentTypes = new[] { MimeTypes.JsonMime };
-        if (!supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
+        if (
+            string.IsNullOrWhiteSpace(contentType) ||
+            !_supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
         {
             return Task.FromResult(false);
         }

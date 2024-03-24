@@ -88,7 +88,8 @@ public static class StringHelper
     /// </summary>
     /// <param name="strings">The list of strings.</param>
     /// <returns>True if no strings are null or whitespace; false otherwise.</returns>
-    public static bool NoneAreNullOrWhitespace(params string[] strings) => !strings.Where(string.IsNullOrWhiteSpace).Any();
+    public static bool NoneAreNullOrWhitespace(params string[] strings) =>
+        !strings.Where(string.IsNullOrWhiteSpace).Any();
 
     /// <summary>
     ///     A method which receives a list of strings and checks if any string is null or whitespace. Returns true if this is the case.
@@ -121,4 +122,11 @@ public static class StringHelper
     public static string Base64Encode(this string input) =>
         Convert.ToBase64String(
             Encoding.UTF8.GetBytes(input));
+
+    /// <summary>
+    ///     Performs base64 decoding on a given string.
+    /// </summary>
+    /// <param name="input">The string to decode.</param>
+    /// <returns>The base64 decoded result.</returns>
+    public static string Base64Decode(this string input) => Encoding.UTF8.GetString(Convert.FromBase64String(input));
 }

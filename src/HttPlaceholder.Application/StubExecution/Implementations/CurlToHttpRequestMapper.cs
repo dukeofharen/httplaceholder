@@ -115,7 +115,7 @@ internal partial class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> 
                     var auth = ParseBasicAuthFlag(parts, i);
                     if (!string.IsNullOrWhiteSpace(auth))
                     {
-                        request.Headers.AddOrReplaceCaseInsensitive("Authorization", auth);
+                        request.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.Authorization, auth);
                     }
                 }
 

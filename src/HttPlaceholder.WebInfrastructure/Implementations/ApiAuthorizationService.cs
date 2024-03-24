@@ -5,6 +5,8 @@ using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.WebInfrastructure.Implementations;
@@ -31,7 +33,7 @@ internal class ApiAuthorizationService(
         }
 
         // Try to retrieve basic auth header here.
-        httpContextService.GetHeaders().TryGetValue("Authorization", out var value);
+        httpContextService.GetHeaders().TryGetCaseInsensitive(HeaderKeys.Authorization, out var value);
         if (string.IsNullOrWhiteSpace(value))
         {
             return false;

@@ -145,7 +145,7 @@ public class HarStubGeneratorFacts
         Assert.AreEqual("PUT", req3.Method);
         Assert.AreEqual("https://api.site.com/api/v1/admin/users/123", req3.Url);
         Assert.AreEqual(16, req3.Headers.Count);
-        Assert.AreEqual("Bearer bearer", req3.Headers["Authorization"]);
+        Assert.AreEqual("Bearer bearer", req3.Headers[HeaderKeys.Authorization]);
         Assert.IsNull(req3.ClientIp);
         Assert.AreEqual("{\"firstName\":\"Dukeofharen\"}", req3.Body);
 

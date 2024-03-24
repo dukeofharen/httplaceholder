@@ -172,7 +172,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         clientRequest.Headers.Add("X-Api-Key", "abc123");
 
         var auth = "Basic " + Convert.ToBase64String("duco:pass"u8.ToArray());
-        clientRequest.Headers.Add("Authorization", auth);
+        clientRequest.Headers.Add(HeaderKeys.Authorization, auth);
         return clientRequest;
     }
 }

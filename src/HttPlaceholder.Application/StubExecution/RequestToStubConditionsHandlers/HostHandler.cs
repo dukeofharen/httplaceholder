@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -12,13 +13,15 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// </summary>
 internal class HostHandler : IRequestToStubConditionsHandler, ISingletonService
 {
+    private static readonly int[] _defaultPorts = [80, 443];
+
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
         CancellationToken cancellationToken)
     {
         var uri = new Uri(request.Url);
         var host = uri.Host;
-        if (uri.Port != 80 && uri.Port != 443)
+        if (!_defaultPorts.Contains(uri.Port))
         {
             host += $":{uri.Port}";
         }

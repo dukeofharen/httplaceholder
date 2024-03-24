@@ -412,7 +412,7 @@ public class StubModelValidatorFacts
 
     [DataTestMethod]
     [DataRow("text", "regex", null, "replace", "Replace [0]: 'text' and 'regex' can't both be set.")]
-    [DataRow(null, null, null, "replace", "Replace [0]: either 'text' or 'regex' neets to be set.")]
+    [DataRow(null, null, null, "replace", "Replace [0]: either 'text' or 'regex' needs to be set.")]
     [DataRow(null, "regex", true, "replace",
         "Replace [0]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.")]
     [DataRow(null, "regex", null, null, "Replace [0]: 'replaceWith' should be set.")]

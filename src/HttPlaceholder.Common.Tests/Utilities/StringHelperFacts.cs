@@ -179,12 +179,25 @@ public class StringHelperFacts
     public void Base64Encode_HappyFlow()
     {
         // Arrange
-        var input = "Test 123";
+        const string input = "Test 123";
 
         // Act
         var result = input.Base64Encode();
 
         // Assert
         Assert.AreEqual("VGVzdCAxMjM=", result);
+    }
+
+    [TestMethod]
+    public void Base64Decode_HappyFlow()
+    {
+        // Arrange
+        const string input = "VGVzdCAxMjM=";
+
+        // Act
+        var result = input.Base64Decode();
+
+        // Assert
+        Assert.AreEqual("Test 123", result);
     }
 }
