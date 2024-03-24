@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
 using NetTools;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
@@ -18,21 +18,18 @@ public class ClientIpConditionChecker(IClientDataResolver clientDataResolver) : 
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         var clientIpCondition = stub.Conditions?.ClientIp;
         if (clientIpCondition == null)
         {
-            return Task.FromResult(result);
+            return NotExecutedAsync();
         }
 
         var clientIp = IPAddress.Parse(clientDataResolver.GetClientIp());
         var ranges = IPAddressRange.Parse(clientIpCondition).AsEnumerable();
-        result.ConditionValidation = ranges
+        return ranges
             .Any(i => i.Equals(clientIp))
-            ? ConditionValidationType.Valid
-            : ConditionValidationType.Invalid;
-
-        return Task.FromResult(result);
+            ? ValidAsync()
+            : InvalidAsync();
     }
 
     /// <inheritdoc />

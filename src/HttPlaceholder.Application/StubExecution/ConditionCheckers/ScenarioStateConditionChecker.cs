@@ -2,9 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
@@ -16,12 +18,11 @@ public class ScenarioStateConditionChecker(IStubContext stubContext) : IConditio
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         var state = stub.Conditions?.Scenario?.ScenarioState;
         var scenario = stub.Scenario;
-        if (string.IsNullOrWhiteSpace(state) || string.IsNullOrWhiteSpace(scenario))
+        if (StringHelper.AnyAreNullOrWhitespace(state, scenario))
         {
-            return result;
+            return await NotExecutedAsync();
         }
 
         var scenarioState = await stubContext.GetScenarioAsync(scenario, cancellationToken);
@@ -31,18 +32,13 @@ public class ScenarioStateConditionChecker(IStubContext stubContext) : IConditio
             await stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);
         }
 
-        if (!string.Equals(scenarioState.State.Trim(), state.Trim(), StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(scenarioState.State.Trim(), state?.Trim(), StringComparison.OrdinalIgnoreCase))
         {
-            result.Log =
-                $"Scenario '{stub.Scenario}' is in state '{scenarioState.State}', but '{state}' was expected.";
-            result.ConditionValidation = ConditionValidationType.Invalid;
-        }
-        else
-        {
-            result.ConditionValidation = ConditionValidationType.Valid;
+            return await InvalidAsync(
+                $"Scenario '{stub.Scenario}' is in state '{scenarioState.State}', but '{state}' was expected.");
         }
 
-        return result;
+        return await ValidAsync();
     }
 
     /// <inheritdoc />

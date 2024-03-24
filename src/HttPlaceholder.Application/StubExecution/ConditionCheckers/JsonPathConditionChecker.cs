@@ -7,8 +7,8 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
 using Newtonsoft.Json.Linq;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
@@ -20,11 +20,10 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         var jsonPathConditions = stub.Conditions?.JsonPath?.ToArray();
         if (jsonPathConditions == null || jsonPathConditions.Length == 0)
         {
-            return result;
+            return await NotExecutedAsync();
         }
 
         var validJsonPaths = 0;
@@ -39,8 +38,8 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
                 if (elements == null)
                 {
                     // No suitable JSON results found.
-                    result.Log = $"No suitable JSON results found with JSONPath query '{conditionString}'.";
-                    break;
+                    return await InvalidAsync(
+                        $"No suitable JSON results found with JSONPath query '{conditionString}'.");
                 }
 
                 validJsonPaths++;
@@ -49,8 +48,6 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
             {
                 // Condition is an object, so first convert the condition to a StubJsonPathModel before executing the condition checker.
                 var jsonPathCondition = ConvertJsonPathCondition(stub.Id, condition);
-
-                var passed = false;
                 if (jsonPathCondition != null)
                 {
                     var elements = jsonObject.SelectToken(jsonPathCondition.Query);
@@ -60,28 +57,23 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
                         var foundValue = JsonUtilities.ConvertFoundValue(elements);
 
                         // If a value is set for the condition, check if the found JSONPath value matches the value in the condition.
-                        passed = string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue) ||
-                                 StringHelper.IsRegexMatchOrSubstring(
-                                     foundValue,
-                                     jsonPathCondition.ExpectedValue);
+                        if (!string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue) ||
+                            StringHelper.IsRegexMatchOrSubstring(
+                                foundValue,
+                                jsonPathCondition.ExpectedValue))
+                        {
+                            return await InvalidAsync("No suitable JSON results found.");
+                        }
                     }
                 }
 
-                if (!passed)
-                {
-                    result.Log = "No suitable JSON results found.";
-                }
-
-                validJsonPaths += passed ? 1 : 0;
+                validJsonPaths++;
             }
         }
 
         // If the number of succeeded conditions is equal to the actual number of conditions,
         // the header condition is passed and the stub ID is passed to the result.
-        result.ConditionValidation = validJsonPaths == jsonPathConditions.Length
-            ? ConditionValidationType.Valid
-            : ConditionValidationType.Invalid;
-        return result;
+        return validJsonPaths == jsonPathConditions.Length ? await ValidAsync() : await InvalidAsync();
     }
 
     /// <inheritdoc />

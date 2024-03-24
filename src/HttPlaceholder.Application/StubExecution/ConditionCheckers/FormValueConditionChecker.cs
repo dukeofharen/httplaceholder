@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -7,23 +6,23 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker that is used to validate a posted form.
 /// </summary>
-public class FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker) : IConditionChecker, ISingletonService
+public class FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
+    : IConditionChecker, ISingletonService
 {
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
-        var formConditions = stub.Conditions?.Form?.ToArray() ?? Array.Empty<StubFormModel>();
+        var formConditions = stub.Conditions?.Form?.ToArray() ?? [];
         if (formConditions.Length == 0)
         {
-            return result;
+            return await InvalidAsync();
         }
 
         var form = await httpContextService.GetFormValuesAsync(cancellationToken);
@@ -49,9 +48,7 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
             var (formKey, formValues) = form.FirstOrDefault(f => f.Item1 == condition.Key);
             if (formKey == null)
             {
-                result.ConditionValidation = ConditionValidationType.Invalid;
-                result.Log = $"No form value with key '{condition.Key}' found.";
-                break;
+                return await InvalidAsync($"No form value with key '{condition.Key}' found.");
             }
 
             validConditions += formValues
@@ -62,16 +59,11 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
         // the form condition is passed and the stub ID is passed to the result.
         if (validConditions == formConditions.Length)
         {
-            result.ConditionValidation = ConditionValidationType.Valid;
-        }
-        else
-        {
-            result.Log =
-                $"Number of configured form conditions: '{formConditions.Length}'; number of passed form conditions: '{validConditions}'";
-            result.ConditionValidation = ConditionValidationType.Invalid;
+            return await ValidAsync();
         }
 
-        return result;
+        return await InvalidAsync(
+            $"Number of configured form conditions: '{formConditions.Length}'; number of passed form conditions: '{validConditions}'");
     }
 
     /// <inheritdoc />

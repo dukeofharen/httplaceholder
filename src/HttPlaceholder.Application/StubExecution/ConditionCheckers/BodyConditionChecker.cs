@@ -4,34 +4,35 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker that verifies the incoming request body.
 /// </summary>
-public class BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker) : IConditionChecker, ISingletonService
+public class BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
+    : IConditionChecker, ISingletonService
 {
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         var bodyConditions = stub.Conditions?.Body?.ToArray();
-        if (bodyConditions == null || bodyConditions.Length == 0)
+        if (bodyConditions == null || bodyConditions?.Length == 0)
         {
-            return result;
+            return await NotExecutedAsync();
         }
 
         var body = await httpContextService.GetBodyAsync(cancellationToken);
 
         var validBodyConditions = 0;
+        var log = string.Empty;
         foreach (var condition in bodyConditions)
         {
             if (!stringChecker.CheckString(body, condition, out var outputForLogging))
             {
                 // If the check failed, it means the body condition is incorrect and the condition should fail.
-                result.Log = $"Body condition '{outputForLogging}' failed.";
+                log = $"Body condition '{outputForLogging}' failed.";
                 break;
             }
 
@@ -40,11 +41,9 @@ public class BodyConditionChecker(IHttpContextService httpContextService, IStrin
 
         // If the number of succeeded conditions is equal to the actual number of conditions,
         // the body condition is passed and the stub ID is passed to the result.
-        result.ConditionValidation = validBodyConditions == bodyConditions.Length
-            ? ConditionValidationType.Valid
-            : ConditionValidationType.Invalid;
-
-        return result;
+        return validBodyConditions == bodyConditions.Length
+            ? await ValidAsync(log)
+            : await InvalidAsync(log);
     }
 
     /// <inheritdoc />

@@ -6,7 +6,7 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
@@ -18,11 +18,10 @@ public class MethodConditionChecker(IHttpContextService httpContextService) : IC
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         var condition = stub.Conditions?.Method;
         if (condition == null)
         {
-            return Task.FromResult(result);
+            return NotExecutedAsync();
         }
 
         var method = httpContextService.Method;
@@ -33,15 +32,10 @@ public class MethodConditionChecker(IHttpContextService httpContextService) : IC
                     .Any(mc => string.Equals(mc, method, StringComparison.OrdinalIgnoreCase))))
         {
             // The path matches the provided condition. Add the stub ID to the resulting list.
-            result.ConditionValidation = ConditionValidationType.Valid;
-        }
-        else
-        {
-            result.Log = $"Condition '{condition}' did not pass for request.";
-            result.ConditionValidation = ConditionValidationType.Invalid;
+            return ValidAsync();
         }
 
-        return Task.FromResult(result);
+        return InvalidAsync($"Condition '{condition}' did not pass for request.");
     }
 
     /// <inheritdoc />

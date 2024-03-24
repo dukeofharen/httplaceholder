@@ -7,9 +7,9 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
@@ -21,37 +21,30 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : ICon
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         if (stub.Conditions?.Json == null)
         {
-            return result;
+            return await NotExecutedAsync();
         }
 
         var convertedJsonConditions = ConvertJsonConditions(stub.Conditions.Json);
-
-        var body = await httpContextService.GetBodyAsync(cancellationToken);
         try
         {
-            var jToken = JToken.Parse(body);
+            var jToken = JToken.Parse(await httpContextService.GetBodyAsync(cancellationToken));
             var logResults = new List<string>();
-            result.ConditionValidation = CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
-                ? ConditionValidationType.Valid
-                : ConditionValidationType.Invalid;
-            result.Log = string.Join(Environment.NewLine, logResults);
+            return CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
+                ? await ValidAsync(string.Join(Environment.NewLine, logResults))
+                : await InvalidAsync(string.Join(Environment.NewLine, logResults));
         }
         catch (JsonReaderException ex)
         {
-            result.ConditionValidation = ConditionValidationType.Invalid;
-            result.Log = ex.Message;
+            return await InvalidAsync(ex.Message);
         }
-
-        return result;
     }
 
     /// <inheritdoc />
     public int Priority => 1;
 
-    internal bool CheckSubmittedJson(object input, JToken jToken, List<string> logResults)
+    internal bool CheckSubmittedJson(object input, JToken jToken, List<string> logging)
     {
         var jtType = jToken.Type;
         if (
@@ -64,13 +57,13 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : ICon
         switch (input)
         {
             case List<object> list:
-                return HandleList(list, jToken, logResults);
+                return HandleList(list, jToken, logging);
             case Dictionary<object, object> obj:
-                return HandleObject(obj, jToken, logResults);
+                return HandleObject(obj, jToken, logging);
             case string text:
-                return HandleString(text, jToken, logResults);
+                return HandleString(text, jToken, logging);
             default:
-                logResults.Add($"Type for input '{input}' ({input.GetType()}) is not supported.");
+                logging.Add($"Type for input '{input}' ({input.GetType()}) is not supported.");
                 return false;
         }
     }

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
@@ -14,11 +14,10 @@ public class ScenarioMaxHitCounterConditionChecker(IStubContext stubContext) : I
     /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         var maxHits = stub.Conditions?.Scenario?.MaxHits;
         if (maxHits == null)
         {
-            return result;
+            return await NotExecutedAsync();
         }
 
         var scenario = stub.Scenario;
@@ -28,21 +27,16 @@ public class ScenarioMaxHitCounterConditionChecker(IStubContext stubContext) : I
             1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
         if (actualHitCount == null)
         {
-            result.Log = "No hit count could be found.";
-            result.ConditionValidation = ConditionValidationType.Invalid;
-        }
-        else if (actualHitCount >= maxHits)
-        {
-            result.Log =
-                $"Scenario '{scenario}' should have less than '{maxHits}' hits, but '{actualHitCount}' hits were counted.";
-            result.ConditionValidation = ConditionValidationType.Invalid;
-        }
-        else if (actualHitCount < maxHits)
-        {
-            result.ConditionValidation = ConditionValidationType.Valid;
+            return await InvalidAsync("No hit count could be found.");
         }
 
-        return result;
+        if (actualHitCount >= maxHits)
+        {
+            return await InvalidAsync(
+                $"Scenario '{scenario}' should have less than '{maxHits}' hits, but '{actualHitCount}' hits were counted.");
+        }
+
+        return await ValidAsync();
     }
 
     /// <inheritdoc />

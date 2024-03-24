@@ -117,6 +117,23 @@ public class StringHelperFacts
 
     [DataTestMethod]
     [DataRow("not|empty|or|null", false)]
+    [DataRow("not|empty||null", true)]
+    [DataRow("|||null", true)]
+    [DataRow("|||", true)]
+    public void AnyAreNullOrWhitespace_HappyFlow(string input, bool expectedResult)
+    {
+        // Arrange
+        var strings = input.Split('|');
+
+        // Act
+        var result = StringHelper.AnyAreNullOrWhitespace(strings);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [DataTestMethod]
+    [DataRow("not|empty|or|null", false)]
     [DataRow("|||null", false)]
     [DataRow("|||", true)]
     public void AllAreNullOrWhitespace_HappyFlow(string input, bool expectedResult)
@@ -140,5 +157,18 @@ public class StringHelperFacts
 
         // Assert
         Assert.AreEqual(expectedOutput, result);
+    }
+
+    [TestMethod]
+    public void Base64Encode_HappyFlow()
+    {
+        // Arrange
+        var input = "Test 123";
+
+        // Act
+        var result = input.Base64Encode();
+
+        // Assert
+        Assert.AreEqual("VGVzdCAxMjM=", result);
     }
 }

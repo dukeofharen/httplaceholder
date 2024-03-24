@@ -5,23 +5,23 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker for validating the query strings.
 /// </summary>
-public class QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker) : IConditionChecker, ISingletonService
+public class QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
+    : IConditionChecker, ISingletonService
 {
     /// <inheritdoc />
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         var queryStringConditions = stub.Conditions?.Url?.Query;
         if (queryStringConditions == null || queryStringConditions.Any() != true)
         {
-            return Task.FromResult(result);
+            return NotExecutedAsync();
         }
 
         var validQueryStrings = 0;
@@ -54,8 +54,7 @@ public class QueryStringConditionChecker(IHttpContextService httpContextService,
             if (!stringChecker.CheckString(queryValue, condition.Value, out var outputForLogging))
             {
                 // If the check failed, it means the query string is incorrect and the condition should fail.
-                result.Log = $"Query string condition '{condition.Key}: {outputForLogging}' failed.";
-                break;
+                return InvalidAsync($"Query string condition '{condition.Key}: {outputForLogging}' failed.");
             }
 
             validQueryStrings++;
@@ -63,11 +62,9 @@ public class QueryStringConditionChecker(IHttpContextService httpContextService,
 
         // If the number of succeeded conditions is equal to the actual number of conditions,
         // the query string condition is passed and the stub ID is passed to the result.
-        result.ConditionValidation = validQueryStrings == queryStringConditions.Count
-            ? ConditionValidationType.Valid
-            : ConditionValidationType.Invalid;
-
-        return Task.FromResult(result);
+        return validQueryStrings == queryStringConditions.Count
+            ? ValidAsync()
+            : InvalidAsync();
     }
 
     /// <inheritdoc />

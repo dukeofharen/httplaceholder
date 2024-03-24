@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace HttPlaceholder.Common.Utilities;
@@ -83,6 +84,13 @@ public static class StringHelper
     public static bool AllAreNullOrWhitespace(params string[] strings) => strings.All(string.IsNullOrWhiteSpace);
 
     /// <summary>
+    ///     A method which receives a list of strings and checks if any string is null or whitespace. Returns true if this is the case.
+    /// </summary>
+    /// <param name="strings">The list of strings.</param>
+    /// <returns>True if any string is null or whitespace; false otherwise.</returns>
+    public static bool AnyAreNullOrWhitespace(params string[] strings) => strings.Any(string.IsNullOrWhiteSpace);
+
+    /// <summary>
     ///     Splits a string on newline characters.
     /// </summary>
     /// <param name="input">The input.</param>
@@ -97,4 +105,13 @@ public static class StringHelper
     /// <returns>The first string that contains any other characters than whitespaces. Returns null if nothing is found.</returns>
     public static string GetFirstNonWhitespaceString(params string[] input) =>
         input.FirstOrDefault(str => !string.IsNullOrWhiteSpace(str));
+
+    /// <summary>
+    ///     Performs base64 encoding on a given string.
+    /// </summary>
+    /// <param name="input">The string to encode.</param>
+    /// <returns>The base64 encoded result.</returns>
+    public static string Base64Encode(this string input) =>
+        Convert.ToBase64String(
+            Encoding.UTF8.GetBytes(input));
 }
