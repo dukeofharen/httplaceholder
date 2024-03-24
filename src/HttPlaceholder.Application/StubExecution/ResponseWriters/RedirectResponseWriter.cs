@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -20,7 +21,7 @@ internal class RedirectResponseWriter : IResponseWriter, ISingletonService
         Task.FromResult(Redirect(stub.Response?.TemporaryRedirect, HttpStatusCode.TemporaryRedirect, response) ??
                         Redirect(stub.Response?.PermanentRedirect, HttpStatusCode.PermanentRedirect, response) ??
                         Redirect(stub.Response?.MovedPermanently, HttpStatusCode.MovedPermanently, response) ??
-                        StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+                        IsNotExecuted(GetType().Name));
 
     private StubResponseWriterResultModel Redirect(string url, HttpStatusCode httpStatusCode, ResponseModel response)
     {
@@ -31,6 +32,6 @@ internal class RedirectResponseWriter : IResponseWriter, ISingletonService
 
         response.StatusCode = (int)httpStatusCode;
         response.Headers.Add(HeaderKeys.Location, url);
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        return IsExecuted(GetType().Name);
     }
 }

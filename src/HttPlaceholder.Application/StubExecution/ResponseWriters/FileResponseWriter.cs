@@ -11,6 +11,7 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -35,7 +36,7 @@ internal class FileResponseWriter(
         var settings = options.CurrentValue;
         if (stub.Response?.File == null && stub.Response?.TextFile == null)
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         var file = stub.Response?.File ?? stub.Response?.TextFile;
@@ -72,12 +73,12 @@ internal class FileResponseWriter(
 
         if (finalFilePath == null)
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, mimeService.GetMimeType(finalFilePath));
         response.Body = await fileService.ReadAllBytesAsync(finalFilePath, cancellationToken);
-        response.BodyIsBinary = string.IsNullOrWhiteSpace(stub.Response.TextFile);
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        response.BodyIsBinary = string.IsNullOrWhiteSpace(stub.Response?.TextFile);
+        return IsExecuted(GetType().Name);
     }
 }

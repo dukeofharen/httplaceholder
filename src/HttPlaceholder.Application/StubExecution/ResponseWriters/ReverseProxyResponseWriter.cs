@@ -12,6 +12,7 @@ using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -46,7 +47,7 @@ internal class ReverseProxyResponseWriter(
     {
         if (stub.Response.ReverseProxy == null || string.IsNullOrWhiteSpace(stub.Response.ReverseProxy.Url))
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         var proxyUrl = stub.Response.ReverseProxy.Url;
@@ -113,10 +114,10 @@ internal class ReverseProxyResponseWriter(
             response.BodyIsBinary = false;
         }
 
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name, log.ToString());
+        return IsExecuted(GetType().Name, log.ToString());
     }
 
-    private static IDictionary<string, string> GetResponseHeaders(HttpResponseMessage responseMessage,
+    private static Dictionary<string, string> GetResponseHeaders(HttpResponseMessage responseMessage,
         Dictionary<string, string> rawResponseHeaders)
     {
         var contentHeaders = responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First());

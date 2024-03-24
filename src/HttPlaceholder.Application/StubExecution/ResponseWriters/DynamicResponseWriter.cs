@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -22,7 +23,7 @@ internal class DynamicResponseWriter(IResponseVariableParser responseVariablePar
     {
         if (stub.Response.EnableDynamicMode != true)
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         // Try to parse and replace the variables in the body.
@@ -42,6 +43,6 @@ internal class DynamicResponseWriter(IResponseVariableParser responseVariablePar
                 await responseVariableParser.ParseAsync(response.Headers[key], stub, cancellationToken);
         }
 
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        return IsExecuted(GetType().Name);
     }
 }

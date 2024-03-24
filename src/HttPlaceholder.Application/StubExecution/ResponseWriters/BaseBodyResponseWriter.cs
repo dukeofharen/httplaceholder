@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -20,14 +21,14 @@ public abstract class BaseBodyResponseWriter : IResponseWriter
         var body = GetBodyFromStub(stub);
         if (body == null)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetWriterName()));
+            return Task.FromResult(IsNotExecuted(GetWriterName()));
         }
 
         response.BodyIsBinary = false;
         response.Body = Encoding.UTF8.GetBytes(body);
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, GetContentType(), false);
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetWriterName()));
+        return Task.FromResult(IsExecuted(GetWriterName()));
     }
 
     /// <inheritdoc />

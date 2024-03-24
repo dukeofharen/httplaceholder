@@ -29,6 +29,15 @@ public class StubResponseWriterResultModel
         new() { Executed = false, ResponseWriterName = responseWriterName };
 
     /// <summary>
+    ///     Returns a "not executed" response.
+    /// </summary>
+    /// <param name="responseWriterName">The response writer name.</param>
+    /// <param name="log">The log line.</param>
+    /// <returns>The <see cref="StubResponseWriterResultModel" />.</returns>
+    public static StubResponseWriterResultModel IsNotExecuted(string responseWriterName, string log) =>
+        new() { Executed = false, ResponseWriterName = responseWriterName, Log = log};
+
+    /// <summary>
     ///     Returns an "executed" response.
     /// </summary>
     /// <param name="responseWriterName">The response writer name.</param>
