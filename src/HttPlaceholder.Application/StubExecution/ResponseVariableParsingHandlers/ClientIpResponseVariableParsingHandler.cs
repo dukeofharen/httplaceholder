@@ -27,11 +27,8 @@ internal class ClientIpResponseVariableParsingHandler(IClientDataResolver client
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var ip = clientDataResolver.GetClientIp();
-        return Task.FromResult(matches
+        CancellationToken cancellationToken) =>
+        Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => current.Replace(match.Value, ip)));
-    }
+            .Aggregate(input, (current, match) => current.Replace(match.Value, clientDataResolver.GetClientIp())));
 }

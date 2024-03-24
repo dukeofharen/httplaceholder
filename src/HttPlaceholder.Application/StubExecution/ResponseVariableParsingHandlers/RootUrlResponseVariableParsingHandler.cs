@@ -28,11 +28,8 @@ internal class RootUrlResponseVariableParsingHandler(
     public override string[] Examples => [$"(({Name}))"];
 
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var url = urlResolver.GetRootUrl();
-        return Task.FromResult(matches
+        CancellationToken cancellationToken) =>
+        Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => current.Replace(match.Value, url)));
-    }
+            .Aggregate(input, (current, match) => current.Replace(match.Value, urlResolver.GetRootUrl())));
 }

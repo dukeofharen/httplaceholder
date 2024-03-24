@@ -29,13 +29,10 @@ internal class UtcNowResponseVariableParsingHandler(IDateTime dateTime, IFileSer
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var now = dateTime.UtcNow;
-        return Task.FromResult(matches
+        CancellationToken cancellationToken) =>
+        Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertDateTime(current, match, now)));
-    }
+            .Aggregate(input, (current, match) => InsertDateTime(current, match, dateTime.UtcNow)));
 
     private static string InsertDateTime(string current, Match match, DateTime now)
     {

@@ -37,8 +37,7 @@ internal class JsonPathResponseVariableParsingHandler(
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var body = await httpContextService.GetBodyAsync(cancellationToken);
-        var json = ParseJson(body);
+        var json = ParseJson(await httpContextService.GetBodyAsync(cancellationToken));
         return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input,

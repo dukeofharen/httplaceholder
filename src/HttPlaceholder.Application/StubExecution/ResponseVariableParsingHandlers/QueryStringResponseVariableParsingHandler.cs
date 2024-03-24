@@ -29,13 +29,11 @@ internal class QueryStringResponseVariableParsingHandler(
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var queryDict = httpContextService.GetQueryStringDictionary();
-        return Task.FromResult(matches
+        CancellationToken cancellationToken) =>
+        Task.FromResult(matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertQuery(current, match, queryDict)));
-    }
+            .Aggregate(input,
+                (current, match) => InsertQuery(current, match, httpContextService.GetQueryStringDictionary())));
 
     private static string InsertQuery(string current, Match match, IDictionary<string, string> queryDict)
     {
