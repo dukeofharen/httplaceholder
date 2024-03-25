@@ -34,15 +34,8 @@ public static class StringHelper
     /// <param name="input">The input string.</param>
     /// <param name="append">A piece of text the input should end with.</param>
     /// <returns>The converted input.</returns>
-    public static string EnsureEndsWith(this string input, string append)
-    {
-        if (!input.EndsWith(append))
-        {
-            return input + append;
-        }
-
-        return input;
-    }
+    public static string EnsureEndsWith(this string input, string append) =>
+        input.EndsWith(append) ? input : $"{input}{append}";
 
     /// <summary>
     ///     Ensures that a string doesn't end with a given string.
@@ -58,15 +51,8 @@ public static class StringHelper
     /// <param name="input">The input string.</param>
     /// <param name="append">A piece of text the input should start with.</param>
     /// <returns>The converted input.</returns>
-    public static string EnsureStartsWith(this string input, string append)
-    {
-        if (!input.StartsWith(append))
-        {
-            return append + input;
-        }
-
-        return input;
-    }
+    public static string EnsureStartsWith(this string input, string append) =>
+        !input.StartsWith(append) ? append + input : input;
 
     /// <summary>
     ///     A method which receives a list of strings and returns the number of strings which are neither null or whitespace.
