@@ -39,9 +39,9 @@ public class RequestToHarServiceFacts
                 Method = "POST",
                 Headers = new Dictionary<string, string>
                 {
-                    {HeaderKeys.ContentType, "application/json"}, {"X-Some-Header", "SomeValue"}
+                    { HeaderKeys.ContentType, "application/json" }, { "X-Some-Header", "SomeValue" }
                 },
-                BinaryBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new {key = "val"})),
+                BinaryBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { key = "val" })),
                 Url = "http://localhost:5000/some-url?q1=v1&q2=v2"
             }
         };
@@ -49,9 +49,9 @@ public class RequestToHarServiceFacts
         {
             Headers = new Dictionary<string, string>
             {
-                {HeaderKeys.ContentType, "application/json"}, {"X-Some-Header", "SomeValue"}
+                { HeaderKeys.ContentType, "application/json" }, { "X-Some-Header", "SomeValue" }
             },
-            Body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new {key = "responsevalue"})),
+            Body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { key = "responsevalue" })),
             BodyIsBinary = false,
             StatusCode = 200
         };
@@ -129,21 +129,15 @@ public class RequestToHarServiceFacts
             RequestParameters = new RequestParametersModel
             {
                 Method = "POST",
-                Headers = new Dictionary<string, string>
-                {
-                    {HeaderKeys.ContentType, "application/json"}
-                },
-                BinaryBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new {key = "val"})),
+                Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, "application/json" } },
+                BinaryBody = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new { key = "val" })),
                 Url = "http://localhost:5000/some-url?q1=v1&q2=v2"
             }
         };
         var response = new ResponseModel
         {
-            Headers = new Dictionary<string, string>
-            {
-                {HeaderKeys.ContentType, "image/png"}
-            },
-            Body = new byte[] {1, 2, 3},
+            Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, "image/png" } },
+            Body = [1, 2, 3],
             BodyIsBinary = true,
             StatusCode = 200
         };

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem.Models;
@@ -78,7 +79,7 @@ internal class FileSystemStubCache(
     /// <inheritdoc />
     public void AddOrReplaceStub(StubModel stubModel)
     {
-        var item = StubCache.ContainsKey(stubModel.Id) ? StubCache[stubModel.Id] : null;
+        var item = StubCache.TryGetValue(stubModel.Id, out var value) ? value : null;
         if (item != null)
         {
             StubCache.Remove(stubModel.Id, out _);
@@ -144,7 +145,7 @@ internal class FileSystemStubCache(
         FileStorageMetadataModel model;
         lock (_cacheUpdateLock)
         {
-            model = new FileStorageMetadataModel {StubUpdateTrackingId = Guid.NewGuid().ToString()};
+            model = new FileStorageMetadataModel { StubUpdateTrackingId = Guid.NewGuid().ToString() };
             fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
         }
 

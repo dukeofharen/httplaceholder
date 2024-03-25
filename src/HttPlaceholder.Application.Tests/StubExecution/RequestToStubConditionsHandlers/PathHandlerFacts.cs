@@ -13,7 +13,7 @@ public class PathHandlerFacts
     {
         // Arrange
         const string url = "https://httplaceholder.com/A/Path?query1=val1&query2=val2";
-        var request = new HttpRequestModel {Url = url};
+        var request = new HttpRequestModel { Url = url };
         var conditions = new StubConditionsModel();
 
         // Act

@@ -10,18 +10,20 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetAllScenarioStatesFacts : BaseClientTest
 {
-    private const string ScenariosResponse = @"[
-    {
-        ""scenario"": ""scenario-1"",
-        ""state"": ""new-state"",
-        ""hitCount"": 10
-    },
-    {
-        ""scenario"": ""scenario-2"",
-        ""state"": ""new-state"",
-        ""hitCount"": 10
-    }
-]";
+    private const string ScenariosResponse = """
+                                             [
+                                                 {
+                                                     "scenario": "scenario-1",
+                                                     "state": "new-state",
+                                                     "hitCount": 10
+                                                 },
+                                                 {
+                                                     "scenario": "scenario-2",
+                                                     "state": "new-state",
+                                                     "hitCount": 10
+                                                 }
+                                             ]
+                                             """;
 
     [TestMethod]
     public async Task GetAllScenarioStates_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

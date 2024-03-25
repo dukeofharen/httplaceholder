@@ -1,5 +1,5 @@
 ﻿using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
+using HttPlaceholder.Application.Scenarios.Commands;
 using HttPlaceholder.Application.StubExecution;
 
 namespace HttPlaceholder.Application.Tests.Scenarios.Commands;

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,14 +31,13 @@ internal class JsonPathResponseVariableParsingHandler(
     public override string FullName => "JSONPath";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
+    public override string[] Examples => [$"(({Name}:$.values[1].title))"];
 
     /// <inheritdoc />
-    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var body = await httpContextService.GetBodyAsync(cancellationToken);
-        var json = ParseJson(body);
+        var json = ParseJson(await httpContextService.GetBodyAsync(cancellationToken));
         return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input,

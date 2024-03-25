@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,14 +25,11 @@ internal class RootUrlResponseVariableParsingHandler(
     public override string FullName => "Root URL";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}))"};
+    public override string[] Examples => [$"(({Name}))"];
 
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var url = urlResolver.GetRootUrl();
-        return Task.FromResult(matches
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
+        CancellationToken cancellationToken) =>
+        Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => current.Replace(match.Value, url)));
-    }
+            .Aggregate(input, (current, match) => current.Replace(match.Value, urlResolver.GetRootUrl())));
 }

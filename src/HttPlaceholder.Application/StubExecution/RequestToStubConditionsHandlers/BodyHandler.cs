@@ -15,17 +15,12 @@ internal class BodyHandler : IRequestToStubConditionsHandler, ISingletonService
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
         CancellationToken cancellationToken)
     {
-        if (conditions.Json != null)
+        if (conditions.Json != null || string.IsNullOrWhiteSpace(request.Body))
         {
             return Task.FromResult(false);
         }
 
-        if (string.IsNullOrWhiteSpace(request.Body))
-        {
-            return Task.FromResult(false);
-        }
-
-        conditions.Body = new[] {new StubConditionStringCheckingModel {StringEquals = request.Body}};
+        conditions.Body = new[] { new StubConditionStringCheckingModel { StringEquals = request.Body } };
         return Task.FromResult(true);
     }
 

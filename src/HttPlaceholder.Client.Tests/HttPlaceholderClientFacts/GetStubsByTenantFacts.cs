@@ -9,62 +9,64 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetStubsByTenantFacts : BaseClientTest
 {
-    private const string GetStubsResponse = @"[
-    {
-        ""stub"": {
-            ""id"": ""situation-fallback"",
-            ""conditions"": {
-                ""method"": ""GET"",
-                ""url"": {
-                    ""path"": ""/users"",
-                    ""query"": {
-                        ""id"": ""^[0-9]+$""
-                    }
-                }
-            },
-            ""response"": {
-                ""statusCode"": 404,
-                ""headers"": {
-                    ""Content-Type"": ""application/json""
-                }
-            },
-            ""priority"": 0,
-            ""tenant"": ""01-get"",
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    },
-    {
-        ""stub"": {
-            ""id"": ""situation-02"",
-            ""conditions"": {
-                ""method"": ""GET"",
-                ""url"": {
-                    ""path"": ""/users"",
-                    ""query"": {
-                        ""id"": ""14"",
-                        ""filter"": ""last_name""
-                    }
-                }
-            },
-            ""response"": {
-                ""statusCode"": 200,
-                ""text"": ""{\n  \""last_name\"": \""Jackson\""\n}\n"",
-                ""headers"": {
-                    ""Content-Type"": ""application/json""
-                }
-            },
-            ""priority"": 0,
-            ""tenant"": ""01-get"",
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    }
-]";
+    private const string GetStubsResponse = """
+                                            [
+                                                {
+                                                    "stub": {
+                                                        "id": "situation-fallback",
+                                                        "conditions": {
+                                                            "method": "GET",
+                                                            "url": {
+                                                                "path": "/users",
+                                                                "query": {
+                                                                    "id": "^[0-9]+$"
+                                                                }
+                                                            }
+                                                        },
+                                                        "response": {
+                                                            "statusCode": 404,
+                                                            "headers": {
+                                                                "Content-Type": "application/json"
+                                                            }
+                                                        },
+                                                        "priority": 0,
+                                                        "tenant": "01-get",
+                                                        "enabled": true
+                                                    },
+                                                    "metadata": {
+                                                        "readOnly": false
+                                                    }
+                                                },
+                                                {
+                                                    "stub": {
+                                                        "id": "situation-02",
+                                                        "conditions": {
+                                                            "method": "GET",
+                                                            "url": {
+                                                                "path": "/users",
+                                                                "query": {
+                                                                    "id": "14",
+                                                                    "filter": "last_name"
+                                                                }
+                                                            }
+                                                        },
+                                                        "response": {
+                                                            "statusCode": 200,
+                                                            "text": "{\n  \"last_name\": \"Jackson\"\n}\n",
+                                                            "headers": {
+                                                                "Content-Type": "application/json"
+                                                            }
+                                                        },
+                                                        "priority": 0,
+                                                        "tenant": "01-get",
+                                                        "enabled": true
+                                                    },
+                                                    "metadata": {
+                                                        "readOnly": false
+                                                    }
+                                                }
+                                            ]
+                                            """;
 
     [TestMethod]
     public async Task GetStubsByTenantAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

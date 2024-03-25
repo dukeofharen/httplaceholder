@@ -27,17 +27,17 @@ public class CurlStubGeneratorFacts
         const string expectedStubId1 = "prefixgenerated-ddacdb627d5c61dd80b527cc5eb0eea3";
         const string expectedStubId2 = "prefixgenerated-d8973391971f15c1c5de87bd3026aeb3";
 
-        var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
+        var requests = new[] { new HttpRequestModel(), new HttpRequestModel() };
         curlToHttpRequestMapperMock
             .Setup(m => m.MapCurlCommandsToHttpRequest(input))
             .Returns(requests);
 
-        var conditions1 = new StubConditionsModel {Host = "host1"};
+        var conditions1 = new StubConditionsModel { Host = "host1" };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[0], It.IsAny<CancellationToken>()))
             .ReturnsAsync(conditions1);
 
-        var conditions2 = new StubConditionsModel {Host = "host2"};
+        var conditions2 = new StubConditionsModel { Host = "host2" };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[1], It.IsAny<CancellationToken>()))
             .ReturnsAsync(conditions2);
@@ -80,14 +80,14 @@ public class CurlStubGeneratorFacts
         const string expectedStubId1 = "prefixgenerated-f029695b0912f4d28b69d6d37406b53a";
         const string expectedStubId2 = "prefixgenerated-d4720af666f43bf7ee2c5be9d5ce094a";
 
-        var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
+        var requests = new[] { new HttpRequestModel(), new HttpRequestModel() };
         curlToHttpRequestMapperMock
             .Setup(m => m.MapCurlCommandsToHttpRequest(input))
             .Returns(requests);
 
         var conditions1 = new StubConditionsModel
         {
-            Host = "host1", Method = "GET", Url = new StubUrlConditionModel {Path = "/path1"}
+            Host = "host1", Method = "GET", Url = new StubUrlConditionModel { Path = "/path1" }
         };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[0], It.IsAny<CancellationToken>()))
@@ -95,7 +95,7 @@ public class CurlStubGeneratorFacts
 
         var conditions2 = new StubConditionsModel
         {
-            Host = "host2", Method = "POST", Url = new StubUrlConditionModel {Path = "/path2"}
+            Host = "host2", Method = "POST", Url = new StubUrlConditionModel { Path = "/path2" }
         };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[1], It.IsAny<CancellationToken>()))

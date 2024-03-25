@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Web.Shared;
+﻿namespace HttPlaceholder.WebInfrastructure;
 
 /// <summary>
 ///     Empty main class to satisfy .NET.

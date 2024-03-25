@@ -22,7 +22,7 @@ public class RestApiUserIntegrationTests : RestApiIntegrationTestBase
         // Act
         var request =
             new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/users/wrong");
-        request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
+        request.Headers.Add(HeaderKeys.Authorization, HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
         using var response = await Client.SendAsync(request);
 
         // Assert
@@ -39,7 +39,7 @@ public class RestApiUserIntegrationTests : RestApiIntegrationTestBase
         // Act
         var request =
             new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/users/correct");
-        request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
+        request.Headers.Add(HeaderKeys.Authorization, HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
         using var response = await Client.SendAsync(request);
 
         // Assert

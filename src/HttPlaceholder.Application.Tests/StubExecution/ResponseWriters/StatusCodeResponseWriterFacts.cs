@@ -11,7 +11,7 @@ public class StatusCodeResponseWriterFacts
     public async Task StatusCodeResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {StatusCode = null}};
+        var stub = new StubModel { Response = new StubResponseModel { StatusCode = null } };
 
         var response = new ResponseModel();
 
@@ -27,7 +27,7 @@ public class StatusCodeResponseWriterFacts
     public async Task StatusCodeResponseWriter_WriteToResponseAsync_HappyFlow()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {StatusCode = 409}};
+        var stub = new StubModel { Response = new StubResponseModel { StatusCode = 409 } };
 
         var response = new ResponseModel();
 
@@ -44,9 +44,9 @@ public class StatusCodeResponseWriterFacts
         StatusCodeResponseWriter_WriteToResponseAsync_HappyFlow_NoStatusCodeSetInStub_StatusCodeAlreadySetOnResponse_ShouldNotBeOverwritten()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {StatusCode = null}};
+        var stub = new StubModel { Response = new StubResponseModel { StatusCode = null } };
 
-        var response = new ResponseModel {StatusCode = 409};
+        var response = new ResponseModel { StatusCode = 409 };
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);

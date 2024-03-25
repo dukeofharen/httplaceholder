@@ -102,7 +102,7 @@ public class ScenarioStateConditionCheckerFacts
         var stubContextMock = _mocker.GetMock<IStubContext>();
         stubContextMock
             .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ScenarioStateModel {State = "state-2"});
+            .ReturnsAsync(new ScenarioStateModel { State = "state-2" });
 
         // Act
         var result = await checker.ValidateAsync(stub, CancellationToken.None);
@@ -130,7 +130,7 @@ public class ScenarioStateConditionCheckerFacts
         var stubContextMock = _mocker.GetMock<IStubContext>();
         stubContextMock
             .Setup(m => m.GetScenarioAsync(scenario, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ScenarioStateModel {State = currentState});
+            .ReturnsAsync(new ScenarioStateModel { State = currentState });
 
         // Act
         var result = await checker.ValidateAsync(stub, CancellationToken.None);
@@ -143,6 +143,7 @@ public class ScenarioStateConditionCheckerFacts
         new()
         {
             Scenario = scenario,
-            Conditions = new StubConditionsModel {Scenario = new StubConditionScenarioModel {ScenarioState = state}}
+            Conditions =
+                new StubConditionsModel { Scenario = new StubConditionScenarioModel { ScenarioState = state } }
         };
 }

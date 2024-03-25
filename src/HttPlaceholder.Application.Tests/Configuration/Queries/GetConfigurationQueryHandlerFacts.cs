@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.Application.Configuration.Queries.GetConfiguration;
+using HttPlaceholder.Application.Configuration.Queries;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.Extensions.Configuration;
 
@@ -20,7 +20,7 @@ public class GetConfigurationQueryHandlerFacts
         // Arrange
         var testConfig = new Dictionary<string, string>
         {
-            {"Authentication:ApiUsername", "value1"}, {"Authentication:ApiPassword", "value2"}
+            { "Authentication:ApiUsername", "value1" }, { "Authentication:ApiPassword", "value2" }
         };
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(testConfig)

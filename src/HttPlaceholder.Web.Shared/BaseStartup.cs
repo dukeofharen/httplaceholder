@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Web.Shared.Formatters;
 using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.AspNetCore.Mvc;

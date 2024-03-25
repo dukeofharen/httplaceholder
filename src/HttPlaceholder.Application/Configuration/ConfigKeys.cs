@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Domain.Enums;
-using static HttPlaceholder.Application.Configuration.ConfigMetadataModel;
+using static HttPlaceholder.Application.Configuration.Models.ConfigMetadataModel;
 
 namespace HttPlaceholder.Application.Configuration;
 
@@ -146,16 +147,16 @@ public static class ConfigKeys
 
     private static readonly IDictionary<ConfigKeyType, string> _configKeyTypes = new Dictionary<ConfigKeyType, string>
     {
-        {ConfigKeyType.Authentication, "Authentication"},
-        {ConfigKeyType.Web, "Web"},
-        {ConfigKeyType.Storage, "Storage"},
-        {ConfigKeyType.Gui, "GUI"},
-        {ConfigKeyType.Stub, "Stub"},
-        {ConfigKeyType.Configuration, "Configuration"}
+        { ConfigKeyType.Authentication, "Authentication" },
+        { ConfigKeyType.Web, "Web" },
+        { ConfigKeyType.Storage, "Storage" },
+        { ConfigKeyType.Gui, "GUI" },
+        { ConfigKeyType.Stub, "Stub" },
+        { ConfigKeyType.Configuration, "Configuration" }
     };
 
     private static readonly ConfigMetadataModel[] _configMetadata =
-    {
+    [
         Create(
             ApiUsernameKey,
             "the username for securing the REST API",
@@ -374,7 +375,7 @@ public static class ConfigKeys
             null),
         Create(
             HealthcheckOnRootUrl,
-            @"whether the root URL of HttPlaceholder (so ""/"") can be configured as stub or always returns 200 OK. Defaults to false.",
+            """whether the root URL of HttPlaceholder (so "/") can be configured as stub or always returns 200 OK. Defaults to false.""",
             "true",
             "Stub:HealthcheckOnRootUrl",
             ConfigKeyType.Stub,
@@ -399,7 +400,7 @@ public static class ConfigKeys
             null,
             null,
             null)
-    };
+    ];
 
     /// <summary>
     ///     Returns a dictionary of <see cref="ConfigKeyType" /> and translation combinations.

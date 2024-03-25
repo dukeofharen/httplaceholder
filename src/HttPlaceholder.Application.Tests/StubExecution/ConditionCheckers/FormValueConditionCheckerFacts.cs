@@ -19,12 +19,12 @@ public class FormValueConditionCheckerFacts
     public async Task ValidateAsync_StubsFound_ButNoFormConditions_ShouldReturnNotExecuted()
     {
         // arrange
-        var conditions = new StubConditionsModel {Form = null};
+        var conditions = new StubConditionsModel { Form = null };
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -37,8 +37,9 @@ public class FormValueConditionCheckerFacts
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
 
-        var conditions = new StubConditionsModel {Form = new[] {new StubFormModel {Key = "key3", Value = "val1.1"}}};
-        var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
+        var conditions =
+            new StubConditionsModel { Form = new[] { new StubFormModel { Key = "key3", Value = "val1.1" } } };
+        var form = new (string, StringValues)[] { ("key1", "val3"), ("key2", "val4") };
         httpContextServiceMock
             .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(form);
@@ -46,7 +47,7 @@ public class FormValueConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -64,12 +65,12 @@ public class FormValueConditionCheckerFacts
         {
             Form = new[]
             {
-                new StubFormModel {Key = "key1", Value = "val1.1"},
-                new StubFormModel {Key = "key1", Value = "val1.2"},
-                new StubFormModel {Key = "key2", Value = "val2"}
+                new StubFormModel { Key = "key1", Value = "val1.1" },
+                new StubFormModel { Key = "key1", Value = "val1.2" },
+                new StubFormModel { Key = "key2", Value = "val2" }
             }
         };
-        var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
+        var form = new (string, StringValues)[] { ("key1", "val3"), ("key2", "val4") };
         httpContextServiceMock
             .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(form);
@@ -87,7 +88,7 @@ public class FormValueConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -105,12 +106,12 @@ public class FormValueConditionCheckerFacts
         {
             Form = new[]
             {
-                new StubFormModel {Key = "key1", Value = "val1.1"},
-                new StubFormModel {Key = "key1", Value = "val1.2"},
-                new StubFormModel {Key = "key2", Value = "val2"}
+                new StubFormModel { Key = "key1", Value = "val1.1" },
+                new StubFormModel { Key = "key1", Value = "val1.2" },
+                new StubFormModel { Key = "key2", Value = "val2" }
             }
         };
-        var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
+        var form = new (string, StringValues)[] { ("key1", "val3"), ("key2", "val4") };
         httpContextServiceMock
             .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(form);
@@ -128,7 +129,7 @@ public class FormValueConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -146,11 +147,11 @@ public class FormValueConditionCheckerFacts
         {
             Form = new[]
             {
-                new StubFormModel {Key = "key1", Value = "val 3"},
-                new StubFormModel {Key = "key2", Value = "val4"}
+                new StubFormModel { Key = "key1", Value = "val 3" },
+                new StubFormModel { Key = "key2", Value = "val4" }
             }
         };
-        var form = new (string, StringValues)[] {("key1", "val%203"), ("key2", "val4")};
+        var form = new (string, StringValues)[] { ("key1", "val%203"), ("key2", "val4") };
         httpContextServiceMock
             .Setup(m => m.GetFormValuesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(form);
@@ -165,7 +166,7 @@ public class FormValueConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -173,33 +174,33 @@ public class FormValueConditionCheckerFacts
 
     public static IEnumerable<object[]> GetPresentData()
     {
-        yield return new object[]
-        {
+        yield return
+        [
             new[]
             {
-                new StubFormModel {Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true)},
-                new StubFormModel {Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false)}
+                new StubFormModel { Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true) },
+                new StubFormModel { Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false) }
             },
-            new[] {("key1", new StringValues("somevalue")), ("key3", new StringValues("somevalue"))}, true
-        };
-        yield return new object[]
-        {
+            new[] { ("key1", new StringValues("somevalue")), ("key3", new StringValues("somevalue")) }, true
+        ];
+        yield return
+        [
             new[]
             {
-                new StubFormModel {Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true)},
-                new StubFormModel {Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false)}
+                new StubFormModel { Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true) },
+                new StubFormModel { Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false) }
             },
-            new[] {("key1", new StringValues("somevalue"))}, true
-        };
-        yield return new object[]
-        {
+            new[] { ("key1", new StringValues("somevalue")) }, true
+        ];
+        yield return
+        [
             new[]
             {
-                new StubFormModel {Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true)},
-                new StubFormModel {Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false)}
+                new StubFormModel { Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true) },
+                new StubFormModel { Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false) }
             },
-            new[] {("key1", new StringValues("somevalue")), ("key2", new StringValues("somevalue"))}, false
-        };
+            new[] { ("key1", new StringValues("somevalue")), ("key2", new StringValues("somevalue")) }, false
+        ];
     }
 
     [DataTestMethod]
@@ -218,7 +219,7 @@ public class FormValueConditionCheckerFacts
 
         // Act
         var result = await checker.ValidateAsync(
-            new StubModel {Conditions = new StubConditionsModel {Form = formConditions}}, CancellationToken.None);
+            new StubModel { Conditions = new StubConditionsModel { Form = formConditions } }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(shouldSucceed ? ConditionValidationType.Valid : ConditionValidationType.Invalid,

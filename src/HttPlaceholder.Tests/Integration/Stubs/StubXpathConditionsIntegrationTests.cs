@@ -18,16 +18,18 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}InStock";
-        const string body = @"<?xml version=""1.0""?>
-<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
-  <soap:Header>
-  </soap:Header>
-  <soap:Body>
-    <m:GetStockPrice>
-      <m:StockName>GOOG</m:StockName>
-    </m:GetStockPrice>
-  </soap:Body>
-</soap:Envelope>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org/stock/Reddy">
+                              <soap:Header>
+                              </soap:Header>
+                              <soap:Body>
+                                <m:GetStockPrice>
+                                  <m:StockName>GOOG</m:StockName>
+                                </m:GetStockPrice>
+                              </soap:Body>
+                            </soap:Envelope>
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, "application/soap+xml"),
@@ -48,16 +50,18 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}InStock";
-        const string body = @"<?xml version=""1.0""?>
-<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
-  <soap:Header>
-  </soap:Header>
-  <soap:Body>
-    <m:GetStockPrice>
-      <m:StockName>SJAAK</m:StockName>
-    </m:GetStockPrice>
-  </soap:Body>
-</soap:Envelope>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org/stock/Reddy">
+                              <soap:Header>
+                              </soap:Header>
+                              <soap:Body>
+                                <m:GetStockPrice>
+                                  <m:StockName>SJAAK</m:StockName>
+                                </m:GetStockPrice>
+                              </soap:Body>
+                            </soap:Envelope>
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, "application/soap+xml"),
@@ -78,16 +82,18 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}InStock";
-        const string body = @"<?xml version=""1.0""?>
-<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
-  <soap:Header>
-  </soap:Header>
-  <soap:Body>
-    <m:GetStockPrice>
-      <m:StockName>GOOGL</m:StockName>
-    </m:GetStockPrice>
-  </soap:Body>
-</soap:Envelope>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:m="http://www.example.org/stock/Reddy">
+                              <soap:Header>
+                              </soap:Header>
+                              <soap:Body>
+                                <m:GetStockPrice>
+                                  <m:StockName>GOOGL</m:StockName>
+                                </m:GetStockPrice>
+                              </soap:Body>
+                            </soap:Envelope>
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, "application/soap+xml"),
@@ -105,11 +111,13 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}xml";
-        const string body = @"<?xml version=""1.0""?>
-<object>
-	<a>TEST</a>
-	<b>TEST2</b>
-</object>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <object>
+                            	<a>TEST</a>
+                            	<b>TEST2</b>
+                            </object>
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, "application/soap+xml"),
@@ -130,11 +138,13 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}InStock";
-        const string body = @"<?xml version=""1.0""?>
-<object>
-	<a>TEST!</a>
-	<b>TEST2</b>
-</object>";
+        const string body = """
+                            <?xml version="1.0"?>
+                            <object>
+                            	<a>TEST!</a>
+                            	<b>TEST2</b>
+                            </object>
+                            """;
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body, Encoding.UTF8, "application/soap+xml"),

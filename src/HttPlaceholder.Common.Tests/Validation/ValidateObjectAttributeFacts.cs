@@ -23,7 +23,7 @@ public class ValidateObjectAttributeFacts
     public void IsValid_InputIsObjectAndNotValid_ShouldReturnValidationErrors()
     {
         // Arrange
-        var input = new TestModel {Name = null};
+        var input = new TestModel { Name = null };
 
         // Act
         var result = (CompositeValidationResult)_attribute.TestIsValid(input);
@@ -40,7 +40,7 @@ public class ValidateObjectAttributeFacts
     public void IsValid_InputIsObjectAndValid_ShouldReturnSuccess()
     {
         // Arrange
-        var input = new TestModel {Name = "john"};
+        var input = new TestModel { Name = "john" };
 
         // Act
         var result = (CompositeValidationResult)_attribute.TestIsValid(input);
@@ -53,7 +53,7 @@ public class ValidateObjectAttributeFacts
     public void IsValid_InputIsArrayAndNotValid_ShouldReturnValidationErrors()
     {
         // Arrange
-        var input = new[] {new TestModel {Name = null}, new TestModel {Name = null}};
+        var input = new[] { new TestModel { Name = null }, new TestModel { Name = null } };
 
         // Act
         var result = (CompositeValidationResult)_attribute.TestIsValid(input);
@@ -70,7 +70,7 @@ public class ValidateObjectAttributeFacts
     public void IsValid_InputIsArrayAndValid_ShouldReturnSuccess()
     {
         // Arrange
-        var input = new[] {new TestModel {Name = "john"}, new TestModel {Name = "john"}};
+        var input = new[] { new TestModel { Name = "john" }, new TestModel { Name = "john" } };
 
         // Act
         var result = (CompositeValidationResult)_attribute.TestIsValid(input);

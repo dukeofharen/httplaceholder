@@ -90,6 +90,6 @@ public class ScenarioMinHitCounterConditionCheckerFacts
         new()
         {
             Scenario = scenario,
-            Conditions = new StubConditionsModel {Scenario = new StubConditionScenarioModel {MinHits = minHits}}
+            Conditions = new StubConditionsModel { Scenario = new StubConditionScenarioModel { MinHits = minHits } }
         };
 }

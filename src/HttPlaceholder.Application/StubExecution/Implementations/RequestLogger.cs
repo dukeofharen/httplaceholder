@@ -15,7 +15,7 @@ internal class RequestLogger : IRequestLogger
     public RequestLogger(IDateTime dateTime)
     {
         _dateTime = dateTime;
-        _result = new RequestResultModel {RequestBeginTime = _dateTime.UtcNow};
+        _result = new RequestResultModel { RequestBeginTime = _dateTime.UtcNow };
     }
 
     /// <inheritdoc />

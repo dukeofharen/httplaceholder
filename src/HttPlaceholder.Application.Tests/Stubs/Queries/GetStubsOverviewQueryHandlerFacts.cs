@@ -1,5 +1,5 @@
 ﻿using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.Stubs.Queries.GetStubsOverview;
+using HttPlaceholder.Application.Stubs.Queries;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Queries;
 

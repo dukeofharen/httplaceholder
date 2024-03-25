@@ -1,6 +1,9 @@
-﻿using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+﻿using System.Linq;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
-using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.Infrastructure.Implementations;
 
@@ -10,8 +13,18 @@ namespace HttPlaceholder.Infrastructure.Implementations;
 public class TcpService : ITcpService, ISingletonService
 {
     /// <inheritdoc />
-    public bool PortIsTaken(int port) => TcpUtilities.PortIsTaken(port);
+    public bool PortIsTaken(int port) => IPGlobalProperties
+        .GetIPGlobalProperties()
+        .GetActiveTcpListeners()
+        .Any(l => l.Port == port);
 
     /// <inheritdoc />
-    public int GetNextFreeTcpPort() => TcpUtilities.GetNextFreeTcpPort();
+    public int GetNextFreeTcpPort()
+    {
+        var listener = new TcpListener(IPAddress.Loopback, 0);
+        listener.Start();
+        var port = ((IPEndPoint)listener.LocalEndpoint).Port;
+        listener.Stop();
+        return port;
+    }
 }

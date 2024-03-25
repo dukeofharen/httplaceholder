@@ -31,7 +31,7 @@ public class LifetimeEventsHostedServiceFacts
 
         // Act
         await service.StartAsync(CancellationToken.None);
-        source.Cancel();
+        await source.CancelAsync();
 
         // Assert
         var entry = _logger.Entries.Single(e => e.LogLevel == LogLevel.Information);

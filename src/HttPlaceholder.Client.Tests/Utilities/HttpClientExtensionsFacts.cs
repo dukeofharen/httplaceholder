@@ -14,7 +14,7 @@ public class HttpClientExtensionsFacts
     public void ApplyConfiguration_NoAuthSet_ShouldOnlySetBaseUrl()
     {
         // Arrange
-        var config = new HttPlaceholderClientConfiguration {RootUrl = "http://localhost:5000"};
+        var config = new HttPlaceholderClientConfiguration { RootUrl = "http://localhost:5000" };
         var httpClient = new HttpClient();
 
         // Act
@@ -57,7 +57,7 @@ public class HttpClientExtensionsFacts
         var config = new HttPlaceholderClientConfiguration
         {
             RootUrl = "http://localhost:5000",
-            DefaultHttpHeaders = new Dictionary<string, string> {{"Header1", "Value1"}}
+            DefaultHttpHeaders = new Dictionary<string, string> { { "Header1", "Value1" } }
         };
         var httpClient = new HttpClient();
 

@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces.Mappings;
+﻿using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 

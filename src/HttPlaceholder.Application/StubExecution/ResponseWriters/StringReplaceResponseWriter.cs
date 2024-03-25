@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -22,16 +23,16 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
         CancellationToken cancellationToken)
     {
         var replace = stub.Response?.Replace?.ToArray();
-        if (replace == null || !replace.Any() || response.Body == null || !response.Body.Any())
+        if (replace == null || replace.Length == 0 || response.Body == null || response.Body.Length == 0)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return Task.FromResult(IsNotExecuted(GetType().Name));
         }
 
         var body = Encoding.UTF8.GetString(response.Body);
         body = replace.Aggregate(body, PerformReplace);
         response.Body = Encoding.UTF8.GetBytes(body);
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        return Task.FromResult(IsExecuted(GetType().Name));
     }
 
     private static string PerformReplace(string body, StubResponseReplaceModel model)

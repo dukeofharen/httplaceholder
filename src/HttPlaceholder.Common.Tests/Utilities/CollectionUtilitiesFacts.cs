@@ -10,7 +10,7 @@ public class CollectionUtilitiesFacts
     public void AddOrReplaceCaseInsensitive_AddEntryWithSameCasing()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}};
+        var dictionary = new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.JsonMime } };
 
         // Act
         dictionary.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
@@ -24,7 +24,7 @@ public class CollectionUtilitiesFacts
     public void AddOrReplaceCaseInsensitive_AddEntryWithDifferentCasing()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}};
+        var dictionary = new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.JsonMime } };
 
         // Act
         dictionary.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
@@ -38,7 +38,7 @@ public class CollectionUtilitiesFacts
     public void AddOrReplaceCaseInsensitive_AddEntryWithDifferentCasing_DoNotReplaceExistingValue()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}};
+        var dictionary = new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.JsonMime } };
 
         // Act
         dictionary.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime, false);
@@ -52,7 +52,7 @@ public class CollectionUtilitiesFacts
     public void AddOrReplaceCaseInsensitive_AddNewEntry()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}};
+        var dictionary = new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.JsonMime } };
 
         // Act
         dictionary.AddOrReplaceCaseInsensitive("Accept", MimeTypes.XmlTextMime);
@@ -71,7 +71,7 @@ public class CollectionUtilitiesFacts
     public void CaseInsensitiveSearch_ShouldReturnCorrectValue(string key, string expectedValue)
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{"var1", "value1"}, {"var2", "value2"}};
+        var dictionary = new Dictionary<string, string> { { "var1", "value1" }, { "var2", "value2" } };
 
         // Act
         var result = dictionary.CaseInsensitiveSearch(key);
@@ -88,7 +88,7 @@ public class CollectionUtilitiesFacts
     public void TryGetCaseInsensitive_ShouldReturnCorrectValue(string key, string expectedValue, bool expectedResult)
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{"var1", "value1"}, {"var2", "value2"}};
+        var dictionary = new Dictionary<string, string> { { "var1", "value1" }, { "var2", "value2" } };
 
         // Act
         var result = dictionary.TryGetCaseInsensitive(key, out var foundValue);
@@ -107,7 +107,7 @@ public class CollectionUtilitiesFacts
     public void ContainsKeyCaseInsensitive_HappyFlow(string input, bool expectedResult)
     {
         // Arrange
-        var dict = new Dictionary<string, string> {{"key1", "val1"}, {"key2", "val2"}};
+        var dict = new Dictionary<string, string> { { "key1", "val1" }, { "key2", "val2" } };
 
         // Act
         var result = dict.ContainsKeyCaseInsensitive(input);

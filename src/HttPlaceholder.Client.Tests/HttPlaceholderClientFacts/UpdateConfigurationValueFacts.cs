@@ -22,7 +22,7 @@ public class UpdateConfigurationValueFacts : BaseClientTest
         var exception =
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
                 client.UpdateConfigurationValueAsync(
-                    new UpdateConfigurationValueInputDto {ConfigurationKey = "storeResponses", NewValue = "false"}));
+                    new UpdateConfigurationValueInputDto { ConfigurationKey = "storeResponses", NewValue = "false" }));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -41,6 +41,6 @@ public class UpdateConfigurationValueFacts : BaseClientTest
 
         // Act / Assert
         await client.UpdateConfigurationValueAsync(
-            new UpdateConfigurationValueInputDto {ConfigurationKey = "storeResponses", NewValue = "false"});
+            new UpdateConfigurationValueInputDto { ConfigurationKey = "storeResponses", NewValue = "false" });
     }
 }

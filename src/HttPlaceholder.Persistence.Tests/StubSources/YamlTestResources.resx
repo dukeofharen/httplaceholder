@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="YamlFile1" xml:space="preserve">
+    <value># Simple GET situations.
+- id: situation-01
+  tenant: 01-get
+  enabled: true
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 12
+        filter: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    headers:
+      Content-Type: application/json
+
+- id: situation-02
+  tenant: 01-get
+  enabled: false
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 14
+        filter: last_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "last_name": "Jackson"
+      }
+    headers:
+      Content-Type: application/json</value>
+  </data>
+    <data name="YamlFile2" xml:space="preserve">
+    <value># Simple POST situation with required request headers.
+- id: situation-post-01
+  tenant: 02-post
+  conditions:
+    method: POST
+    url:
+      path: \busers\b
+    body:
+      - \busername\b
+      - \bjohn\b
+    headers:
+      X-Api-Key: 123abc
+      X-Another-Secret: \b72354deg\b
+  response:
+    statusCode: 200
+    text: '{"result": true}'
+    headers:
+      Content-Type: application/json</value>
+  </data>
+    <data name="YamlFile3" xml:space="preserve">
+    <value>- conditions:
+    method: GET
+    url:
+      path: /stub1
+  response:
+    text: OK!
+  priority: 0
+  description: Stub without ID
+
+- conditions:
+    method: GET
+    url:
+      path: /stub2
+  response:
+    text: OK!!
+  priority: 0
+  description: Stub without ID</value>
+  </data>
+    <data name="YamlFile4" xml:space="preserve">
+    <value># Simple GET situations.
+id: situation-01
+tenant: 01-get
+conditions:
+  method: GET
+  url:
+    path: /users
+    query:
+      id: 12
+      filter: first_name
+response:
+  statusCode: 200
+  text: |
+    {
+      "first_name": "John"
+    }
+  headers:
+    Content-Type: application/json
+</value>
+  </data>
+</root>

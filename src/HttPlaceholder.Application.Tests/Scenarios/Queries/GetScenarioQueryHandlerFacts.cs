@@ -1,5 +1,5 @@
 ﻿using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Scenarios.Queries.GetScenario;
+using HttPlaceholder.Application.Scenarios.Queries;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Entities;
 

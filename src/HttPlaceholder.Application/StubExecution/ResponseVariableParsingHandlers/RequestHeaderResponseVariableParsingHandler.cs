@@ -26,10 +26,10 @@ internal class RequestHeaderResponseVariableParsingHandler(
     public override string FullName => "Request header";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:X-Api-Key))"};
+    public override string[] Examples => [$"(({Name}:X-Api-Key))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
         var headers = httpContextService.GetHeaders();

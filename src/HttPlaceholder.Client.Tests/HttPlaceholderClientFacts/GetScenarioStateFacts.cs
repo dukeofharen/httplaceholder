@@ -9,11 +9,13 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetScenarioStateFacts : BaseClientTest
 {
-    private const string ScenarioResponse = @" {
-        ""scenario"": ""scenario-1"",
-        ""state"": ""new-state"",
-        ""hitCount"": 10
-    }";
+    private const string ScenarioResponse = """
+                                             {
+                                                    "scenario": "scenario-1",
+                                                    "state": "new-state",
+                                                    "hitCount": 10
+                                                }
+                                            """;
 
     [TestMethod]
     public async Task GetScenarioState_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

@@ -14,7 +14,7 @@ internal class OpenApiParser : IOpenApiParser, ISingletonService
         var openapi = new OpenApiStringReader().Read(input, out _);
         return new OpenApiResult
         {
-            Server = openapi.Servers.Any() ? openapi.Servers.First() : new OpenApiServer {Url = "http://localhost"},
+            Server = openapi.Servers.Any() ? openapi.Servers.First() : new OpenApiServer { Url = "http://localhost" },
             Lines = (from path in openapi.Paths
                 from operation in path.Value.Operations
                 from operationResponse in operation.Value.Responses

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.WebInfrastructure.Implementations;
@@ -89,23 +90,21 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     public bool DeleteItem(string key)
     {
         var context = GetContext();
-        return GetContext().Items.ContainsKey(key) && context.Items.Remove(key);
+        return context.Items.ContainsKey(key) && context.Items.Remove(key);
     }
-
-    /// <inheritdoc />
-    public bool HasFormContentType => GetContext().Request.HasFormContentType;
 
     /// <inheritdoc />
     public async Task<(string, StringValues)[]> GetFormValuesAsync(CancellationToken cancellationToken = default)
     {
-        if (!HasFormContentType)
+        var context = GetContext();
+        if (!context.Request.HasFormContentType)
         {
             return Array.Empty<(string, StringValues)>();
         }
 
         try
         {
-            var form = await GetContext().Request.ReadFormAsync(cancellationToken);
+            var form = await context.Request.ReadFormAsync(cancellationToken);
             return form
                 .Select(f => (f.Key, f.Value))
                 .ToArray();
@@ -147,13 +146,13 @@ internal class HttpContextService : IHttpContextService, ISingletonService
 
     /// <inheritdoc />
     public async Task WriteAsync(byte[] body, CancellationToken cancellationToken) =>
-        await GetContext().Response.Body.WriteAsync(body, 0, body.Length, cancellationToken);
+        await GetContext().Response.Body.WriteAsync(body, cancellationToken);
 
     /// <inheritdoc />
     public async Task WriteAsync(string body, CancellationToken cancellationToken)
     {
         var bodyBytes = Encoding.UTF8.GetBytes(body);
-        await GetContext().Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken);
+        await GetContext().Response.Body.WriteAsync(bodyBytes, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -179,5 +178,5 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     }
 
     private HttpContext GetContext() =>
-        _httpContextAccessor.HttpContext ?? throw new InvalidOperationException("HttpContext not set.");
+        ThrowHelper.ThrowIfNull<HttpContext, InvalidOperationException>(_httpContextAccessor.HttpContext);
 }

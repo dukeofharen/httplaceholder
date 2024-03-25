@@ -8,20 +8,22 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetStubFacts : BaseClientTest
 {
-    private const string GetStubResponse = @"{
-    ""stub"": {
-        ""id"": ""fallback"",
-        ""response"": {
-            ""text"": ""OK FALLBACK""
-        },
-        ""priority"": -1,
-        ""tenant"": ""integration"",
-        ""enabled"": true
-    },
-    ""metadata"": {
-        ""readOnly"": false
-    }
-}";
+    private const string GetStubResponse = """
+                                           {
+                                               "stub": {
+                                                   "id": "fallback",
+                                                   "response": {
+                                                       "text": "OK FALLBACK"
+                                                   },
+                                                   "priority": -1,
+                                                   "tenant": "integration",
+                                                   "enabled": true
+                                               },
+                                               "metadata": {
+                                                   "readOnly": false
+                                               }
+                                           }
+                                           """;
 
     [TestMethod]
     public async Task GetStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

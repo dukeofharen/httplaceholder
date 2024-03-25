@@ -11,53 +11,55 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class CreateOpenApiStubsFacts : BaseClientTest
 {
-    private const string CreateOpenApiStubsResult = @"[
-    {
-        ""stub"": {
-            ""id"": ""generated-7ed80fbc7e90f8a6b40acb2505aff4c7"",
-            ""conditions"": {
-                ""method"": ""POST"",
-                ""url"": {
-                    ""path"": ""/api/v1/users/authenticate"",
-                    ""query"": {},
-                    ""isHttps"": true
-                },
-                ""body"": [
-                    ""{}""
-                ],
-                ""headers"": {
-                    ""User-Agent"": ""Mozilla/5\\.0\\ \\(X11;\\ Ubuntu;\\ Linux\\ x86_64;\\ rv:94\\.0\\)\\ Gecko/20100101\\ Firefox/94\\.0"",
-                    ""Accept"": ""application/json,\\ text/plain,\\ \\*/\\*"",
-                    ""Accept-Language"": ""en-US,en;q=0\\.5"",
-                    ""Accept-Encoding"": ""deflate,\\ gzip,\\ br"",
-                    ""Content-Type"": ""application/json;charset=utf-8"",
-                    ""Origin"": ""https://site\\.com"",
-                    ""Connection"": ""keep-alive"",
-                    ""Sec-Fetch-Dest"": ""empty"",
-                    ""Sec-Fetch-Mode"": ""cors"",
-                    ""Sec-Fetch-Site"": ""same-site"",
-                    ""DNT"": ""1"",
-                    ""Sec-GPC"": ""1"",
-                    ""TE"": ""trailers""
-                },
-                ""basicAuthentication"": {
-                    ""username"": ""duco"",
-                    ""password"": ""bladibla""
-                },
-                ""host"": ""api.site.com""
-            },
-            ""response"": {
-                ""text"": ""OK!"",
-                ""headers"": {}
-            },
-            ""priority"": 0,
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    }
-]";
+    private const string CreateOpenApiStubsResult = """
+                                                    [
+                                                        {
+                                                            "stub": {
+                                                                "id": "generated-7ed80fbc7e90f8a6b40acb2505aff4c7",
+                                                                "conditions": {
+                                                                    "method": "POST",
+                                                                    "url": {
+                                                                        "path": "/api/v1/users/authenticate",
+                                                                        "query": {},
+                                                                        "isHttps": true
+                                                                    },
+                                                                    "body": [
+                                                                        "{}"
+                                                                    ],
+                                                                    "headers": {
+                                                                        "User-Agent": "Mozilla/5\\.0\\ \\(X11;\\ Ubuntu;\\ Linux\\ x86_64;\\ rv:94\\.0\\)\\ Gecko/20100101\\ Firefox/94\\.0",
+                                                                        "Accept": "application/json,\\ text/plain,\\ \\*/\\*",
+                                                                        "Accept-Language": "en-US,en;q=0\\.5",
+                                                                        "Accept-Encoding": "deflate,\\ gzip,\\ br",
+                                                                        "Content-Type": "application/json;charset=utf-8",
+                                                                        "Origin": "https://site\\.com",
+                                                                        "Connection": "keep-alive",
+                                                                        "Sec-Fetch-Dest": "empty",
+                                                                        "Sec-Fetch-Mode": "cors",
+                                                                        "Sec-Fetch-Site": "same-site",
+                                                                        "DNT": "1",
+                                                                        "Sec-GPC": "1",
+                                                                        "TE": "trailers"
+                                                                    },
+                                                                    "basicAuthentication": {
+                                                                        "username": "duco",
+                                                                        "password": "bladibla"
+                                                                    },
+                                                                    "host": "api.site.com"
+                                                                },
+                                                                "response": {
+                                                                    "text": "OK!",
+                                                                    "headers": {}
+                                                                },
+                                                                "priority": 0,
+                                                                "enabled": true
+                                                            },
+                                                            "metadata": {
+                                                                "readOnly": false
+                                                            }
+                                                        }
+                                                    ]
+                                                    """;
 
     [TestMethod]
     public async Task CreateOpenApiStubs_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

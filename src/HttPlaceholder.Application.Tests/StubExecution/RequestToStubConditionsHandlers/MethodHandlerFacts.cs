@@ -12,7 +12,7 @@ public class MethodHandlerFacts
     public async Task MethodHandler_HandleStubGenerationAsync_MethodNotSet_ShouldThrowInvalidOperationException()
     {
         // Arrange
-        var request = new HttpRequestModel {Method = string.Empty};
+        var request = new HttpRequestModel { Method = string.Empty };
         var conditions = new StubConditionsModel();
 
         // Act / Assert
@@ -25,7 +25,7 @@ public class MethodHandlerFacts
     {
         // Arrange
         const string method = "GET";
-        var request = new HttpRequestModel {Method = method};
+        var request = new HttpRequestModel { Method = method };
         var conditions = new StubConditionsModel();
 
         // Act

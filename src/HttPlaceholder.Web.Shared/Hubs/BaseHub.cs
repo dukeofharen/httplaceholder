@@ -6,22 +6,12 @@ namespace HttPlaceholder.Web.Shared.Hubs;
 /// <summary>
 ///     An abstract class for SignalR hubs.
 /// </summary>
-public abstract class BaseHub : Hub
+public abstract class BaseHub(ILoginCookieService loginCookieService) : Hub
 {
-    private readonly ILoginCookieService _loginCookieService;
-
-    /// <summary>
-    ///     Constructs a <see cref="BaseHub" /> instance.
-    /// </summary>
-    protected BaseHub(ILoginCookieService loginCookieService)
-    {
-        _loginCookieService = loginCookieService;
-    }
-
     /// <inheritdoc />
     public override Task OnConnectedAsync()
     {
-        if (!_loginCookieService.CheckLoginCookie())
+        if (!loginCookieService.CheckLoginCookie())
         {
             throw new InvalidOperationException("NOT AUTHORIZED!");
         }

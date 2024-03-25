@@ -91,14 +91,16 @@ public class StubStringCheckingKeywordTests : RestApiIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        var body = $@"id: situation-01
-conditions:
-  url:
-    path:
-      {keyword}: {keywordValue}
-response:
-  text: OK
-";
+        var body = $"""
+                    id: situation-01
+                    conditions:
+                      url:
+                        path:
+                          {keyword}: {keywordValue}
+                    response:
+                      text: OK
+
+                    """;
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Post,

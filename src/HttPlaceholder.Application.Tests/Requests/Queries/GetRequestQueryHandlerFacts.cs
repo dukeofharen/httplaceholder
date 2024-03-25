@@ -1,5 +1,5 @@
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Requests.Queries.GetRequest;
+using HttPlaceholder.Application.Requests.Queries;
 using HttPlaceholder.Application.StubExecution;
 
 namespace HttPlaceholder.Application.Tests.Requests.Queries;
@@ -21,7 +21,7 @@ public class GetRequestQueryHandlerFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var query = new GetRequestQuery {CorrelationId = correlationId};
+        var query = new GetRequestQuery(correlationId);
 
         _mockStubContext
             .Setup(m => m.GetRequestResultAsync(correlationId, It.IsAny<CancellationToken>()))
@@ -36,9 +36,9 @@ public class GetRequestQueryHandlerFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var query = new GetRequestQuery {CorrelationId = correlationId};
+        var query = new GetRequestQuery(correlationId);
 
-        var expectedResult = new RequestResultModel {CorrelationId = correlationId};
+        var expectedResult = new RequestResultModel { CorrelationId = correlationId };
         _mockStubContext
             .Setup(m => m.GetRequestResultAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);

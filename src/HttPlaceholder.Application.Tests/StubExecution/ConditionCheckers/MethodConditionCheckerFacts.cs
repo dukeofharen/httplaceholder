@@ -17,12 +17,12 @@ public class MethodConditionCheckerFacts
     public async Task MethodConditionChecker_ValidateAsync_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()
     {
         // Arrange
-        var conditions = new StubConditionsModel {Method = null};
+        var conditions = new StubConditionsModel { Method = null };
         var checker = _mocker.CreateInstance<MethodConditionChecker>();
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -32,7 +32,7 @@ public class MethodConditionCheckerFacts
     public async Task MethodConditionChecker_ValidateAsync_StubsFound_WrongMethod_ShouldReturnInvalid()
     {
         // Arrange
-        var conditions = new StubConditionsModel {Method = "POST"};
+        var conditions = new StubConditionsModel { Method = "POST" };
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var checker = _mocker.CreateInstance<MethodConditionChecker>();
 
@@ -42,7 +42,7 @@ public class MethodConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -52,7 +52,7 @@ public class MethodConditionCheckerFacts
     public async Task MethodConditionChecker_ValidateAsync_StubsFound_HappyFlow()
     {
         // Arrange
-        var conditions = new StubConditionsModel {Method = "GET"};
+        var conditions = new StubConditionsModel { Method = "GET" };
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var checker = _mocker.CreateInstance<MethodConditionChecker>();
 
@@ -62,7 +62,7 @@ public class MethodConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -78,7 +78,7 @@ public class MethodConditionCheckerFacts
     public async Task MethodConditionChecker_ValidateAsync_MultipleMethods(string method, bool shouldPass)
     {
         // Arrange
-        var conditions = new StubConditionsModel {Method = new List<object> {"GET", "POST"}};
+        var conditions = new StubConditionsModel { Method = new List<object> { "GET", "POST" } };
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var checker = _mocker.CreateInstance<MethodConditionChecker>();
 
@@ -88,7 +88,7 @@ public class MethodConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(shouldPass ? ConditionValidationType.Valid : ConditionValidationType.Invalid,

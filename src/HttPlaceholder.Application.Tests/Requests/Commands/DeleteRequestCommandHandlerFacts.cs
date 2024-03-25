@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Requests.Commands.DeleteRequest;
+﻿using HttPlaceholder.Application.Requests.Commands;
 using HttPlaceholder.Application.StubExecution;
 
 namespace HttPlaceholder.Application.Tests.Requests.Commands;

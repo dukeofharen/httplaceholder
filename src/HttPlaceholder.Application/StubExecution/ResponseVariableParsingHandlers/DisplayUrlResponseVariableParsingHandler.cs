@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -27,10 +28,10 @@ internal class DisplayUrlResponseVariableParsingHandler(
     public override string FullName => "Display URL";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}))", $@"(({Name}:'\/users\/([0-9]{3})\/orders'))"};
+    public override string[] Examples => [$"(({Name}))", $@"(({Name}:'\/users\/([0-9]{3})\/orders'))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>
         Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)

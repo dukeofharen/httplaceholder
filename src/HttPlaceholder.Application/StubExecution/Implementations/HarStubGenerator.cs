@@ -19,7 +19,7 @@ internal class HarStubGenerator(
     IStubContext stubContext)
     : IHarStubGenerator, ISingletonService
 {
-    private static readonly string[] _responseHeadersToStrip = {"content-length", "content-encoding"};
+    private static readonly string[] _responseHeadersToStrip = ["content-length", "content-encoding"];
 
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant,
@@ -52,7 +52,7 @@ internal class HarStubGenerator(
     {
         if (doNotCreateStub)
         {
-            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
+            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
         }
 
         await stubContext.DeleteStubAsync(stub.Id, cancellationToken);
@@ -64,7 +64,7 @@ internal class HarStubGenerator(
         Method = entry.Request.Method,
         Body = entry.Request.PostData?.Text,
         Headers = entry.Request.Headers
-            .Where(h => !h.Name.StartsWith(":"))
+            .Where(h => !h.Name.StartsWith(':'))
             .ToDictionary(h => h.Name, h => h.Value),
         Url = entry.Request.Url
     };
@@ -109,7 +109,7 @@ internal class HarStubGenerator(
             throw new ValidationException("har.log is not set.");
         }
 
-        if (har.Log.Entries == null || !har.Log.Entries.Any())
+        if (har.Log.Entries == null || har.Log.Entries.Length == 0)
         {
             throw new ValidationException("No entries set in HAR.");
         }

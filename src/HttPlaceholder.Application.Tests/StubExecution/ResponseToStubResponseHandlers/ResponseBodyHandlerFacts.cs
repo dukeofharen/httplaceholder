@@ -12,7 +12,7 @@ public class ResponseBodyHandlerFacts
     public async Task HandleStubGenerationAsync_Base64()
     {
         // Arrange
-        var response = new HttpResponseModel {Content = "bW9p", ContentIsBase64 = true};
+        var response = new HttpResponseModel { Content = "bW9p", ContentIsBase64 = true };
         var stubResponse = new StubResponseModel();
 
         // Act
@@ -31,8 +31,8 @@ public class ResponseBodyHandlerFacts
     public async Task HandleStubGenerationAsync_Json()
     {
         // Arrange
-        var response = new HttpResponseModel {Content = "{}"};
-        var stubResponse = new StubResponseModel {ContentType = MimeTypes.JsonMime};
+        var response = new HttpResponseModel { Content = "{}" };
+        var stubResponse = new StubResponseModel { ContentType = MimeTypes.JsonMime };
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
@@ -50,8 +50,8 @@ public class ResponseBodyHandlerFacts
     public async Task HandleStubGenerationAsync_Html()
     {
         // Arrange
-        var response = new HttpResponseModel {Content = "<html>"};
-        var stubResponse = new StubResponseModel {ContentType = MimeTypes.HtmlMime};
+        var response = new HttpResponseModel { Content = "<html>" };
+        var stubResponse = new StubResponseModel { ContentType = MimeTypes.HtmlMime };
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
@@ -71,8 +71,8 @@ public class ResponseBodyHandlerFacts
     public async Task HandleStubGenerationAsync_Xml(string mimeType)
     {
         // Arrange
-        var response = new HttpResponseModel {Content = "<xml>"};
-        var stubResponse = new StubResponseModel {ContentType = mimeType};
+        var response = new HttpResponseModel { Content = "<xml>" };
+        var stubResponse = new StubResponseModel { ContentType = mimeType };
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
@@ -93,8 +93,8 @@ public class ResponseBodyHandlerFacts
     public async Task HandleStubGenerationAsync_Text(string mimeType)
     {
         // Arrange
-        var response = new HttpResponseModel {Content = "plain text"};
-        var stubResponse = new StubResponseModel {ContentType = mimeType};
+        var response = new HttpResponseModel { Content = "plain text" };
+        var stubResponse = new StubResponseModel { ContentType = mimeType };
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);

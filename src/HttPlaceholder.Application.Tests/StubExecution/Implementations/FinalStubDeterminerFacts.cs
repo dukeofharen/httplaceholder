@@ -27,8 +27,8 @@ public class FinalStubDeterminerFacts
         // Arrange
         var matchedStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>
         {
-            (new StubModel {Priority = 1},
-                new[] {new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}})
+            (new StubModel { Priority = 1 },
+                new[] { ConditionCheckResultModel.Valid() })
         };
 
         // Act
@@ -45,26 +45,26 @@ public class FinalStubDeterminerFacts
         // Arrange
         var matchedStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>
         {
-            (new StubModel {Priority = 1},
+            (new StubModel { Priority = 1 },
                 new[]
                 {
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}
+                    ConditionCheckResultModel.NotExecuted(),
+                    ConditionCheckResultModel.NotExecuted(),
+                    ConditionCheckResultModel.Valid()
                 }),
-            (new StubModel {Priority = 1},
+            (new StubModel { Priority = 1 },
                 new[]
                 {
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}
+                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.NotExecuted(),
+                    ConditionCheckResultModel.Valid()
                 }),
-            (new StubModel {Priority = 0},
+            (new StubModel { Priority = 0 },
                 new[]
                 {
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}
+                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid()
                 })
         };
 
@@ -82,19 +82,19 @@ public class FinalStubDeterminerFacts
         // Arrange
         var matchedStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>
         {
-            (new StubModel {Priority = 1},
+            (new StubModel { Priority = 1 },
                 new[]
                 {
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}
+                    ConditionCheckResultModel.NotExecuted(),
+                    ConditionCheckResultModel.NotExecuted(),
+                    ConditionCheckResultModel.Valid()
                 }),
-            (new StubModel {Priority = 0},
+            (new StubModel { Priority = 0 },
                 new[]
                 {
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}
+                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid()
                 })
         };
 
@@ -111,12 +111,12 @@ public class FinalStubDeterminerFacts
         // Arrange
         var matchedStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>
         {
-            (new StubModel {Priority = 0},
+            (new StubModel { Priority = 0 },
                 new[]
                 {
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid},
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}
+                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid()
                 })
         };
 

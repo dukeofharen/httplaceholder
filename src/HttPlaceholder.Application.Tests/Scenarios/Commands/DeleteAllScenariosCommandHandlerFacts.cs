@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
+﻿using HttPlaceholder.Application.Scenarios.Commands;
 using HttPlaceholder.Application.StubExecution;
 
 namespace HttPlaceholder.Application.Tests.Scenarios.Commands;

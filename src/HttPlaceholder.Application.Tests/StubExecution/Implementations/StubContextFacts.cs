@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
@@ -690,7 +691,10 @@ public class StubContextFacts
 
         stubSource
             .Setup(m => m.GetStubsAsync(DistrubutionKey, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] { GetTuple(stub1), GetTuple(stub2), GetTuple(stub3), GetTuple(stub4), GetTuple(stub5) });
+            .ReturnsAsync(new[]
+            {
+                GetTuple(stub1), GetTuple(stub2), GetTuple(stub3), GetTuple(stub4), GetTuple(stub5)
+            });
 
         _stubSources.Add(stubSource.Object);
 

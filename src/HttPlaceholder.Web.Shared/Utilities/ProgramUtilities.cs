@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Configuration.Provider;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Configuration;
@@ -28,7 +28,7 @@ public static class ProgramUtilities
     ///     Configure the logging.
     /// </summary>
     /// <param name="args">The command line arguments.</param>
-    public static void ConfigureLogging(string[] args)
+    public static void ConfigureLogging(IEnumerable<string> args)
     {
         var verbose = CliArgs.IsVerbose(args);
         var loggingConfig = new LoggerConfiguration();
@@ -75,7 +75,7 @@ public static class ProgramUtilities
 
         return HostBuilderUtilities.CreateHostBuilder()
             .UseSerilog()
-            .ConfigureAppConfiguration((_, config) => config.AddCustomInMemoryCollection(argsDictionary))
+            .ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(argsDictionary))
             .ConfigureWebHostDefaults(webBuilder => webBuilder
                 .UseStartup<TStartup>()
                 .UseKestrel(options => ConfigureKestrel(options, settings))
@@ -127,7 +127,7 @@ public static class ProgramUtilities
 
     private static SettingsModel DeserializeSettings(IDictionary<string, string> args)
     {
-        var builder = new ConfigurationBuilder().AddCustomInMemoryCollection(args);
+        var builder = new ConfigurationBuilder().AddInMemoryCollection(args);
         var config = builder.Build();
         return config.Get<SettingsModel>();
     }

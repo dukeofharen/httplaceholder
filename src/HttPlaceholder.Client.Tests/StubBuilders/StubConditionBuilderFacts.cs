@@ -79,7 +79,7 @@ public class StubConditionBuilderFacts
     public void WithPathDto()
     {
         // Act
-        var dto = new StubConditionStringCheckingDto {StringEquals = "/users"};
+        var dto = new StubConditionStringCheckingDto { StringEquals = "/users" };
         var conditions = StubConditionBuilder.Begin()
             .WithPath(dto)
             .Build();
@@ -119,8 +119,8 @@ public class StubConditionBuilderFacts
     public void WithQueryStringParameterDto()
     {
         // Act
-        var dto1 = new StubConditionStringCheckingDto {StringEquals = "val1"};
-        var dto2 = new StubConditionStringCheckingDto {StringEquals = "val1"};
+        var dto1 = new StubConditionStringCheckingDto { StringEquals = "val1" };
+        var dto2 = new StubConditionStringCheckingDto { StringEquals = "val1" };
 
         var conditions = StubConditionBuilder.Begin()
             .WithQueryStringParameter("q1", dto1)
@@ -164,7 +164,7 @@ public class StubConditionBuilderFacts
     public void WithFullPathDto()
     {
         // Act
-        var dto = new StubConditionStringCheckingDto {StringEquals = "/users"};
+        var dto = new StubConditionStringCheckingDto { StringEquals = "/users" };
         var conditions = StubConditionBuilder.Begin()
             .WithFullPath(dto)
             .Build();
@@ -340,8 +340,8 @@ public class StubConditionBuilderFacts
     public void WithRequestHeaderDto()
     {
         // Act
-        var dto1 = new StubConditionStringCheckingDto {StringEquals = "val1"};
-        var dto2 = new StubConditionStringCheckingDto {StringEquals = "val2"};
+        var dto1 = new StubConditionStringCheckingDto { StringEquals = "val1" };
+        var dto2 = new StubConditionStringCheckingDto { StringEquals = "val2" };
         var conditions = StubConditionBuilder.Begin()
             .WithRequestHeader("X-Header-1", dto1)
             .WithRequestHeader("X-Header-2", dto2)
@@ -373,8 +373,8 @@ public class StubConditionBuilderFacts
     {
         // Act
         var conditions = StubConditionBuilder.Begin()
-            .WithXPathCondition("XPathQuery1", new Dictionary<string, string> {{"soap1", "soap namespace1"}})
-            .WithXPathCondition("XPathQuery2", new Dictionary<string, string> {{"soap2", "soap namespace2"}})
+            .WithXPathCondition("XPathQuery1", new Dictionary<string, string> { { "soap1", "soap namespace1" } })
+            .WithXPathCondition("XPathQuery2", new Dictionary<string, string> { { "soap2", "soap namespace2" } })
             .Build();
 
         // Assert
@@ -461,7 +461,7 @@ public class StubConditionBuilderFacts
     public void WithHostDto()
     {
         // Act
-        var dto = new StubConditionStringCheckingDto {StringEquals = "httplaceholder.com"};
+        var dto = new StubConditionStringCheckingDto { StringEquals = "httplaceholder.com" };
 
         var conditions = StubConditionBuilder.Begin()
             .WithHost(dto)
@@ -487,7 +487,7 @@ public class StubConditionBuilderFacts
     public void WithJsonObject()
     {
         // Act
-        var obj = new {key = "val"};
+        var obj = new { key = "val" };
         var conditions = StubConditionBuilder.Begin()
             .WithJsonObject(obj)
             .Build();
@@ -500,7 +500,7 @@ public class StubConditionBuilderFacts
     public void WithJsonArray()
     {
         // Act
-        object[] array = {new {key = "val1"}, new {key = "val2"}};
+        object[] array = [new { key = "val1" }, new { key = "val2" }];
         var conditions = StubConditionBuilder.Begin()
             .WithJsonArray(array)
             .Build();

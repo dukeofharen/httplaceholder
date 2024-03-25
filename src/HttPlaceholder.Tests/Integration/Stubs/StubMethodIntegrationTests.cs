@@ -23,7 +23,7 @@ public class StubMethodIntegrationTests : StubIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}multiple-methods";
-        var request = new HttpRequestMessage {Method = new HttpMethod(method), RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = new HttpMethod(method), RequestUri = new Uri(url) };
 
         // Act
         using var response = await Client.SendAsync(request);

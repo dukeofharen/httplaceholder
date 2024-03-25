@@ -46,7 +46,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
         CancellationToken cancellationToken)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
+        if (enumerable.Length == 0)
         {
             return input;
         }
@@ -62,6 +62,6 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     /// <param name="stub">The matched stub.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The parsed response body.</returns>
-    protected abstract Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected abstract Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken);
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -24,17 +25,14 @@ internal class UtcNowResponseVariableParsingHandler(IDateTime dateTime, IFileSer
     public override string FullName => "UTC date / time";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"};
+    public override string[] Examples => [$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var now = dateTime.UtcNow;
-        return Task.FromResult(matches
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
+        CancellationToken cancellationToken) =>
+        Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertDateTime(current, match, now)));
-    }
+            .Aggregate(input, (current, match) => InsertDateTime(current, match, dateTime.UtcNow)));
 
     private static string InsertDateTime(string current, Match match, DateTime now)
     {

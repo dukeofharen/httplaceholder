@@ -13,7 +13,7 @@ public class TextResponseWriterFacts
     public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {Text = null}};
+        var stub = new StubModel { Response = new StubResponseModel { Text = null } };
 
         var response = new ResponseModel();
 
@@ -31,7 +31,7 @@ public class TextResponseWriterFacts
         // arrange
         const string text = "bla123";
         var expectedBody = Encoding.UTF8.GetBytes(text);
-        var stub = new StubModel {Response = new StubResponseModel {Text = text}};
+        var stub = new StubModel { Response = new StubResponseModel { Text = text } };
 
         var response = new ResponseModel();
 
@@ -51,7 +51,7 @@ public class TextResponseWriterFacts
         // arrange
         const string text = "bla123";
         var expectedBody = Encoding.UTF8.GetBytes(text);
-        var stub = new StubModel {Response = new StubResponseModel {Text = text}};
+        var stub = new StubModel { Response = new StubResponseModel { Text = text } };
 
         var response = new ResponseModel();
         response.Headers.Add(HeaderKeys.ContentType, MimeTypes.XmlTextMime);

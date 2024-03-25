@@ -39,14 +39,14 @@ public class ScenarioHitCountVariableParsingHandlerFacts
             "((scenario_hitcount)) ((scenario_hitcount:scenario_exists)) ((scenario_hitcount:scenario_doesnt_exist))";
         const string expectedResult = "3 1337 ";
 
-        var stubModel = new StubModel {Scenario = "stub-scenario"};
+        var stubModel = new StubModel { Scenario = "stub-scenario" };
 
         stubContextMock
             .Setup(m => m.GetScenarioAsync(stubModel.Scenario, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ScenarioStateModel {HitCount = 3});
+            .ReturnsAsync(new ScenarioStateModel { HitCount = 3 });
         stubContextMock
             .Setup(m => m.GetScenarioAsync("scenario_exists", It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ScenarioStateModel {HitCount = 1337});
+            .ReturnsAsync(new ScenarioStateModel { HitCount = 1337 });
         stubContextMock
             .Setup(m => m.GetScenarioAsync("scenario_doesnt_exist", It.IsAny<CancellationToken>()))
             .ReturnsAsync((ScenarioStateModel)null);
@@ -70,11 +70,11 @@ public class ScenarioHitCountVariableParsingHandlerFacts
             "((scenario_hitcount))";
         const string expectedResult = "18";
 
-        var stubModel = new StubModel {Scenario = "stub-scenario"};
+        var stubModel = new StubModel { Scenario = "stub-scenario" };
 
         cacheServiceMock
             .Setup(m => m.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState))
-            .Returns(new ScenarioStateModel {HitCount = 18});
+            .Returns(new ScenarioStateModel { HitCount = 18 });
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);

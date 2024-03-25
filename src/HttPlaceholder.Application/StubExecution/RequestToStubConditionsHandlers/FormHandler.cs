@@ -20,12 +20,8 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
         CancellationToken cancellationToken)
     {
         var contentType = request.Headers.CaseInsensitiveSearch(HeaderKeys.ContentType);
-        if (string.IsNullOrWhiteSpace(contentType))
-        {
-            return Task.FromResult(false);
-        }
-
         if (
+            string.IsNullOrWhiteSpace(contentType) ||
             !contentType.StartsWith(MimeTypes.UrlEncodedFormMime, StringComparison.OrdinalIgnoreCase) ||
             string.IsNullOrWhiteSpace(request.Body))
         {
@@ -34,14 +30,13 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
 
         var reader = new FormReader(request.Body);
         var form = reader.ReadForm();
-        if (!form.Any())
+        if (form.Count == 0)
         {
             return Task.FromResult(false);
         }
 
         // If the body condition is already set, clear it here.
-        conditions.Body = Array.Empty<string>();
-
+        conditions.Body = [];
         conditions.Form = form.Select(f => new StubFormModel
         {
             Key = f.Key, Value = new StubConditionStringCheckingModel { StringEquals = f.Value }

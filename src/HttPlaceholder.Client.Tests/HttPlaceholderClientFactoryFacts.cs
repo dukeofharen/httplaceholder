@@ -10,7 +10,7 @@ public class HttPlaceholderClientFactoryFacts
     public void CreateHttPlaceholderClient_ShouldReuseHttpClient()
     {
         // Arrange
-        var config = new HttPlaceholderClientConfiguration {RootUrl = "http://localhost:5000"};
+        var config = new HttPlaceholderClientConfiguration { RootUrl = "http://localhost:5000" };
 
         // Act
         var client1 = (HttPlaceholderClient)HttPlaceholderClientFactory.CreateHttPlaceholderClient(config);
@@ -24,7 +24,7 @@ public class HttPlaceholderClientFactoryFacts
     public void CreateHttPlaceholderClient_ShouldSetBaseUrl()
     {
         // Arrange
-        var config = new HttPlaceholderClientConfiguration {RootUrl = "http://localhost:5000"};
+        var config = new HttPlaceholderClientConfiguration { RootUrl = "http://localhost:5000" };
 
         // Act
         var client = (HttPlaceholderClient)HttPlaceholderClientFactory.CreateHttPlaceholderClient(config);

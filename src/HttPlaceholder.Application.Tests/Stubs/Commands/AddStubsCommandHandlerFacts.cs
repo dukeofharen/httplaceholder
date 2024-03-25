@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.Stubs.Commands.AddStubs;
+using HttPlaceholder.Application.Stubs.Commands;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Commands;
 
@@ -52,16 +52,16 @@ public class AddStubsCommandHandlerFacts
         var handler = _mocker.CreateInstance<AddStubsCommandHandler>();
         var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
 
-        var stub1 = new StubModel {Id = "stub1"};
-        var stub2 = new StubModel {Id = ""};
-        var request = new AddStubsCommand(new[] {stub1, stub2});
+        var stub1 = new StubModel { Id = "stub1" };
+        var stub2 = new StubModel { Id = "" };
+        var request = new AddStubsCommand(new[] { stub1, stub2 });
 
         stubModelValidatorMock
             .Setup(m => m.ValidateStubModel(stub1))
-            .Returns(new[] {"ERROR1", "ERROR2"});
+            .Returns(new[] { "ERROR1", "ERROR2" });
         stubModelValidatorMock
             .Setup(m => m.ValidateStubModel(stub2))
-            .Returns(new[] {"ERROR3"});
+            .Returns(new[] { "ERROR3" });
 
         // Act
         var exception =
@@ -84,11 +84,11 @@ public class AddStubsCommandHandlerFacts
         var handler = _mocker.CreateInstance<AddStubsCommandHandler>();
         var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
 
-        var stub1 = new StubModel {Id = "stub1"};
-        var stub2 = new StubModel {Id = "STub1"};
-        var stub3 = new StubModel {Id = "stub2"};
-        var stub4 = new StubModel {Id = "stuB2"};
-        var request = new AddStubsCommand(new[] {stub1, stub2, stub3, stub4});
+        var stub1 = new StubModel { Id = "stub1" };
+        var stub2 = new StubModel { Id = "STub1" };
+        var stub3 = new StubModel { Id = "stub2" };
+        var stub4 = new StubModel { Id = "stuB2" };
+        var request = new AddStubsCommand(new[] { stub1, stub2, stub3, stub4 });
 
         stubModelValidatorMock
             .Setup(m => m.ValidateStubModel(It.IsAny<StubModel>()))
@@ -111,9 +111,9 @@ public class AddStubsCommandHandlerFacts
         var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
         var stubContextMock = _mocker.GetMock<IStubContext>();
 
-        var stub1 = new StubModel {Id = "stub1"};
-        var stub2 = new StubModel {Id = "stub2"};
-        var request = new AddStubsCommand(new[] {stub1, stub2});
+        var stub1 = new StubModel { Id = "stub1" };
+        var stub2 = new StubModel { Id = "stub2" };
+        var request = new AddStubsCommand(new[] { stub1, stub2 });
 
         stubModelValidatorMock
             .Setup(m => m.ValidateStubModel(It.IsAny<StubModel>()))
@@ -121,7 +121,7 @@ public class AddStubsCommandHandlerFacts
 
         stubContextMock
             .Setup(m => m.GetStubsFromReadOnlySourcesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] {new FullStubModel {Stub = new StubModel {Id = stub2.Id.ToUpper()}}});
+            .ReturnsAsync(new[] { new FullStubModel { Stub = new StubModel { Id = stub2.Id.ToUpper() } } });
 
         // Act
         var exception =
@@ -140,9 +140,9 @@ public class AddStubsCommandHandlerFacts
         var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
         var stubContextMock = _mocker.GetMock<IStubContext>();
 
-        var stub1 = new StubModel {Id = "stub1"};
-        var stub2 = new StubModel {Id = "stub2"};
-        var request = new AddStubsCommand(new[] {stub1, stub2});
+        var stub1 = new StubModel { Id = "stub1" };
+        var stub2 = new StubModel { Id = "stub2" };
+        var request = new AddStubsCommand(new[] { stub1, stub2 });
 
         var stubResult1 = new FullStubModel();
         var stubResult2 = new FullStubModel();

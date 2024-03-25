@@ -87,6 +87,9 @@ public class ClearScenarioStateResponseWriterFacts
         new()
         {
             Scenario = scenario,
-            Response = new StubResponseModel {Scenario = new StubResponseScenarioModel {ClearState = clearState}}
+            Response = new StubResponseModel
+            {
+                Scenario = new StubResponseScenarioModel { ClearState = clearState }
+            }
         };
 }

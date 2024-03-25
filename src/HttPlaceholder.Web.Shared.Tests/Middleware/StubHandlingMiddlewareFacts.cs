@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Resources;
@@ -135,8 +136,8 @@ public class StubHandlingMiddlewareFacts
 
         var stubResponse = new ResponseModel
         {
-            Body = new byte[] {1, 2, 3},
-            Headers = {{"X-Header1", "val1"}, {"X-Header2", "val2"}},
+            Body = [1, 2, 3],
+            Headers = { { "X-Header1", "val1" }, { "X-Header2", "val2" } },
             StatusCode = 201,
             BodyIsBinary = true
         };
@@ -144,7 +145,7 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
-        var requestResultModel = new RequestResultModel {ExecutingStubId = "stub123"};
+        var requestResultModel = new RequestResultModel { ExecutingStubId = "stub123" };
         _requestLoggerMock
             .Setup(m => m.GetResult())
             .Returns(requestResultModel);
@@ -180,7 +181,7 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.Path)
             .Returns("/path");
 
-        var stubResponse = new ResponseModel {AbortConnection = true};
+        var stubResponse = new ResponseModel { AbortConnection = true };
         mediatorMock
             .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);

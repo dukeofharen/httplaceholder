@@ -11,7 +11,7 @@ public enum RequestExportType
     NotSet = 0,
 
     /// <summary>
-    ///  cURL export.
+    ///     cURL export.
     /// </summary>
     Curl = 1,
 

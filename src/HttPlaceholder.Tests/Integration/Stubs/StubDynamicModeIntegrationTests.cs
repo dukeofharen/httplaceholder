@@ -78,7 +78,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         {
             Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                {"formval1", "Value 1!"}, {"formval2", "Value 2!"}
+                { "formval1", "Value 1!" }, { "formval2", "Value 2!" }
             })
         };
 
@@ -100,7 +100,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}dynamic-request-body.txt";
         const string body = "Test123";
 
-        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(body)};
+        var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(body) };
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
@@ -118,11 +118,13 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         // Arrange
         const string expectedResult = "Posted: value2";
         var url = $"{TestServer.BaseAddress}dynamic-request-body-regex.txt";
-        const string body = @"key1=value1
-key2=value2
-key3=value3";
+        const string body = """
+                            key1=value1
+                            key2=value2
+                            key3=value3
+                            """;
 
-        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(body)};
+        var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(body) };
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
@@ -288,18 +290,20 @@ key3=value3";
         // Arrange
         const string expectedResult = "JSONPath result: Value2";
         var url = $"{TestServer.BaseAddress}dynamic-mode-jsonpath.txt";
-        const string body = @"{
-    ""values"": [
-        {
-            ""title"": ""Value1""
-        },
-        {
-            ""title"": ""Value2""
-        }
-    ]
-}";
+        const string body = """
+                            {
+                                "values": [
+                                    {
+                                        "title": "Value1"
+                                    },
+                                    {
+                                        "title": "Value2"
+                                    }
+                                ]
+                            }
+                            """;
 
-        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(body)};
+        var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(body) };
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
@@ -314,8 +318,8 @@ key3=value3";
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}dynamic-mode-scenario-state.txt";
-        await SetScenario("dynamic-mode-scenario-state", new ScenarioStateInputDto {State = "cool_state_1"});
-        await SetScenario("scenario123", new ScenarioStateInputDto {State = "cool_state_2"});
+        await SetScenario("dynamic-mode-scenario-state", new ScenarioStateInputDto { State = "cool_state_1" });
+        await SetScenario("scenario123", new ScenarioStateInputDto { State = "cool_state_2" });
         const string expectedResult = "cool_state_1 cool_state_2";
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -335,8 +339,8 @@ key3=value3";
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}dynamic-mode-scenario-hitcount.txt";
-        await SetScenario("dynamic-mode-scenario-hitcount", new ScenarioStateInputDto {HitCount = 3});
-        await SetScenario("scenario123", new ScenarioStateInputDto {HitCount = 123});
+        await SetScenario("dynamic-mode-scenario-hitcount", new ScenarioStateInputDto { HitCount = 3 });
+        await SetScenario("scenario123", new ScenarioStateInputDto { HitCount = 123 });
         const string expectedResult = "4 123";
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);

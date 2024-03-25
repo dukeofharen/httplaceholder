@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Metadata.Queries.FeatureIsEnabled;
+using HttPlaceholder.Application.Configuration.Models;
+using HttPlaceholder.Application.Metadata.Queries;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.TestUtilities.Options;
 
@@ -50,7 +51,7 @@ public class FeatureIsEnabledQueryHandlerFacts
     public async Task Handle_Authentication(string username, string password, bool expectedResult)
     {
         // Arrange
-        _settings.Authentication = new AuthenticationSettingsModel {ApiPassword = password, ApiUsername = username};
+        _settings.Authentication = new AuthenticationSettingsModel { ApiPassword = password, ApiUsername = username };
         var query = new FeatureIsEnabledQuery(FeatureFlagType.Authentication);
 
         // Act

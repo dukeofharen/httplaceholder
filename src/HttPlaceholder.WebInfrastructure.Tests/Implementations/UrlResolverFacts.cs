@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.WebInfrastructure.Implementations;
 
@@ -40,7 +41,7 @@ public class UrlResolverFacts
         {
             var options = MockSettingsFactory.GetOptionsMonitor(new SettingsModel
             {
-                Web = new WebSettingsModel {PublicUrl = configuredPublicUrl}
+                Web = new WebSettingsModel { PublicUrl = configuredPublicUrl }
             });
             _mocker.Use(options);
         }
@@ -80,7 +81,7 @@ public class UrlResolverFacts
         {
             var options = MockSettingsFactory.GetOptionsMonitor(new SettingsModel
             {
-                Web = new WebSettingsModel {PublicUrl = configuredPublicUrl}
+                Web = new WebSettingsModel { PublicUrl = configuredPublicUrl }
             });
             _mocker.Use(options);
         }

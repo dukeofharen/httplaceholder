@@ -12,7 +12,7 @@ public class IsHttpsHandlerFacts
     public async Task IsHttpsHandler_HandleStubGenerationAsync_NoHttps_ShouldNotSetIsHttps()
     {
         // Arrange
-        var request = new HttpRequestModel {Url = "http://httplaceholder.com"};
+        var request = new HttpRequestModel { Url = "http://httplaceholder.com" };
         var conditions = new StubConditionsModel();
 
         // Act
@@ -27,7 +27,7 @@ public class IsHttpsHandlerFacts
     public async Task IsHttpsHandler_HandleStubGenerationAsync_Https_ShouldSetToTrue()
     {
         // Arrange
-        var request = new HttpRequestModel {Url = "https://httplaceholder.com"};
+        var request = new HttpRequestModel { Url = "https://httplaceholder.com" };
         var conditions = new StubConditionsModel();
 
         // Act

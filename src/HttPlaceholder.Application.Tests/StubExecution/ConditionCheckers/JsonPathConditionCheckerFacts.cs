@@ -20,11 +20,11 @@ public class JsonPathConditionCheckerFacts
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
 
-        var conditions = new StubConditionsModel {JsonPath = null};
+        var conditions = new StubConditionsModel { JsonPath = null };
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -36,11 +36,11 @@ public class JsonPathConditionCheckerFacts
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
 
-        var conditions = new StubConditionsModel {JsonPath = Array.Empty<object>()};
+        var conditions = new StubConditionsModel { JsonPath = Array.Empty<object>() };
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -55,24 +55,26 @@ public class JsonPathConditionCheckerFacts
 
         var conditions = new StubConditionsModel
         {
-            JsonPath = new[] {"$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]"}
+            JsonPath = new[] { "$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]" }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""achievements"": [
-    {
-      ""name"": ""Man of the year""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "achievements": [
+                                {
+                                  "name": "Man of the year"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -87,24 +89,26 @@ public class JsonPathConditionCheckerFacts
 
         var conditions = new StubConditionsModel
         {
-            JsonPath = new[] {"$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]"}
+            JsonPath = new[] { "$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]" }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""achievements"": [
-    {
-      ""name"": ""Just an average guy""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "achievements": [
+                                {
+                                  "name": "Just an average guy"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -121,26 +125,31 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
+                new Dictionary<object, object>
+                {
+                    { "query", "$.people[0].firstName" }, { "expectedValue", "John" }
+                },
                 "$.people[0].achievements[?(@.name=='Man of the year')]"
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""achievements"": [
-    {
-      ""name"": ""Man of the year""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "achievements": [
+                                {
+                                  "name": "Man of the year"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -157,26 +166,31 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
+                new Dictionary<object, object>
+                {
+                    { "query", "$.people[0].firstName" }, { "expectedValue", "John" }
+                },
                 "$.people[0].achievements[?(@.name=='Man of the year')]"
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""achievements"": [
-    {
-      ""name"": ""Just an average guy""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "achievements": [
+                                {
+                                  "name": "Just an average guy"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -193,26 +207,31 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
+                new Dictionary<object, object>
+                {
+                    { "query", "$.people[0].firstName" }, { "expectedValue", "John" }
+                },
                 "$.people[0].achievements[?(@.name=='Man of the year')]"
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""Marc"",
-  ""achievements"": [
-    {
-      ""name"": ""Man of the year""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "Marc",
+                              "achievements": [
+                                {
+                                  "name": "Man of the year"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -229,31 +248,36 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
                 new Dictionary<object, object>
                 {
-                    {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
+                    { "query", "$.people[0].firstName" }, { "expectedValue", "John" }
                 },
-                new Dictionary<object, object> {{"query", "$.people[0].age"}}
+                new Dictionary<object, object>
+                {
+                    { "query", "$.people[0].achievements[0].name" }, { "expectedValue", "Man of the year" }
+                },
+                new Dictionary<object, object> { { "query", "$.people[0].age" } }
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""age"": 29,
-  ""achievements"": [
-    {
-      ""name"": ""Man of the year""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "age": 29,
+                              "achievements": [
+                                {
+                                  "name": "Man of the year"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -270,31 +294,36 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
                 new Dictionary<object, object>
                 {
-                    {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
+                    { "query", "$.people[0].firstName" }, { "expectedValue", "John" }
                 },
-                new Dictionary<object, object> {{"query", "$.people[0].age"}}
+                new Dictionary<object, object>
+                {
+                    { "query", "$.people[0].achievements[0].name" }, { "expectedValue", "Man of the year" }
+                },
+                new Dictionary<object, object> { { "query", "$.people[0].age" } }
             }
         };
 
-        const string json = @"{""people"": [{
-  ""firstName"": ""John"",
-  ""age"": 29,
-  ""achievements"": [
-    {
-      ""name"": ""Just an average guy""
-    }
-  ]
-}]}";
+        const string json = """
+                            {"people": [{
+                              "firstName": "John",
+                              "age": 29,
+                              "achievements": [
+                                {
+                                  "name": "Just an average guy"
+                                }
+                              ]
+                            }]}
+                            """;
         httpMock
             .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(json);
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -304,7 +333,7 @@ public class JsonPathConditionCheckerFacts
     public void ConvertJsonPathCondition_InputIsJObject_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
-        var input = JObject.FromObject(new {query = "jpath query", expectedValue = "expected value"});
+        var input = JObject.FromObject(new { query = "jpath query", expectedValue = "expected value" });
 
         // Act
         var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
@@ -318,7 +347,10 @@ public class JsonPathConditionCheckerFacts
     public void ConvertJsonPathCondition_InputIsObjectDictionary_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
-        var input = new Dictionary<object, object> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
+        var input = new Dictionary<object, object>
+        {
+            { "query", "jpath query" }, { "expectedValue", "expected value" }
+        };
 
         // Act
         var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
@@ -332,7 +364,10 @@ public class JsonPathConditionCheckerFacts
     public void ConvertJsonPathCondition_InputIsStringDictionary_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
-        var input = new Dictionary<string, string> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
+        var input = new Dictionary<string, string>
+        {
+            { "query", "jpath query" }, { "expectedValue", "expected value" }
+        };
 
         // Act
         var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
@@ -361,7 +396,7 @@ public class JsonPathConditionCheckerFacts
     public void ConvertJsonPathCondition_QueryIsNotSet_ShouldThrowInvalidOperationException()
     {
         // Arrange
-        var input = new Dictionary<object, object> {{"query", string.Empty}, {"expectedValue", "expected value"}};
+        var input = new Dictionary<object, object> { { "query", string.Empty }, { "expectedValue", "expected value" } };
 
         // Act
         var exception = Assert.ThrowsException<InvalidOperationException>(() =>

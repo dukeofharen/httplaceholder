@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -17,11 +18,11 @@ public class ContentTypeResponseWriter : IResponseWriter, ISingletonService
     {
         if (string.IsNullOrWhiteSpace(stub.Response?.ContentType))
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return Task.FromResult(IsNotExecuted(GetType().Name));
         }
 
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, stub.Response.ContentType);
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        return Task.FromResult(IsExecuted(GetType().Name));
     }
 
     /// <inheritdoc />

@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Application;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
@@ -51,13 +52,13 @@ public static class StartupUtilities
             return app;
         }
 
-        var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
-        if (Directory.Exists(path))
+        var guiPath = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
+        if (Directory.Exists(guiPath))
         {
-            app.UseMiddleware<IndexHtmlMiddleware>(path);
+            app.UseMiddleware<IndexHtmlMiddleware>(guiPath);
             app.UseFileServer(new FileServerOptions
             {
-                EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(path), RequestPath = "/ph-ui"
+                EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(guiPath), RequestPath = "/ph-ui"
             });
         }
 

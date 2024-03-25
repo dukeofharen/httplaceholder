@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -16,11 +17,11 @@ internal class ClearScenarioStateResponseWriter(IStubContext stubContext) : IRes
     {
         if (stub.Response.Scenario?.ClearState != true || string.IsNullOrWhiteSpace(stub.Scenario))
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         await stubContext.DeleteScenarioAsync(stub.Scenario, cancellationToken);
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        return IsExecuted(GetType().Name);
     }
 
     /// <inheritdoc />

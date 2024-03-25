@@ -23,13 +23,13 @@ public static class ArgsHelper
             if (arg.StartsWith("--"))
             {
                 varPointer = arg.Replace("--", string.Empty);
-                subResult.Add(varPointer, new List<string>());
+                subResult.Add(varPointer, []);
             }
             else
             {
-                if (subResult.ContainsKey(varPointer))
+                if (subResult.TryGetValue(varPointer, out var value))
                 {
-                    subResult[varPointer].Add(arg);
+                    value.Add(arg);
                 }
             }
         }

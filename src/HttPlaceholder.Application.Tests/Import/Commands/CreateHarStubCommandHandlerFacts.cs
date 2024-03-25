@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Import.Commands.CreateHarStub;
+﻿using HttPlaceholder.Application.Import.Commands;
 using HttPlaceholder.Application.StubExecution;
 
 namespace HttPlaceholder.Application.Tests.Import.Commands;

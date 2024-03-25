@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Scenarios.Commands.SetScenario;
+﻿using HttPlaceholder.Application.Scenarios.Commands;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Entities;
 

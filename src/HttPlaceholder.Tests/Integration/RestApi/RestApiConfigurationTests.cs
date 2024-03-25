@@ -38,7 +38,7 @@ public class RestApiConfigurationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}ph-api/configuration";
-        var request = new UpdateConfigurationValueInputDto {ConfigurationKey = "storeResponses", NewValue = "true"};
+        var request = new UpdateConfigurationValueInputDto { ConfigurationKey = "storeResponses", NewValue = "true" };
 
         // Act
         using var response = await Client.PatchAsync(url,

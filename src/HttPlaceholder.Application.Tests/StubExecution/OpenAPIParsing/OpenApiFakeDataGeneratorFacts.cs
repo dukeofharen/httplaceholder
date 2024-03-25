@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Text;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
+using HttPlaceholder.Common;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
@@ -11,16 +12,23 @@ namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;
 [TestClass]
 public class OpenApiFakeDataGeneratorFacts
 {
-    private readonly OpenApiFakeDataGenerator _generator = new();
+    private readonly AutoMocker _mocker = new();
+
+    [TestInitialize]
+    public void Initialize() =>
+        _mocker.GetMock<IDateTime>()
+            .Setup(m => m.Now)
+            .Returns(DateTime.Now);
 
     [TestMethod]
     public void GetRandomValue_Boolean()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "boolean"};
+        var schema = new OpenApiSchema { Type = "boolean" };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsInstanceOfType(result, typeof(bool));
@@ -30,10 +38,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Null()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "null"};
+        var schema = new OpenApiSchema { Type = "null" };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsNull(result);
@@ -43,10 +52,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Default()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "unknown"};
+        var schema = new OpenApiSchema { Type = "unknown" };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsTrue(string.IsNullOrWhiteSpace((string)result));
@@ -58,10 +68,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_StringValue_ByteAndBinary(string format)
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string", Format = format};
+        var schema = new OpenApiSchema { Type = "string", Format = format };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         var decoded = Encoding.UTF8.GetString(Convert.FromBase64String((string)result));
@@ -72,10 +83,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_StringValue_Date()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string", Format = "date"};
+        var schema = new OpenApiSchema { Type = "string", Format = "date" };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsTrue(DateTime.TryParseExact((string)result, "yyyy-MM-dd", CultureInfo.InvariantCulture,
@@ -86,10 +98,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_StringValue_DateTime()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string", Format = "date-time"};
+        var schema = new OpenApiSchema { Type = "string", Format = "date-time" };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsTrue(DateTime.TryParseExact((string)result, "yyyy-MM-ddTHH:mm:ssK", CultureInfo.InvariantCulture,
@@ -100,10 +113,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_StringValue_Default()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string", Format = string.Empty};
+        var schema = new OpenApiSchema { Type = "string", Format = string.Empty };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace((string)result));
@@ -121,9 +135,10 @@ public class OpenApiFakeDataGeneratorFacts
                 new OpenApiString("cat"), new OpenApiString("dog"), new OpenApiString("rabbit")
             }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = (string)OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = (string)generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsTrue(result is "cat" or "dog" or "rabbit");
@@ -135,11 +150,12 @@ public class OpenApiFakeDataGeneratorFacts
         // Arrange
         var schema = new OpenApiSchema
         {
-            OneOf = new List<OpenApiSchema> {new() {Type = "string", Format = string.Empty}}
+            OneOf = new List<OpenApiSchema> { new() { Type = "string", Format = string.Empty } }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace((string)result));
@@ -151,11 +167,12 @@ public class OpenApiFakeDataGeneratorFacts
         // Arrange
         var schema = new OpenApiSchema
         {
-            AllOf = new List<OpenApiSchema> {new() {Type = "string", Format = string.Empty}}
+            AllOf = new List<OpenApiSchema> { new() { Type = "string", Format = string.Empty } }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace((string)result));
@@ -168,10 +185,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Integer(string format)
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "integer", Format = format};
+        var schema = new OpenApiSchema { Type = "integer", Format = format };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsInstanceOfType(result, typeof(long));
@@ -184,10 +202,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomValue_Number(string format)
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "number", Format = format};
+        var schema = new OpenApiSchema { Type = "number", Format = format };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsInstanceOfType(result, typeof(double));
@@ -202,13 +221,14 @@ public class OpenApiFakeDataGeneratorFacts
             Type = "object",
             Properties = new Dictionary<string, OpenApiSchema>
             {
-                {"stringKey", new OpenApiSchema {Type = "string"}},
-                {"intKey", new OpenApiSchema {Type = "integer"}}
+                { "stringKey", new OpenApiSchema { Type = "string" } },
+                { "intKey", new OpenApiSchema { Type = "integer" } }
             }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = (IDictionary<string, object>)OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = (IDictionary<string, object>)generator.GetRandomValue(schema);
 
         // Assert
         Assert.AreEqual(2, result.Count);
@@ -225,13 +245,14 @@ public class OpenApiFakeDataGeneratorFacts
             Type = null,
             Properties = new Dictionary<string, OpenApiSchema>
             {
-                {"stringKey", new OpenApiSchema {Type = "string"}},
-                {"intKey", new OpenApiSchema {Type = "integer"}}
+                { "stringKey", new OpenApiSchema { Type = "string" } },
+                { "intKey", new OpenApiSchema { Type = "integer" } }
             }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = (IDictionary<string, object>)OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = (IDictionary<string, object>)generator.GetRandomValue(schema);
 
         // Assert
         Assert.AreEqual(2, result.Count);
@@ -251,14 +272,15 @@ public class OpenApiFakeDataGeneratorFacts
                 Type = "object",
                 Properties = new Dictionary<string, OpenApiSchema>
                 {
-                    {"stringKey", new OpenApiSchema {Type = "string"}},
-                    {"intKey", new OpenApiSchema {Type = "integer"}}
+                    { "stringKey", new OpenApiSchema { Type = "string" } },
+                    { "intKey", new OpenApiSchema { Type = "integer" } }
                 }
             }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = (object[])OpenApiFakeDataGenerator.GetRandomValue(schema);
+        var result = (object[])generator.GetRandomValue(schema);
 
         // Assert
         Assert.IsTrue(result.Length >= 1);
@@ -274,10 +296,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomStringValue_HappyFlow()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "integer"};
+        var schema = new OpenApiSchema { Type = "integer" };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetRandomStringValue(schema);
+        var result = generator.GetRandomStringValue(schema);
 
         // Assert
         Assert.IsTrue(long.TryParse(result, out _));
@@ -287,10 +310,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomStringValue_HappyFlow_Null()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "null"};
+        var schema = new OpenApiSchema { Type = "null" };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetRandomStringValue(schema);
+        var result = generator.GetRandomStringValue(schema);
 
         // Assert
         Assert.IsNull(result);
@@ -300,10 +324,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetRandomJsonStringValue_HappyFlow()
     {
         // Arrange
-        var schema = new OpenApiSchema {Type = "string"};
+        var schema = new OpenApiSchema { Type = "string" };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetRandomJsonStringValue(schema);
+        var result = generator.GetRandomJsonStringValue(schema);
 
         // Assert
         var rawResult = JsonConvert.DeserializeObject<string>(result);
@@ -314,10 +339,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetResponseJsonExample_NoExamples_ShouldReturnNull()
     {
         // Arrange
-        var mediaType = new OpenApiMediaType {Examples = null};
+        var mediaType = new OpenApiMediaType { Examples = null };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetJsonExample(mediaType);
+        var result = generator.GetJsonExample(mediaType);
 
         // Assert
         Assert.IsNull(result);
@@ -329,11 +355,12 @@ public class OpenApiFakeDataGeneratorFacts
         // Arrange
         var mediaType = new OpenApiMediaType
         {
-            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = null}}}
+            Examples = new Dictionary<string, OpenApiExample> { { "foo", new OpenApiExample { Value = null } } }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetJsonExample(mediaType);
+        var result = generator.GetJsonExample(mediaType);
 
         // Assert
         Assert.IsNull(result);
@@ -343,56 +370,67 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetResponseJsonExample_Example_ExampleIsOpenApiObject_ShouldReturnJsonString()
     {
         // Arrange
-        var obj = new OpenApiObject {{"key", new OpenApiString("val")}};
-        var mediaType = new OpenApiMediaType {Example = obj};
+        var obj = new OpenApiObject { { "key", new OpenApiString("val") } };
+        var mediaType = new OpenApiMediaType { Example = obj };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetJsonExample(mediaType);
+        var result = generator.GetJsonExample(mediaType);
 
         // Assert
-        Assert.AreEqual(@"{
-  ""key"": ""val""
-}", result);
+        Assert.AreEqual("""
+                        {
+                          "key": "val"
+                        }
+                        """, result);
     }
 
     [TestMethod]
     public void GetResponseJsonExample_Examples_ExampleIsOpenApiObject_ShouldReturnJsonString()
     {
         // Arrange
-        var obj = new OpenApiObject {{"key", new OpenApiString("val")}};
+        var obj = new OpenApiObject { { "key", new OpenApiString("val") } };
         var mediaType = new OpenApiMediaType
         {
-            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = obj}}}
+            Examples = new Dictionary<string, OpenApiExample> { { "foo", new OpenApiExample { Value = obj } } }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetJsonExample(mediaType);
+        var result = generator.GetJsonExample(mediaType);
 
         // Assert
-        Assert.AreEqual(@"{
-  ""key"": ""val""
-}", result);
+        Assert.AreEqual("""
+                        {
+                          "key": "val"
+                        }
+                        """, result);
     }
 
     [TestMethod]
     public void GetResponseJsonExample_Examples_ExampleIsOpenApiString_ShouldReturnJsonString()
     {
         // Arrange
-        var obj = new OpenApiString(@"{
-  ""key"": ""val""
-}");
+        var obj = new OpenApiString("""
+                                    {
+                                      "key": "val"
+                                    }
+                                    """);
         var mediaType = new OpenApiMediaType
         {
-            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = obj}}}
+            Examples = new Dictionary<string, OpenApiExample> { { "foo", new OpenApiExample { Value = obj } } }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetJsonExample(mediaType);
+        var result = generator.GetJsonExample(mediaType);
 
         // Assert
-        Assert.AreEqual(@"{
-  ""key"": ""val""
-}", result);
+        Assert.AreEqual("""
+                        {
+                          "key": "val"
+                        }
+                        """, result);
     }
 
     [DataTestMethod]
@@ -432,7 +470,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void ExtractOpenApiPrimitiveValue_Binary()
     {
         // Arrange
-        var any = new OpenApiBinary(new byte[] {1, 2, 3});
+        var any = new OpenApiBinary([1, 2, 3]);
 
         // Act
         var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Binary);
@@ -445,7 +483,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void ExtractOpenApiPrimitiveValue_Byte()
     {
         // Arrange
-        var any = new OpenApiByte(new byte[] {1, 2, 3});
+        var any = new OpenApiByte([1, 2, 3]);
 
         // Act
         var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Byte);
@@ -590,13 +628,15 @@ public class OpenApiFakeDataGeneratorFacts
             Example = null,
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = null}
+            Schema = new OpenApiSchema { Example = null }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
+
 
         // Act
-        var result = _generator.GetExampleForHeader(input);
+        var result = generator.GetExampleForHeader(input);
 
         // Assert
         Assert.AreEqual(123, result);
@@ -611,13 +651,15 @@ public class OpenApiFakeDataGeneratorFacts
             Example = null,
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
+            Schema = new OpenApiSchema { Example = new OpenApiInteger(789) }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
+
 
         // Act
-        var result = _generator.GetExampleForHeader(input);
+        var result = generator.GetExampleForHeader(input);
 
         // Assert
         Assert.AreEqual(789, result);
@@ -632,13 +674,15 @@ public class OpenApiFakeDataGeneratorFacts
             Example = new OpenApiInteger(456),
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
+            Schema = new OpenApiSchema { Example = new OpenApiInteger(789) }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
+
 
         // Act
-        var result = _generator.GetExampleForHeader(input);
+        var result = generator.GetExampleForHeader(input);
 
         // Assert
         Assert.AreEqual(456, result);
@@ -648,10 +692,11 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetExampleForHeader_NoExampleFound_ShouldReturnNull()
     {
         // Arrange
-        var input = new OpenApiHeader {Example = null, Examples = null};
+        var input = new OpenApiHeader { Example = null, Examples = null };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
 
         // Act
-        var result = _generator.GetExampleForHeader(input);
+        var result = generator.GetExampleForHeader(input);
 
         // Assert
         Assert.IsNull(result);
@@ -666,13 +711,15 @@ public class OpenApiFakeDataGeneratorFacts
             Example = null,
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = null}
+            Schema = new OpenApiSchema { Example = null }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
+
 
         // Act
-        var result = _generator.GetExampleForParameter(input);
+        var result = generator.GetExampleForParameter(input);
 
         // Assert
         Assert.AreEqual(123, result);
@@ -687,13 +734,15 @@ public class OpenApiFakeDataGeneratorFacts
             Example = null,
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
+            Schema = new OpenApiSchema { Example = new OpenApiInteger(789) }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
+
 
         // Act
-        var result = _generator.GetExampleForParameter(input);
+        var result = generator.GetExampleForParameter(input);
 
         // Assert
         Assert.AreEqual(789, result);
@@ -708,13 +757,15 @@ public class OpenApiFakeDataGeneratorFacts
             Example = new OpenApiInteger(456),
             Examples = new Dictionary<string, OpenApiExample>
             {
-                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+                { "foo", new OpenApiExample { Value = new OpenApiInteger(123) } }
             },
-            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
+            Schema = new OpenApiSchema { Example = new OpenApiInteger(789) }
         };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
+
 
         // Act
-        var result = _generator.GetExampleForParameter(input);
+        var result = generator.GetExampleForParameter(input);
 
         // Assert
         Assert.AreEqual(456, result);
@@ -724,10 +775,12 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetExampleForParameter_NoExampleFound_ShouldReturnNull()
     {
         // Arrange
-        var input = new OpenApiParameter {Example = null, Examples = null};
+        var input = new OpenApiParameter { Example = null, Examples = null };
+        var generator = _mocker.CreateInstance<OpenApiFakeDataGenerator>();
+
 
         // Act
-        var result = _generator.GetExampleForParameter(input);
+        var result = generator.GetExampleForParameter(input);
 
         // Assert
         Assert.IsNull(result);

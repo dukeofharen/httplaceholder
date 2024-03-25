@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
-using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 

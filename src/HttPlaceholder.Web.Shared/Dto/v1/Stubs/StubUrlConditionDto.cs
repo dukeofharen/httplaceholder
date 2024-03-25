@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces.Mappings;
+﻿using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Web.Shared.Attributes;
 using YamlDotNet.Serialization;
@@ -15,21 +15,21 @@ public class StubUrlConditionDto : IMapFrom<StubUrlConditionModel>, IMapTo<StubU
     ///     Gets or sets the path.
     /// </summary>
     [YamlMember(Alias = "path")]
-    [OneOf(Types = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
+    [OneOf(Types = [typeof(string), typeof(StubConditionStringCheckingDto)])]
     public object Path { get; set; }
 
     /// <summary>
     ///     Gets or sets the query.
     /// </summary>
     [YamlMember(Alias = "query")]
-    [OneOf(AdditionalPropertiesTypes = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
+    [OneOf(AdditionalPropertiesTypes = [typeof(string), typeof(StubConditionStringCheckingDto)])]
     public IDictionary<string, object> Query { get; set; }
 
     /// <summary>
     ///     Gets or sets the full path.
     /// </summary>
     [YamlMember(Alias = "fullPath")]
-    [OneOf(Types = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
+    [OneOf(Types = [typeof(string), typeof(StubConditionStringCheckingDto)])]
     public object FullPath { get; set; }
 
     /// <summary>

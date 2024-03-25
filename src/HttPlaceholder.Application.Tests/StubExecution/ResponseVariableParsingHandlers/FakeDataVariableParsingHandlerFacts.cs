@@ -31,7 +31,7 @@ public class FakeDataVariableParsingHandlerFacts
         string expectedFormatting)
     {
         // Arrange
-        var locales = new[] {"en_US"};
+        var locales = new[] { "en_US" };
         var fakerServiceMock = _mocker.GetMock<IFakerService>();
         fakerServiceMock
             .Setup(m => m.GetLocales())
@@ -52,7 +52,7 @@ public class FakeDataVariableParsingHandlerFacts
     public void GetDescription_HappyFlow()
     {
         // Arrange
-        var locales = new[] {"en_US", "nl"};
+        var locales = new[] { "en_US", "nl" };
         const string description = "the description [LOCALES]";
         const string expectedDescription = "the description _en_US_, _nl_";
 
@@ -87,7 +87,7 @@ public class FakeDataVariableParsingHandlerFacts
     public void Examples_HappyFlow()
     {
         // Arrange
-        var locales = new[] {"en_US", "nl"};
+        var locales = new[] { "en_US", "nl" };
         var generators = new[]
         {
             new FakeDataGeneratorModel("gen1", (_, _, _) => string.Empty),
@@ -147,7 +147,7 @@ public class FakeDataVariableParsingHandlerFacts
     public async Task Parse_Matches_HappyFlow()
     {
         // Arrange
-        var locales = new[] {"en_US", "nl"};
+        var locales = new[] { "en_US", "nl" };
 
         var fakerServiceMock = _mocker.GetMock<IFakerService>();
         fakerServiceMock
@@ -158,7 +158,7 @@ public class FakeDataVariableParsingHandlerFacts
         const string input = "((fake_data:gen1)) ((fake_data:nl:gen2:5))";
         const string expectedOutput = "fake1 fake2";
 
-        var stubModel = new StubModel {Scenario = "stub-scenario"};
+        var stubModel = new StubModel { Scenario = "stub-scenario" };
 
         fakerServiceMock
             .Setup(m => m.GenerateFakeData("gen1", string.Empty, string.Empty))

@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.WebInfrastructure.Implementations;
@@ -12,7 +13,7 @@ public class ApiAuthorizationServiceFacts
 {
     private readonly AutoMocker _mocker = new();
     private readonly MockLogger<ApiAuthorizationService> _mockLogger = new();
-    private readonly SettingsModel _settings = new() {Authentication = new AuthenticationSettingsModel()};
+    private readonly SettingsModel _settings = new() { Authentication = new AuthenticationSettingsModel() };
 
     [TestInitialize]
     public void Initialize()
@@ -35,7 +36,7 @@ public class ApiAuthorizationServiceFacts
         _settings.Authentication.ApiUsername = username;
         _settings.Authentication.ApiPassword = "password";
 
-        ClaimsPrincipal capturedClaimsPrincipal = null;
+        ClaimsPrincipal? capturedClaimsPrincipal = null;
         mockHttpContextService
             .Setup(m => m.SetUser(It.IsAny<ClaimsPrincipal>()))
             .Callback<ClaimsPrincipal>(p => capturedClaimsPrincipal = p);
@@ -76,7 +77,7 @@ public class ApiAuthorizationServiceFacts
         mockLoginService
             .Setup(m => m.CheckLoginCookie())
             .Returns(false);
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjpwYXNzOm9uemlu"}});
+        SetHeaders(new Dictionary<string, string> { { HeaderKeys.Authorization, "Basic dXNlcjpwYXNzOm9uemlu" } });
 
         // Act
         var result = service.CheckAuthorization();
@@ -97,7 +98,7 @@ public class ApiAuthorizationServiceFacts
             .Returns(false);
         _settings.Authentication.ApiUsername = "user";
         _settings.Authentication.ApiPassword = "pass";
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjE6cGFzczE="}});
+        SetHeaders(new Dictionary<string, string> { { HeaderKeys.Authorization, "Basic dXNlcjE6cGFzczE=" } });
 
         // Act
         var result = service.CheckAuthorization();
@@ -116,7 +117,7 @@ public class ApiAuthorizationServiceFacts
         mockLoginService
             .Setup(m => m.CheckLoginCookie())
             .Returns(false);
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic ()*&"}});
+        SetHeaders(new Dictionary<string, string> { { HeaderKeys.Authorization, "Basic ()*&" } });
 
         // Act
         var result = service.CheckAuthorization();
@@ -139,9 +140,9 @@ public class ApiAuthorizationServiceFacts
             .Returns(false);
         _settings.Authentication.ApiUsername = "user";
         _settings.Authentication.ApiPassword = "pass";
-        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjpwYXNz"}});
+        SetHeaders(new Dictionary<string, string> { { HeaderKeys.Authorization, "Basic dXNlcjpwYXNz" } });
 
-        ClaimsPrincipal capturedClaimsPrincipal = null;
+        ClaimsPrincipal? capturedClaimsPrincipal = null;
         mockHttpContextService
             .Setup(m => m.SetUser(It.IsAny<ClaimsPrincipal>()))
             .Callback<ClaimsPrincipal>(p => capturedClaimsPrincipal = p);
@@ -159,7 +160,7 @@ public class ApiAuthorizationServiceFacts
             .Setup(m => m.GetHeaders())
             .Returns(headers);
 
-    private static void AssertUser(string username, ClaimsPrincipal principal)
+    private static void AssertUser(string username, ClaimsPrincipal? principal)
     {
         Assert.IsNotNull(principal);
 

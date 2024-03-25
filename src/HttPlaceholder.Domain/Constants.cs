@@ -17,12 +17,12 @@ public static class Constants
     /// <summary>
     ///     An array of separator characters for providing multiple input file paths.
     /// </summary>
-    public static readonly string[] InputFileSeparators = {"%%", ","};
+    public static readonly string[] InputFileSeparators = ["%%", ","];
 
     /// <summary>
     ///     The number of seconds a regex can execute before timing out.
     /// </summary>
-    public static readonly int RegexTimeoutSeconds = 10;
+    public const int RegexTimeoutSeconds = 10;
 }
 
 /// <summary>
@@ -244,6 +244,11 @@ public static class HeaderKeys
     ///     The location header key.
     /// </summary>
     public const string Location = "Location";
+
+    /// <summary>
+    ///     The authorization header key.
+    /// </summary>
+    public const string Authorization = "Authorization";
 }
 
 /// <summary>
@@ -265,17 +270,17 @@ public static class CliArgs
     /// <summary>
     ///     CLI arguments that enable verbose logging.
     /// </summary>
-    public static readonly string[] VerboseArgs = {"-V", "--verbose"};
+    public static readonly string[] VerboseArgs = ["-V", "--verbose"];
 
     /// <summary>
     ///     CLI arguments that show the HttPlaceholder version.
     /// </summary>
-    public static readonly string[] VersionArgs = {"-v", "--version"};
+    public static readonly string[] VersionArgs = ["-v", "--version"];
 
     /// <summary>
     ///     CLI arguments that show the help page.
     /// </summary>
-    public static readonly string[] HelpArgs = {"-h", "--help", "-?"};
+    public static readonly string[] HelpArgs = ["-h", "--help", "-?"];
 
     /// <summary>
     ///     Determines whether verbose logging is enabled.

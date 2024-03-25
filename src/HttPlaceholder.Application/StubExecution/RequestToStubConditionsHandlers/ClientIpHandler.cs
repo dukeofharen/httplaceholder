@@ -12,7 +12,9 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 internal class ClientIpHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+    public Task<bool> HandleStubGenerationAsync(
+        HttpRequestModel request,
+        StubConditionsModel conditions,
         CancellationToken cancellationToken)
     {
         conditions.ClientIp = request.ClientIp;

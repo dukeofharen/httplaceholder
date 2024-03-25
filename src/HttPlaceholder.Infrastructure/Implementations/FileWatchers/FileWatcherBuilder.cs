@@ -10,9 +10,13 @@ internal class FileWatcherBuilder(IFileService fileService) : IFileWatcherBuilde
 {
     private readonly FileSystemWatcher _watcher = new() { EnableRaisingEvents = true };
 
-    public void SetNotifyFilters(NotifyFilters filters) => _watcher.NotifyFilter = filters;
+    public IFileWatcherBuilder SetNotifyFilters(NotifyFilters filters)
+    {
+        _watcher.NotifyFilter = filters;
+        return this;
+    }
 
-    public void SetPathOrFilters(string path, IEnumerable<string> extensions = null)
+    public IFileWatcherBuilder SetPathOrFilters(string path, IEnumerable<string> extensions = null)
     {
         var isDir = fileService.IsDirectory(path);
         var finalLocation = (isDir ? path : Path.GetDirectoryName(path)) ??
@@ -29,22 +33,39 @@ internal class FileWatcherBuilder(IFileService fileService) : IFileWatcherBuilde
                 _watcher.Filters.Add($"*{extension}");
             }
         }
+
+        return this;
     }
 
-    public void SetOnChanged(Action<object, FileSystemEventArgs> action) =>
+    public IFileWatcherBuilder SetOnChanged(Action<object, FileSystemEventArgs> action)
+    {
         _watcher.Changed += (sender, args) => action(sender, args);
+        return this;
+    }
 
-    public void SetOnCreated(Action<object, FileSystemEventArgs> action) =>
+    public IFileWatcherBuilder SetOnCreated(Action<object, FileSystemEventArgs> action)
+    {
         _watcher.Created += (sender, args) => action(sender, args);
+        return this;
+    }
 
-    public void SetOnDeleted(Action<object, FileSystemEventArgs> action) =>
+    public IFileWatcherBuilder SetOnDeleted(Action<object, FileSystemEventArgs> action)
+    {
         _watcher.Deleted += (sender, args) => action(sender, args);
+        return this;
+    }
 
-    public void SetOnRenamed(Action<object, RenamedEventArgs> action) =>
+    public IFileWatcherBuilder SetOnRenamed(Action<object, RenamedEventArgs> action)
+    {
         _watcher.Renamed += (sender, args) => action(sender, args);
+        return this;
+    }
 
-    public void SetOnError(Action<object, ErrorEventArgs> action) =>
+    public IFileWatcherBuilder SetOnError(Action<object, ErrorEventArgs> action)
+    {
         _watcher.Error += (sender, args) => action(sender, args);
+        return this;
+    }
 
     public FileSystemWatcher Build() => _watcher;
 }

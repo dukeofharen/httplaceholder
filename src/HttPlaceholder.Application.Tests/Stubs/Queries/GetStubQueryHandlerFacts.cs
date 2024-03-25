@@ -1,6 +1,6 @@
 ﻿using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.Stubs.Queries.GetStub;
+using HttPlaceholder.Application.Stubs.Queries;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Queries;
 

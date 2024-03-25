@@ -23,7 +23,7 @@ public class ValidationException : Exception
     /// <param name="error">The error.</param>
     public ValidationException(string error)
     {
-        ValidationErrors = new[] {error};
+        ValidationErrors = new[] { error };
     }
 
     /// <summary>

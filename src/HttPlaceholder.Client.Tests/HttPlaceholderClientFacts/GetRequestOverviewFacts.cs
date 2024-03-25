@@ -9,26 +9,28 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetRequestOverviewFacts : BaseClientTest
 {
-    private const string RequestOverviewResponse = @"[
-    {
-        ""correlationId"": ""bec89e6a-9bee-4565-bccb-09f0a3363eee"",
-        ""method"": ""POST"",
-        ""url"": ""http://localhost:5000/post-xml-without-namespaces"",
-        ""executingStubId"": ""xml-without-namespaces-specified"",
-        ""stubTenant"": ""integration"",
-        ""requestBeginTime"": ""2021-05-13T10:45:35.8461861Z"",
-        ""requestEndTime"": ""2021-05-13T10:45:35.8635415Z""
-    },
-    {
-        ""correlationId"": ""e7ad87fd-29db-4a57-84c8-063a27462810"",
-        ""method"": ""POST"",
-        ""url"": ""http://localhost:5000/post-xml-without-namespaces"",
-        ""executingStubId"": ""xml-without-namespaces-specified"",
-        ""stubTenant"": ""integration"",
-        ""requestBeginTime"": ""2021-05-13T10:45:35.2001502Z"",
-        ""requestEndTime"": ""2021-05-13T10:45:35.2213267Z""
-    }
-]";
+    private const string RequestOverviewResponse = """
+                                                   [
+                                                       {
+                                                           "correlationId": "bec89e6a-9bee-4565-bccb-09f0a3363eee",
+                                                           "method": "POST",
+                                                           "url": "http://localhost:5000/post-xml-without-namespaces",
+                                                           "executingStubId": "xml-without-namespaces-specified",
+                                                           "stubTenant": "integration",
+                                                           "requestBeginTime": "2021-05-13T10:45:35.8461861Z",
+                                                           "requestEndTime": "2021-05-13T10:45:35.8635415Z"
+                                                       },
+                                                       {
+                                                           "correlationId": "e7ad87fd-29db-4a57-84c8-063a27462810",
+                                                           "method": "POST",
+                                                           "url": "http://localhost:5000/post-xml-without-namespaces",
+                                                           "executingStubId": "xml-without-namespaces-specified",
+                                                           "stubTenant": "integration",
+                                                           "requestBeginTime": "2021-05-13T10:45:35.2001502Z",
+                                                           "requestEndTime": "2021-05-13T10:45:35.2213267Z"
+                                                       }
+                                                   ]
+                                                   """;
 
     [TestMethod]
     public async Task GetRequestOverviewAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using HttPlaceholder.Web.Shared.Infrastructure.Web;
 using HttPlaceholder.WebInfrastructure.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
@@ -188,23 +187,6 @@ public class HttpContextServiceFacts
     }
 
     [TestMethod]
-    public void HasFormContentType_HappyFlow()
-    {
-        // Arrange
-        var service = _mocker.CreateInstance<HttpContextService>();
-        _mockHttpContext
-            .HttpRequestMock
-            .Setup(m => m.HasFormContentType)
-            .Returns(true);
-
-        // Act
-        var result = service.HasFormContentType;
-
-        // Assert
-        Assert.IsTrue(result);
-    }
-
-    [TestMethod]
     public async Task GetFormValues_NoContentTypeSet_ShouldReturnEmptyArray()
     {
         // Arrange
@@ -310,7 +292,7 @@ public class HttpContextServiceFacts
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
 
-        _mockHttpContext.Response.Headers.Add("key1", "val1");
+        _mockHttpContext.Response.Headers.Append("key1", "val1");
 
         // Act
         var result = service.TryAddHeader("key1", "val1");
@@ -325,7 +307,7 @@ public class HttpContextServiceFacts
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
 
-        _mockHttpContext.Response.Headers.Add("key1", "val1");
+        _mockHttpContext.Response.Headers.Append("key1", "val1");
 
         // Act
         var result = service.TryAddHeader("key2", "val2");

@@ -31,7 +31,7 @@ internal class CurlStubGenerator(
                 Tenant = tenant,
                 Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
                 Conditions = conditions,
-                Response = {Text = "OK!"}
+                Response = { Text = "OK!" }
             };
 
             // Generate an ID based on the created stub.
@@ -47,7 +47,7 @@ internal class CurlStubGenerator(
     {
         if (doNotCreateStub)
         {
-            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
+            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
         }
 
         await stubContext.DeleteStubAsync(stub.Id, cancellationToken);

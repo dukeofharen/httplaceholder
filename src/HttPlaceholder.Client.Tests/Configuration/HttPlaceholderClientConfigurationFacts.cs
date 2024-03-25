@@ -9,7 +9,7 @@ public class HttPlaceholderClientConfigurationFacts
     public void RootUrl_NoValueSet_ShouldLeaveRootUrlEmpty()
     {
         // Arrange / Act
-        var config = new HttPlaceholderClientConfiguration {RootUrl = string.Empty};
+        var config = new HttPlaceholderClientConfiguration { RootUrl = string.Empty };
 
         // Assert
         Assert.IsNull(config.RootUrl);
@@ -19,7 +19,7 @@ public class HttPlaceholderClientConfigurationFacts
     public void RootUrl_DoesntEndInSlash_ShouldAddSlash()
     {
         // Arrange / Act
-        var config = new HttPlaceholderClientConfiguration {RootUrl = "http://localhost:5000"};
+        var config = new HttPlaceholderClientConfiguration { RootUrl = "http://localhost:5000" };
 
         // Assert
         Assert.AreEqual("http://localhost:5000/", config.RootUrl);
@@ -29,7 +29,7 @@ public class HttPlaceholderClientConfigurationFacts
     public void RootUrl_EndsInSlash_ShouldNotAddExtraSlash()
     {
         // Arrange / Act
-        var config = new HttPlaceholderClientConfiguration {RootUrl = "http://localhost:5000/"};
+        var config = new HttPlaceholderClientConfiguration { RootUrl = "http://localhost:5000/" };
 
         // Assert
         Assert.AreEqual("http://localhost:5000/", config.RootUrl);
@@ -39,7 +39,7 @@ public class HttPlaceholderClientConfigurationFacts
     public void Validate_RootUrlEmpty_ShouldThrowArgumentException()
     {
         // Arrange
-        var config = new HttPlaceholderClientConfiguration {RootUrl = string.Empty};
+        var config = new HttPlaceholderClientConfiguration { RootUrl = string.Empty };
 
         // Act
         var exception = Assert.ThrowsException<ArgumentException>(() => config.Validate());

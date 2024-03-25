@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -14,7 +15,7 @@ public static class AssemblyHelper
     /// <returns>The entry assembly root path.</returns>
     public static string GetEntryAssemblyRootPath()
     {
-        var assembly = Assembly.GetEntryAssembly();
+        var assembly = GetEntryAssembly();
         var path = assembly.Location;
         return Path.GetDirectoryName(path);
     }
@@ -45,5 +46,17 @@ public static class AssemblyHelper
     ///     Returns the assembly version of the entry assembly.
     /// </summary>
     /// <returns>The version as string.</returns>
-    public static string GetAssemblyVersion() => Assembly.GetEntryAssembly().GetName().Version.ToString();
+    public static string GetAssemblyVersion()
+    {
+        var assemblyName = GetEntryAssembly().GetName();
+        if (assemblyName.Version == null)
+        {
+            throw new InvalidOperationException("No version information found in assembly information.");
+        }
+
+        return assemblyName.Version.ToString();
+    }
+
+    private static Assembly GetEntryAssembly() =>
+        Assembly.GetEntryAssembly() ?? throw new InvalidOperationException("Entry assembly not found.");
 }

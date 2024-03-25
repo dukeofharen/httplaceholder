@@ -9,28 +9,30 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetMetadataFacts : BaseClientTest
 {
-    private const string MetadataResponse = @"{
-    ""version"": ""2019.8.24.1234"",
-    ""variableHandlers"": [
-        {
-            ""name"": ""client_ip"",
-            ""fullName"": ""Client IP variable handler"",
-            ""example"": ""((client_ip))"",
-            ""description"": ""Client IP"",
-            ""examples"": [""((client_ip))""]
-        },
-        {
-            ""name"": ""display_url"",
-            ""fullName"": ""Display URL variable handler"",
-            ""example"": ""((display_url))""
-        },
-        {
-            ""name"": ""query_encoded"",
-            ""fullName"": ""URL encoded query string variable handler"",
-            ""example"": ""((query_encoded:query_string_key))""
-        }
-    ]
-}";
+    private const string MetadataResponse = """
+                                            {
+                                                "version": "2019.8.24.1234",
+                                                "variableHandlers": [
+                                                    {
+                                                        "name": "client_ip",
+                                                        "fullName": "Client IP variable handler",
+                                                        "example": "((client_ip))",
+                                                        "description": "Client IP",
+                                                        "examples": ["((client_ip))"]
+                                                    },
+                                                    {
+                                                        "name": "display_url",
+                                                        "fullName": "Display URL variable handler",
+                                                        "example": "((display_url))"
+                                                    },
+                                                    {
+                                                        "name": "query_encoded",
+                                                        "fullName": "URL encoded query string variable handler",
+                                                        "example": "((query_encoded:query_string_key))"
+                                                    }
+                                                ]
+                                            }
+                                            """;
 
     [TestMethod]
     public async Task GetMetadataAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

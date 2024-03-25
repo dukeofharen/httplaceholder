@@ -12,7 +12,7 @@ public class RequestParametersDtoFacts
     public void Map_BodyIsSet_ShouldUseBodyInMapping()
     {
         // Arrange
-        var model = new RequestParametersModel {Body = "request body"};
+        var model = new RequestParametersModel { Body = "request body" };
 
         // Act
         var result = _mapper.Map<RequestParametersDto>(model);
@@ -26,7 +26,7 @@ public class RequestParametersDtoFacts
     public void Map_BodyIsSetButEmptyString_ShouldUseBodyInMapping()
     {
         // Arrange
-        var model = new RequestParametersModel {Body = string.Empty};
+        var model = new RequestParametersModel { Body = string.Empty };
 
         // Act
         var result = _mapper.Map<RequestParametersDto>(model);
@@ -40,7 +40,7 @@ public class RequestParametersDtoFacts
     public void Map_BodyIsNotSet_BinaryBodyIsSet_BinaryBodyIsText_ShouldUseBodyInMapping()
     {
         // Arrange
-        var model = new RequestParametersModel {BinaryBody = "request body"u8.ToArray()};
+        var model = new RequestParametersModel { BinaryBody = "request body"u8.ToArray() };
 
         // Act
         var result = _mapper.Map<RequestParametersDto>(model);
@@ -54,7 +54,7 @@ public class RequestParametersDtoFacts
     public void Map_BodyIsNotSet_BinaryBodyIsSet_BinaryBodyIsBinary_ShouldUseBodyInMapping()
     {
         // Arrange
-        var model = new RequestParametersModel {BinaryBody = new byte[] {255}};
+        var model = new RequestParametersModel { BinaryBody = [255] };
 
         // Act
         var result = _mapper.Map<RequestParametersDto>(model);

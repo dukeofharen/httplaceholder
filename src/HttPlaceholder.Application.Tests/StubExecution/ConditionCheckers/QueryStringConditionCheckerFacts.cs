@@ -22,11 +22,11 @@ public class QueryStringConditionCheckerFacts
     {
         // Arrange
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
-        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Query = null}};
+        var conditions = new StubConditionsModel { Url = new StubUrlConditionModel { Query = null } };
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -41,9 +41,12 @@ public class QueryStringConditionCheckerFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel {Query = new Dictionary<string, object> {{"q", "2"}, {"y", "3"}}}
+            Url = new StubUrlConditionModel
+            {
+                Query = new Dictionary<string, object> { { "q", "2" }, { "y", "3" } }
+            }
         };
-        var query = new Dictionary<string, string> {{"x", "1"}, {"z", "2"}};
+        var query = new Dictionary<string, string> { { "x", "1" }, { "z", "2" } };
 
         httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
@@ -51,7 +54,7 @@ public class QueryStringConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -68,9 +71,12 @@ public class QueryStringConditionCheckerFacts
 
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel {Query = new Dictionary<string, object> {{"q", "2"}, {"y", "3"}}}
+            Url = new StubUrlConditionModel
+            {
+                Query = new Dictionary<string, object> { { "q", "2" }, { "y", "3" } }
+            }
         };
-        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
+        var query = new Dictionary<string, string> { { "q", "1" }, { "y", "2" } };
 
         httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
@@ -83,7 +89,7 @@ public class QueryStringConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -98,10 +104,10 @@ public class QueryStringConditionCheckerFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stringCheckerMock = _mocker.GetMock<IStringChecker>();
 
-        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
+        var query = new Dictionary<string, string> { { "q", "1" }, { "y", "2" } };
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel {Query = new Dictionary<string, object> {{"q", "2"}}}
+            Url = new StubUrlConditionModel { Query = new Dictionary<string, object> { { "q", "2" } } }
         };
 
         httpContextServiceMock
@@ -115,7 +121,7 @@ public class QueryStringConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -130,10 +136,13 @@ public class QueryStringConditionCheckerFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stringCheckerMock = _mocker.GetMock<IStringChecker>();
 
-        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
+        var query = new Dictionary<string, string> { { "q", "1" }, { "y", "2" } };
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel {Query = new Dictionary<string, object> {{"q", "1"}, {"y", "3"}}}
+            Url = new StubUrlConditionModel
+            {
+                Query = new Dictionary<string, object> { { "q", "1" }, { "y", "3" } }
+            }
         };
 
         httpContextServiceMock
@@ -150,7 +159,7 @@ public class QueryStringConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -166,9 +175,12 @@ public class QueryStringConditionCheckerFacts
 
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel {Query = new Dictionary<string, object> {{"q", "1"}, {"y", "2"}}}
+            Url = new StubUrlConditionModel
+            {
+                Query = new Dictionary<string, object> { { "q", "1" }, { "y", "2" } }
+            }
         };
-        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
+        var query = new Dictionary<string, string> { { "q", "1" }, { "y", "2" } };
 
         httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
@@ -184,7 +196,7 @@ public class QueryStringConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -197,7 +209,7 @@ public class QueryStringConditionCheckerFacts
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
 
-        var query = new Dictionary<string, string> {{"q", "1"}, {"z", "2"}};
+        var query = new Dictionary<string, string> { { "q", "1" }, { "z", "2" } };
         httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
@@ -208,15 +220,15 @@ public class QueryStringConditionCheckerFacts
             {
                 Query = new Dictionary<string, object>
                 {
-                    {"q", Convert(new StubConditionStringCheckingModel {Present = false})},
-                    {"y", Convert(new StubConditionStringCheckingModel {Present = true})}
+                    { "q", Convert(new StubConditionStringCheckingModel { Present = false }) },
+                    { "y", Convert(new StubConditionStringCheckingModel { Present = true }) }
                 }
             }
         };
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -229,7 +241,7 @@ public class QueryStringConditionCheckerFacts
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
 
-        var query = new Dictionary<string, string> {{"q", "1"}, {"z", "2"}};
+        var query = new Dictionary<string, string> { { "q", "1" }, { "z", "2" } };
         httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
@@ -240,15 +252,15 @@ public class QueryStringConditionCheckerFacts
             {
                 Query = new Dictionary<string, object>
                 {
-                    {"q", Convert(new StubConditionStringCheckingModel {Present = true})},
-                    {"y", Convert(new StubConditionStringCheckingModel {Present = true})}
+                    { "q", Convert(new StubConditionStringCheckingModel { Present = true }) },
+                    { "y", Convert(new StubConditionStringCheckingModel { Present = true }) }
                 }
             }
         };
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -261,7 +273,7 @@ public class QueryStringConditionCheckerFacts
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
 
-        var query = new Dictionary<string, string> {{"q", "1"}, {"z", "2"}};
+        var query = new Dictionary<string, string> { { "q", "1" }, { "z", "2" } };
         httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
@@ -272,15 +284,15 @@ public class QueryStringConditionCheckerFacts
             {
                 Query = new Dictionary<string, object>
                 {
-                    {"q", Convert(new StubConditionStringCheckingModel {Present = true})},
-                    {"y", Convert(new StubConditionStringCheckingModel {Present = false})}
+                    { "q", Convert(new StubConditionStringCheckingModel { Present = true }) },
+                    { "y", Convert(new StubConditionStringCheckingModel { Present = false }) }
                 }
             }
         };
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

@@ -25,7 +25,7 @@ public class ArgsHelperFacts
     public void EnsureEntryExists_EntryAlreadyExists_ShouldNotAddEntry()
     {
         // Arrange
-        var dict = new Dictionary<string, string> {{"var1", "value1"}};
+        var dict = new Dictionary<string, string> { { "var1", "value1" } };
 
         // Act
         dict.EnsureEntryExists("var1", "value2");
@@ -38,7 +38,7 @@ public class ArgsHelperFacts
     public void EnsureEntryExists_EntryDoesNotExist_ShouldAddEntry()
     {
         // Arrange
-        var dict = new Dictionary<string, string> {{"var2", "value2"}};
+        var dict = new Dictionary<string, string> { { "var2", "value2" } };
 
         // Act
         dict.EnsureEntryExists("var1", "value1");

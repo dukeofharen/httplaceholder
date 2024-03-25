@@ -10,52 +10,54 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetAllStubsFacts : BaseClientTest
 {
-    private const string GetAllStubsResponse = @"[
-    {
-        ""stub"": {
-            ""id"": ""temporary-redirect"",
-            ""conditions"": {
-                ""method"": ""GET"",
-                ""url"": {
-                    ""path"": ""^/temp-redirect$""
-                }
-            },
-            ""response"": {
-                ""temporaryRedirect"": ""http://localhost:5000/temp-redirect-location""
-            },
-            ""priority"": 0,
-            ""tenant"": ""integration"",
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    },
-    {
-        ""stub"": {
-            ""id"": ""dynamic-mode-form-post"",
-            ""conditions"": {
-                ""method"": ""POST"",
-                ""url"": {
-                    ""path"": ""/dynamic-mode-form-post""
-                }
-            },
-            ""response"": {
-                ""enableDynamicMode"": true,
-                ""text"": ""Form post: ((form_post:var2))"",
-                ""headers"": {
-                    ""X-FormPost"": ""Header form post: ((form_post:var1))""
-                }
-            },
-            ""priority"": 0,
-            ""tenant"": ""integration"",
-            ""enabled"": true
-        },
-        ""metadata"": {
-            ""readOnly"": false
-        }
-    }
-]";
+    private const string GetAllStubsResponse = """
+                                               [
+                                                   {
+                                                       "stub": {
+                                                           "id": "temporary-redirect",
+                                                           "conditions": {
+                                                               "method": "GET",
+                                                               "url": {
+                                                                   "path": "^/temp-redirect$"
+                                                               }
+                                                           },
+                                                           "response": {
+                                                               "temporaryRedirect": "http://localhost:5000/temp-redirect-location"
+                                                           },
+                                                           "priority": 0,
+                                                           "tenant": "integration",
+                                                           "enabled": true
+                                                       },
+                                                       "metadata": {
+                                                           "readOnly": false
+                                                       }
+                                                   },
+                                                   {
+                                                       "stub": {
+                                                           "id": "dynamic-mode-form-post",
+                                                           "conditions": {
+                                                               "method": "POST",
+                                                               "url": {
+                                                                   "path": "/dynamic-mode-form-post"
+                                                               }
+                                                           },
+                                                           "response": {
+                                                               "enableDynamicMode": true,
+                                                               "text": "Form post: ((form_post:var2))",
+                                                               "headers": {
+                                                                   "X-FormPost": "Header form post: ((form_post:var1))"
+                                                               }
+                                                           },
+                                                           "priority": 0,
+                                                           "tenant": "integration",
+                                                           "enabled": true
+                                                       },
+                                                       "metadata": {
+                                                           "readOnly": false
+                                                       }
+                                                   }
+                                               ]
+                                               """;
 
     [TestMethod]
     public async Task GetAllStubsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

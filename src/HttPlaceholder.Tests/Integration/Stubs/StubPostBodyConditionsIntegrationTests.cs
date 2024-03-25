@@ -19,15 +19,15 @@ public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}api/users";
-        const string body = @"{""username"": ""john""}";
+        const string body = """{"username": "john"}""";
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body),
             Headers =
             {
-                {"X-Api-Key", "123abc"},
-                {"X-Another-Secret", "sjaaaaaak 123"},
-                {"X-Another-Code", "Two Memories"}
+                { "X-Api-Key", "123abc" },
+                { "X-Another-Secret", "sjaaaaaak 123" },
+                { "X-Another-Code", "Two Memories" }
             },
             Method = HttpMethod.Post,
             RequestUri = new Uri(url)
@@ -47,11 +47,11 @@ public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}api/users";
-        const string body = @"{""username"": ""jack""}";
+        const string body = """{"username": "jack"}""";
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body),
-            Headers = {{"X-Api-Key", "123abc"}, {"X-Another-Secret", "sjaaaaaak 123"}},
+            Headers = { { "X-Api-Key", "123abc" }, { "X-Another-Secret", "sjaaaaaak 123" } },
             Method = HttpMethod.Post,
             RequestUri = new Uri(url)
         };

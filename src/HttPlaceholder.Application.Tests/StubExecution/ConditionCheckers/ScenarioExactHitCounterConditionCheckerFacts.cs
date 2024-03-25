@@ -89,6 +89,7 @@ public class ScenarioExactHitCounterConditionCheckerFacts
         new()
         {
             Scenario = scenario,
-            Conditions = new StubConditionsModel {Scenario = new StubConditionScenarioModel {ExactHits = exactHits}}
+            Conditions =
+                new StubConditionsModel { Scenario = new StubConditionScenarioModel { ExactHits = exactHits } }
         };
 }

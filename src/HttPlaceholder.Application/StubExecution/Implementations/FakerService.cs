@@ -14,15 +14,15 @@ internal class FakerService(ILogger<FakerService> logger) : IFakerService, ISing
     private const string DefaultDatetimeFormat = "yyyy-MM-dd HH:mm:ss";
 
     private static readonly string[] _locales =
-    {
+    [
         "af_ZA", "fr_CH", "ar", "ge", "az", "hr", "cz", "id_ID", "de", "it", "de_AT", "ja", "de_CH", "ko", "el",
         "lv", "en", "nb_NO", "en_AU", "ne", "en_AU_ocker", "nl", "en_BORK", "nl_BE", "en_CA", "pl", "en_GB",
         "pt_BR", "en_IE", "pt_PT", "en_IND", "ro", "en_NG", "ru", "en_US", "sk", "en_ZA", "sv", "es", "tr", "es_MX",
         "uk", "fa", "vi", "fi", "zh_CN", "fr", "zh_TW", "fr_CA", "zu_ZA"
-    };
+    ];
 
     private static readonly FakeDataGeneratorModel[] _generators =
-    {
+    [
         new("zipcode", (faker, _, _) => faker.Address.ZipCode()), new("city", (faker, _, _) => faker.Address.City()),
         new("street_address", (faker, _, _) => faker.Address.StreetAddress()),
         new("city_prefix", (faker, _, _) => faker.Address.CityPrefix()),
@@ -128,7 +128,7 @@ internal class FakerService(ILogger<FakerService> logger) : IFakerService, ISing
         new("product_adjective", (faker, _, _) => faker.Commerce.ProductAdjective()),
         new("product_description", (faker, _, _) => faker.Commerce.ProductDescription()),
         new("ean8", (faker, _, _) => faker.Commerce.Ean8()), new("ean13", (faker, _, _) => faker.Commerce.Ean13())
-    };
+    ];
 
     private readonly ConcurrentDictionary<string, Faker> _cachedFakers = new();
 

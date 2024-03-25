@@ -20,13 +20,13 @@ public static class CollectionUtilities
     ///     If set to true, updates the key if it has been found. If set to false, does nothing if
     ///     the key has been found.
     /// </param>
-    public static void AddOrReplaceCaseInsensitive(
-        this IDictionary<string, string> dict,
+    public static void AddOrReplaceCaseInsensitive<T>(
+        this IDictionary<string, T> dict,
         string key,
-        string value,
+        T value,
         bool replaceIfExists = true)
     {
-        var pair = dict.FirstOrDefault(h => string.Equals(key, h.Key, StringComparison.OrdinalIgnoreCase));
+        var pair = dict.CaseInsensitiveSearchPair(key);
         if (!string.IsNullOrWhiteSpace(pair.Key))
         {
             if (!replaceIfExists)
@@ -46,7 +46,7 @@ public static class CollectionUtilities
     /// <param name="dict">The dictionary to look in.</param>
     /// <param name="key">The key to look for.</param>
     /// <returns>The found key-value pair.</returns>
-    public static KeyValuePair<string, string> CaseInsensitiveSearchPair(this IDictionary<string, string> dict,
+    public static KeyValuePair<string, T> CaseInsensitiveSearchPair<T>(this IDictionary<string, T> dict,
         string key) =>
         dict.FirstOrDefault(h => string.Equals(key, h.Key, StringComparison.OrdinalIgnoreCase));
 
@@ -56,10 +56,10 @@ public static class CollectionUtilities
     /// <param name="dict">The dictionary to look in.</param>
     /// <param name="key">The key to look for.</param>
     /// <returns>The found string value.</returns>
-    public static string CaseInsensitiveSearch(this IDictionary<string, string> dict, string key)
+    public static T CaseInsensitiveSearch<T>(this IDictionary<string, T> dict, string key)
     {
         var pair = dict.CaseInsensitiveSearchPair(key);
-        return string.IsNullOrWhiteSpace(pair.Key) ? null : pair.Value;
+        return string.IsNullOrWhiteSpace(pair.Key) ? default : pair.Value;
     }
 
     /// <summary>

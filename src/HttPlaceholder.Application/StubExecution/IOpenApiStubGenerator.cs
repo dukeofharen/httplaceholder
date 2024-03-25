@@ -3,6 +3,4 @@
 /// <summary>
 ///     Describes a class that is being used to convert an OpenAPI definition into stubs.
 /// </summary>
-public interface IOpenApiStubGenerator : IStubGenerator
-{
-}
+public interface IOpenApiStubGenerator : IStubGenerator;

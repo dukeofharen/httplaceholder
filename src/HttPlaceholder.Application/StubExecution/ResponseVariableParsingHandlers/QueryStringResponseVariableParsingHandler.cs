@@ -25,17 +25,15 @@ internal class QueryStringResponseVariableParsingHandler(
     public override string FullName => "Query string";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:query_string_key))"};
+    public override string[] Examples => [$"(({Name}:query_string_key))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var queryDict = httpContextService.GetQueryStringDictionary();
-        return Task.FromResult(matches
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
+        CancellationToken cancellationToken) =>
+        Task.FromResult(matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertQuery(current, match, queryDict)));
-    }
+            .Aggregate(input,
+                (current, match) => InsertQuery(current, match, httpContextService.GetQueryStringDictionary())));
 
     private static string InsertQuery(string current, Match match, IDictionary<string, string> queryDict)
     {

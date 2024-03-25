@@ -125,7 +125,7 @@ public static class ImageSharpUtilities
 
             trapCount--;
 
-            s = TextMeasurer.MeasureSize(text, new TextOptions(scaledFont) {WrappingLength = targetWidth});
+            s = TextMeasurer.MeasureSize(text, new TextOptions(scaledFont) { WrappingLength = targetWidth });
         }
 
         var center = new PointF(padding, height / 2);

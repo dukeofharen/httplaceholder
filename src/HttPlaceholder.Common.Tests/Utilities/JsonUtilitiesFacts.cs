@@ -23,7 +23,7 @@ public class JsonUtilitiesFacts
     public void ConvertFoundValue_TokenIsJArray_ArrayHasValues_ShouldReturnValueCorrectly()
     {
         // Arrange
-        var jArray = JArray.FromObject(new[] {"val1", "val2"});
+        var jArray = JArray.FromObject(new[] { "val1", "val2" });
 
         // Act
         var result = JsonUtilities.ConvertFoundValue(jArray);
