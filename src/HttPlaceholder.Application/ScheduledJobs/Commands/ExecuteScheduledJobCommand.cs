@@ -28,7 +28,8 @@ public class ExecuteScheduledJobCommandHandler(IEnumerable<ICustomHostedService>
     : IRequestHandler<ExecuteScheduledJobCommand, JobExecutionResultModel>
 {
     /// <inheritdoc />
-    public async Task<JobExecutionResultModel> Handle(ExecuteScheduledJobCommand request,
+    public async Task<JobExecutionResultModel> Handle(
+        ExecuteScheduledJobCommand request,
         CancellationToken cancellationToken)
     {
         var job = hostedServices.FirstOrDefault(s =>

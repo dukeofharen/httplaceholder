@@ -69,7 +69,7 @@ public class LineEndingResponseWriterFacts
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
-        Assert.IsTrue(result.Executed);
+        Assert.IsFalse(result.Executed);
         Assert.IsNull(response.Body);
         Assert.AreEqual("Line ending type '5' is not supported. Options are 'Unix' and 'Windows'.",
             result.Log);
@@ -92,7 +92,7 @@ public class LineEndingResponseWriterFacts
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
-        Assert.IsTrue(result.Executed);
+        Assert.IsFalse(result.Executed);
         Assert.AreEqual("The response body is binary; cannot replace line endings.", result.Log);
     }
 }

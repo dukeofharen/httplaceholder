@@ -1,12 +1,11 @@
 ﻿using System.Net;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Commands;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Web.Shared.Resources;
 using MediatR;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -20,7 +19,6 @@ public class StubHandlingMiddleware(
     RequestDelegate next,
     IMediator mediator,
     IRequestLoggerFactory requestLoggerFactory,
-    IResourcesService resourcesService,
     IStubContext stubContext,
     ILogger<StubHandlingMiddleware> logger,
     IClientDataResolver clientDataResolver,
@@ -99,7 +97,7 @@ public class StubHandlingMiddleware(
         httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlation);
         if (settings?.Gui?.EnableUserInterface == true)
         {
-            var pageContents = resourcesService.ReadAsString("Files/StubNotConfigured.html")
+            var pageContents = WebResources.StubNotConfiguredHtml
                 .Replace("[ROOT_URL]", urlResolver.GetRootUrl());
             httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
             await httpContextService.WriteAsync(pageContents, cancellationToken);
