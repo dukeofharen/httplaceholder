@@ -15,9 +15,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioStateVariableParsingHandler(
     IStubContext stubContext,
-    IFileService fileService,
     ICacheService cacheService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "scenario_state";
@@ -27,6 +26,9 @@ internal class ScenarioStateVariableParsingHandler(
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $"(({Name}:scenario name))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.ScenarioState;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

@@ -15,8 +15,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 ///     Response variable parsing handler to insert the local date/time into the response. An optional date/time format can
 ///     be provided (based on the .NET date/time formatting strings).
 /// </summary>
-internal class LocalNowResponseVariableParsingHandler(IDateTime dateTime, IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class LocalNowResponseVariableParsingHandler(IDateTime dateTime)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "localnow";
@@ -26,6 +26,9 @@ internal class LocalNowResponseVariableParsingHandler(IDateTime dateTime, IFileS
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.LocalNow;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

@@ -13,14 +13,17 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert the client IP in the response.
 /// </summary>
-internal class ClientIpResponseVariableParsingHandler(IClientDataResolver clientDataResolver, IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class ClientIpResponseVariableParsingHandler(IClientDataResolver clientDataResolver)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "client_ip";
 
     /// <inheritdoc />
     public override string FullName => "Client IP";
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.ClientIp;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))"];

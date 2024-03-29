@@ -17,18 +17,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHandler
 {
-    private readonly Lazy<string> _loadedDescription;
-
-    protected BaseVariableParsingHandler(IFileService fileService)
-    {
-        _loadedDescription = new Lazy<string>(() =>
-        {
-            var path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), "Files", "VarParser",
-                $"{Name}-description.md");
-            return fileService.ReadAllText(path);
-        });
-    }
-
     /// <inheritdoc />
     public abstract string Name { get; }
 
@@ -36,7 +24,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     public abstract string FullName { get; }
 
     /// <inheritdoc />
-    public virtual string GetDescription() => _loadedDescription.Value;
+    public abstract string GetDescription();
 
     /// <inheritdoc />
     public abstract string[] Examples { get; }

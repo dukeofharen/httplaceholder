@@ -13,8 +13,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a given posted form value in the response.
 /// </summary>
-internal class FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class FormPostResponseVariableParsingHandler(IHttpContextService httpContextService)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "form_post";
@@ -24,6 +24,9 @@ internal class FormPostResponseVariableParsingHandler(IHttpContextService httpCo
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:form_key))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.FormPost;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

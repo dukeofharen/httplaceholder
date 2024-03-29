@@ -16,10 +16,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 ///     Response variable parsing handler that is used to insert the display URL (so the full URL) in the response.
 /// </summary>
 internal class DisplayUrlResponseVariableParsingHandler(
-    IFileService fileService,
     ILogger<DisplayUrlResponseVariableParsingHandler> logger,
     IUrlResolver urlResolver)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "display_url";
@@ -29,6 +28,9 @@ internal class DisplayUrlResponseVariableParsingHandler(
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $@"(({Name}:'\/users\/([0-9]{3})\/orders'))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.DisplayUrl;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

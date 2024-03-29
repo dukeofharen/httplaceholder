@@ -20,9 +20,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class JsonPathResponseVariableParsingHandler(
     IHttpContextService httpContextService,
-    ILogger<JsonPathResponseVariableParsingHandler> logger,
-    IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    ILogger<JsonPathResponseVariableParsingHandler> logger)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "jsonpath";
@@ -32,6 +31,9 @@ internal class JsonPathResponseVariableParsingHandler(
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:$.values[1].title))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.JsonPath;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

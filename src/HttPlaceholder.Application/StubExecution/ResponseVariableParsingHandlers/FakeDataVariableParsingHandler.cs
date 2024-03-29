@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -19,7 +18,7 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
     private readonly Lazy<string[]> _exampleLazy;
     private readonly IFakerService _fakerService;
 
-    public FakeDataVariableParsingHandler(IFileService fileService, IFakerService fakerService) : base(fileService)
+    public FakeDataVariableParsingHandler(IFakerService fakerService)
     {
         _fakerService = fakerService;
         _exampleLazy = new Lazy<string[]>(InitializeExamples);
@@ -108,11 +107,8 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
         return result.ToArray();
     }
 
-    private string InitializeDescription()
-    {
-        var description = base.GetDescription();
-        description = description.Replace("[LOCALES]",
-            string.Join(", ", _fakerService.GetLocales().Select(l => $"_{l}_")));
-        return description;
-    }
+    private string InitializeDescription() =>
+        ResponseVariableParsingResources.FakeData
+            .Replace("[LOCALES]",
+                string.Join(", ", _fakerService.GetLocales().Select(l => $"_{l}_")));
 }

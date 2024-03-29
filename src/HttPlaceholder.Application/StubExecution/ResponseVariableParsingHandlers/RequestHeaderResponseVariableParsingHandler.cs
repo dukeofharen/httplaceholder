@@ -14,10 +14,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a request header in the response.
 /// </summary>
-internal class RequestHeaderResponseVariableParsingHandler(
-    IHttpContextService httpContextService,
-    IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class RequestHeaderResponseVariableParsingHandler(IHttpContextService httpContextService)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "request_header";
@@ -27,6 +25,9 @@ internal class RequestHeaderResponseVariableParsingHandler(
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:X-Api-Key))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.RequestHeader;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

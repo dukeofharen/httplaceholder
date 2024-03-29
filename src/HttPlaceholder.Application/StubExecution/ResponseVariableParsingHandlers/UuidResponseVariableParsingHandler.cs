@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -13,8 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler for generating a random UUID and putting it in the response.
 /// </summary>
-internal class UuidResponseVariableParsingHandler(IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class UuidResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "uuid";
@@ -24,6 +22,9 @@ internal class UuidResponseVariableParsingHandler(IFileService fileService)
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.Uuid;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

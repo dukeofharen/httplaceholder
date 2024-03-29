@@ -14,10 +14,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a given URL encoded query parameter in the response.
 /// </summary>
-internal class EncodedQueryStringResponseVariableParsingHandler(
-    IHttpContextService httpContextService,
-    IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class EncodedQueryStringResponseVariableParsingHandler(IHttpContextService httpContextService)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "query_encoded";
@@ -27,6 +25,9 @@ internal class EncodedQueryStringResponseVariableParsingHandler(
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:query_string_key))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.QueryEncoded;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

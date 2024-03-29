@@ -17,9 +17,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class RequestBodyResponseVariableParsingHandler(
     IHttpContextService httpContextService,
-    IFileService fileService,
     ILogger<RequestBodyResponseVariableParsingHandler> logger)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "request_body";
@@ -29,6 +28,9 @@ internal class RequestBodyResponseVariableParsingHandler(
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.RequestBody;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

@@ -16,9 +16,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioHitCountVariableParsingHandler(
     IStubContext stubContext,
-    IFileService fileService,
     ICacheService cacheService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "scenario_hitcount";
@@ -27,6 +26,9 @@ internal class ScenarioHitCountVariableParsingHandler(
     public override string FullName => "Scenario hit count";
 
     public override string[] Examples => [$"(({Name}))", $"(({Name}:scenario name))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.ScenarioHitcount;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

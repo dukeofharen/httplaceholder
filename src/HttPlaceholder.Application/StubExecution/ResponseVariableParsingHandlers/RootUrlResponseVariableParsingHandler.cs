@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -14,9 +13,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 ///     Response variable parsing handler that is used to insert the root URL (so the URL without path + query string) in
 ///     the response.
 /// </summary>
-internal class RootUrlResponseVariableParsingHandler(
-    IFileService fileService,
-    IUrlResolver urlResolver) : BaseVariableParsingHandler(fileService), ISingletonService
+internal class RootUrlResponseVariableParsingHandler(IUrlResolver urlResolver)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "root_url";
@@ -26,6 +24,9 @@ internal class RootUrlResponseVariableParsingHandler(
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))"];
+
+    /// <inheritdoc />
+    public override string GetDescription() => ResponseVariableParsingResources.RootUrl;
 
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>
