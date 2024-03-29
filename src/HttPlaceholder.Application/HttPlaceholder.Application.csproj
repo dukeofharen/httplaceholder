@@ -34,6 +34,21 @@
 
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="StubExecution\ResponseVariableParsingHandlers\ResponseVariableParsingResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ResponseVariableParsingResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="StubExecution\ResponseVariableParsingHandlers\ResponseVariableParsingResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ResponseVariableParsingResources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 
 
 

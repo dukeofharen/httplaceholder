@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        </value>
+    </resheader>
+    <data name="ClientIp" xml:space="preserve">
+        <value>The client IP body parser makes it possible to write the IP address of the requester to the response.</value>
+    </data>
+    <data name="DisplayUrl" xml:space="preserve">
+        <value>The display URL body parser makes it possible to write the complete URL to the response. You can also use a regular expression to insert a part of the display URL in the response body.</value>
+    </data>
+    <data name="FakeData" xml:space="preserve">
+        <value><![CDATA[The fake data makes it possible to insert random data to the response. The fake data is generated using <a href="https://github.com/bchavez/Bogus" target="_blank">Bogus</a>. You can insert the following data:
+
+- Address: zipcode, city, street_address, city_prefix, city_suffix, street_name, building_number, street_suffix, secondary_address, county, country, full_address, country_code, state, state_abbreviation, direction, cardinal_direction, ordinal_direction
+- Name: first_name, last_name, full_name, prefix, suffix, job_title, job_descriptor, job_area, job_type
+- Phone: phone_number
+- Internet: email, example_email, user_name, user_name_unicode, domain_name, domain_word, domain_suffix, ip, port, ipv6, user_agent, mac, password, color, protocol, url, url_with_path, url_rooted_path
+- Lorem: word, words, letter, sentence, sentences, paragraph, paragraphs, text, lines, slug
+- Date: past, past_offset, soon, soon_offset, future, future_offset, recent, recent_offset, month, weekday, timezone_string
+- Finance: account, account_name, amount, currency_name, currency_code, credit_card_number, credit_card_cvv, routing_number, bic, iban, bitcoin_address, ethereum_address, litecoin_address
+- System: file_name, directory_path, file_path, common_file_name, mime_type, common_file_type, common_file_ext, file_type, file_ext, semver, android_id, apple_push_token
+- Commerce: department, price, product_name, product, product_adjective, product_description, ean8, ean13
+
+The following locales are supported: [LOCALES].
+
+This handler can be inserted in the following ways:
+
+- `((fake_data:first_name))` (only specify the generator).
+- `((fake_data:en_US:first_name))` (specify generator and locale).
+- `((fake_data:past:yyyy-MM-dd HH:mm:ss))` (specify generator and formatting string, if applicable).
+- `((fake_data:en_US:past:yyyy-MM-dd HH:mm:ss))` (specify locale, generator and formatting string, if applicable).
+]]></value>
+    </data>
+    <data name="FormPost" xml:space="preserve">
+        <value>The form post parser makes it possible to write posted form values to the response.</value>
+    </data>
+    <data name="JsonPath" xml:space="preserve">
+        <value>This body parser can be used to query a value from the posted JSON using JSONPath and insert it in the response body or headers.</value>
+    </data>
+    <data name="LocalNow" xml:space="preserve">
+        <value>This body parsers can insert the current local date &amp; time in the response body or headers.</value>
+    </data>
+    <data name="Query" xml:space="preserve">
+        <value>The query string parser makes it possible to write request query string parameters to the response, in unencoded form.</value>
+    </data>
+    <data name="QueryEncoded" xml:space="preserve">
+        <value>The query string parser makes it possible to write request query string parameters to the response, in URL encoded form.</value>
+    </data>
+    <data name="RequestBody" xml:space="preserve">
+        <value>The request body parser makes it possible to write the complete posted body to the response. You can also use a regular expression to insert a part of the request body in the response body.</value>
+    </data>
+    <data name="RequestHeader" xml:space="preserve">
+        <value>The request headers parser makes it possible to write request header values to the response.</value>
+    </data>
+    <data name="RootUrl" xml:space="preserve">
+        <value>The root URL body parser makes it possible to write the root URL (so URL without path + query string) to the response.</value>
+    </data>
+    <data name="ScenarioHitcount" xml:space="preserve">
+        <value>This body parsers can be used to insert the scenario hit count in the response. By default, when you insert any of the body parsers, the hit count of the scenario the stub is in will be looked up. You can pass the scenario name of another scenario to fetch the values for that scenario.</value>
+    </data>
+    <data name="ScenarioState" xml:space="preserve">
+        <value>This body parsers can be used to insert the scenario hit count in the response. By default, when you insert any of the body parsers, the hit count of the scenario the stub is in will be looked up. You can pass the scenario name of another scenario to fetch the values for that scenario.</value>
+    </data>
+    <data name="UtcNow" xml:space="preserve">
+        <value>This body parsers can insert the current UTC date &amp; time in the response body or headers.</value>
+    </data>
+    <data name="Uuid" xml:space="preserve">
+        <value>The UUID parser makes it possible to insert a random UUID to the response.</value>
+    </data>
+</root>
