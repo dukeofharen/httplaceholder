@@ -56,7 +56,7 @@ internal class ImageResponseWriter(IAssemblyService assemblyService, IFileServic
     {
         var collection = new FontCollection();
         collection.Add(Path.Combine(assemblyService.GetExecutingAssemblyRootPath(),
-            "Files", "Manrope-Regular.ttf"));
+            "Resources", "Manrope-Regular.ttf"));
         const string fontFamilyName = "Manrope";
         if (!collection.TryGet(fontFamilyName, out var family))
         {

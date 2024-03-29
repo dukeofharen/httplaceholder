@@ -1,5 +1,4 @@
 ﻿using HttPlaceholder.Application;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -7,7 +6,6 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Persistence;
-using HttPlaceholder.Resources;
 using HttPlaceholder.Web.Shared.Middleware;
 using HttPlaceholder.WebInfrastructure;
 using Microsoft.AspNetCore.Http.Features;
@@ -34,7 +32,6 @@ public static class StartupUtilities
             .AddApplicationModule()
             .AddPersistenceModule(configuration)
             .Scan(scan => scan.FromCallingAssembly().RegisterDependencies())
-            .AddResourcesModule()
             .AddAutoMapper(
                 config => config.AllowNullCollections = true,
                 typeof(StartupUtilities).Assembly,

@@ -29,9 +29,6 @@
     <ItemGroup>
         <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj"/>
         <ProjectReference Include="..\HttPlaceholder.Domain\HttPlaceholder.Domain.csproj"/>
-
-
-
     </ItemGroup>
 
     <ItemGroup>
@@ -49,7 +46,9 @@
       </Compile>
     </ItemGroup>
 
-
-
-
+    <ItemGroup>
+      <Content Include="Resources\**\*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 </Project>
