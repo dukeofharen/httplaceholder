@@ -8,6 +8,7 @@ using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
+using HttPlaceholder.Persistence.Db.Entities;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 

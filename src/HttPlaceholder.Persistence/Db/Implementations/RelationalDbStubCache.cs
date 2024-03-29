@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
+using HttPlaceholder.Persistence.Db.Entities;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 

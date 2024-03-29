@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Domain.Entities;
+﻿namespace HttPlaceholder.Persistence.Db.Entities;
 
 /// <summary>
 ///     Represents a response in the database.
