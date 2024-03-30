@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Domain;
@@ -62,7 +63,7 @@ public class ConditionCheckResultModel
     /// </summary>
     /// <param name="log">Optional log message.</param>
     /// <returns>The result model.</returns>
-    public static Task<ConditionCheckResultModel> ValidAsync(string log = null) => Task.FromResult(Valid(log));
+    public static Task<ConditionCheckResultModel> ValidAsync(string log = null) => Valid(log).AsTask();
 
     /// <summary>
     ///     Creates an invalid result.
@@ -70,7 +71,7 @@ public class ConditionCheckResultModel
     /// <param name="log">Optional log message.</param>
     /// <returns>The result model.</returns>
     public static Task<ConditionCheckResultModel> InvalidAsync(string log = null) =>
-        Task.FromResult(Invalid(log));
+        Invalid(log).AsTask();
 
     /// <summary>
     ///     Creates a not result.
@@ -78,7 +79,7 @@ public class ConditionCheckResultModel
     /// <param name="log">Optional log message.</param>
     /// <returns>The result model.</returns>
     public static Task<ConditionCheckResultModel> NotExecutedAsync(string log = null) =>
-        Task.FromResult(NotExecuted(log));
+        NotExecuted(log).AsTask();
 
     private static ConditionCheckResultModel CreateModel(ConditionValidationType type, string log = null)
     {

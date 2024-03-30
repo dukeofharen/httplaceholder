@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -31,18 +32,18 @@ internal class JsonHandler(ILogger<JsonHandler> logger) : IRequestToStubConditio
             string.IsNullOrWhiteSpace(contentType) ||
             !_supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         try
         {
             conditions.Json = JToken.Parse(request.Body);
-            return Task.FromResult(true);
+            return true.AsTask();
         }
         catch (Exception ex)
         {
             logger.LogWarning(ex, "Exception occurred while trying to parse JSON.");
-            return Task.FromResult(false);
+            return false.AsTask();
         }
     }
 

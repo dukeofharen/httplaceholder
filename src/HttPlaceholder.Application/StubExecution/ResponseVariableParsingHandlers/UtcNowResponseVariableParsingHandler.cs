@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -33,9 +34,9 @@ internal class UtcNowResponseVariableParsingHandler(IDateTime dateTime)
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>
-        Task.FromResult(matches
+        matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertDateTime(current, match, dateTime.UtcNow)));
+            .Aggregate(input, (current, match) => InsertDateTime(current, match, dateTime.UtcNow)).AsTask();
 
     private static string InsertDateTime(string current, Match match, DateTime now)
     {

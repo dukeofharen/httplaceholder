@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 
@@ -35,9 +35,10 @@ internal class DisplayUrlResponseVariableParsingHandler(
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>
-        Task.FromResult(matches
+        matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => HandleDisplayUrl(match, current, urlResolver.GetDisplayUrl())));
+            .Aggregate(input, (current, match) => HandleDisplayUrl(match, current, urlResolver.GetDisplayUrl()))
+            .AsTask();
 
     private string HandleDisplayUrl(Match match, string current, string url)
     {

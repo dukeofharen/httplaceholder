@@ -25,14 +25,14 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
             !contentType.StartsWith(MimeTypes.UrlEncodedFormMime, StringComparison.OrdinalIgnoreCase) ||
             string.IsNullOrWhiteSpace(request.Body))
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         var reader = new FormReader(request.Body);
         var form = reader.ReadForm();
         if (form.Count == 0)
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         // If the body condition is already set, clear it here.
@@ -42,7 +42,7 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
             Key = f.Key, Value = new StubConditionStringCheckingModel { StringEquals = f.Value }
         });
 
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

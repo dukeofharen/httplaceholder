@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using Microsoft.Extensions.Options;
@@ -58,7 +59,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     {
         lock (_lock)
         {
-            return Task.FromResult(GetRequest(correlationId, distributionKey));
+            return GetRequest(correlationId, distributionKey).AsTask();
         }
     }
 
@@ -68,7 +69,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     {
         lock (_lock)
         {
-            var nullValue = Task.FromResult((ResponseModel)null);
+            var nullValue = ((ResponseModel)null).AsTask();
             var request = GetRequest(correlationId, distributionKey);
             if (request == null)
             {
@@ -76,8 +77,9 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
             }
 
             var item = GetCollection(distributionKey);
-            return !item.RequestResponseMap.TryGetValue(request, out var value) ? nullValue
-                : Task.FromResult(value);
+            return !item.RequestResponseMap.TryGetValue(request, out var value)
+                ? nullValue
+                : value.AsTask();
         }
     }
 
@@ -105,12 +107,12 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
             var request = item.RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId);
             if (request == null)
             {
-                return Task.FromResult(false);
+                return false.AsTask();
             }
 
             item.RequestResultModels.Remove(request);
             RemoveResponse(request, distributionKey);
-            return Task.FromResult(true);
+            return true.AsTask();
         }
     }
 
@@ -124,11 +126,11 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
             var stub = item.StubModels.FirstOrDefault(s => s.Id == stubId);
             if (stub == null)
             {
-                return Task.FromResult(false);
+                return false.AsTask();
             }
 
             item.StubModels.Remove(stub);
-            return Task.FromResult(true);
+            return true.AsTask();
         }
     }
 
@@ -163,7 +165,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
                 result = resultQuery.ToArray();
             }
 
-            return Task.FromResult(result.AsEnumerable());
+            return result.AsEnumerable().AsTask();
         }
     }
 
@@ -175,9 +177,8 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
         lock (_lock)
         {
             // We need to convert the list to an array here, or else we can get errors when deleting the stubs.
-            var item = GetCollection(distributionKey);
-            var stubs = item.StubModels;
-            return Task.FromResult(stubs.Select(s => (s, new Dictionary<string, string>())).ToArray().AsEnumerable());
+            return GetCollection(distributionKey).StubModels.Select(s => (s, new Dictionary<string, string>()))
+                .ToArray().AsEnumerable().AsTask();
         }
     }
 
@@ -199,7 +200,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
         var stub = item.StubModels.FirstOrDefault(s => s.Id == stubId);
         (StubModel, Dictionary<string, string>)?
             result = stub != null ? (stub, new Dictionary<string, string>()) : null;
-        return Task.FromResult(result);
+        return result.AsTask();
     }
 
     /// <inheritdoc />
@@ -230,13 +231,13 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
-            return Task.FromResult((ScenarioStateModel)null);
+            return ((ScenarioStateModel)null).AsTask();
         }
 
         var lookupKey = scenario.ToLower();
         var item = GetCollection(distributionKey);
         var result = !item.Scenarios.TryGetValue(lookupKey, out var value) ? null : value.Copy();
-        return Task.FromResult(result);
+        return result.AsTask();
     }
 
     /// <inheritdoc />
@@ -252,7 +253,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
             throw new InvalidOperationException($"Scenario state with key '{lookupKey}' already exists.");
         }
 
-        return Task.FromResult(scenarioToAdd);
+        return scenarioToAdd.AsTask();
     }
 
     /// <inheritdoc />
@@ -279,25 +280,13 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
 
     /// <inheritdoc />
     public override Task<IEnumerable<ScenarioStateModel>> GetAllScenariosAsync(string distributionKey = null,
-        CancellationToken cancellationToken = default)
-    {
-        var item = GetCollection(distributionKey);
-        return Task.FromResult(item.Scenarios.Values.Select(i => i.Copy()));
-    }
+        CancellationToken cancellationToken = default) =>
+        GetCollection(distributionKey).Scenarios.Values.Select(i => i.Copy()).AsTask();
 
     /// <inheritdoc />
     public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
-        CancellationToken cancellationToken = default)
-    {
-        if (string.IsNullOrWhiteSpace(scenario))
-        {
-            return Task.FromResult(false);
-        }
-
-        var lookupKey = scenario.ToLower();
-        var item = GetCollection(distributionKey);
-        return Task.FromResult(item.Scenarios.TryRemove(lookupKey, out _));
-    }
+        CancellationToken cancellationToken = default) =>
+        string.IsNullOrWhiteSpace(scenario) ? false.AsTask() : GetCollection(distributionKey).Scenarios.TryRemove(scenario.ToLower(), out _).AsTask();
 
     /// <inheritdoc />
     public override Task DeleteAllScenariosAsync(string distributionKey = null,

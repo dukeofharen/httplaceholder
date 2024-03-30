@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
@@ -31,13 +30,10 @@ internal class RequestHeaderResponseVariableParsingHandler(IHttpContextService h
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var headers = httpContextService.GetHeaders();
-        return Task.FromResult(matches
+        CancellationToken cancellationToken) =>
+        matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertHeader(current, match, headers)));
-    }
+            .Aggregate(input, (current, match) => InsertHeader(current, match, httpContextService.GetHeaders())).AsTask();
 
     private static string InsertHeader(string current, Match match, IDictionary<string, string> headers)
     {

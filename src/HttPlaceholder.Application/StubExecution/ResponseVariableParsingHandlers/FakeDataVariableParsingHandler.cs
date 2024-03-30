@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -39,9 +40,9 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>
-        Task.FromResult(matches
+        matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, InsertFakeData));
+            .Aggregate(input, InsertFakeData).AsTask();
 
     private string InsertFakeData(string current, Match match)
     {

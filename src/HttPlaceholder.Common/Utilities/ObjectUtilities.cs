@@ -69,7 +69,8 @@ public static class ObjectUtilities
     /// <param name="task">The value to map.</param>
     /// <param name="func">A function to map the value.</param>
     /// <returns>The mapped value.</returns>
-    public static async Task<TResult> MapAsync<T, TResult>(this Task<T> task, Func<T, TResult> func) => func(await task);
+    public static async Task<TResult> MapAsync<T, TResult>(this Task<T> task, Func<T, TResult> func) =>
+        func(await task);
 
     /// <summary>
     ///     Maps the input to the given output.
@@ -78,4 +79,11 @@ public static class ObjectUtilities
     /// <param name="func">A function to map the value.</param>
     /// <returns>The mapped value.</returns>
     public static TResult Map<T, TResult>(this T value, Func<T, TResult> func) => func(value);
+
+    /// <summary>
+    ///     Returns the given input as completed task.
+    /// </summary>
+    /// <param name="input">The input.</param>
+    /// <returns>The input as completed task.</returns>
+    public static Task<T> AsTask<T>(this T input) => Task.FromResult(input);
 }

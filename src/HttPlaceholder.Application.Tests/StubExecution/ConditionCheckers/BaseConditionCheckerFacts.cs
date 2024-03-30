@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.StubExecution.ConditionCheckers;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
@@ -87,6 +88,6 @@ public class BaseConditionCheckerFacts
 
         protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
             CancellationToken cancellationToken) =>
-            Task.FromResult(ValidationFunc(stub));
+            ValidationFunc(stub).AsTask();
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Common.Utilities;
 using MediatR;
 
 namespace HttPlaceholder.Application.ScheduledJobs.Queries;
@@ -19,5 +20,5 @@ public class GetScheduledJobNamesQueryHandler(IEnumerable<ICustomHostedService> 
 {
     /// <inheritdoc />
     public Task<IEnumerable<string>> Handle(GetScheduledJobNamesQuery request, CancellationToken cancellationToken) =>
-        Task.FromResult(hostedServices.Select(s => s.Key));
+        hostedServices.Select(s => s.Key).AsTask();
 }

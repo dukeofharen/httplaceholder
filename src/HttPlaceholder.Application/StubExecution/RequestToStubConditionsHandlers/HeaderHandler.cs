@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -22,7 +23,7 @@ internal class HeaderHandler : IRequestToStubConditionsHandler, ISingletonServic
     {
         if (!request.Headers.Any())
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         // Do a Regex escape here, if we don't do this it might give some strange results later on
@@ -31,7 +32,7 @@ internal class HeaderHandler : IRequestToStubConditionsHandler, ISingletonServic
             .Where(h => !_headersToStrip.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
             .ToDictionary(d => d.Key,
                 d => new StubConditionStringCheckingModel { StringEquals = d.Value } as object);
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

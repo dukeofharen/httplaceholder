@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
+using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -56,7 +57,7 @@ public class DynamicResponseWriterFacts
 
         _variableParserMock
             .Setup(m => m.ParseAsync(It.IsAny<string>(), stub, It.IsAny<CancellationToken>()))
-            .Returns<string, StubModel, CancellationToken>((i, _, _) => Task.FromResult(i));
+            .Returns<string, StubModel, CancellationToken>((i, _, _) => i.AsTask());
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
@@ -96,7 +97,7 @@ public class DynamicResponseWriterFacts
 
         _variableParserMock
             .Setup(m => m.ParseAsync(It.IsAny<string>(), stub, It.IsAny<CancellationToken>()))
-            .Returns<string, StubModel, CancellationToken>((i, _, _) => Task.FromResult(i));
+            .Returns<string, StubModel, CancellationToken>((i, _, _) => i.AsTask());
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);

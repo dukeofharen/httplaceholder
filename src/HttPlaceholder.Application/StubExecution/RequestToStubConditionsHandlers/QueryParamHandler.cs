@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -22,12 +23,12 @@ internal class QueryParamHandler : IRequestToStubConditionsHandler, ISingletonSe
         var query = QueryHelpers.ParseQuery(uri.Query);
         if (query.Count == 0)
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         conditions.Url.Query = query.ToDictionary(q => q.Key,
             q => new StubConditionStringCheckingModel { StringEquals = q.Value } as object);
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

@@ -10,6 +10,7 @@ using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.FileWatchers;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -47,12 +48,12 @@ internal class FileWatcherYamlFileStubSource(
     public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
         string distributionKey = null,
         CancellationToken cancellationToken = default) =>
-        Task.FromResult(from kv
+        (from kv
                 in Stubs
             from stub
                 in kv.Value
             select (stub,
-                new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } }));
+                new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } })).AsTask();
 
     /// <inheritdoc />
     public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
@@ -239,7 +240,6 @@ internal class FileWatcherYamlFileStubSource(
         foundWatcher.Dispose();
         FileSystemWatchers.TryRemove(fullPath, out _);
         return true;
-
     }
 
     private void SignalStubsReload() => stubNotify.ReloadStubsAsync().Wait();

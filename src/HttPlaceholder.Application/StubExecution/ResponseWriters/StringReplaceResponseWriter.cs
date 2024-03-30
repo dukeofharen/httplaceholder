@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
@@ -25,14 +26,14 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
         var replace = stub.Response?.Replace?.ToArray();
         if (replace == null || replace.Length == 0 || response.Body == null || response.Body.Length == 0)
         {
-            return Task.FromResult(IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
         var body = Encoding.UTF8.GetString(response.Body);
         body = replace.Aggregate(body, PerformReplace);
         response.Body = Encoding.UTF8.GetBytes(body);
 
-        return Task.FromResult(IsExecuted(GetType().Name));
+        return IsExecuted(GetType().Name).AsTask();
     }
 
     private static string PerformReplace(string body, StubResponseReplaceModel model)

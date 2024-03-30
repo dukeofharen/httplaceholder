@@ -18,11 +18,11 @@ public class ContentTypeResponseWriter : IResponseWriter, ISingletonService
     {
         if (string.IsNullOrWhiteSpace(stub.Response?.ContentType))
         {
-            return Task.FromResult(IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, stub.Response.ContentType);
-        return Task.FromResult(IsExecuted(GetType().Name));
+        return IsExecuted(GetType().Name).AsTask();
     }
 
     /// <inheritdoc />

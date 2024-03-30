@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -22,7 +23,7 @@ internal class MethodHandler : IRequestToStubConditionsHandler, ISingletonServic
         }
 
         conditions.Method = request.Method;
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
@@ -18,7 +19,7 @@ internal class ResponseBodyHandler : IResponseToStubResponseHandler, ISingletonS
         if (response.ContentIsBase64)
         {
             stubResponseModel.Base64 = response.Content;
-            return Task.FromResult(true);
+            return true.AsTask();
         }
 
         var contentType = string.IsNullOrWhiteSpace(stubResponseModel.ContentType)
@@ -41,7 +42,7 @@ internal class ResponseBodyHandler : IResponseToStubResponseHandler, ISingletonS
                 break;
         }
 
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

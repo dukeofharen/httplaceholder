@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -31,10 +31,11 @@ internal class QueryStringResponseVariableParsingHandler(IHttpContextService htt
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>
-        Task.FromResult(matches
+        matches
             .Where(match => match.Groups.Count >= 3)
             .Aggregate(input,
-                (current, match) => InsertQuery(current, match, httpContextService.GetQueryStringDictionary())));
+                (current, match) => InsertQuery(current, match, httpContextService.GetQueryStringDictionary()))
+            .AsTask();
 
     private static string InsertQuery(string current, Match match, IDictionary<string, string> queryDict)
     {

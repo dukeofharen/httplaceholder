@@ -19,12 +19,12 @@ internal class ContentTypeHandler : IResponseToStubResponseHandler, ISingletonSe
         var header = response.Headers.CaseInsensitiveSearchPair(HeaderKeys.ContentType);
         if (string.IsNullOrWhiteSpace(header.Value))
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         stubResponseModel.ContentType = header.Value;
         response.Headers.Remove(header);
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

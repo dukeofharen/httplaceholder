@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
@@ -20,10 +21,10 @@ internal class StatusCodeResponseWriter : IResponseWriter, ISingletonService
     {
         if (response.StatusCode != 0)
         {
-            return Task.FromResult(IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
         response.StatusCode = stub.Response?.StatusCode ?? 200;
-        return Task.FromResult(IsExecuted(GetType().Name));
+        return IsExecuted(GetType().Name).AsTask();
     }
 }

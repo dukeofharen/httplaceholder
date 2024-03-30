@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -33,14 +34,15 @@ public class GetConfigurationQueryHandler : IRequestHandler<GetConfigurationQuer
     public Task<IEnumerable<ConfigurationModel>> Handle(
         GetConfigurationQuery request,
         CancellationToken cancellationToken) =>
-        Task.FromResult(from item in ConfigKeys.GetConfigMetadata()
+        (from item in ConfigKeys.GetConfigMetadata()
             let configItem =
-                _configuration.AsEnumerable().FirstOrDefault(i => string.Equals(item.Path, i.Key, StringComparison.OrdinalIgnoreCase))
+                _configuration.AsEnumerable()
+                    .FirstOrDefault(i => string.Equals(item.Path, i.Key, StringComparison.OrdinalIgnoreCase))
             where configItem.Value != null
             select new ConfigurationModel(
                 item.Key,
                 item.Path,
                 item.Description,
                 item.ConfigKeyType,
-                item.IsSecretValue == true ? "***" : configItem.Value));
+                item.IsSecretValue == true ? "***" : configItem.Value)).AsTask();
 }

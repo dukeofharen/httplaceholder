@@ -21,13 +21,13 @@ internal class LineEndingResponseWriter : IResponseWriter, ISingletonService
         var lineEndings = stub.Response.LineEndings;
         if (lineEndings is null or LineEndingType.NotSet)
         {
-            return Task.FromResult(IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
         if (response.BodyIsBinary)
         {
-            return Task.FromResult(IsNotExecuted(GetType().Name,
-                "The response body is binary; cannot replace line endings."));
+            return IsNotExecuted(GetType().Name,
+                "The response body is binary; cannot replace line endings.").AsTask();
         }
 
         switch (lineEndings)
@@ -39,11 +39,12 @@ internal class LineEndingResponseWriter : IResponseWriter, ISingletonService
                 response.Body = ReplaceLineEndings(response.Body, "\r\n");
                 break;
             default:
-                return Task.FromResult(IsNotExecuted(GetType().Name,
-                    $"Line ending type '{lineEndings}' is not supported. Options are '{LineEndingType.Unix}' and '{LineEndingType.Windows}'."));
+                return IsNotExecuted(GetType().Name,
+                        $"Line ending type '{lineEndings}' is not supported. Options are '{LineEndingType.Unix}' and '{LineEndingType.Windows}'.")
+                    .AsTask();
         }
 
-        return Task.FromResult(IsExecuted(GetType().Name));
+        return IsExecuted(GetType().Name).AsTask();
     }
 
     /// <inheritdoc />

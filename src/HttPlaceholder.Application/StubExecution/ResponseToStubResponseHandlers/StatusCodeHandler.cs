@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
@@ -17,11 +18,11 @@ internal class StatusCodeHandler : IResponseToStubResponseHandler, ISingletonSer
     {
         if (response.StatusCode <= 0)
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         stubResponseModel.StatusCode = response.StatusCode;
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

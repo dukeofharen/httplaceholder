@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
@@ -18,10 +19,10 @@ internal class RedirectResponseWriter : IResponseWriter, ISingletonService
     /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
         CancellationToken cancellationToken) =>
-        Task.FromResult(Redirect(stub.Response?.TemporaryRedirect, HttpStatusCode.TemporaryRedirect, response) ??
-                        Redirect(stub.Response?.PermanentRedirect, HttpStatusCode.PermanentRedirect, response) ??
-                        Redirect(stub.Response?.MovedPermanently, HttpStatusCode.MovedPermanently, response) ??
-                        IsNotExecuted(GetType().Name));
+        (Redirect(stub.Response?.TemporaryRedirect, HttpStatusCode.TemporaryRedirect, response) ??
+         Redirect(stub.Response?.PermanentRedirect, HttpStatusCode.PermanentRedirect, response) ??
+         Redirect(stub.Response?.MovedPermanently, HttpStatusCode.MovedPermanently, response) ??
+         IsNotExecuted(GetType().Name)).AsTask();
 
     private StubResponseWriterResultModel Redirect(string url, HttpStatusCode httpStatusCode, ResponseModel response)
     {

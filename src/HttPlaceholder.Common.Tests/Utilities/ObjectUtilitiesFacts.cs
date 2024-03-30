@@ -9,7 +9,7 @@ public class ObjectUtilitiesFacts
     public async Task IfNullAsync_ResultIsNotNull()
     {
         // Arrange
-        var task = Task.FromResult("test123");
+        var task = "test123".AsTask();
 
         // Act
         var result = await task.IfNullAsync(() => throw new InvalidOperationException());
@@ -22,7 +22,7 @@ public class ObjectUtilitiesFacts
     public async Task IfNullAsync_ResultIsNull()
     {
         // Arrange
-        var task = Task.FromResult((string)null);
+        var task = ((string)null).AsTask();
 
         // Act / Assert
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
@@ -57,7 +57,7 @@ public class ObjectUtilitiesFacts
     public async Task IfAsync_FuncReturnsTrue()
     {
         // Arrange
-        var input = Task.FromResult("some input");
+        var input = "some input".AsTask();
 
         // Act / Assert
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
@@ -68,7 +68,7 @@ public class ObjectUtilitiesFacts
     public async Task IfAsync_FuncReturnsFalse()
     {
         // Arrange
-        var input = Task.FromResult("some input");
+        var input = "some input".AsTask();
 
         // Act
         var result = await input.IfAsync(string.IsNullOrWhiteSpace, _ => throw new InvalidOperationException());
@@ -105,7 +105,7 @@ public class ObjectUtilitiesFacts
     public async Task MapAsync_HappyFlow()
     {
         // Arrange
-        var input = Task.FromResult("abc123");
+        var input = "abc123".AsTask();
 
         // Act
         var result = await input.MapAsync(r => r.Length);
@@ -125,5 +125,18 @@ public class ObjectUtilitiesFacts
 
         // Assert
         Assert.AreEqual(6, result);
+    }
+
+    [TestMethod]
+    public async Task AsTask_HappyFlow()
+    {
+        // Arrange
+        const string input = "abc123";
+
+        // Act
+        var result = await input.AsTask();
+
+        // Assert
+        Assert.AreEqual(input, result);
     }
 }

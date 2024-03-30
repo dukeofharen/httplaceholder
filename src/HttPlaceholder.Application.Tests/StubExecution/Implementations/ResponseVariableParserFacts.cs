@@ -2,6 +2,7 @@
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Common.Utilities;
 using Match = System.Text.RegularExpressions.Match;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
@@ -44,14 +45,14 @@ public class ResponseVariableParserFacts
                         matches.Any(match => match.Groups[2].Value == "value1" || match.Groups[2].Value == "bla")),
                     stub,
                     It.IsAny<CancellationToken>()))
-            .Returns<string, IEnumerable<Match>, StubModel, CancellationToken>((r, _, _, _) => Task.FromResult(r));
+            .Returns<string, IEnumerable<Match>, StubModel, CancellationToken>((r, _, _, _) => r.AsTask());
         _handler2
             .Setup(m =>
                 m.ParseAsync(input,
                     It.Is<IEnumerable<Match>>(matches =>
                         matches.Any(match => string.IsNullOrWhiteSpace(match.Groups[2].Value))), stub,
                     It.IsAny<CancellationToken>()))
-            .Returns<string, IEnumerable<Match>, StubModel, CancellationToken>((r, _, _, _) => Task.FromResult(r));
+            .Returns<string, IEnumerable<Match>, StubModel, CancellationToken>((r, _, _, _) => r.AsTask());
 
         // act
         var result = await _parser.ParseAsync(input, stub, CancellationToken.None);

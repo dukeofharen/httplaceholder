@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.StubSources;
 
@@ -112,7 +113,7 @@ public class BaseWritableStubSourceFacts
         public override Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(
             PagingModel pagingModel,
             string distributionKey = null,
-            CancellationToken cancellationToken = default) => Task.FromResult(_requests);
+            CancellationToken cancellationToken = default) => _requests.AsTask();
 
         public override Task<RequestResultModel> GetRequestAsync(string correlationId, string distributionKey = null,
             CancellationToken cancellationToken = default) =>

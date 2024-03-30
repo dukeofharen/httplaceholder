@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -17,11 +18,11 @@ internal class BodyHandler : IRequestToStubConditionsHandler, ISingletonService
     {
         if (conditions.Json != null || string.IsNullOrWhiteSpace(request.Body))
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         conditions.Body = new[] { new StubConditionStringCheckingModel { StringEquals = request.Body } };
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

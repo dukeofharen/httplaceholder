@@ -21,14 +21,14 @@ public abstract class BaseBodyResponseWriter : IResponseWriter
         var body = GetBodyFromStub(stub);
         if (body == null)
         {
-            return Task.FromResult(IsNotExecuted(GetWriterName()));
+            return IsNotExecuted(GetWriterName()).AsTask();
         }
 
         response.BodyIsBinary = false;
         response.Body = Encoding.UTF8.GetBytes(body);
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, GetContentType(), false);
 
-        return Task.FromResult(IsExecuted(GetWriterName()));
+        return IsExecuted(GetWriterName()).AsTask();
     }
 
     /// <inheritdoc />

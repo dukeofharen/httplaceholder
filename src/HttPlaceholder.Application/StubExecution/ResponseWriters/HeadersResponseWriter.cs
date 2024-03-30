@@ -23,7 +23,7 @@ internal class HeadersResponseWriter : IResponseWriter, ISingletonService
         var stubResponseHeaders = stub.Response?.Headers;
         if (stubResponseHeaders == null || stubResponseHeaders.Any() != true)
         {
-            return Task.FromResult(IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
         foreach (var header in stubResponseHeaders)
@@ -31,6 +31,6 @@ internal class HeadersResponseWriter : IResponseWriter, ISingletonService
             response.Headers.AddOrReplaceCaseInsensitive(header.Key, header.Value);
         }
 
-        return Task.FromResult(IsExecuted(GetType().Name));
+        return IsExecuted(GetType().Name).AsTask();
     }
 }

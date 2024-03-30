@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -27,7 +28,7 @@ internal class HostHandler : IRequestToStubConditionsHandler, ISingletonService
         }
 
         conditions.Host = new StubConditionStringCheckingModel { StringEquals = host };
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

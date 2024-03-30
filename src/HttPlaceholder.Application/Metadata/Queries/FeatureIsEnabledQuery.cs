@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using MediatR;
@@ -33,18 +33,18 @@ public class FeatureIsEnabledQuery : IRequest<FeatureResultModel>
 /// <summary>
 ///     A query handler that is used to check whether a specific feature is enabled or not.
 /// </summary>
-public class FeatureIsEnabledQueryHandler(IOptionsMonitor<SettingsModel> options) : IRequestHandler<FeatureIsEnabledQuery, FeatureResultModel>
+public class FeatureIsEnabledQueryHandler(IOptionsMonitor<SettingsModel> options)
+    : IRequestHandler<FeatureIsEnabledQuery, FeatureResultModel>
 {
-
     /// <inheritdoc />
     public Task<FeatureResultModel> Handle(FeatureIsEnabledQuery request, CancellationToken cancellationToken)
     {
         var settings = options.CurrentValue;
         return request.FeatureFlag switch
         {
-            FeatureFlagType.Authentication => Task.FromResult(new FeatureResultModel(request.FeatureFlag,
+            FeatureFlagType.Authentication => new FeatureResultModel(request.FeatureFlag,
                 settings.Authentication != null && !string.IsNullOrWhiteSpace(settings.Authentication.ApiUsername) &&
-                !string.IsNullOrWhiteSpace(settings.Authentication.ApiPassword))),
+                !string.IsNullOrWhiteSpace(settings.Authentication.ApiPassword)).AsTask(),
             _ => throw new NotImplementedException($"Feature flag '{request.FeatureFlag}' not supported.")
         };
     }

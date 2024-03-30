@@ -24,14 +24,14 @@ internal class BasicAuthenticationHandler : IRequestToStubConditionsHandler, ISi
         if (string.IsNullOrWhiteSpace(pair.Value) ||
             !pair.Value.Trim().ToLower().StartsWith("Basic", StringComparison.OrdinalIgnoreCase))
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         var basicAuth = pair.Value.Replace("Basic ", string.Empty).Base64Decode();
         var parts = basicAuth.Split(':');
         if (parts.Length != 2)
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         conditions.BasicAuthentication = new StubBasicAuthenticationModel { Username = parts[0], Password = parts[1] };
@@ -41,7 +41,7 @@ internal class BasicAuthenticationHandler : IRequestToStubConditionsHandler, ISi
             .Where(h => !h.Key.Equals(HeaderKeys.Authorization, StringComparison.OrdinalIgnoreCase))
             .ToDictionary(d => d.Key, d => d.Value);
 
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

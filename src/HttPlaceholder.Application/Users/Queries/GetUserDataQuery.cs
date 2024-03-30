@@ -29,6 +29,7 @@ public class GetUserDataQueryHandler(IUserContext userContext) : IRequestHandler
     /// <inheritdoc />
     public Task<UserModel> Handle(GetUserDataQuery request, CancellationToken cancellationToken) =>
         userContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)
-            .If(c => !string.IsNullOrWhiteSpace(c?.Value) && request.Username != c.Value, _ => throw new ForbiddenException())
-            .Map(_ => Task.FromResult(new UserModel { Username = request.Username }));
+            .If(c => !string.IsNullOrWhiteSpace(c?.Value) && request.Username != c.Value,
+                _ => throw new ForbiddenException())
+            .Map(_ => new UserModel { Username = request.Username }.AsTask());
 }
