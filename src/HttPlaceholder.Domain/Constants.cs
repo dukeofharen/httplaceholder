@@ -249,6 +249,11 @@ public static class HeaderKeys
     ///     The authorization header key.
     /// </summary>
     public const string Authorization = "Authorization";
+
+    /// <summary>
+    ///     The accept header key.
+    /// </summary>
+    public const string Accept = "Accept";
 }
 
 /// <summary>

@@ -308,6 +308,50 @@ public class StubHandlingMiddlewareFacts
 
     [TestMethod]
     public async Task
+        Invoke_ExecuteStub_UiEnabled_AcceptsJson_ShouldReturnJsonString()
+    {
+        // Arrange
+        _settings.Storage.EnableRequestLogging = true;
+        _settings.Gui.EnableUserInterface = true;
+        var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var mediatorMock = _mocker.GetMock<IMediator>();
+
+        const string requestPath = "/stub-path";
+
+        httpContextServiceMock
+            .Setup(m => m.Path)
+            .Returns(requestPath);
+
+        httpContextServiceMock
+            .Setup(m => m.GetHeaders())
+            .Returns(new Dictionary<string, string> { { "Accept", "text/yaml, application/json" } });
+
+        mediatorMock
+            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new RequestValidationException("ERROR!"));
+
+        var requestResultModel = new RequestResultModel();
+        _requestLoggerMock
+            .Setup(m => m.GetResult())
+            .Returns(requestResultModel);
+
+        // Act
+        await middleware.Invoke(null);
+
+        // Assert
+        Assert.IsFalse(_nextCalled);
+        httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
+        httpContextServiceMock.Verify(m =>
+            m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.JsonMime));
+        httpContextServiceMock.Verify(m =>
+            m.WriteAsync(It.Is<string>(b => b == """{"status":"501 Not implemented"}"""), It.IsAny<CancellationToken>()));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
+    }
+
+    [TestMethod]
+    public async Task
         Invoke_ExecuteStub_UiEnabled_TaskCanceledExceptionWhenExecutingStub_ShouldReturn501WithHtmlPage()
     {
         // Arrange
@@ -338,46 +382,6 @@ public class StubHandlingMiddlewareFacts
         // Assert
         Assert.IsFalse(_nextCalled);
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request was cancelled."));
-    }
-
-    [TestMethod]
-    public async Task
-        Invoke_ExecuteStub_UiDisabled_RequestValidationExceptionWhenExecutingStub_ShouldReturn501WithoutHtmlPage()
-    {
-        // Arrange
-        _settings.Storage.EnableRequestLogging = true;
-        _settings.Gui.EnableUserInterface = false;
-        var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var mediatorMock = _mocker.GetMock<IMediator>();
-
-        const string requestPath = "/stub-path";
-
-        httpContextServiceMock
-            .Setup(m => m.Path)
-            .Returns(requestPath);
-
-        mediatorMock
-            .Setup(m => m.Send(It.IsAny<HandleStubRequestCommand>(), It.IsAny<CancellationToken>()))
-            .ThrowsAsync(new RequestValidationException("ERROR!"));
-
-        var requestResultModel = new RequestResultModel();
-        _requestLoggerMock
-            .Setup(m => m.GetResult())
-            .Returns(requestResultModel);
-
-        // Act
-        await middleware.Invoke(null);
-
-        // Assert
-        Assert.IsFalse(_nextCalled);
-        httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
-        httpContextServiceMock.Verify(m =>
-            m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime), Times.Never);
-        httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
-            Times.Never);
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
     }
 
     [TestMethod]

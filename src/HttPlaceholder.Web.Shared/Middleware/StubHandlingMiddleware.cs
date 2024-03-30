@@ -5,10 +5,12 @@ using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Commands;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Web.Shared.Resources;
 using MediatR;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Web.Shared.Middleware;
@@ -100,15 +102,25 @@ public class StubHandlingMiddleware(
     {
         httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
         httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlation);
-        if (settings?.Gui?.EnableUserInterface == true)
+        var acceptHeader = httpContextService.GetHeaders()?.CaseInsensitiveSearch(HeaderKeys.Accept);
+        var acceptsJson = acceptHeader?.Contains(MimeTypes.JsonMime, StringComparison.OrdinalIgnoreCase) ?? false;
+        string body;
+        string contentType;
+        if (settings?.Gui?.EnableUserInterface == true && !acceptsJson)
         {
-            var pageContents = WebResources.StubNotConfiguredHtml
+            body = WebResources.StubNotConfiguredHtml
                 .Replace("[ROOT_URL]", urlResolver.GetRootUrl())
                 .Replace("[VERSION]", assemblyService.GetAssemblyVersion());
-            httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
-            await httpContextService.WriteAsync(pageContents, cancellationToken);
+            contentType = MimeTypes.HtmlMime;
+        }
+        else
+        {
+            body = JsonConvert.SerializeObject(new { status = "501 Not implemented" });
+            contentType = MimeTypes.JsonMime;
         }
 
+        httpContextService.AddHeader(HeaderKeys.ContentType, contentType);
+        await httpContextService.WriteAsync(body, cancellationToken);
         logger.LogDebug($"Request validation exception thrown: {e.Message}");
     }
 
