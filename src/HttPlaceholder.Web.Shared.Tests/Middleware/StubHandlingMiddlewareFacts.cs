@@ -303,7 +303,7 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime));
         httpContextServiceMock.Verify(m =>
             m.WriteAsync(It.Is<string>(b => b.Contains("Not Implemented")), It.IsAny<CancellationToken>()));
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown."));
     }
 
     [TestMethod]
@@ -347,7 +347,7 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.JsonMime));
         httpContextServiceMock.Verify(m =>
             m.WriteAsync(It.Is<string>(b => b == """{"status":"501 Not implemented"}"""), It.IsAny<CancellationToken>()));
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown."));
     }
 
     [TestMethod]
@@ -418,6 +418,6 @@ public class StubHandlingMiddlewareFacts
             m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
         httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Warning, "Unexpected exception thrown:"));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Warning, "Unexpected exception thrown."));
     }
 }

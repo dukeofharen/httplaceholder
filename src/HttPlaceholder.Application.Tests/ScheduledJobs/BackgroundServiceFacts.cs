@@ -87,7 +87,7 @@ public class BackgroundServiceFacts
         Assert.IsTrue(service.ProcessCalled);
         var logEvent = _loggerMock.Entries.Single(e => e.LogLevel == LogLevel.Error);
         Assert.IsTrue(logEvent.State.Contains("Unexpected exception thrown while executing service") &&
-                      logEvent.State.Contains("PROCESSING WENT WRONG!"));
+                      logEvent.Exception.Message.Contains("PROCESSING WENT WRONG!"));
     }
 
     [TestMethod]
