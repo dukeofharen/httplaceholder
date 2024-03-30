@@ -15,7 +15,6 @@ public class YamlInputFormatter : TextInputFormatter
     /// <summary>
     ///     Constructs a <see cref="YamlInputFormatter" /> instance.
     /// </summary>
-    /// <param name="deserializer"></param>
     public YamlInputFormatter(IDeserializer deserializer)
     {
         _deserializer = deserializer;

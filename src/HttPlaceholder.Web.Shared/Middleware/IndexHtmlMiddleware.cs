@@ -14,7 +14,8 @@ public class IndexHtmlMiddleware(
     IHttpContextService httpContextService,
     IFileService fileService,
     IUrlResolver urlResolver,
-    IHtmlService htmlService)
+    IHtmlService htmlService,
+    IAssemblyService assemblyService)
 {
     /// <summary>
     ///     Handles the middleware.
@@ -34,6 +35,7 @@ public class IndexHtmlMiddleware(
             headNode.PrependChild(HtmlNode.CreateNode(
                 $"""<script type="text/javascript">window.rootUrl = "{rootUrl}";</script>"""));
             headNode.PrependChild(HtmlNode.CreateNode($"""<base href="{rootUrl}/ph-ui/">"""));
+            headNode.PrependChild(HtmlNode.CreateNode($"""<meta name="httplaceholder:version" content="{assemblyService.GetAssemblyVersion()}"/>"""));
             httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
             await httpContextService.WriteAsync(doc.DocumentNode.OuterHtml, cancellationToken);
         }
