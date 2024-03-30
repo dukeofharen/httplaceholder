@@ -420,11 +420,7 @@ internal class FileSystemStubSource(
 
     private static string ConstructOldRequestFilename(string correlationId) => $"{correlationId}.json";
 
-    private string ConstructRequestFilename(string correlationId)
-    {
-        var unix = dateTime.UtcNowUnix;
-        return $"{unix}-{correlationId}.json";
-    }
+    private string ConstructRequestFilename(string correlationId) => $"{dateTime.UtcNowUnix}-{correlationId}.json";
 
     internal async Task<string> FindRequestFilenameAsync(string correlationId, string distributionKey,
         CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,8 @@ internal class SqlServerDbConnectionFactory(IConfiguration configuration) : IDbC
 
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
-        new SqlConnection(configuration.GetConnectionString(ConnectionStringKey));
+        new SqlConnection(configuration.GetConnectionString(ConnectionStringKey) ??
+                          throw new InvalidOperationException("SQL Server connection string not found."));
 
 
     /// <inheritdoc />

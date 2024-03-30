@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -16,5 +17,6 @@ internal class PostgresDbConnectionFactory(IConfiguration configuration) : IDbCo
     public IDbConnection GetConnection() => null;
 
     public DbDataSource GetDataSource() =>
-        NpgsqlDataSource.Create(configuration.GetConnectionString(ConnectionStringKey));
+        NpgsqlDataSource.Create(configuration.GetConnectionString(ConnectionStringKey) ??
+                                throw new InvalidOperationException("Postgres connection string not found."));
 }
