@@ -79,8 +79,7 @@ public static class PersistenceModule
         }
 
         // The YAML stub source should always be registered. If stated that the file watcher should be disabled, register the YamlFileStubSource instead.
-        var disableFileWatcher = settings?.Storage?.DisableFileWatcher ?? false;
-        if (disableFileWatcher)
+        if (settings?.Storage?.DisableFileWatcher ?? false)
         {
             services.AddSingleton<IStubSource, YamlFileStubSource>();
         }

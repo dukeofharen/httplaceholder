@@ -56,31 +56,24 @@ internal abstract class BaseFileStubSource(
     protected IEnumerable<string> GetInputLocations()
     {
         var inputFileLocation = options.CurrentValue.Storage?.InputFile;
-        if (string.IsNullOrEmpty(inputFileLocation))
+        if (!string.IsNullOrEmpty(inputFileLocation))
         {
-            // If the input file location is not set, try looking in the current directory for files.
-            var currentDirectory = FileService.GetCurrentDirectory();
-            return FileService.GetFiles(currentDirectory, SupportedExtensions);
+            // Split file path: it is possible to supply multiple locations.
+            return inputFileLocation
+                .Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
+                .Select(StripIllegalCharacters);
         }
 
-        // Split file path: it is possible to supply multiple locations.
-        return inputFileLocation
-            .Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
-            .Select(StripIllegalCharacters);
+        // If the input file location is not set, try looking in the current directory for files.
+        var currentDirectory = FileService.GetCurrentDirectory();
+        return FileService.GetFiles(currentDirectory, SupportedExtensions);
     }
 
     protected IEnumerable<StubModel> ParseAndValidateStubs(string input, string file)
     {
-        IEnumerable<StubModel> stubs;
-        if (YamlIsArray(input))
-        {
-            stubs = YamlUtilities.Parse<List<StubModel>>(input);
-        }
-        else
-        {
-            stubs = new[] { YamlUtilities.Parse<StubModel>(input) };
-        }
-
+        var stubs = YamlIsArray(input)
+            ? YamlUtilities.Parse<IEnumerable<StubModel>>(input)
+            : new[] { YamlUtilities.Parse<StubModel>(input) };
         return ValidateStubs(file, stubs);
     }
 
@@ -88,7 +81,7 @@ internal abstract class BaseFileStubSource(
         .SplitNewlines()
         .Any(l => l.StartsWith('-'));
 
-    private IEnumerable<StubModel> ValidateStubs(string filename, IEnumerable<StubModel> stubs)
+    private List<StubModel> ValidateStubs(string filename, IEnumerable<StubModel> stubs)
     {
         var result = new List<StubModel>();
         foreach (var stub in stubs)

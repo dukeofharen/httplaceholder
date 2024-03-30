@@ -46,17 +46,13 @@ internal class FileWatcherYamlFileStubSource(
     /// <inheritdoc />
     public override Task<IEnumerable<(StubModel Stub, Dictionary<string, string> Metadata)>> GetStubsAsync(
         string distributionKey = null,
-        CancellationToken cancellationToken = default)
-    {
-        var result =
-            from kv
+        CancellationToken cancellationToken = default) =>
+        Task.FromResult(from kv
                 in Stubs
             from stub
                 in kv.Value
             select (stub,
-                new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } });
-        return Task.FromResult(result);
-    }
+                new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } }));
 
     /// <inheritdoc />
     public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>
@@ -235,14 +231,15 @@ internal class FileWatcherYamlFileStubSource(
 
     internal bool TryRemoveWatcher(string fullPath)
     {
-        if (FileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
+        if (!FileSystemWatchers.TryGetValue(fullPath, out var foundWatcher))
         {
-            foundWatcher.Dispose();
-            FileSystemWatchers.TryRemove(fullPath, out _);
-            return true;
+            return false;
         }
 
-        return false;
+        foundWatcher.Dispose();
+        FileSystemWatchers.TryRemove(fullPath, out _);
+        return true;
+
     }
 
     private void SignalStubsReload() => stubNotify.ReloadStubsAsync().Wait();
