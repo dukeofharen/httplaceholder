@@ -38,7 +38,7 @@ internal class FormPostResponseVariableParsingHandler(IHttpContextService httpCo
             .Aggregate(input, (current, match) => InsertFormValue(current, match, formDict));
     }
 
-    private static string InsertFormValue(string current, Match match, IDictionary<string, string> formDict)
+    private static string InsertFormValue(string current, Match match, Dictionary<string, string> formDict)
     {
         var formValueName = match.Groups[2].Value;
         if (!formDict.TryGetValue(formValueName, out var replaceValue))

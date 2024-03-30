@@ -46,7 +46,7 @@ public class ProgramUtility(
         return result;
     }
 
-    private IEnumerable<int> HandlePorts(string portInput, int defaultPort)
+    private List<int> HandlePorts(string portInput, int defaultPort)
     {
         var result = new List<int>();
         var ports = ParsePorts(portInput);

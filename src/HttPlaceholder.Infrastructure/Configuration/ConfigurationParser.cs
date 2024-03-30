@@ -43,7 +43,7 @@ public class ConfigurationParser(
         return DetermineFinalConfigDictionary(envResult, argsResult, configFileResult, configMetadata, args);
     }
 
-    private IDictionary<string, string> ParseEnvironment(
+    private Dictionary<string, string> ParseEnvironment(
         IEnumerable<ConfigMetadataModel> configMetadata)
     {
         var result = new Dictionary<string, string>();
@@ -66,9 +66,9 @@ public class ConfigurationParser(
         return result;
     }
 
-    private IDictionary<string, string> ParseConfigFile(
-        IDictionary<string, string> envResult,
-        IDictionary<string, string> argsResult)
+    private Dictionary<string, string> ParseConfigFile(
+        Dictionary<string, string> envResult,
+        Dictionary<string, string> argsResult)
     {
         const string key = ConfigKeys.ConfigJsonLocationKey;
         var configJsonPath = argsResult.CaseInsensitiveSearch(key);
@@ -94,9 +94,9 @@ public class ConfigurationParser(
     }
 
     private IDictionary<string, string> DetermineFinalConfigDictionary(
-        IDictionary<string, string> envResult,
-        IDictionary<string, string> argsResult,
-        IDictionary<string, string> configFileResult,
+        Dictionary<string, string> envResult,
+        Dictionary<string, string> argsResult,
+        Dictionary<string, string> configFileResult,
         ConfigMetadataModel[] configMetadata,
         IEnumerable<string> args)
     {

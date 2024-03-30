@@ -460,7 +460,7 @@ internal class StubContext(
         return result;
     }
 
-    private static StubMetadataModel MapMetadata(bool stubSourceIsReadOnly, IDictionary<string, string> metadata = null)
+    private static StubMetadataModel MapMetadata(bool stubSourceIsReadOnly, Dictionary<string, string> metadata = null)
     {
         var result = new StubMetadataModel { ReadOnly = stubSourceIsReadOnly };
         if (metadata != null && metadata.TryGetValue(StubMetadataKeys.Filename, out var filename))

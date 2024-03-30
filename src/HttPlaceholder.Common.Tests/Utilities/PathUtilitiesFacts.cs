@@ -38,6 +38,6 @@ public class PathUtilitiesFacts
         }
     }
 
-    private static IEnumerable<string> SplitPath(string path) =>
+    private static string[] SplitPath(string path) =>
         path.Split(["/", "\\"], StringSplitOptions.None);
 }

@@ -129,7 +129,7 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
         return passed;
     }
 
-    private static bool HandleString(string text, JToken jToken, ICollection<string> logging)
+    private static bool HandleString(string text, JToken jToken, List<string> logging)
     {
         switch (jToken.Type)
         {

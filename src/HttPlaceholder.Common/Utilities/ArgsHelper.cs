@@ -13,7 +13,7 @@ public static class ArgsHelper
     /// </summary>
     /// <param name="args">The array of command line parameters.</param>
     /// <returns>The parsed dictionary.</returns>
-    public static IDictionary<string, string> Parse(this IEnumerable<string> args)
+    public static Dictionary<string, string> Parse(this IEnumerable<string> args)
     {
         var subResult = new Dictionary<string, List<string>>();
 

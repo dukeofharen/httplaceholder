@@ -116,7 +116,7 @@ internal class OpenApiFakeDataGenerator(IDateTime dateTime) : IOpenApiFakeDataGe
         return result.ToArray();
     }
 
-    private IDictionary<string, object> GetRandomObject(OpenApiSchema schema) =>
+    private Dictionary<string, object> GetRandomObject(OpenApiSchema schema) =>
         schema.Properties.ToDictionary(property => property.Key, property => GetRandomValue(property.Value));
 
     private string GenerateFakeString(string format, IList<IOpenApiAny> enumValues)

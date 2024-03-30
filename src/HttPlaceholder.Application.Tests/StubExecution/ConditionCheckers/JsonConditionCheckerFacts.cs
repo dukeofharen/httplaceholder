@@ -315,8 +315,8 @@ public class JsonConditionCheckerFacts
         Assert.IsFalse(result);
     }
 
-    private static IDictionary<object, object> CreateObjectStubConditions() =>
-        new Dictionary<object, object>
+    private static Dictionary<object, object> CreateObjectStubConditions() =>
+        new()
         {
             { "username", "^username$" },
             {
@@ -344,7 +344,7 @@ public class JsonConditionCheckerFacts
             }
         };
 
-    private static IList<object> CreateArrayStubConditions() =>
+    private static List<object> CreateArrayStubConditions() =>
         new List<object>
         {
             "val1",
