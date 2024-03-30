@@ -345,12 +345,11 @@ public class JsonConditionCheckerFacts
         };
 
     private static List<object> CreateArrayStubConditions() =>
-        new List<object>
-        {
-            "val1",
-            "3",
-            "1.46",
-            "2021-04-17T13:16:54",
-            new Dictionary<object, object> { { "stringVal", "val1" }, { "intVal", "55" } }
-        };
+    [
+        "val1",
+        "3",
+        "1.46",
+        "2021-04-17T13:16:54",
+        new Dictionary<object, object> { { "stringVal", "val1" }, { "intVal", "55" } }
+    ];
 }

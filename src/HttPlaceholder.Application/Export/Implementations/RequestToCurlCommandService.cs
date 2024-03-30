@@ -28,7 +28,7 @@ internal class RequestToCurlCommandService : IRequestToCurlCommandService, ISing
             ? Array.Empty<string>()
             : ["-X", reqParams.Method.ToUpper()];
 
-    private static string[] AddUrl(RequestParametersModel reqParams) => new[] { $"'{reqParams.Url}'" };
+    private static string[] AddUrl(RequestParametersModel reqParams) => [$"'{reqParams.Url}'"];
 
     private static IEnumerable<string> AddHeaders(RequestParametersModel reqParams) =>
         reqParams.Headers == null || !reqParams.Headers.Any()
