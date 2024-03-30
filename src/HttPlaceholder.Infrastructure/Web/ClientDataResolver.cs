@@ -6,6 +6,7 @@ using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Infrastructure.Web.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -65,8 +66,7 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
         Func<HttpContext, T> getDefaultValueFunc,
         Func<string[], T> parseResultFunc)
     {
-        var httpContext =
-            ThrowHelper.ThrowIfNull<HttpContext, InvalidOperationException>(_httpContextAccessor.HttpContext);
+        var httpContext = _httpContextAccessor.GetHttpContext();
         var settings = _options.CurrentValue;
         if (settings.Web?.ReadProxyHeaders == false)
         {

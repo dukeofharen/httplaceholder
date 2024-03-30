@@ -9,29 +9,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Infrastructure.Web.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Infrastructure.Web;
 
-internal class HttpContextService : IHttpContextService, ISingletonService
+internal class HttpContextService(IHttpContextAccessor httpContextAccessor, ILogger<HttpContextService> logger)
+    : IHttpContextService, ISingletonService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<HttpContextService> _logger;
-
-    /// <summary>
-    ///     Constructs a <see cref="HttpContextService" /> instance.
-    /// </summary>
-    public HttpContextService(
-        IHttpContextAccessor httpContextAccessor,
-        ILogger<HttpContextService> logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _logger = logger;
-    }
-
     /// <inheritdoc />
     public string Method => GetContext().Request.Method;
 
@@ -78,7 +65,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     /// <inheritdoc />
     public TObject GetItem<TObject>(string key)
     {
-        var item = _httpContextAccessor.HttpContext?.Items[key];
+        var item = GetContext().Items[key];
         return (TObject)item;
     }
 
@@ -119,7 +106,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogWarning(ex, "Exception thrown while reading form data.");
+            logger.LogWarning(ex, "Exception thrown while reading form data.");
             return Array.Empty<(string, StringValues)>();
         }
     }
@@ -185,6 +172,5 @@ internal class HttpContextService : IHttpContextService, ISingletonService
         return result;
     }
 
-    private HttpContext GetContext() =>
-        ThrowHelper.ThrowIfNull<HttpContext, InvalidOperationException>(_httpContextAccessor.HttpContext);
+    private HttpContext GetContext() => httpContextAccessor.GetHttpContext();
 }
