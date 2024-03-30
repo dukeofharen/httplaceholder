@@ -1,15 +1,16 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using System.Text;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.WebInfrastructure.Implementations;
+namespace HttPlaceholder.Infrastructure.Web;
 
 internal class ApiAuthorizationService(
     ILoginCookieService loginCookieService,

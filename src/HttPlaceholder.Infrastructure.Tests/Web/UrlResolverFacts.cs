@@ -1,9 +1,12 @@
-﻿using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Configuration.Models;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.WebInfrastructure.Implementations;
+using HttPlaceholder.Infrastructure.Web;
+using HttPlaceholder.TestUtilities;
+using HttPlaceholder.TestUtilities.Http;
+using HttPlaceholder.TestUtilities.Options;
+using Moq.AutoMock;
 
-namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
+namespace HttPlaceholder.Infrastructure.Tests.Web;
 
 [TestClass]
 public class UrlResolverFacts

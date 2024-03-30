@@ -1,8 +1,12 @@
 using HttPlaceholder.Application.Configuration.Models;
-using HttPlaceholder.WebInfrastructure.Implementations;
+using HttPlaceholder.Infrastructure.Web;
+using HttPlaceholder.TestUtilities;
+using HttPlaceholder.TestUtilities.Http;
+using HttPlaceholder.TestUtilities.Options;
 using Microsoft.AspNetCore.Http;
+using Moq.AutoMock;
 
-namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
+namespace HttPlaceholder.Infrastructure.Tests.Web;
 
 [TestClass]
 public class ClientIpResolverFacts

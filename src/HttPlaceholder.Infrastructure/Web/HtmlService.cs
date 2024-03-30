@@ -2,7 +2,7 @@
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 
-namespace HttPlaceholder.WebInfrastructure.Implementations;
+namespace HttPlaceholder.Infrastructure.Web;
 
 /// <summary>
 ///     A class that is used to work with and manipulate HTML.

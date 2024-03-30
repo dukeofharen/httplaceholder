@@ -1,7 +1,10 @@
 ﻿using System.Security.Claims;
-using HttPlaceholder.WebInfrastructure.Implementations;
+using HttPlaceholder.Infrastructure.Web;
+using HttPlaceholder.TestUtilities;
+using HttPlaceholder.TestUtilities.Http;
+using Moq.AutoMock;
 
-namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
+namespace HttPlaceholder.Infrastructure.Tests.Web;
 
 [TestClass]
 public class UserContextFacts

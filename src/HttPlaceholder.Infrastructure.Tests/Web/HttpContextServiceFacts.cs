@@ -1,10 +1,17 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Security.Claims;
-using HttPlaceholder.WebInfrastructure.Implementations;
+using System.Threading;
+using System.Threading.Tasks;
+using HttPlaceholder.Infrastructure.Web;
+using HttPlaceholder.TestUtilities;
+using HttPlaceholder.TestUtilities.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
+using Moq.AutoMock;
 
-namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
+namespace HttPlaceholder.Infrastructure.Tests.Web;
 
 [TestClass]
 public class HttpContextServiceFacts

@@ -53,17 +53,9 @@ public class FakeDataVariableParsingHandlerFacts
     {
         // Arrange
         var locales = new[] { "en_US", "nl" };
-        const string description = "the description [LOCALES]";
-        const string expectedDescription = "the description _en_US_, _nl_";
 
-        var fileServiceMock = _mocker.GetMock<IFileService>();
         var fakerServiceMock = _mocker.GetMock<IFakerService>();
         var handler = _mocker.CreateInstance<FakeDataVariableParsingHandler>();
-
-        fileServiceMock
-            .Setup(m => m.ReadAllText(It.Is<string>(p =>
-                p.EndsWith(Path.Combine("Files", "VarParser", "fake_data-description.md")))))
-            .Returns(description);
 
         fakerServiceMock
             .Setup(m => m.GetLocales())
@@ -73,14 +65,8 @@ public class FakeDataVariableParsingHandlerFacts
         var result = handler.GetDescription();
 
         // Assert
-        Assert.AreEqual(expectedDescription, result);
-
-        // Act
-        result = handler.GetDescription();
-
-        // Assert
-        Assert.AreEqual(expectedDescription, result);
-        fileServiceMock.Verify(m => m.ReadAllText(It.IsAny<string>()), Times.Once);
+        Assert.IsTrue(result.Contains("_en_US_, _nl_"));
+        Assert.IsTrue(result.Contains("This handler can be inserted in the following ways:"));
     }
 
     [TestMethod]

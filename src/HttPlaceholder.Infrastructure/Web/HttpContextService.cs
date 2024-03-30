@@ -1,12 +1,20 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
-namespace HttPlaceholder.WebInfrastructure.Implementations;
+namespace HttPlaceholder.Infrastructure.Web;
 
 internal class HttpContextService : IHttpContextService, ISingletonService
 {

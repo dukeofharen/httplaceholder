@@ -17,6 +17,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
         <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
     </ItemGroup>

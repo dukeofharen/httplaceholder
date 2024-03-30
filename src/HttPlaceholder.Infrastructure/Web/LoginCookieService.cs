@@ -1,12 +1,12 @@
-﻿using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Configuration.Models;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.WebInfrastructure.Implementations;
+namespace HttPlaceholder.Infrastructure.Web;
 
 internal class LoginCookieService(
     IOptionsMonitor<SettingsModel> options,

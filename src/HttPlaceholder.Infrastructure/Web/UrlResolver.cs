@@ -1,11 +1,12 @@
-﻿using HttPlaceholder.Application.Configuration;
+﻿using System;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.WebInfrastructure.Implementations;
+namespace HttPlaceholder.Infrastructure.Web;
 
 internal class UrlResolver(
     IClientDataResolver clientDataResolver,
@@ -16,9 +17,11 @@ internal class UrlResolver(
     public string GetDisplayUrl()
     {
         var rootUrl = GetRootUrl();
-        string path = httpContextAccessor.HttpContext.Request.Path;
-        var query = httpContextAccessor.HttpContext.Request.QueryString.HasValue
-            ? httpContextAccessor.HttpContext.Request.QueryString.Value
+        var httpContext = httpContextAccessor.HttpContext ??
+                          throw new InvalidOperationException("HttpContext not set.");
+        string path = httpContext.Request.Path;
+        var query = httpContext.Request.QueryString.HasValue
+            ? httpContext.Request.QueryString.Value
             : string.Empty;
         return $"{rootUrl}{path}{query}";
     }

@@ -1,12 +1,17 @@
-﻿using System.Security.Claims;
-using HttPlaceholder.Application.Configuration;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.WebInfrastructure.Implementations;
+using HttPlaceholder.Domain;
+using HttPlaceholder.Infrastructure.Web;
+using HttPlaceholder.TestUtilities.Logging;
+using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Logging;
+using Moq.AutoMock;
 
-namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
+namespace HttPlaceholder.Infrastructure.Tests.Web;
 
 [TestClass]
 public class ApiAuthorizationServiceFacts

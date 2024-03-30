@@ -1,6 +1,6 @@
-﻿using HttPlaceholder.WebInfrastructure.Implementations;
+﻿using HttPlaceholder.Infrastructure.Web;
 
-namespace HttPlaceholder.WebInfrastructure.Tests.Implementations;
+namespace HttPlaceholder.Infrastructure.Tests.Web;
 
 [TestClass]
 public class HtmlServiceFacts
