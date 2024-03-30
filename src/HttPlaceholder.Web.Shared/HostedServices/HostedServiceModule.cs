@@ -1,4 +1,6 @@
 ﻿using HttPlaceholder.Application.Configuration.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Web.Shared.HostedServices;
 

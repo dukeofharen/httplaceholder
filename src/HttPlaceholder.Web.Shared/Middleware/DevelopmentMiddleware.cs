@@ -1,6 +1,7 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
+using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Web.Shared.Middleware;
 

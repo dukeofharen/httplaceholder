@@ -9,6 +9,8 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Web.Shared.Resources;
 using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

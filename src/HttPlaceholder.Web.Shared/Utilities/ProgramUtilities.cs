@@ -9,7 +9,10 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Configuration;
 using HttPlaceholder.Web.Shared.Resources;
 using HttPlaceholder.Web.Shared.Utilities.Implementations;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 

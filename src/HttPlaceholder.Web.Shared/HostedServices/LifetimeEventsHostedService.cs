@@ -1,4 +1,6 @@
 ﻿using HttPlaceholder.Web.Shared.Utilities;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Web.Shared.HostedServices;
 

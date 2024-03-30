@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
+using Microsoft.Extensions.Logging;
 using BackgroundService = HttPlaceholder.Application.ScheduledJobs.BackgroundService;
 
 namespace HttPlaceholder.Web.Shared.HostedServices;

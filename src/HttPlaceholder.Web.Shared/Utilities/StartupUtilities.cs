@@ -7,7 +7,10 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Persistence;
 using HttPlaceholder.Web.Shared.Middleware;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
 namespace HttPlaceholder.Web.Shared.Utilities;

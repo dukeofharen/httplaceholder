@@ -2,6 +2,7 @@
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
+using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Web.Shared.Middleware;
 

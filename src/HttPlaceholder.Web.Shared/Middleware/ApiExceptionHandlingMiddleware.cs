@@ -2,6 +2,7 @@
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Web.Shared.Middleware;
