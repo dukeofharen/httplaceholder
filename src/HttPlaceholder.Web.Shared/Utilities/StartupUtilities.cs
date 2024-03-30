@@ -61,19 +61,6 @@ public static class StartupUtilities
     }
 
     /// <summary>
-    ///     Adds a file server for serving several other static files
-    /// </summary>
-    /// <param name="app">The application builder.</param>
-    public static IApplicationBuilder UsePhStatic(this IApplicationBuilder app)
-    {
-        var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/ph-static";
-        return app.UseFileServer(new FileServerOptions
-        {
-            EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(path), RequestPath = "/ph-static"
-        });
-    }
-
-    /// <summary>
     ///     Preloads the stub sources.
     /// </summary>
     /// <param name="app">The application builder.</param>

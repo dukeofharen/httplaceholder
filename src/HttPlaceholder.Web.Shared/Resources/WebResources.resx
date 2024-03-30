@@ -19,38 +19,88 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="StubNotConfiguredHtml" xml:space="preserve">
-        <value><![CDATA[<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="IE=edge" http-equiv="X-UA-Compatible">
-    <meta content="width=device-width, initial-scale=1" name="viewport">
-    <title>HttPlaceholder - no stub configured</title>
+        <value>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"/&gt;
+    &lt;meta content="IE=edge" http-equiv="X-UA-Compatible"&gt;
+    &lt;meta content="width=device-width, initial-scale=1" name="viewport"&gt;
+    &lt;link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"&gt; 
+    &lt;title&gt;HttPlaceholder [VERSION] - no stub configured&lt;/title&gt;
 
-    <link href="[ROOT_URL]/ph-static/style.css" rel="stylesheet"/>
-</head>
-<body>
-<div class="message">
-    <img alt="HttPlaceholder" class="logo" src="[ROOT_URL]/ph-static/logo.png"/>
+    &lt;style&gt;
+        body {
+            font-family: Arial, serif;
+            color: #8b8b8b;
+        }
 
-    <h1>HTTP 501 - Not Implemented</h1>
+        pre {
+            display: flex;
+            justify-content: center;
+        }
 
-    <p>
-        No stub was configured for this request. To view the configured stubs and the requests, go to <a
-        href="[ROOT_URL]/ph-ui">[ROOT_URL]/ph-ui</a>.
-    </p>
+        hr {
+            border: 1px dashed #8b8b8b;
+        }
 
-    <hr/>
+        .message {
+            width: 500px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
 
-    <p>
-        For information about adding a stub, you should go to <a
-        href="https://httplaceholder.com">httplaceholder.com</a>. Stubs can be added in multiple ways. The most
-        straightforward way is adding it through the <a href="[ROOT_URL]/ph-ui">user interface</a>. Read more in the <a
-        href="[ROOT_URL]/ph-ui/docs">docs</a>.
-    </p>
-</div>
-</body>
-</html>
-]]></value>
+        a:link,
+        a:visited,
+        a:active,
+        a:hover {
+            text-decoration: none;
+            color: #464646;
+        }
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class="message"&gt;
+    &lt;pre&gt;&lt;code&gt;
+
+
+              ######             
+            ##########           
+          ##############         
+        #####++#######++##       
+      #######  #######  +###     
+    #########  #######  +#####   
+  ###########  #######  +####### 
+#############  -------  +########
+ ############  #######  +######  
+   ##########  #######  +####    
+     ########  #######  +##      
+       ##################        
+         ##############          
+           ##########            
+             ######              
+
+
+    &lt;/code&gt;&lt;/pre&gt;
+
+    &lt;h1&gt;HTTP 501 - Not Implemented&lt;/h1&gt;
+
+    &lt;p&gt;
+        No stub was configured for this request. To view the configured stubs and the requests, go to &lt;a
+        href="[ROOT_URL]/ph-ui"&gt;[ROOT_URL]/ph-ui&lt;/a&gt;.
+    &lt;/p&gt;
+
+    &lt;hr/&gt;
+
+    &lt;p&gt;
+        For information about adding a stub, you should go to &lt;a
+        href="https://httplaceholder.com"&gt;httplaceholder.com&lt;/a&gt;. Stubs can be added in multiple ways. The most
+        straightforward way is adding it through the &lt;a href="[ROOT_URL]/ph-ui"&gt;user interface&lt;/a&gt;. Read more in the &lt;a
+        href="[ROOT_URL]/ph-ui/docs"&gt;docs&lt;/a&gt;.
+    &lt;/p&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</value>
     </data>
 </root>

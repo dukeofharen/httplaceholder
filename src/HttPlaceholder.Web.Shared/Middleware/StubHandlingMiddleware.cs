@@ -4,6 +4,7 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Commands;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Web.Shared.Resources;
 using MediatR;
@@ -24,11 +25,12 @@ public class StubHandlingMiddleware(
     IClientDataResolver clientDataResolver,
     IOptionsMonitor<SettingsModel> options,
     IHttpContextService httpContextService,
-    IUrlResolver urlResolver)
+    IUrlResolver urlResolver,
+    IAssemblyService assemblyService)
 {
     private static readonly string[] _segmentsToIgnore =
     [
-        "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub", "/stubHub"
+        "/ph-api", "/ph-ui", "swagger", "/requestHub", "/scenarioHub", "/stubHub"
     ];
 
     /// <summary>
@@ -64,13 +66,16 @@ public class StubHandlingMiddleware(
         {
             await HandleRequestValidationException(correlationId, e, settings, cancellationToken);
         }
-        catch (TaskCanceledException e)
-        {
-            logger.LogDebug(e, "Request was cancelled.");
-        }
         catch (Exception e)
         {
-            HandleException(correlationId, e);
+            if (e is TaskCanceledException or OperationCanceledException)
+            {
+                logger.LogDebug("Request was cancelled.");
+            }
+            else
+            {
+                HandleException(correlationId, e);
+            }
         }
 
         var loggingResult = requestLogger.GetResult();
@@ -98,7 +103,8 @@ public class StubHandlingMiddleware(
         if (settings?.Gui?.EnableUserInterface == true)
         {
             var pageContents = WebResources.StubNotConfiguredHtml
-                .Replace("[ROOT_URL]", urlResolver.GetRootUrl());
+                .Replace("[ROOT_URL]", urlResolver.GetRootUrl())
+                .Replace("[VERSION]", assemblyService.GetAssemblyVersion());
             httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
             await httpContextService.WriteAsync(pageContents, cancellationToken);
         }

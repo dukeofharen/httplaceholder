@@ -9,11 +9,6 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <ItemGroup>
-        <Content Include="ph-static\**\*.*">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-    <ItemGroup>
         <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
         <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj" />
         <ProjectReference Include="..\HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj" />

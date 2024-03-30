@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
@@ -60,7 +61,7 @@ internal class ImageResponseWriter(IAssemblyService assemblyService, IFileServic
         const string fontFamilyName = "Manrope";
         if (!collection.TryGet(fontFamilyName, out var family))
         {
-            throw new RequestValidationException($"Font family '{fontFamilyName}' not found!");
+            throw new InvalidOperationException($"Font family '{fontFamilyName}' not found!");
         }
 
         using var image = new Image<Rgba32>(stubImage.Width, stubImage.Height);

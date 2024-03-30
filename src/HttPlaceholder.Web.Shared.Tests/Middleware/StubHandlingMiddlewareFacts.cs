@@ -70,7 +70,6 @@ public class StubHandlingMiddlewareFacts
     [DataTestMethod]
     [DataRow("/ph-api")]
     [DataRow("/ph-ui")]
-    [DataRow("/ph-static")]
     [DataRow("/swagger")]
     [DataRow("/requestHub")]
     [DataRow("/scenarioHub")]

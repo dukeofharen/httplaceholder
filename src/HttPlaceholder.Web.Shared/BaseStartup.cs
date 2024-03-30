@@ -25,7 +25,6 @@ public static class BaseStartup
             .UseCustomOpenApi()
             .UseSwaggerUi()
             .UseGui(settings?.Gui?.EnableUserInterface == true)
-            .UsePhStatic()
             .PreloadStubs(preloadStubs)
             .UseRouting();
 
