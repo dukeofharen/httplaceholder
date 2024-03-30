@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain.Enums;

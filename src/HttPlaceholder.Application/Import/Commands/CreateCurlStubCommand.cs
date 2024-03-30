@@ -28,6 +28,6 @@ public class CreateCurlStubCommand(string input, bool doNotCreateStub, string te
 public class CreateCurlStubCommandHandler(ICurlStubGenerator curlStubGenerator, IDateTime dateTime)
     : BaseImportCommandHandler<CreateCurlStubCommand>(curlStubGenerator, dateTime)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override string GetTenantPrefix() => "curl-import";
 }

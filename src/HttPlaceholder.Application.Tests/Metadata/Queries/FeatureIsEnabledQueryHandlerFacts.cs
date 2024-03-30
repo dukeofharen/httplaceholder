@@ -1,5 +1,4 @@
-﻿using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Configuration.Models;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Metadata.Queries;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.TestUtilities.Options;

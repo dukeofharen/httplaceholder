@@ -28,6 +28,6 @@ public class CreateOpenApiStubCommand(string input, bool doNotCreateStub, string
 public class CreateOpenApiStubCommandHandler(IOpenApiStubGenerator openApiStubGenerator, IDateTime dateTime)
     : BaseImportCommandHandler<CreateOpenApiStubCommand>(openApiStubGenerator, dateTime)
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override string GetTenantPrefix() => "openapi-import";
 }

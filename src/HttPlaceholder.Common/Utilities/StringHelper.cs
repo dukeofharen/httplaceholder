@@ -63,14 +63,16 @@ public static class StringHelper
         strings.AsQueryable().Count(s => !string.IsNullOrWhiteSpace(s));
 
     /// <summary>
-    ///     A method which receives a list of strings and checks that all strings are null or whitespace. Returns true if this is the case.
+    ///     A method which receives a list of strings and checks that all strings are null or whitespace. Returns true if this
+    ///     is the case.
     /// </summary>
     /// <param name="strings">The list of strings.</param>
     /// <returns>True if all strings are null or whitespace; false otherwise.</returns>
     public static bool AllAreNullOrWhitespace(params string[] strings) => strings.All(string.IsNullOrWhiteSpace);
 
     /// <summary>
-    ///     A method which receives a list of strings and checks that no strings are null or whitespace. Returns true if this is the case.
+    ///     A method which receives a list of strings and checks that no strings are null or whitespace. Returns true if this
+    ///     is the case.
     /// </summary>
     /// <param name="strings">The list of strings.</param>
     /// <returns>True if no strings are null or whitespace; false otherwise.</returns>
@@ -78,7 +80,8 @@ public static class StringHelper
         !strings.Where(string.IsNullOrWhiteSpace).Any();
 
     /// <summary>
-    ///     A method which receives a list of strings and checks if any string is null or whitespace. Returns true if this is the case.
+    ///     A method which receives a list of strings and checks if any string is null or whitespace. Returns true if this is
+    ///     the case.
     /// </summary>
     /// <param name="strings">The list of strings.</param>
     /// <returns>True if any string is null or whitespace; false otherwise.</returns>

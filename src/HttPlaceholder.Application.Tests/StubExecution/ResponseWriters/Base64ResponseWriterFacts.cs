@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Text;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;

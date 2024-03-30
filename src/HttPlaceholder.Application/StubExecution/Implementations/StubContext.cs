@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;

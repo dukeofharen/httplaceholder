@@ -14,7 +14,8 @@ public class GetTenantNamesQuery : IRequest<IEnumerable<string>>;
 /// <summary>
 ///     A query handler for retrieving all tenant names.
 /// </summary>
-public class GetTenantNamesQueryHandler(IStubContext stubContext) : IRequestHandler<GetTenantNamesQuery, IEnumerable<string>>
+public class GetTenantNamesQueryHandler(IStubContext stubContext)
+    : IRequestHandler<GetTenantNamesQuery, IEnumerable<string>>
 {
     /// <inheritdoc />
     public async Task<IEnumerable<string>> Handle(GetTenantNamesQuery request, CancellationToken cancellationToken) =>

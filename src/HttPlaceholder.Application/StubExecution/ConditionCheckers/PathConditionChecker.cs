@@ -14,6 +14,9 @@ public class PathConditionChecker(IHttpContextService httpContextService, IStrin
     : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.Path != null;
 
     /// <inheritdoc />
@@ -22,7 +25,4 @@ public class PathConditionChecker(IHttpContextService httpContextService, IStrin
         stringChecker.CheckString(httpContextService.Path, stub.Conditions.Url.Path, out var outputForLogging)
             ? ValidAsync()
             : InvalidAsync($"Condition '{outputForLogging}' did not pass for request.");
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

@@ -17,6 +17,9 @@ public class HeaderConditionChecker(IHttpContextService httpContextService, IStr
     : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Headers?.Any() == true;
 
     /// <inheritdoc />
@@ -67,7 +70,4 @@ public class HeaderConditionChecker(IHttpContextService httpContextService, IStr
             ? ValidAsync()
             : InvalidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

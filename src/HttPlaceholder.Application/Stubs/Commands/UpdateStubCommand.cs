@@ -28,7 +28,8 @@ public class UpdateStubCommand(string stubId, StubModel stub) : IRequest<Unit>
 /// <summary>
 ///     A command handler for updating a stub.
 /// </summary>
-public class UpdateStubCommandHandler(IStubContext stubContext, IStubModelValidator stubModelValidator) : IRequestHandler<UpdateStubCommand, Unit>
+public class UpdateStubCommandHandler(IStubContext stubContext, IStubModelValidator stubModelValidator)
+    : IRequestHandler<UpdateStubCommand, Unit>
 {
     /// <inheritdoc />
     public async Task<Unit> Handle(UpdateStubCommand request, CancellationToken cancellationToken)

@@ -7,7 +7,6 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 using static HttPlaceholder.Domain.DefaultConfiguration;

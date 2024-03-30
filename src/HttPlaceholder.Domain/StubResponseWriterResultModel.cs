@@ -35,7 +35,7 @@ public class StubResponseWriterResultModel
     /// <param name="log">The log line.</param>
     /// <returns>The <see cref="StubResponseWriterResultModel" />.</returns>
     public static StubResponseWriterResultModel IsNotExecuted(string responseWriterName, string log) =>
-        new() { Executed = false, ResponseWriterName = responseWriterName, Log = log};
+        new() { Executed = false, ResponseWriterName = responseWriterName, Log = log };
 
     /// <summary>
     ///     Returns an "executed" response.

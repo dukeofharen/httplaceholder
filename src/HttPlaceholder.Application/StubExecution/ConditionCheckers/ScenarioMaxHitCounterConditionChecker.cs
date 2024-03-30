@@ -12,10 +12,14 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class ScenarioMaxHitCounterConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Scenario?.MaxHits != null;
 
     /// <inheritdoc />
-    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
         var maxHits = stub.Conditions.Scenario.MaxHits;
         var scenario = stub.Scenario;
@@ -36,7 +40,4 @@ public class ScenarioMaxHitCounterConditionChecker(IStubContext stubContext) : B
 
         return await ValidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

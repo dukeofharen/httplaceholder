@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
-using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;

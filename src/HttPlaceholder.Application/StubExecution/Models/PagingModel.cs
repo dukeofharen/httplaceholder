@@ -16,11 +16,11 @@ public class PagingModel
     public int? ItemsPerPage { get; private set; }
 
     /// <summary>
-    ///     Creates a <see cref="PagingModel"/> instance.
+    ///     Creates a <see cref="PagingModel" /> instance.
     /// </summary>
     /// <param name="fromIdentifier">The from identifier.</param>
     /// <param name="itemsPerPage">The number of items per page.</param>
-    /// <returns>THe <see cref="PagingModel"/> or null if both parameters are not set.</returns>
+    /// <returns>THe <see cref="PagingModel" /> or null if both parameters are not set.</returns>
     public static PagingModel Create(string fromIdentifier, int? itemsPerPage) =>
         !string.IsNullOrWhiteSpace(fromIdentifier) || itemsPerPage.HasValue
             ? new PagingModel { FromIdentifier = fromIdentifier, ItemsPerPage = itemsPerPage }

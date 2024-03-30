@@ -17,7 +17,6 @@ public abstract class BackgroundService : ICustomHostedService
     private readonly IAsyncService _asyncService;
 
     private readonly IDateTime _dateTime;
-    private CrontabSchedule _schedule;
 
     /// <summary>
     ///     The logger.
@@ -25,6 +24,7 @@ public abstract class BackgroundService : ICustomHostedService
     protected readonly ILogger<BackgroundService> Logger;
 
     internal readonly CancellationTokenSource StoppingCts = new();
+    private CrontabSchedule _schedule;
     internal Task ExecutingTask;
 
     /// <summary>
@@ -43,14 +43,6 @@ public abstract class BackgroundService : ICustomHostedService
 
     /// <inheritdoc />
     public abstract string Schedule { get; }
-
-    private void Initialize()
-    {
-        _schedule = CrontabSchedule.Parse(Schedule);
-        NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
-        Logger.LogDebug(
-            $"New hosted service with name '{GetType().Name}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'");
-    }
 
     /// <inheritdoc />
     public abstract string Key { get; }
@@ -95,6 +87,14 @@ public abstract class BackgroundService : ICustomHostedService
 
     /// <inheritdoc />
     public abstract Task ProcessAsync(CancellationToken cancellationToken);
+
+    private void Initialize()
+    {
+        _schedule = CrontabSchedule.Parse(Schedule);
+        NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
+        Logger.LogDebug(
+            $"New hosted service with name '{GetType().Name}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'");
+    }
 
     private async Task ExecuteAsync(CancellationToken stoppingToken)
     {

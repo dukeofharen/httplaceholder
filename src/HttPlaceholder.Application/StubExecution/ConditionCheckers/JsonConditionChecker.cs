@@ -7,7 +7,6 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
@@ -18,6 +17,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// </summary>
 public class JsonConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
+    /// <inheritdoc />
+    public override int Priority => 1;
+
     /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Json != null;
 
@@ -32,9 +34,6 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
             ? await ValidAsync(string.Join(Environment.NewLine, logResults))
             : await InvalidAsync(string.Join(Environment.NewLine, logResults));
     }
-
-    /// <inheritdoc />
-    public override int Priority => 1;
 
     internal bool CheckSubmittedJson(object input, JToken jToken, List<string> logging)
     {

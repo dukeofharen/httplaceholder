@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Entities;
 using HttPlaceholder.Persistence.Db.Implementations;

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

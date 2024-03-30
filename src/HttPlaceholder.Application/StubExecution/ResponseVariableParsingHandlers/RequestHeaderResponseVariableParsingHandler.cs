@@ -33,7 +33,8 @@ internal class RequestHeaderResponseVariableParsingHandler(IHttpContextService h
         CancellationToken cancellationToken) =>
         matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertHeader(current, match, httpContextService.GetHeaders())).AsTask();
+            .Aggregate(input, (current, match) => InsertHeader(current, match, httpContextService.GetHeaders()))
+            .AsTask();
 
     private static string InsertHeader(string current, Match match, IDictionary<string, string> headers)
     {

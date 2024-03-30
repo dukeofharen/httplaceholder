@@ -14,6 +14,9 @@ public class FullPathConditionChecker(IHttpContextService httpContextService, IS
     : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 9;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.FullPath != null;
 
     /// <inheritdoc />
@@ -26,7 +29,4 @@ public class FullPathConditionChecker(IHttpContextService httpContextService, IS
             ? ValidAsync()
             : InvalidAsync($"Condition '{outputForLogging}' did not pass for request.");
     }
-
-    /// <inheritdoc />
-    public override int Priority => 9;
 }

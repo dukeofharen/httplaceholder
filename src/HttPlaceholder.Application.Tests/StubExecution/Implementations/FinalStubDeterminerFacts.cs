@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -48,22 +47,19 @@ public class FinalStubDeterminerFacts
             (new StubModel { Priority = 1 },
                 new[]
                 {
-                    ConditionCheckResultModel.NotExecuted(),
-                    ConditionCheckResultModel.NotExecuted(),
+                    ConditionCheckResultModel.NotExecuted(), ConditionCheckResultModel.NotExecuted(),
                     ConditionCheckResultModel.Valid()
                 }),
             (new StubModel { Priority = 1 },
                 new[]
                 {
-                    ConditionCheckResultModel.Valid(),
-                    ConditionCheckResultModel.NotExecuted(),
+                    ConditionCheckResultModel.Valid(), ConditionCheckResultModel.NotExecuted(),
                     ConditionCheckResultModel.Valid()
                 }),
             (new StubModel { Priority = 0 },
                 new[]
                 {
-                    ConditionCheckResultModel.Valid(),
-                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid(), ConditionCheckResultModel.Valid(),
                     ConditionCheckResultModel.Valid()
                 })
         };
@@ -85,15 +81,13 @@ public class FinalStubDeterminerFacts
             (new StubModel { Priority = 1 },
                 new[]
                 {
-                    ConditionCheckResultModel.NotExecuted(),
-                    ConditionCheckResultModel.NotExecuted(),
+                    ConditionCheckResultModel.NotExecuted(), ConditionCheckResultModel.NotExecuted(),
                     ConditionCheckResultModel.Valid()
                 }),
             (new StubModel { Priority = 0 },
                 new[]
                 {
-                    ConditionCheckResultModel.Valid(),
-                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid(), ConditionCheckResultModel.Valid(),
                     ConditionCheckResultModel.Valid()
                 })
         };
@@ -114,8 +108,7 @@ public class FinalStubDeterminerFacts
             (new StubModel { Priority = 0 },
                 new[]
                 {
-                    ConditionCheckResultModel.Valid(),
-                    ConditionCheckResultModel.Valid(),
+                    ConditionCheckResultModel.Valid(), ConditionCheckResultModel.Valid(),
                     ConditionCheckResultModel.Valid()
                 })
         };

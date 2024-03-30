@@ -13,7 +13,8 @@ public static class WebHelper
     ///     Returns the HttpContext. It always makes sure both the HTTP context accessor and HTTP context are set.
     /// </summary>
     /// <param name="httpContextAccessor">The HTTP context accessor.</param>
-    /// <returns>The <see cref="HttpContext"/>.</returns>
+    /// <returns>The <see cref="HttpContext" />.</returns>
     public static HttpContext GetHttpContext(this IHttpContextAccessor httpContextAccessor) =>
-        ThrowHelper.ThrowIfNull<HttpContext, InvalidOperationException>(httpContextAccessor?.HttpContext, "HttpContext not set.");
+        ThrowHelper.ThrowIfNull<HttpContext, InvalidOperationException>(httpContextAccessor?.HttpContext,
+            "HttpContext not set.");
 }

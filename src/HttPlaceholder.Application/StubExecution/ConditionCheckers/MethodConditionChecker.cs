@@ -16,10 +16,14 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class MethodConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 10;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Method != null;
 
     /// <inheritdoc />
-    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
         var condition = stub.Conditions?.Method;
         var method = httpContextService.Method;
@@ -35,7 +39,4 @@ public class MethodConditionChecker(IHttpContextService httpContextService) : Ba
 
         return InvalidAsync($"Condition '{condition}' did not pass for request.");
     }
-
-    /// <inheritdoc />
-    public override int Priority => 10;
 }

@@ -1,10 +1,8 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
-using HttPlaceholder.Common;
 using Match = System.Text.RegularExpressions.Match;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;

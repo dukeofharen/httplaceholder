@@ -286,7 +286,9 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
     /// <inheritdoc />
     public override Task<bool> DeleteScenarioAsync(string scenario, string distributionKey = null,
         CancellationToken cancellationToken = default) =>
-        string.IsNullOrWhiteSpace(scenario) ? false.AsTask() : GetCollection(distributionKey).Scenarios.TryRemove(scenario.ToLower(), out _).AsTask();
+        string.IsNullOrWhiteSpace(scenario)
+            ? false.AsTask()
+            : GetCollection(distributionKey).Scenarios.TryRemove(scenario.ToLower(), out _).AsTask();
 
     /// <inheritdoc />
     public override Task DeleteAllScenariosAsync(string distributionKey = null,

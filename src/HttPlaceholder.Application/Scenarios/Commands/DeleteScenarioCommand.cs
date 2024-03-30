@@ -26,6 +26,6 @@ public class DeleteScenarioCommandHandler(IStubContext stubContext) : IRequestHa
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken) =>
         await stubContext.DeleteScenarioAsync(request.ScenarioName, cancellationToken)
-            .IfAsync(r => !r,_ => throw new NotFoundException($"Scenario '{request.ScenarioName}' not found."))
+            .IfAsync(r => !r, _ => throw new NotFoundException($"Scenario '{request.ScenarioName}' not found."))
             .MapAsync(_ => Unit.Value);
 }

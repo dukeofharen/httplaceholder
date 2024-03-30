@@ -18,6 +18,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class XPathConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 0;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Xpath?.Any() == true;
 
     /// <inheritdoc />
@@ -48,9 +51,6 @@ public class XPathConditionChecker(IHttpContextService httpContextService) : Bas
             ? await ValidAsync()
             : await InvalidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 0;
 
     private static XmlNamespaceManager GetNamespaces(
         IDictionary<string, string> namespaces,

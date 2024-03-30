@@ -119,8 +119,11 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
 
         return IpIsAllowedInternal(ip);
 
-        bool IpIsAllowedInternal(IPAddress ipAddress) => IPAddress.IsLoopback(ipAddress) ||
-                                                         ip.Equals(NginxProxyIp) ||
-                                                         _parsedProxyIps.Contains(ipAddress);
+        bool IpIsAllowedInternal(IPAddress ipAddress)
+        {
+            return IPAddress.IsLoopback(ipAddress) ||
+                   ip.Equals(NginxProxyIp) ||
+                   _parsedProxyIps.Contains(ipAddress);
+        }
     }
 }

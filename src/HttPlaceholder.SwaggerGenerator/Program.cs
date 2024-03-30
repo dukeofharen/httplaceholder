@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common.Utilities;
 using Microsoft.AspNetCore.Hosting;

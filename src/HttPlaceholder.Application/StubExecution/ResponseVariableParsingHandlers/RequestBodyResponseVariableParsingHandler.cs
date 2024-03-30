@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 

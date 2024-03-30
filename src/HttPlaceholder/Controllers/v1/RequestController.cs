@@ -28,8 +28,9 @@ public class RequestController : BaseApiController
     /// <returns>All request results</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetAll([FromHeader(Name = "x-from-identifier")]
-        string fromIdentifier, [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
+    public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetAll(
+        [FromHeader(Name = "x-from-identifier")] string fromIdentifier,
+        [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
         Ok(Map<IEnumerable<RequestResultDto>>(await Send(
             new GetAllRequestsQuery(fromIdentifier, itemsPerPage))));
 
@@ -44,8 +45,9 @@ public class RequestController : BaseApiController
     /// <returns>All request results</returns>
     [HttpGet("overview")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<RequestOverviewDto>>> GetOverview([FromHeader(Name = "x-from-identifier")]
-        string fromIdentifier, [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
+    public async Task<ActionResult<IEnumerable<RequestOverviewDto>>> GetOverview(
+        [FromHeader(Name = "x-from-identifier")] string fromIdentifier,
+        [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
         Ok(Map<IEnumerable<RequestOverviewDto>>(await Send(
             new GetRequestsOverviewQuery(fromIdentifier, itemsPerPage))));
 

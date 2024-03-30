@@ -15,6 +15,9 @@ public class BasicAuthenticationConditionChecker(IHttpContextService httpContext
     : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 9;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub)
     {
         var condition = stub.Conditions?.BasicAuthentication;
@@ -41,7 +44,4 @@ public class BasicAuthenticationConditionChecker(IHttpContextService httpContext
             : InvalidAsync(
                 $"Basic authentication condition failed for stub '{stub.Id}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.");
     }
-
-    /// <inheritdoc />
-    public override int Priority => 9;
 }

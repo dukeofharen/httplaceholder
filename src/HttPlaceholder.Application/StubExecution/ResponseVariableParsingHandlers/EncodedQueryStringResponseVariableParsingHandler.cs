@@ -35,7 +35,8 @@ internal class EncodedQueryStringResponseVariableParsingHandler(IHttpContextServ
         matches
             .Where(match => match.Groups.Count >= 3)
             .Aggregate(input,
-                (current, match) => InsertQuery(current, match, httpContextService.GetQueryStringDictionary())).AsTask();
+                (current, match) => InsertQuery(current, match, httpContextService.GetQueryStringDictionary()))
+            .AsTask();
 
     private static string InsertQuery(string current, Match match, IDictionary<string, string> queryDict)
     {

@@ -13,6 +13,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class IsHttpsConditionChecker(IClientDataResolver clientDataResolver) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 10;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.IsHttps != null;
 
     /// <inheritdoc />
@@ -21,7 +24,4 @@ public class IsHttpsConditionChecker(IClientDataResolver clientDataResolver) : B
         clientDataResolver.IsHttps() == stub.Conditions.Url.IsHttps
             ? ValidAsync()
             : InvalidAsync();
-
-    /// <inheritdoc />
-    public override int Priority => 10;
 }

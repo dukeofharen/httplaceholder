@@ -9,7 +9,8 @@ public class StringHelperFacts
     public static IEnumerable<object> GetFirstNonWhitespaceStringTestData =>
         new[]
         {
-            [new[] { "1", "2", "3" }, "1"], [new[] { "", "2", "3" }, "2"], [new[] { "", null, "3" }, "3"], new object[] { new[] { "", null, null }, null }
+            [new[] { "1", "2", "3" }, "1"], [new[] { "", "2", "3" }, "2"], [new[] { "", null, "3" }, "3"],
+            new object[] { new[] { "", null, null }, null }
         };
 
     [TestMethod]

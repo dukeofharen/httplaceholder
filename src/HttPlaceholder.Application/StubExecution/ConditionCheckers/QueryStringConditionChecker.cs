@@ -16,6 +16,9 @@ public class QueryStringConditionChecker(IHttpContextService httpContextService,
     : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.Query?.Any() == true;
 
     /// <inheritdoc />
@@ -65,7 +68,4 @@ public class QueryStringConditionChecker(IHttpContextService httpContextService,
             ? ValidAsync()
             : InvalidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

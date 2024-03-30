@@ -15,11 +15,6 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 internal partial class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
     : ICurlToHttpRequestMapper, ISingletonService
 {
-    [GeneratedRegex(
-        @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
-        RegexOptions.Compiled)]
-    private static partial Regex UrlRegex();
-
     private static readonly Regex _urlRegex =
         UrlRegex();
 
@@ -157,6 +152,11 @@ internal partial class CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> 
             });
         }
     }
+
+    [GeneratedRegex(
+        @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
+        RegexOptions.Compiled)]
+    private static partial Regex UrlRegex();
 
     private static string ParseRequestMethod(string[] parts, int needle)
     {

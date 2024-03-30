@@ -16,6 +16,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class ClientIpConditionChecker(IClientDataResolver clientDataResolver) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 10;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.ClientIp != null;
 
     /// <inheritdoc />
@@ -30,7 +33,4 @@ public class ClientIpConditionChecker(IClientDataResolver clientDataResolver) : 
             ? ValidAsync()
             : InvalidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 10;
 }

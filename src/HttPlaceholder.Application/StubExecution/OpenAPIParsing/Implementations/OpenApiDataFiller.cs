@@ -13,9 +13,6 @@ namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementation
 internal partial class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenerator)
     : IOpenApiDataFiller, ISingletonService
 {
-    [GeneratedRegex("^[1-5]{1}[0-9]{2}$", RegexOptions.Compiled)]
-    private static partial Regex StatusCodeRegex();
-
     private static readonly Regex _statusCodeRegex = StatusCodeRegex();
 
     /// <inheritdoc />
@@ -176,4 +173,7 @@ internal partial class OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDa
 
         return result;
     }
+
+    [GeneratedRegex("^[1-5]{1}[0-9]{2}$", RegexOptions.Compiled)]
+    private static partial Regex StatusCodeRegex();
 }

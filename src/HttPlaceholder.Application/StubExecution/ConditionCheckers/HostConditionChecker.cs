@@ -14,6 +14,9 @@ public class HostConditionChecker(IClientDataResolver clientDataResolver, IStrin
     : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 10;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Host != null;
 
     /// <inheritdoc />
@@ -22,7 +25,4 @@ public class HostConditionChecker(IClientDataResolver clientDataResolver, IStrin
         !stringChecker.CheckString(clientDataResolver.GetHost(), stub.Conditions.Host, out _)
             ? InvalidAsync()
             : ValidAsync();
-
-    /// <inheritdoc />
-    public override int Priority => 10;
 }

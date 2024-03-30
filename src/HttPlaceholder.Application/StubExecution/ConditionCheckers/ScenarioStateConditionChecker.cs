@@ -15,6 +15,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class ScenarioStateConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) =>
         StringHelper.NoneAreNullOrWhitespace(stub.Conditions?.Scenario?.ScenarioState, stub.Scenario);
 
@@ -39,7 +42,4 @@ public class ScenarioStateConditionChecker(IStubContext stubContext) : BaseCondi
 
         return await ValidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

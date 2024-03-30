@@ -17,6 +17,9 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
     : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Form?.ToArray()?.Length > 0;
 
     /// <inheritdoc />
@@ -64,7 +67,4 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
         return await InvalidAsync(
             $"Number of configured form conditions: '{formConditions.Length}'; number of passed form conditions: '{validConditions}'");
     }
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

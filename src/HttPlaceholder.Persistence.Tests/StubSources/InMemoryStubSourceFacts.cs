@@ -370,7 +370,7 @@ public class InMemoryStubSourceFacts
         // Act
         var result =
             (await source.GetRequestResultsAsync(
-                PagingModel.Create(request3.CorrelationId, 2 ), key,
+                PagingModel.Create(request3.CorrelationId, 2), key,
                 CancellationToken.None))
             .ToArray();
 

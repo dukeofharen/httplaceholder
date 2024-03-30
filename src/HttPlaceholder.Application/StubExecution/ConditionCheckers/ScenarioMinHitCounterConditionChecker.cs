@@ -12,6 +12,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class ScenarioMinHitCounterConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Scenario?.MinHits != null;
 
     /// <inheritdoc />
@@ -37,7 +40,4 @@ public class ScenarioMinHitCounterConditionChecker(IStubContext stubContext) : B
 
         return await ValidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

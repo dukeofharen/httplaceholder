@@ -8,10 +8,10 @@ namespace HttPlaceholder.Common.Utilities;
 /// </summary>
 public static partial class XmlUtilities
 {
+    private static Regex NamespaceRegex { get; } = CompiledNamespaceRegex();
+
     [GeneratedRegex("xmlns:(.*?)=\"(.*?)\"", RegexOptions.Compiled)]
     private static partial Regex CompiledNamespaceRegex();
-
-    private static Regex NamespaceRegex { get; } = CompiledNamespaceRegex();
 
     /// <summary>
     ///     Parses a given body and assign the found namespaces to the <see cref="XmlNamespaceManager" />.

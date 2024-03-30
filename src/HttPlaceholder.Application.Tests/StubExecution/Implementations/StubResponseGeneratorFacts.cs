@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;

@@ -12,6 +12,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class ScenarioExactHitCounterConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Scenario?.ExactHits != null;
 
     /// <inheritdoc />
@@ -37,7 +40,4 @@ public class ScenarioExactHitCounterConditionChecker(IStubContext stubContext) :
 
         return await ValidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

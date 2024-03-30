@@ -21,7 +21,8 @@ public class GetStubsInTenantQuery(string tenant) : IRequest<IEnumerable<FullStu
 /// <summary>
 ///     A query handler for retrieving all stubs belonging to a tenant.
 /// </summary>
-public class GetStubsInTenantQueryHandler(IStubContext stubContext) : IRequestHandler<GetStubsInTenantQuery, IEnumerable<FullStubModel>>
+public class GetStubsInTenantQueryHandler(IStubContext stubContext)
+    : IRequestHandler<GetStubsInTenantQuery, IEnumerable<FullStubModel>>
 {
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> Handle(GetStubsInTenantQuery request,

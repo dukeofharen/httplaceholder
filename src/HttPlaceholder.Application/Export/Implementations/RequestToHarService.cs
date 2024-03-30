@@ -35,12 +35,12 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                 Pages =
                 [
                     new Page
-                        {
-                            Id = pageId,
-                            StartedDateTime = request.RequestBeginTime,
-                            Title = string.Empty,
-                            PageTimings = new PageTimings()
-                        }
+                    {
+                        Id = pageId,
+                        StartedDateTime = request.RequestBeginTime,
+                        Title = string.Empty,
+                        PageTimings = new PageTimings()
+                    }
                 ],
                 Entries =
                 [

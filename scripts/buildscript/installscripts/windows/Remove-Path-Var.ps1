@@ -1,6 +1,6 @@
 # Make sure the install folder is removed from the path variable after deinstallation.
 Param(
-    [Parameter(Mandatory=$True)]
+    [Parameter(Mandatory = $True)]
     [string]$installFolder
 )
 

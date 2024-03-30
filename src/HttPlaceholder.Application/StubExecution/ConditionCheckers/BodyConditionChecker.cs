@@ -15,6 +15,9 @@ public class BodyConditionChecker(IHttpContextService httpContextService, IStrin
     : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 8;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub)
     {
         var bodyConditions = stub.Conditions?.Body?.ToArray();
@@ -22,7 +25,8 @@ public class BodyConditionChecker(IHttpContextService httpContextService, IStrin
     }
 
     /// <inheritdoc />
-    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
         var bodyConditions = stub.Conditions.Body.ToArray();
         var body = await httpContextService.GetBodyAsync(cancellationToken);
@@ -47,7 +51,4 @@ public class BodyConditionChecker(IHttpContextService httpContextService, IStrin
             ? await ValidAsync(log)
             : await InvalidAsync(log);
     }
-
-    /// <inheritdoc />
-    public override int Priority => 8;
 }

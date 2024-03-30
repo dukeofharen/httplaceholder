@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using HttPlaceholder.Common.Utilities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

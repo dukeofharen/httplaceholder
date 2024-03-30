@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Application.StubExecution.Models.HAR;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

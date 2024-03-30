@@ -1,5 +1,4 @@
-﻿using System;
-using HttPlaceholder.Application.Configuration.Models;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;

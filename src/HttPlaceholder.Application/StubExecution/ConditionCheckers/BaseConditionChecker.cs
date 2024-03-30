@@ -11,26 +11,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// </summary>
 public abstract class BaseConditionChecker : IConditionChecker
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public abstract int Priority { get; }
 
-    /// <summary>
-    ///     Checks whether the condition checker should be executed.
-    /// </summary>
-    /// <param name="stub">The stub.</param>
-    /// <returns>True if the checker should be executed; false otherwise.</returns>
-    protected abstract bool ShouldBeExecuted(StubModel stub);
-
-    /// <summary>
-    ///     Method for validating the request. Should be inherited by the condition checker.
-    /// </summary>
-    /// <param name="stub">The <see cref="StubModel" /> for which the conditions should be checked.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The validation result.</returns>
-    protected abstract Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
-        CancellationToken cancellationToken);
-
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         try
@@ -47,4 +31,20 @@ public abstract class BaseConditionChecker : IConditionChecker
             return await InvalidAsync(ex.Message);
         }
     }
+
+    /// <summary>
+    ///     Checks whether the condition checker should be executed.
+    /// </summary>
+    /// <param name="stub">The stub.</param>
+    /// <returns>True if the checker should be executed; false otherwise.</returns>
+    protected abstract bool ShouldBeExecuted(StubModel stub);
+
+    /// <summary>
+    ///     Method for validating the request. Should be inherited by the condition checker.
+    /// </summary>
+    /// <param name="stub">The <see cref="StubModel" /> for which the conditions should be checked.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The validation result.</returns>
+    protected abstract Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken);
 }

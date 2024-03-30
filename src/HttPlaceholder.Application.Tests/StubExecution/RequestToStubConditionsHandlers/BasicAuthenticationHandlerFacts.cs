@@ -36,9 +36,7 @@ public class BasicAuthenticationHandlerFacts
         {
             Headers = new Dictionary<string, string>
             {
-                {
-                    HeaderKeys.Authorization, "Basic " + Convert.ToBase64String("user:pass:rubble"u8.ToArray())
-                }
+                { HeaderKeys.Authorization, "Basic " + Convert.ToBase64String("user:pass:rubble"u8.ToArray()) }
             }
         };
 
@@ -83,7 +81,10 @@ public class BasicAuthenticationHandlerFacts
         var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
         var conditions =
             new StubConditionsModel { Headers = new Dictionary<string, object> { { HeaderKeys.Authorization, auth } } };
-        var request = new HttpRequestModel { Headers = new Dictionary<string, string> { { HeaderKeys.Authorization, auth } } };
+        var request = new HttpRequestModel
+        {
+            Headers = new Dictionary<string, string> { { HeaderKeys.Authorization, auth } }
+        };
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);

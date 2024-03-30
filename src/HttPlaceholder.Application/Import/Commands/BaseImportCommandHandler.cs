@@ -15,13 +15,7 @@ public abstract class BaseImportCommandHandler<TCommand>(
     IStubGenerator stubGenerator,
     IDateTime dateTime) : IRequestHandler<TCommand, IEnumerable<FullStubModel>> where TCommand : IImportStubsCommand
 {
-    /// <summary>
-    ///     Returns the tenant prefix.
-    /// </summary>
-    /// <returns>The tenant prefix.</returns>
-    protected abstract string GetTenantPrefix();
-
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> Handle(TCommand request,
         CancellationToken cancellationToken)
     {
@@ -35,4 +29,10 @@ public abstract class BaseImportCommandHandler<TCommand>(
             request.StubIdPrefix,
             cancellationToken);
     }
+
+    /// <summary>
+    ///     Returns the tenant prefix.
+    /// </summary>
+    /// <returns>The tenant prefix.</returns>
+    protected abstract string GetTenantPrefix();
 }

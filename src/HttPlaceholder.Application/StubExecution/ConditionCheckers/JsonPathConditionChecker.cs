@@ -18,6 +18,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class JsonPathConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
     /// <inheritdoc />
+    public override int Priority => 0;
+
+    /// <inheritdoc />
     protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.JsonPath?.Count() > 0;
 
     /// <inheritdoc />
@@ -78,9 +81,6 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
         // the header condition is passed and the stub ID is passed to the result.
         return validJsonPaths == jsonPathConditions.Length ? await ValidAsync() : await InvalidAsync();
     }
-
-    /// <inheritdoc />
-    public override int Priority => 0;
 
     internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)
     {
