@@ -89,7 +89,7 @@ internal class FileWatcherYamlFileStubSource(
         {
             if (!FileService.DirectoryExists(location) && !FileService.FileExists(location))
             {
-                Logger.LogWarning($"Location '{location}' not found.");
+                Logger.LogWarning("Location '{Location}' not found.", location);
                 continue;
             }
 
@@ -107,16 +107,16 @@ internal class FileWatcherYamlFileStubSource(
     {
         // Load the stubs.
         var input = FileService.ReadAllText(file);
-        Logger.LogDebug($"Parsing file '{file}'.");
+        Logger.LogDebug("Parsing file '{File}'.", file);
         try
         {
-            Logger.LogDebug($"Trying to add and parse stubs for '{file}'.");
+            Logger.LogDebug("Trying to add and parse stubs for '{File}'.", file);
             var stubs = ParseAndValidateStubs(input, file);
             Stubs.AddOrUpdate(file, _ => stubs, (_, _) => stubs);
         }
         catch (YamlException ex)
         {
-            Logger.LogWarning(ex, $"Error occurred while parsing file '{file}'");
+            Logger.LogWarning(ex, "Error occurred while parsing file '{File}'.", file);
         }
     }
 
@@ -161,7 +161,7 @@ internal class FileWatcherYamlFileStubSource(
 
     private void FileChanged(FileSystemEventArgs e)
     {
-        Logger.LogDebug($"File {e.FullPath} changed.");
+        Logger.LogDebug("File {File} changed.", e.FullPath);
         LoadStubs(e.FullPath);
         SignalStubsReload();
     }
@@ -175,7 +175,7 @@ internal class FileWatcherYamlFileStubSource(
             return;
         }
 
-        Logger.LogDebug($"File {fullPath} created.");
+        Logger.LogDebug("File {File} created.", fullPath);
         LoadStubs(fullPath);
         SignalStubsReload();
     }
@@ -187,10 +187,10 @@ internal class FileWatcherYamlFileStubSource(
         // Due to limitations in .NET / FileSystemWatcher, no event is triggered when a directory is deleted.
         if (!FileService.IsDirectory(fullPath))
         {
-            Logger.LogDebug($"File {fullPath} deleted.");
+            Logger.LogDebug("File {File} deleted.", fullPath);
             if (Stubs.TryRemove(fullPath, out _))
             {
-                Logger.LogDebug($"Removed stub '{fullPath}'.");
+                Logger.LogDebug("Removed stub '{File}'.", fullPath);
             }
         }
 
@@ -206,19 +206,20 @@ internal class FileWatcherYamlFileStubSource(
         // Due to limitations in .NET / FileSystemWatcher, no event is triggered when a directory is renamed.
         if (!FileService.IsDirectory(fullPath))
         {
-            Logger.LogDebug($"File {oldPath} renamed to {fullPath}.");
+            Logger.LogDebug("File {OldPath} renamed to {NewPath}.", oldPath, fullPath);
 
             // Try to delete the stub from memory.
             if (Stubs.TryRemove(oldPath, out _))
             {
-                Logger.LogDebug($"Removed stub '{oldPath}'.");
+                Logger.LogDebug("Removed stub '{OldPath}'.", oldPath);
             }
 
             TryRemoveWatcher(oldPath);
             if (!SupportedExtensions.Any(ext => fullPath.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
             {
                 Logger.LogDebug(
-                    $"File {fullPath} not supported. Supported file extensions: {string.Join(", ", SupportedExtensions)}");
+                    "File {NewPath} not supported. Supported file extensions: {Extensions}", fullPath,
+                    string.Join(", ", SupportedExtensions));
             }
             else
             {

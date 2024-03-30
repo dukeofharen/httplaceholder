@@ -49,7 +49,7 @@ internal class FileResponseWriter(
                     $"Path '{finalFilePath}' found, but can't be used because setting '{ConfigKeys.AllowGlobalFileSearch}' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.");
             }
 
-            logger.LogInformation($"Path '{finalFilePath}' found.");
+            logger.LogInformation("Path '{FinalFilePath}' found.", finalFilePath);
         }
         else
         {
@@ -60,11 +60,11 @@ internal class FileResponseWriter(
                 var tempPath = Path.Combine(path, PathUtilities.CleanPath(file));
                 if (!await fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
-                    logger.LogInformation($"Path '{tempPath}' not found.");
+                    logger.LogInformation("Path '{TempPath}' not found.", tempPath);
                     continue;
                 }
 
-                logger.LogInformation($"Path '{tempPath}' found.");
+                logger.LogInformation("Path '{TempPath}' found.", tempPath);
                 finalFilePath = tempPath;
                 break;
             }

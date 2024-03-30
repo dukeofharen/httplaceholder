@@ -20,7 +20,7 @@ internal class CurlStubGenerator(
         string stubIdPrefix,
         CancellationToken cancellationToken)
     {
-        logger.LogDebug($"Creating stubs based on cURL command {input}.");
+        logger.LogDebug("Creating stubs based on cURL command {CurlCommand}.", input);
         var requests = curlToHttpRequestMapper.MapCurlCommandsToHttpRequest(input);
         var results = new List<FullStubModel>();
         foreach (var request in requests)

@@ -70,7 +70,7 @@ internal class StubRequestExecutor(
             }
             catch (Exception e)
             {
-                logger.LogWarning($"Exception thrown while executing checks for stub '{stub.Id}': {e}");
+                logger.LogWarning(e, "Exception thrown while executing checks for stub '{StubId}'.", stub.Id);
             }
         }
 

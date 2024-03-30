@@ -46,7 +46,8 @@ internal class DisplayUrlResponseVariableParsingHandler(
         if (match.Groups.Count != 3)
         {
             logger.LogWarning(
-                $"Number of regex matches for variable parser {GetType().Name} was {match.Groups.Count}, which should be 3.");
+                "Number of regex matches for variable parser {VariableParser} was {MatchCount}, which should be 3.",
+                GetType().Name, match.Groups.Count);
         }
         else if (string.IsNullOrWhiteSpace(match.Groups[2].Value))
         {
@@ -66,12 +67,12 @@ internal class DisplayUrlResponseVariableParsingHandler(
                 }
                 else
                 {
-                    logger.LogInformation($"No result found in display URL for regular expression '{regexValue}'.");
+                    logger.LogInformation("No result found in display URL for regular expression '{RegexValue}'.", regexValue);
                 }
             }
             catch (Exception ex)
             {
-                logger.LogWarning(ex, $"Error occurred while executing regex '{regexValue}' on display URL.'");
+                logger.LogWarning(ex, "Error occurred while executing regex '{RegexValue}' on display URL.'", regexValue);
             }
         }
 

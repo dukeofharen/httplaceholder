@@ -40,7 +40,7 @@ public class ConfigurationParser(
         var envResult = ParseEnvironment(configMetadata);
         var argsResult = args.Parse();
         var configFileResult = ParseConfigFile(envResult, argsResult);
-        return DetermineFinalConfigDictionary(envResult, argsResult, configFileResult, configMetadata, args);
+        return DetermineFinalConfigDictionary(envResult, argsResult, configFileResult, configMetadata);
     }
 
     private Dictionary<string, string> ParseEnvironment(
@@ -93,12 +93,11 @@ public class ConfigurationParser(
         return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
     }
 
-    private IDictionary<string, string> DetermineFinalConfigDictionary(
+    private Dictionary<string, string> DetermineFinalConfigDictionary(
         Dictionary<string, string> envResult,
         Dictionary<string, string> argsResult,
         Dictionary<string, string> configFileResult,
-        ConfigMetadataModel[] configMetadata,
-        IEnumerable<string> args)
+        ConfigMetadataModel[] configMetadata)
     {
         var result = new Dictionary<string, string>();
         foreach (var constant in configMetadata)

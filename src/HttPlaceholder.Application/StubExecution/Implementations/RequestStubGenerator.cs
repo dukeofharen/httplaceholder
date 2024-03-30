@@ -25,7 +25,7 @@ internal class RequestStubGenerator(
         bool doNotCreateStub,
         CancellationToken cancellationToken)
     {
-        logger.LogDebug($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
+        logger.LogDebug("Creating stub based on request with corr.ID '{RequestCorrelationId}'.", requestCorrelationId);
         var requestResult = await stubContext.GetRequestResultAsync(requestCorrelationId, cancellationToken)
             .IfNullAsync(() => throw new NotFoundException(nameof(RequestResultModel), requestCorrelationId));
         var request = mapper.Map<HttpRequestModel>(requestResult.RequestParameters);

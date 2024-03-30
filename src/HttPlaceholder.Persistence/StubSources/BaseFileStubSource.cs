@@ -49,7 +49,7 @@ internal abstract class BaseFileStubSource(
     protected IEnumerable<string> ParseFileLocations(string part)
     {
         var location = part.Trim();
-        Logger.LogInformation($"Reading location '{location}'.");
+        Logger.LogInformation("Reading location '{Location}'.", location);
         return FileService.IsDirectory(location) ? FileService.GetFiles(location, _extensions) : [location];
     }
 
@@ -89,18 +89,21 @@ internal abstract class BaseFileStubSource(
             if (string.IsNullOrWhiteSpace(stub?.Id))
             {
                 // If no ID is set, log a warning as the stub is invalid.
-                Logger.LogWarning($"Stub in file '{filename}' has no 'id' field defined, so is not a valid stub.");
+                Logger.LogWarning("Stub in file '{Filename}' has no 'id' field defined, so is not a valid stub.",
+                    filename);
                 continue;
             }
 
             // Right now, stubs loaded from files are allowed to have validation errors.
             // They are NOT allowed to have no ID however.
-            var validationResults = stubModelValidator.ValidateStubModel(stub).ToArray();
+            var validationResults = stubModelValidator.ValidateStubModel(stub)
+                .Select(r => $"- {r}")
+                .ToArray();
             if (validationResults.Length != 0)
             {
-                validationResults = validationResults.Select(r => $"- {r}").ToArray();
                 Logger.LogWarning(
-                    $"Validation warnings encountered for stub '{stub.Id}':\n{string.Join("\n", validationResults)}");
+                    "Validation warnings encountered for stub '{StubId}':\n{ValidationErrors}", stub.Id,
+                    string.Join("\n", validationResults));
             }
 
             result.Add(stub);

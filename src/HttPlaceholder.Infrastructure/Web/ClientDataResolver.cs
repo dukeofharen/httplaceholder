@@ -111,7 +111,7 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
             }
             else
             {
-                _logger.LogWarning($"Could not parse IP '{proxyIp}'.");
+                _logger.LogWarning("Could not parse IP '{ProxyIp}'.", proxyIp);
             }
         }
 

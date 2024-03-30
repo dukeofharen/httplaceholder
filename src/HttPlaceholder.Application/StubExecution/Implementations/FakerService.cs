@@ -166,7 +166,7 @@ internal class FakerService(ILogger<FakerService> logger) : IFakerService, ISing
             _generators.FirstOrDefault(g => string.Equals(generator, g.Name, StringComparison.OrdinalIgnoreCase));
         if (generatorModel == null)
         {
-            logger.LogWarning($"No fake data generator found with name '{generator}'.");
+            logger.LogWarning("No fake data generator found with name '{Generator}'.", generator);
             return string.Empty;
         }
 
@@ -174,7 +174,9 @@ internal class FakerService(ILogger<FakerService> logger) : IFakerService, ISing
         {
             if (!string.IsNullOrWhiteSpace(locale))
             {
-                logger.LogDebug($"Locale '{locale}' not found. Choose from: {string.Join(',', _locales)}.");
+                logger.LogDebug("Locale '{Locale}' not found. Choose from: {Locales}.",
+                    locale,
+                    string.Join(',', _locales));
             }
 
             locale = "en";

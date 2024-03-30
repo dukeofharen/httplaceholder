@@ -53,7 +53,7 @@ internal class JsonPathResponseVariableParsingHandler(
         }
         catch (JsonException je)
         {
-            logger.LogInformation($"Exception occurred while trying to parse response body as JSON: {je}");
+            logger.LogInformation(je, "Exception occurred while trying to parse response body as JSON.");
         }
 
         return null;

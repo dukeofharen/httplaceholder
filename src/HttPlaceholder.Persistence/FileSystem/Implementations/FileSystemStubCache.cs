@@ -64,11 +64,11 @@ internal class FileSystemStubCache(
 
         StubCache.Clear();
         var newCache = await GetStubsAsync(path, cancellationToken);
-        foreach (var item in newCache)
+        foreach (var stub in newCache)
         {
-            if (!StubCache.TryAdd(item.Id, item))
+            if (!StubCache.TryAdd(stub.Id, stub))
             {
-                logger.LogWarning($"Could not add stub with ID '{item.Id}' to cache.");
+                logger.LogWarning("Could not add stub with ID '{StubId}' to cache.", stub.Id);
             }
         }
 
@@ -86,7 +86,7 @@ internal class FileSystemStubCache(
 
         if (!StubCache.TryAdd(stubModel.Id, stubModel))
         {
-            logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
+            logger.LogWarning("Could not add stub with ID '{StubId}' to cache.", stubModel.Id);
         }
 
         var metadata = UpdateMetadata(GetMetadataPath());

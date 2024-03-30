@@ -25,7 +25,9 @@ internal class HttpResponseToStubResponseService(
             var executed =
                 await handler.HandleStubGenerationAsync(response, stubResponse, cancellationToken);
             logger.LogDebug(
-                $"Handler '{handler.GetType().Name}' " + (executed ? "executed" : "not executed") + ".");
+                "Handler '{HandlerName}' execution result: {ExecutionResult}.",
+                handler.GetType().Name,
+                executed ? "executed" : "not executed");
         }
 
         return stubResponse;

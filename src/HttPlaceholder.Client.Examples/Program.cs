@@ -16,7 +16,7 @@ namespace HttPlaceholder.Client.Examples;
 
 internal static class Program
 {
-    private static async Task Main(string[] args)
+    private static async Task Main()
     {
         var services = new ServiceCollection();
         services.AddHttPlaceholderClient(c =>

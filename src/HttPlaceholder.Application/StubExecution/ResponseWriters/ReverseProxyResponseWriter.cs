@@ -106,7 +106,7 @@ internal class ReverseProxyResponseWriter(
         }
         catch (Exception ex)
         {
-            logger.LogInformation(ex, $"Exception occurred while calling URL {proxyUrl}");
+            logger.LogInformation(ex, "Exception occurred while calling URL {ProxyUrl}.", proxyUrl);
             log.AppendLine($"Exception occurred while calling URL {proxyUrl}: {ex.Message}");
             response.Body = "502 Bad Gateway"u8.ToArray();
             response.StatusCode = (int)HttpStatusCode.BadGateway;

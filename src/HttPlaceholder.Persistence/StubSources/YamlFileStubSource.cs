@@ -50,7 +50,7 @@ internal class YamlFileStubSource(
                 if (!await FileService.DirectoryExistsAsync(location, cancellationToken) &&
                     !await FileService.FileExistsAsync(location, cancellationToken))
                 {
-                    Logger.LogWarning($"Location '{location}' not found.");
+                    Logger.LogWarning("Location '{Location}' not found.", location);
                     continue;
                 }
 
@@ -100,7 +100,7 @@ internal class YamlFileStubSource(
     {
         // Load the stubs.
         var input = await FileService.ReadAllTextAsync(file, cancellationToken);
-        Logger.LogInformation($"Parsing .yml file '{file}'.");
+        Logger.LogInformation("Parsing .yml file '{File}'.", file);
         try
         {
             var stubs = ParseAndValidateStubs(input, file);
@@ -109,7 +109,7 @@ internal class YamlFileStubSource(
         }
         catch (YamlException ex)
         {
-            Logger.LogWarning(ex, $"Error occurred while parsing YAML file '{file}'");
+            Logger.LogWarning(ex, "Error occurred while parsing YAML file '{File}'.", file);
         }
 
         return Array.Empty<StubModel>();

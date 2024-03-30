@@ -33,7 +33,7 @@ internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalD
 
         if (!StubCache.TryAdd(stubModel.Id, stubModel))
         {
-            logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
+            logger.LogWarning("Could not add stub with ID '{StubId}' to cache.", stubModel.Id);
         }
 
         var newId = await UpdateTrackingIdAsync(ctx, cancellationToken);
@@ -109,7 +109,7 @@ internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalD
         {
             if (!StubCache.TryAdd(stub.Id, stub))
             {
-                logger.LogWarning($"Could not add stub with ID '{stub.Id}' to cache.");
+                logger.LogWarning("Could not add stub with ID '{StubId}' to cache.", stub.Id);
             }
         }
 

@@ -93,7 +93,8 @@ public abstract class BackgroundService : ICustomHostedService
         _schedule = CrontabSchedule.Parse(Schedule);
         NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
         Logger.LogDebug(
-            $"New hosted service with name '{GetType().Name}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'");
+            "New hosted service with name '{Service}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'",
+            GetType().Name, Schedule, NextRunDateTime);
     }
 
     private async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -103,18 +104,21 @@ public abstract class BackgroundService : ICustomHostedService
             if (_dateTime.Now > NextRunDateTime)
             {
                 Logger.LogDebug(
-                    $"Executing hosted service with name '{GetType().Name}' and schedule '{Schedule}'");
+                    "Executing hosted service with name '{Service}' and schedule '{Schedule}'", GetType().Name,
+                    Schedule);
                 try
                 {
                     await ProcessAsync(stoppingToken);
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError($"Unexpected exception thrown while executing service '{GetType().Name}': {ex}");
+                    Logger.LogError(ex, "Unexpected exception thrown while executing service '{Service}'.",
+                        GetType().Name);
                 }
 
                 NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
-                Logger.LogInformation($"Next run time of hosted service '{GetType().Name}': {NextRunDateTime}");
+                Logger.LogInformation("Next run time of hosted service '{Service}': {NextRunDateTime}", GetType().Name,
+                    NextRunDateTime);
             }
 
             await _asyncService.DelayAsync(5000, stoppingToken);
