@@ -21,7 +21,6 @@ namespace HttPlaceholder.Web.Shared.Utilities;
 /// <summary>
 ///     A utility class for handling the starting of HttPlaceholder.
 /// </summary>
-[ExcludeFromCodeCoverage]
 public static class ProgramUtilities
 {
     private static readonly Stopwatch _startupWatch = new();
