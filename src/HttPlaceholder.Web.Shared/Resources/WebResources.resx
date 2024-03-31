@@ -39,10 +39,6 @@
             justify-content: center;
         }
 
-        hr {
-            border: 1px dashed #8b8b8b;
-        }
-
         .message {
             width: 500px;
             max-width: 100%;
@@ -57,11 +53,32 @@
             color: #464646;
         }
 
+        h1 {
+            text-align: center;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+        }
+
+        .buttons .button {
+            color: #ffffff;
+            text-align: center;
+            background-color: #152f05;
+            padding: 10px;
+            border-radius: 5px;
+            transition: 0.2s background-color;
+        }
+        .buttons .button:hover {
+            background-color: #0e3f09;
+        }
     &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="message"&gt;
-    &lt;pre&gt;&lt;code&gt;
+    &lt;a href="https://httplaceholder.org" target="_blank"&gt;&lt;pre&gt;&lt;code&gt;
 
 
               ######             
@@ -81,21 +98,15 @@
              ######              
 
 
-    &lt;/code&gt;&lt;/pre&gt;
+    &lt;/code&gt;&lt;/pre&gt;&lt;/a&gt;
 
     &lt;h1&gt;HttPlaceholder - no stub found&lt;/h1&gt;
 
-    &lt;p&gt;
-        No stub was configured for this request. To view the configured stubs and the requests, go to &lt;a
-        href="[ROOT_URL]/ph-ui"&gt;[ROOT_URL]/ph-ui&lt;/a&gt;.
-    &lt;/p&gt;
-
-    &lt;hr/&gt;
-
-    &lt;p&gt;
-        The most straightforward way is adding it through the &lt;a href="[ROOT_URL]/ph-ui"&gt;user interface&lt;/a&gt;. Read more in the &lt;a
-        href="[ROOT_URL]/ph-ui/docs"&gt;docs&lt;/a&gt;. Also visit &lt;a href="https://httplaceholder.org" target="_blank"&gt;httplaceholder.org&lt;/a&gt;.
-    &lt;/p&gt;
+    &lt;div class="buttons"&gt;
+        &lt;a class="button" href="[ROOT_URL]/ph-ui"&gt;Admin UI&lt;/a&gt;
+        &lt;a class="button" href="[ROOT_URL]/ph-ui/docs"&gt;Docs&lt;/a&gt;
+        &lt;a class="button" href="https://httplaceholder.org"&gt;Website&lt;/a&gt;
+    &lt;/div&gt;
 &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;
