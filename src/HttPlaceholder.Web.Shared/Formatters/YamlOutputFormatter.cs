@@ -36,7 +36,7 @@ public class YamlOutputFormatter : TextOutputFormatter
         await using var writer = context.WriterFactory(response.Body, selectedEncoding);
         WriteObject(writer, context.Object);
 
-        await writer.FlushAsync();
+        await writer.FlushAsync(context.HttpContext.RequestAborted);
     }
 
     private void WriteObject(TextWriter writer, object value)

@@ -25,7 +25,7 @@
     &lt;meta charset="utf-8"/&gt;
     &lt;meta content="IE=edge" http-equiv="X-UA-Compatible"&gt;
     &lt;meta content="width=device-width, initial-scale=1" name="viewport"&gt;
-    &lt;link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"&gt; 
+    &lt;link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"&gt;
     &lt;title&gt;HttPlaceholder [VERSION] - no stub configured&lt;/title&gt;
 
     &lt;style&gt;
@@ -37,6 +37,7 @@
         pre {
             display: flex;
             justify-content: center;
+            margin: 0;
         }
 
         .message {
@@ -78,27 +79,21 @@
 &lt;/head&gt;
 &lt;body&gt;
 &lt;div class="message"&gt;
-    &lt;a href="https://httplaceholder.org" target="_blank"&gt;&lt;pre&gt;&lt;code&gt;
-
-
-              ######             
-            ##########           
-          ##############         
-        #####++#######++##       
-      #######  #######  +###     
-    #########  #######  +#####   
-  ###########  #######  +####### 
+    &lt;a href="https://httplaceholder.org" target="_blank"&gt;&lt;pre&gt;&lt;code&gt;              ######
+            ##########
+          ##############
+        #####++#######++##
+      #######  #######  +###
+    #########  #######  +#####
+  ###########  #######  +#######
 #############  -------  +########
- ############  #######  +######  
-   ##########  #######  +####    
-     ########  #######  +##      
-       ##################        
-         ##############          
-           ##########            
-             ######              
-
-
-    &lt;/code&gt;&lt;/pre&gt;&lt;/a&gt;
+ ############  #######  +######
+   ##########  #######  +####
+     ########  #######  +##
+       ##################
+         ##############
+           ##########
+             ######&lt;/code&gt;&lt;/pre&gt;&lt;/a&gt;
 
     &lt;h1&gt;HttPlaceholder - no stub found&lt;/h1&gt;
 
