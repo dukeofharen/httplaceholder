@@ -67,12 +67,14 @@ internal class DisplayUrlResponseVariableParsingHandler(
                 }
                 else
                 {
-                    logger.LogInformation("No result found in display URL for regular expression '{RegexValue}'.", regexValue);
+                    logger.LogInformation("No result found in display URL for regular expression '{RegexValue}'.",
+                        regexValue);
                 }
             }
             catch (Exception ex)
             {
-                logger.LogWarning(ex, "Error occurred while executing regex '{RegexValue}' on display URL.'", regexValue);
+                logger.LogWarning(ex, "Error occurred while executing regex '{RegexValue}' on display URL.'",
+                    regexValue);
             }
         }
 

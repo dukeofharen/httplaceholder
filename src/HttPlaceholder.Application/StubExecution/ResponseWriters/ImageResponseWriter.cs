@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;

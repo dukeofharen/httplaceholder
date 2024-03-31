@@ -12,7 +12,7 @@ public class ProgramUtility(
     ITcpService tcpService,
     IIpService ipService) : IProgramUtility
 {
-    private static string[] _defaultHostnames = ["127.0.0.1", "localhost"];
+    private static readonly string[] _defaultHostnames = ["127.0.0.1", "localhost"];
 
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.

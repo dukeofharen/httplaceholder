@@ -302,7 +302,8 @@ public class StubHandlingMiddlewareFacts
             m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
         httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime));
         httpContextServiceMock.Verify(m =>
-            m.WriteAsync(It.Is<string>(b => b.Contains("HttPlaceholder - no stub found")), It.IsAny<CancellationToken>()));
+            m.WriteAsync(It.Is<string>(b => b.Contains("HttPlaceholder - no stub found")),
+                It.IsAny<CancellationToken>()));
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown."));
     }
 
@@ -346,7 +347,8 @@ public class StubHandlingMiddlewareFacts
             m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
         httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.JsonMime));
         httpContextServiceMock.Verify(m =>
-            m.WriteAsync(It.Is<string>(b => b == """{"status":"501 Not implemented"}"""), It.IsAny<CancellationToken>()));
+            m.WriteAsync(It.Is<string>(b => b == """{"status":"501 Not implemented"}"""),
+                It.IsAny<CancellationToken>()));
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown."));
     }
 

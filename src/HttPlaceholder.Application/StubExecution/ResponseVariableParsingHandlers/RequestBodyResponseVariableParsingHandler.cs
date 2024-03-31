@@ -47,7 +47,8 @@ internal class RequestBodyResponseVariableParsingHandler(
         if (match.Groups.Count != 3)
         {
             logger.LogWarning(
-                "Number of regex matches for variable parser {VariableParser} was {MatchCount}, which should be 3.", GetType().Name, match.Groups.Count);
+                "Number of regex matches for variable parser {VariableParser} was {MatchCount}, which should be 3.",
+                GetType().Name, match.Groups.Count);
         }
         else if (string.IsNullOrWhiteSpace(match.Groups[2].Value))
         {
@@ -67,12 +68,14 @@ internal class RequestBodyResponseVariableParsingHandler(
                 }
                 else
                 {
-                    logger.LogInformation("No result found in request body for regular expression '{RegexValue}'.", regexValue);
+                    logger.LogInformation("No result found in request body for regular expression '{RegexValue}'.",
+                        regexValue);
                 }
             }
             catch (Exception ex)
             {
-                logger.LogWarning(ex, "Error occurred while executing regex '{RegexValue}' on request body.'", regexValue);
+                logger.LogWarning(ex, "Error occurred while executing regex '{RegexValue}' on request body.'",
+                    regexValue);
             }
         }
 

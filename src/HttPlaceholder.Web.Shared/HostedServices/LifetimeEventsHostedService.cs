@@ -27,7 +27,8 @@ public class LifetimeEventsHostedService : IHostedService
     public Task StartAsync(CancellationToken cancellationToken)
     {
         _hostApplicationLifetime.ApplicationStarted.Register(() =>
-            _logger.LogInformation("Starting the application took {Duration} ms.", ProgramUtilities.GetStartupMillis()));
+            _logger.LogInformation("Starting the application took {Duration} ms.",
+                ProgramUtilities.GetStartupMillis()));
         return Task.CompletedTask;
     }
 
