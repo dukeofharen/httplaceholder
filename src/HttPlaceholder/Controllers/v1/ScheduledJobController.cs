@@ -30,7 +30,6 @@ public class ScheduledJobController : BaseApiController
     {
         var result = await Send(new ExecuteScheduledJobCommand(jobName));
         var statusCode = result.Failed ? HttpStatusCode.InternalServerError : HttpStatusCode.OK;
-
         return StatusCode((int)statusCode, new JobExecutionResultDto(result.Message));
     }
 

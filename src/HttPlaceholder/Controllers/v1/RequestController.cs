@@ -29,8 +29,10 @@ public class RequestController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetAll(
-        [FromHeader(Name = "x-from-identifier")] string fromIdentifier,
-        [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
+        [FromHeader(Name = "x-from-identifier")]
+        string fromIdentifier,
+        [FromHeader(Name = "x-items-per-page")]
+        int? itemsPerPage) =>
         Ok(Map<IEnumerable<RequestResultDto>>(await Send(
             new GetAllRequestsQuery(fromIdentifier, itemsPerPage))));
 
@@ -46,8 +48,10 @@ public class RequestController : BaseApiController
     [HttpGet("overview")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RequestOverviewDto>>> GetOverview(
-        [FromHeader(Name = "x-from-identifier")] string fromIdentifier,
-        [FromHeader(Name = "x-items-per-page")] int? itemsPerPage) =>
+        [FromHeader(Name = "x-from-identifier")]
+        string fromIdentifier,
+        [FromHeader(Name = "x-items-per-page")]
+        int? itemsPerPage) =>
         Ok(Map<IEnumerable<RequestOverviewDto>>(await Send(
             new GetRequestsOverviewQuery(fromIdentifier, itemsPerPage))));
 
@@ -94,11 +98,8 @@ public class RequestController : BaseApiController
     /// <returns>OK, but no content returned</returns>
     [HttpDelete("{correlationId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> DeleteRequest(string correlationId)
-    {
-        var result = await Send(new DeleteRequestCommand(correlationId));
-        return result ? NoContent() : NotFound();
-    }
+    public async Task<ActionResult> DeleteRequest(string correlationId) =>
+        await Send(new DeleteRequestCommand(correlationId)) ? NoContent() : NotFound();
 
     /// <summary>
     ///     An endpoint which accepts the correlation ID of a request made earlier.

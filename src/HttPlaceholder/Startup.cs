@@ -1,7 +1,7 @@
 ﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Hubs;
-using HttPlaceholder.Web.Shared;
 using HttPlaceholder.Web.Shared.HostedServices;
+using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

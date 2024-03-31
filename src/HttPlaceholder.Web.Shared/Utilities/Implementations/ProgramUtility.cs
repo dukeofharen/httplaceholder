@@ -12,6 +12,8 @@ public class ProgramUtility(
     ITcpService tcpService,
     IIpService ipService) : IProgramUtility
 {
+    private static string[] _defaultHostnames = ["127.0.0.1", "localhost"];
+
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
@@ -36,7 +38,7 @@ public class ProgramUtility(
     /// <inheritdoc />
     public IEnumerable<string> GetHostnames()
     {
-        var result = new List<string> { "127.0.0.1", "localhost" };
+        var result = new List<string>(_defaultHostnames);
         var localIp = ipService.GetLocalIpAddress();
         if (!string.IsNullOrWhiteSpace(localIp))
         {
