@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -13,8 +12,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a given posted form value in the response.
 /// </summary>
-internal class FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class FormPostResponseVariableParsingHandler(IHttpContextService httpContextService)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "form_post";
@@ -23,10 +22,13 @@ internal class FormPostResponseVariableParsingHandler(IHttpContextService httpCo
     public override string FullName => "Form post";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:form_key))"};
+    public override string[] Examples => [$"(({Name}:form_key))"];
 
     /// <inheritdoc />
-    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    public override string GetDescription() => ResponseVariableParsingResources.FormPost;
+
+    /// <inheritdoc />
+    protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
         var formValues = await httpContextService.GetFormValuesAsync(cancellationToken);
@@ -36,7 +38,7 @@ internal class FormPostResponseVariableParsingHandler(IHttpContextService httpCo
             .Aggregate(input, (current, match) => InsertFormValue(current, match, formDict));
     }
 
-    private static string InsertFormValue(string current, Match match, IDictionary<string, string> formDict)
+    private static string InsertFormValue(string current, Match match, Dictionary<string, string> formDict)
     {
         var formValueName = match.Groups[2].Value;
         if (!formDict.TryGetValue(formValueName, out var replaceValue))

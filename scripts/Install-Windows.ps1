@@ -1,5 +1,6 @@
 # This is added to ensure that the whole script is downloaded before running it.
-if ($True) {
+if ($True)
+{
     $global:ProgressPreference = 'SilentlyContinue'
     $ErrorActionPreference = "Stop"
     $tempDir = [System.IO.Path]::GetTempPath()
@@ -21,8 +22,9 @@ if ($True) {
     Invoke-WebRequest -Uri $downloadUrl -UseBasicParsing -OutFile $downloadPath
 
     $mainDrive = (Get-Item $env:windir).PSDrive.Name
-    $installLocation = "$($mainDrive):\httplaceholder"
-    if (Test-Path $installLocation) {
+    $installLocation = "$( $mainDrive ):\httplaceholder"
+    if (Test-Path $installLocation)
+    {
         Write-Host "Removing directory $installLocation"
         Remove-Item -Path $installLocation -Recurse -Force
     }
@@ -31,7 +33,8 @@ if ($True) {
     Expand-Archive -Path $downloadPath -DestinationPath $installLocation
 
     $pathVar = [Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
-    if (!($pathVar -match [regex]::Escape($installLocation))) {
+    if (!($pathVar -match [regex]::Escape($installLocation)))
+    {
         Write-Host "Adding path $installLocation to the path variable"
         $newPath = "$pathVar;$installLocation"
         [Environment]::SetEnvironmentVariable("Path", $newPath, [System.EnvironmentVariableTarget]::Machine)

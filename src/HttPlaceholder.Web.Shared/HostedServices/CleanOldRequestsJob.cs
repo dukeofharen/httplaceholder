@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
+using Microsoft.Extensions.Logging;
 using BackgroundService = HttPlaceholder.Application.ScheduledJobs.BackgroundService;
 
 namespace HttPlaceholder.Web.Shared.HostedServices;
@@ -7,7 +8,7 @@ namespace HttPlaceholder.Web.Shared.HostedServices;
 /// <summary>
 ///     A background that is used to clean old requests
 /// </summary>
-public class CleanOldRequestsJob : BackgroundService
+public sealed class CleanOldRequestsJob : BackgroundService
 {
     private readonly IStubContext _stubContext;
 

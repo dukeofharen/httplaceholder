@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 
@@ -16,9 +16,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class RequestBodyResponseVariableParsingHandler(
     IHttpContextService httpContextService,
-    IFileService fileService,
     ILogger<RequestBodyResponseVariableParsingHandler> logger)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "request_body";
@@ -27,10 +26,13 @@ internal class RequestBodyResponseVariableParsingHandler(
     public override string FullName => "Request body";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'"};
+    public override string[] Examples => [$"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'"];
 
     /// <inheritdoc />
-    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    public override string GetDescription() => ResponseVariableParsingResources.RequestBody;
+
+    /// <inheritdoc />
+    protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
         var body = await httpContextService.GetBodyAsync(cancellationToken);
@@ -45,7 +47,8 @@ internal class RequestBodyResponseVariableParsingHandler(
         if (match.Groups.Count != 3)
         {
             logger.LogWarning(
-                $"Number of regex matches for variable parser {GetType().Name} was {match.Groups.Count}, which should be 3.");
+                "Number of regex matches for variable parser {VariableParser} was {MatchCount}, which should be 3.",
+                GetType().Name, match.Groups.Count);
         }
         else if (string.IsNullOrWhiteSpace(match.Groups[2].Value))
         {
@@ -65,12 +68,14 @@ internal class RequestBodyResponseVariableParsingHandler(
                 }
                 else
                 {
-                    logger.LogInformation($"No result found in request body for regular expression '{regexValue}'.");
+                    logger.LogInformation("No result found in request body for regular expression '{RegexValue}'.",
+                        regexValue);
                 }
             }
             catch (Exception ex)
             {
-                logger.LogWarning(ex, $"Error occurred while executing regex '{regexValue}' on request body.'");
+                logger.LogWarning(ex, "Error occurred while executing regex '{RegexValue}' on request body.'",
+                    regexValue);
             }
         }
 

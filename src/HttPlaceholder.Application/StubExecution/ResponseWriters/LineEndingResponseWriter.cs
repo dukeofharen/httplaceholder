@@ -5,6 +5,7 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -20,32 +21,30 @@ internal class LineEndingResponseWriter : IResponseWriter, ISingletonService
         var lineEndings = stub.Response.LineEndings;
         if (lineEndings is null or LineEndingType.NotSet)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
-        var log = string.Empty;
         if (response.BodyIsBinary)
         {
-            log = "The response body is binary; cannot replace line endings.";
-        }
-        else
-        {
-            switch (lineEndings)
-            {
-                case LineEndingType.Unix:
-                    response.Body = ReplaceLineEndings(response.Body, "\n");
-                    break;
-                case LineEndingType.Windows:
-                    response.Body = ReplaceLineEndings(response.Body, "\r\n");
-                    break;
-                default:
-                    log =
-                        $"Line ending type '{lineEndings}' is not supported. Options are '{LineEndingType.Unix}' and '{LineEndingType.Windows}'.";
-                    break;
-            }
+            return IsNotExecuted(GetType().Name,
+                "The response body is binary; cannot replace line endings.").AsTask();
         }
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name, log));
+        switch (lineEndings)
+        {
+            case LineEndingType.Unix:
+                response.Body = ReplaceLineEndings(response.Body, "\n");
+                break;
+            case LineEndingType.Windows:
+                response.Body = ReplaceLineEndings(response.Body, "\r\n");
+                break;
+            default:
+                return IsNotExecuted(GetType().Name,
+                        $"Line ending type '{lineEndings}' is not supported. Options are '{LineEndingType.Unix}' and '{LineEndingType.Windows}'.")
+                    .AsTask();
+        }
+
+        return IsExecuted(GetType().Name).AsTask();
     }
 
     /// <inheritdoc />

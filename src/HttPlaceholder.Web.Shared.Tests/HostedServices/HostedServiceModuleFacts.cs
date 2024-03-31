@@ -11,7 +11,7 @@ public class HostedServiceModuleFacts
     public void AddHostedServices_CleanOldRequestsInBackgroundJobIsFalse_ShouldNotRegisterCleanOldRequestsJob()
     {
         // Arrange
-        var args = new Dictionary<string, string> {{"Storage:CleanOldRequestsInBackgroundJob", "false"}};
+        var args = new Dictionary<string, string> { { "Storage:CleanOldRequestsInBackgroundJob", "false" } };
         var services = new ServiceCollection();
 
         // Act
@@ -25,7 +25,7 @@ public class HostedServiceModuleFacts
     public void AddHostedServices_CleanOldRequestsInBackgroundJobIsTrue_ShouldRegisterCleanOldRequestsJob()
     {
         // Arrange
-        var args = new Dictionary<string, string> {{"Storage:CleanOldRequestsInBackgroundJob", "true"}};
+        var args = new Dictionary<string, string> { { "Storage:CleanOldRequestsInBackgroundJob", "true" } };
         var services = new ServiceCollection();
 
         // Act

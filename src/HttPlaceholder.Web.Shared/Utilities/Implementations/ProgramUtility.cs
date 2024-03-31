@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Configuration;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Implementations;
@@ -8,27 +8,17 @@ namespace HttPlaceholder.Web.Shared.Utilities.Implementations;
 /// <summary>
 ///     A class that is used to help start up HttPlaceholder.
 /// </summary>
-public class ProgramUtility : IProgramUtility
+public class ProgramUtility(
+    ITcpService tcpService,
+    IIpService ipService) : IProgramUtility
 {
-    private readonly IIpService _ipService;
-    private readonly ITcpService _tcpService;
+    private static readonly string[] _defaultHostnames = ["127.0.0.1", "localhost"];
 
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
     public ProgramUtility() : this(new TcpService(), new IpService())
     {
-    }
-
-    /// <summary>
-    ///     Constructs a <see cref="ProgramUtility" /> instance.
-    /// </summary>
-    internal ProgramUtility(
-        ITcpService tcpService,
-        IIpService ipService)
-    {
-        _tcpService = tcpService;
-        _ipService = ipService;
     }
 
     /// <inheritdoc />
@@ -48,8 +38,8 @@ public class ProgramUtility : IProgramUtility
     /// <inheritdoc />
     public IEnumerable<string> GetHostnames()
     {
-        var result = new List<string> {"127.0.0.1", "localhost"};
-        var localIp = _ipService.GetLocalIpAddress();
+        var result = new List<string>(_defaultHostnames);
+        var localIp = ipService.GetLocalIpAddress();
         if (!string.IsNullOrWhiteSpace(localIp))
         {
             result.Add(localIp);
@@ -58,7 +48,7 @@ public class ProgramUtility : IProgramUtility
         return result;
     }
 
-    private IEnumerable<int> HandlePorts(string portInput, int defaultPort)
+    private List<int> HandlePorts(string portInput, int defaultPort)
     {
         var result = new List<int>();
         var ports = ParsePorts(portInput);
@@ -66,9 +56,9 @@ public class ProgramUtility : IProgramUtility
         // If no specific port is configured, the default port will be used.
         // If that port happens to be taken, look for the next free TCP port.
         if (ports.Length == 1 && ports[0] == defaultPort &&
-            _tcpService.PortIsTaken(ports[0]))
+            tcpService.PortIsTaken(ports[0]))
         {
-            result.Add(_tcpService.GetNextFreeTcpPort());
+            result.Add(tcpService.GetNextFreeTcpPort());
         }
         else
         {
@@ -98,8 +88,8 @@ public class ProgramUtility : IProgramUtility
 
     private void EnsureNoPortsAreTaken(IEnumerable<int> ports)
     {
-        var portsTaken = ports.Where(p => _tcpService.PortIsTaken(p)).ToArray();
-        if (portsTaken.Any())
+        var portsTaken = ports.Where(tcpService.PortIsTaken).ToArray();
+        if (portsTaken.Length != 0)
         {
             throw new ArgumentException($"The following ports are already taken: {string.Join(", ", portsTaken)}");
         }

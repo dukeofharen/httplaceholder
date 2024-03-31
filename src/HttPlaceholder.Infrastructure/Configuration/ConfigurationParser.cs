@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 using static HttPlaceholder.Domain.DefaultConfiguration;
@@ -16,22 +16,10 @@ namespace HttPlaceholder.Infrastructure.Configuration;
 /// <summary>
 ///     A class that is used to convert a list of command line arguments to a dictionary.
 /// </summary>
-public class ConfigurationParser
+public class ConfigurationParser(
+    IEnvService envService,
+    IFileService fileService)
 {
-    private readonly IEnvService _envService;
-    private readonly IFileService _fileService;
-
-    /// <summary>
-    ///     Constructs a <see cref="ConfigurationParser" /> instance.
-    /// </summary>
-    internal ConfigurationParser(
-        IEnvService envService,
-        IFileService fileService)
-    {
-        _envService = envService;
-        _fileService = fileService;
-    }
-
     /// <summary>
     ///     Constructs a <see cref="ConfigurationParser" /> instance.
     /// </summary>
@@ -52,14 +40,14 @@ public class ConfigurationParser
         var envResult = ParseEnvironment(configMetadata);
         var argsResult = args.Parse();
         var configFileResult = ParseConfigFile(envResult, argsResult);
-        return DetermineFinalConfigDictionary(envResult, argsResult, configFileResult, configMetadata, args);
+        return DetermineFinalConfigDictionary(envResult, argsResult, configFileResult, configMetadata);
     }
 
-    private IDictionary<string, string> ParseEnvironment(
+    private Dictionary<string, string> ParseEnvironment(
         IEnumerable<ConfigMetadataModel> configMetadata)
     {
         var result = new Dictionary<string, string>();
-        var envVars = _envService.GetEnvironmentVariables();
+        var envVars = envService.GetEnvironmentVariables();
         if (envVars == null)
         {
             return new Dictionary<string, string>();
@@ -78,9 +66,9 @@ public class ConfigurationParser
         return result;
     }
 
-    private IDictionary<string, string> ParseConfigFile(
-        IDictionary<string, string> envResult,
-        IDictionary<string, string> argsResult)
+    private Dictionary<string, string> ParseConfigFile(
+        Dictionary<string, string> envResult,
+        Dictionary<string, string> argsResult)
     {
         const string key = ConfigKeys.ConfigJsonLocationKey;
         var configJsonPath = argsResult.CaseInsensitiveSearch(key);
@@ -95,23 +83,21 @@ public class ConfigurationParser
         }
 
         // Read the settings from a given file if the correct config key is set.
-        if (!_fileService.FileExists(configJsonPath))
+        if (!fileService.FileExists(configJsonPath))
         {
             throw new FileNotFoundException($"File '{configJsonPath}' not found.");
         }
 
-        ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green,
-            ConsoleColor.Black);
-        var config = _fileService.ReadAllText(configJsonPath);
+        Console.WriteLine($"Reading configuration from '{configJsonPath}'.");
+        var config = fileService.ReadAllText(configJsonPath);
         return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
     }
 
-    private IDictionary<string, string> DetermineFinalConfigDictionary(
-        IDictionary<string, string> envResult,
-        IDictionary<string, string> argsResult,
-        IDictionary<string, string> configFileResult,
-        ConfigMetadataModel[] configMetadata,
-        IEnumerable<string> args)
+    private Dictionary<string, string> DetermineFinalConfigDictionary(
+        Dictionary<string, string> envResult,
+        Dictionary<string, string> argsResult,
+        Dictionary<string, string> configFileResult,
+        ConfigMetadataModel[] configMetadata)
     {
         var result = new Dictionary<string, string>();
         foreach (var constant in configMetadata)
@@ -156,11 +142,6 @@ public class ConfigurationParser
             }
         }
 
-        if (CliArgs.IsVerbose(args))
-        {
-            finalResult.Add("Logging:VerboseLoggingEnabled", "True");
-        }
-
         return finalResult;
     }
 
@@ -192,16 +173,16 @@ public class ConfigurationParser
         }
 
         string fileStorageLocation = null;
-        var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
-        var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
+        var windowsProfilePath = envService.GetEnvironmentVariable("USERPROFILE");
+        var unixProfilePath = envService.GetEnvironmentVariable("HOME");
         const string stubFolderName = ".httplaceholder";
-        if (_envService.IsOs(OSPlatform.Windows) && _fileService.DirectoryExists(windowsProfilePath))
+        if (envService.IsOs(OSPlatform.Windows) && fileService.DirectoryExists(windowsProfilePath))
         {
             fileStorageLocation = $"{windowsProfilePath}\\{stubFolderName}";
         }
         else if (
-            (_envService.IsOs(OSPlatform.Linux) ||
-             _envService.IsOs(OSPlatform.OSX)) && _fileService.DirectoryExists(unixProfilePath))
+            (envService.IsOs(OSPlatform.Linux) ||
+             envService.IsOs(OSPlatform.OSX)) && fileService.DirectoryExists(unixProfilePath))
         {
             fileStorageLocation = $"{unixProfilePath}/{stubFolderName}";
         }

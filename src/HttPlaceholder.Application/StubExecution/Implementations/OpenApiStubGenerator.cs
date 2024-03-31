@@ -50,7 +50,7 @@ internal class OpenApiStubGenerator(
             cancellationToken);
         if (doNotCreateStub)
         {
-            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
+            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
         }
 
         await stubContext.DeleteStubAsync(stub.Id, cancellationToken);

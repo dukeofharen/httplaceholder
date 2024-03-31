@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -6,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -14,8 +16,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 ///     Response variable parsing handler to insert the local date/time into the response. An optional date/time format can
 ///     be provided (based on the .NET date/time formatting strings).
 /// </summary>
-internal class LocalNowResponseVariableParsingHandler(IDateTime dateTime, IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class LocalNowResponseVariableParsingHandler(IDateTime dateTime)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "localnow";
@@ -24,17 +26,17 @@ internal class LocalNowResponseVariableParsingHandler(IDateTime dateTime, IFileS
     public override string FullName => "Local date / time";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"};
+    public override string[] Examples => [$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var now = dateTime.Now;
-        return Task.FromResult(matches
+    public override string GetDescription() => ResponseVariableParsingResources.LocalNow;
+
+    /// <inheritdoc />
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
+        CancellationToken cancellationToken) =>
+        matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertDateTime(current, match, now)));
-    }
+            .Aggregate(input, (current, match) => InsertDateTime(current, match, dateTime.Now)).AsTask();
 
     private static string InsertDateTime(string current, Match match, DateTime now)
     {

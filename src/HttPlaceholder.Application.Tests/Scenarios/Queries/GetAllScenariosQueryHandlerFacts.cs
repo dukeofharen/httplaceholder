@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Scenarios.Queries.GetAllScenarios;
+﻿using HttPlaceholder.Application.Scenarios.Queries;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Entities;
 

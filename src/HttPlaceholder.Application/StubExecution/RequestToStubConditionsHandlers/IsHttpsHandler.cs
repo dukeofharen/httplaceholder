@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -18,11 +19,11 @@ internal class IsHttpsHandler : IRequestToStubConditionsHandler, ISingletonServi
     {
         if (!request.Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         conditions.Url.IsHttps = true;
-        return Task.FromResult(true);
+        return true.AsTask();
     }
 
     /// <inheritdoc />

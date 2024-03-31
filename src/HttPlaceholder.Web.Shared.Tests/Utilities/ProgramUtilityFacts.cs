@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Configuration;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Web.Shared.Utilities.Implementations;
 

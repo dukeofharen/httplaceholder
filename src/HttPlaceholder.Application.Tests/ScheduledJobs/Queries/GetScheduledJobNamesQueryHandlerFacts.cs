@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.ScheduledJobs;
-using HttPlaceholder.Application.ScheduledJobs.Queries.GetScheduledJobNames;
+using HttPlaceholder.Application.ScheduledJobs.Queries;
 
 namespace HttPlaceholder.Application.Tests.ScheduledJobs.Queries;
 

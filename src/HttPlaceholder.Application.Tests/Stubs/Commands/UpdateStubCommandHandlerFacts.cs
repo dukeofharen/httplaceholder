@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
+using HttPlaceholder.Application.Stubs.Commands;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Commands;
 
@@ -21,10 +21,10 @@ public class UpdateStubCommandHandlerFacts
         var mockStubContext = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<UpdateStubCommandHandler>();
 
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         var request = new UpdateStubCommand("new-stub-id", stub);
 
-        var errors = new[] {"error1"};
+        var errors = new[] { "error1" };
 
         mockStubModelValidator
             .Setup(m => m.ValidateStubModel(stub))
@@ -50,7 +50,7 @@ public class UpdateStubCommandHandlerFacts
         var mockStubContext = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<UpdateStubCommandHandler>();
 
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         var request = new UpdateStubCommand("new-stub-id", stub);
 
         mockStubModelValidator
@@ -73,19 +73,20 @@ public class UpdateStubCommandHandlerFacts
         var mockStubContext = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<UpdateStubCommandHandler>();
 
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         var request = new UpdateStubCommand("new-stub-id", stub);
 
         mockStubModelValidator
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
 
-        var oldStub = new FullStubModel {Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}};
+        var oldStub =
+            new FullStubModel { Stub = new StubModel(), Metadata = new StubMetadataModel { ReadOnly = false } };
         mockStubContext
             .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(oldStub);
 
-        var newStub = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = true}};
+        var newStub = new FullStubModel { Stub = stub, Metadata = new StubMetadataModel { ReadOnly = true } };
         mockStubContext
             .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(newStub);
@@ -109,14 +110,15 @@ public class UpdateStubCommandHandlerFacts
         var mockStubContext = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<UpdateStubCommandHandler>();
 
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         var request = new UpdateStubCommand("new-stub-id", stub);
 
         mockStubModelValidator
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
 
-        var oldStub = new FullStubModel {Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = true}};
+        var oldStub =
+            new FullStubModel { Stub = new StubModel(), Metadata = new StubMetadataModel { ReadOnly = true } };
         mockStubContext
             .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(oldStub);
@@ -141,7 +143,7 @@ public class UpdateStubCommandHandlerFacts
         var mockStubContext = _mocker.GetMock<IStubContext>();
         var handler = _mocker.CreateInstance<UpdateStubCommandHandler>();
 
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         var request = new UpdateStubCommand("new-stub-id", stub);
 
         mockStubModelValidator
@@ -150,7 +152,7 @@ public class UpdateStubCommandHandlerFacts
 
         var previousStub = new FullStubModel
         {
-            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
+            Stub = new StubModel(), Metadata = new StubMetadataModel { ReadOnly = false }
         };
         mockStubContext
             .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
@@ -158,7 +160,7 @@ public class UpdateStubCommandHandlerFacts
 
         var existingStub = new FullStubModel
         {
-            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
+            Stub = new StubModel(), Metadata = new StubMetadataModel { ReadOnly = false }
         };
         mockStubContext
             .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))

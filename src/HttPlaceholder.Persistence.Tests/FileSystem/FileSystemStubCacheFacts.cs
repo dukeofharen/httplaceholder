@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.FileSystem.Models;
@@ -71,7 +71,7 @@ public class FileSystemStubCacheFacts
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
 
-        var metadataContents = @$"{{""StubUpdateTrackingId"": ""{trackingId}""}}";
+        var metadataContents = $$"""{"StubUpdateTrackingId": "{{trackingId}}"}""";
         mockFileService
             .Setup(m => m.ReadAllText(expectedPath))
             .Returns(metadataContents);
@@ -116,7 +116,7 @@ public class FileSystemStubCacheFacts
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsFalse(cache.StubCache.Any());
+        Assert.IsFalse(!cache.StubCache.IsEmpty);
         Assert.IsNull(cache.StubUpdateTrackingId);
     }
 
@@ -148,8 +148,8 @@ public class FileSystemStubCacheFacts
         var trackingId = Guid.NewGuid().ToString();
         SetupMetadata(trackingId);
 
-        var stub1 = new StubModel {Id = "stub1"};
-        var stub2 = new StubModel {Id = "stub2"};
+        var stub1 = new StubModel { Id = "stub1" };
+        var stub2 = new StubModel { Id = "stub2" };
         SetupStubs(null, stub1, stub2);
 
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
@@ -170,8 +170,8 @@ public class FileSystemStubCacheFacts
         var trackingId = Guid.NewGuid().ToString();
         SetupMetadata(trackingId);
 
-        var stub1 = new StubModel {Id = "stub1"};
-        var stub2 = new StubModel {Id = "stub2"};
+        var stub1 = new StubModel { Id = "stub1" };
+        var stub2 = new StubModel { Id = "stub2" };
         SetupStubs(null, stub1, stub2);
 
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
@@ -188,10 +188,10 @@ public class FileSystemStubCacheFacts
         // Arrange
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
-        var existingStub = new StubModel {Id = "stub1"};
+        var existingStub = new StubModel { Id = "stub1" };
         Assert.IsTrue(cache.StubCache.TryAdd(existingStub.Id, existingStub));
 
-        var newStub = new StubModel {Id = "stub1"};
+        var newStub = new StubModel { Id = "stub1" };
 
         // Act
         cache.AddOrReplaceStub(newStub);
@@ -207,10 +207,10 @@ public class FileSystemStubCacheFacts
         // Arrange
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
-        var existingStub = new StubModel {Id = "stub2"};
+        var existingStub = new StubModel { Id = "stub2" };
         Assert.IsTrue(cache.StubCache.TryAdd(existingStub.Id, existingStub));
 
-        var newStub = new StubModel {Id = "stub1"};
+        var newStub = new StubModel { Id = "stub1" };
 
         // Act
         cache.AddOrReplaceStub(newStub);
@@ -237,7 +237,7 @@ public class FileSystemStubCacheFacts
             .Callback<string, string>((_, metadata) => capturedMetadata = metadata);
 
         // Act
-        cache.AddOrReplaceStub(new StubModel {Id = "stub1"});
+        cache.AddOrReplaceStub(new StubModel { Id = "stub1" });
 
         // Assert
         var parsedCapturedMetadata = JsonConvert.DeserializeObject<FileStorageMetadataModel>(capturedMetadata);
@@ -256,7 +256,7 @@ public class FileSystemStubCacheFacts
         var trackingId = Guid.NewGuid().ToString();
         cache.StubUpdateTrackingId = trackingId;
 
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         Assert.IsTrue(cache.StubCache.TryAdd(stub.Id, stub));
 
         var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, FileNames.MetadataFileName);
@@ -287,7 +287,7 @@ public class FileSystemStubCacheFacts
         var trackingId = Guid.NewGuid().ToString();
         cache.StubUpdateTrackingId = trackingId;
 
-        var stub = new StubModel {Id = "stub2"};
+        var stub = new StubModel { Id = "stub2" };
         Assert.IsTrue(cache.StubCache.TryAdd(stub.Id, stub));
 
         // Act
@@ -309,7 +309,7 @@ public class FileSystemStubCacheFacts
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
 
-        var metadataContents = @$"{{""StubUpdateTrackingId"": ""{trackingId}""}}";
+        var metadataContents = $$"""{"StubUpdateTrackingId": "{{trackingId}}"}""";
         mockFileService
             .Setup(m => m.ReadAllText(expectedPath))
             .Returns(metadataContents);

@@ -19,11 +19,11 @@ public class HostConditionCheckerFacts
         // arrange
         var checker = _mocker.CreateInstance<HostConditionChecker>();
 
-        var conditions = new StubConditionsModel {Host = null};
+        var conditions = new StubConditionsModel { Host = null };
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -42,7 +42,7 @@ public class HostConditionCheckerFacts
             .Setup(m => m.GetHost())
             .Returns(host);
 
-        var conditions = new StubConditionsModel {Host = "host.com"};
+        var conditions = new StubConditionsModel { Host = "host.com" };
         string outputForLogging;
         stringCheckerMock
             .Setup(m => m.CheckString(host, "host.com", out outputForLogging))
@@ -50,7 +50,7 @@ public class HostConditionCheckerFacts
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -69,7 +69,7 @@ public class HostConditionCheckerFacts
             .Setup(m => m.GetHost())
             .Returns(host);
 
-        var conditions = new StubConditionsModel {Host = "actualhost.com"};
+        var conditions = new StubConditionsModel { Host = "actualhost.com" };
         string outputForLogging;
         stringCheckerMock
             .Setup(m => m.CheckString(host, "actualhost.com", out outputForLogging))
@@ -77,7 +77,7 @@ public class HostConditionCheckerFacts
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

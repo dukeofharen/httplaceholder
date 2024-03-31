@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 
@@ -15,10 +16,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 ///     Response variable parsing handler that is used to insert the display URL (so the full URL) in the response.
 /// </summary>
 internal class DisplayUrlResponseVariableParsingHandler(
-    IFileService fileService,
     ILogger<DisplayUrlResponseVariableParsingHandler> logger,
     IUrlResolver urlResolver)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "display_url";
@@ -27,14 +27,18 @@ internal class DisplayUrlResponseVariableParsingHandler(
     public override string FullName => "Display URL";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}))", $@"(({Name}:'\/users\/([0-9]{3})\/orders'))"};
+    public override string[] Examples => [$"(({Name}))", $@"(({Name}:'\/users\/([0-9]{3})\/orders'))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    public override string GetDescription() => ResponseVariableParsingResources.DisplayUrl;
+
+    /// <inheritdoc />
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>
-        Task.FromResult(matches
+        matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => HandleDisplayUrl(match, current, urlResolver.GetDisplayUrl())));
+            .Aggregate(input, (current, match) => HandleDisplayUrl(match, current, urlResolver.GetDisplayUrl()))
+            .AsTask();
 
     private string HandleDisplayUrl(Match match, string current, string url)
     {
@@ -42,7 +46,8 @@ internal class DisplayUrlResponseVariableParsingHandler(
         if (match.Groups.Count != 3)
         {
             logger.LogWarning(
-                $"Number of regex matches for variable parser {GetType().Name} was {match.Groups.Count}, which should be 3.");
+                "Number of regex matches for variable parser {VariableParser} was {MatchCount}, which should be 3.",
+                GetType().Name, match.Groups.Count);
         }
         else if (string.IsNullOrWhiteSpace(match.Groups[2].Value))
         {
@@ -62,12 +67,14 @@ internal class DisplayUrlResponseVariableParsingHandler(
                 }
                 else
                 {
-                    logger.LogInformation($"No result found in display URL for regular expression '{regexValue}'.");
+                    logger.LogInformation("No result found in display URL for regular expression '{RegexValue}'.",
+                        regexValue);
                 }
             }
             catch (Exception ex)
             {
-                logger.LogWarning(ex, $"Error occurred while executing regex '{regexValue}' on display URL.'");
+                logger.LogWarning(ex, "Error occurred while executing regex '{RegexValue}' on display URL.'",
+                    regexValue);
             }
         }
 

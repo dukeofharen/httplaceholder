@@ -5,46 +5,32 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
 using NetTools;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker that verifies the client IP address. IP address can be both a single IP or an IP range.
 /// </summary>
-public class ClientIpConditionChecker : IConditionChecker, ISingletonService
+public class ClientIpConditionChecker(IClientDataResolver clientDataResolver) : BaseConditionChecker, ISingletonService
 {
-    private readonly IClientDataResolver _clientDataResolver;
-
-    /// <summary>
-    ///     Constructs a <see cref="ClientIpConditionChecker" /> instance.
-    /// </summary>
-    public ClientIpConditionChecker(IClientDataResolver clientDataResolver)
-    {
-        _clientDataResolver = clientDataResolver;
-    }
+    /// <inheritdoc />
+    public override int Priority => 10;
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.ClientIp != null;
+
+    /// <inheritdoc />
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
         var clientIpCondition = stub.Conditions?.ClientIp;
-        if (clientIpCondition == null)
-        {
-            return Task.FromResult(result);
-        }
-
-        var clientIp = IPAddress.Parse(_clientDataResolver.GetClientIp());
+        var clientIp = IPAddress.Parse(clientDataResolver.GetClientIp());
         var ranges = IPAddressRange.Parse(clientIpCondition).AsEnumerable();
-        result.ConditionValidation = ranges
+        return ranges
             .Any(i => i.Equals(clientIp))
-            ? ConditionValidationType.Valid
-            : ConditionValidationType.Invalid;
-
-        return Task.FromResult(result);
+            ? ValidAsync()
+            : InvalidAsync();
     }
-
-    /// <inheritdoc />
-    public int Priority => 10;
 }

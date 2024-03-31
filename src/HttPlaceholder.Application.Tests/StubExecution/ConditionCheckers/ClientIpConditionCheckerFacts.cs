@@ -23,10 +23,10 @@ public class ClientIpConditionCheckerFacts
     {
         // arrange
         const string stubId = "stub1";
-        var conditions = new StubConditionsModel {ClientIp = null};
+        var conditions = new StubConditionsModel { ClientIp = null };
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel {Id = stubId, Conditions = conditions},
+        var result = await _checker.ValidateAsync(new StubModel { Id = stubId, Conditions = conditions },
             CancellationToken.None);
 
         // assert
@@ -39,14 +39,14 @@ public class ClientIpConditionCheckerFacts
         // arrange
         const string stubId = "stub1";
         const string clientIp = "127.0.0.1";
-        var conditions = new StubConditionsModel {ClientIp = "127.0.0.2"};
+        var conditions = new StubConditionsModel { ClientIp = "127.0.0.2" };
 
         _clientIpResolverMock
             .Setup(m => m.GetClientIp())
             .Returns(clientIp);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel {Id = stubId, Conditions = conditions},
+        var result = await _checker.ValidateAsync(new StubModel { Id = stubId, Conditions = conditions },
             CancellationToken.None);
 
         // assert
@@ -59,14 +59,14 @@ public class ClientIpConditionCheckerFacts
         // arrange
         const string stubId = "stub1";
         const string clientIp = "127.0.0.1";
-        var conditions = new StubConditionsModel {ClientIp = "127.0.0.1"};
+        var conditions = new StubConditionsModel { ClientIp = "127.0.0.1" };
 
         _clientIpResolverMock
             .Setup(m => m.GetClientIp())
             .Returns(clientIp);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel {Id = stubId, Conditions = conditions},
+        var result = await _checker.ValidateAsync(new StubModel { Id = stubId, Conditions = conditions },
             CancellationToken.None);
 
         // assert
@@ -79,14 +79,14 @@ public class ClientIpConditionCheckerFacts
         // arrange
         const string stubId = "stub1";
         const string clientIp = "127.0.0.9";
-        var conditions = new StubConditionsModel {ClientIp = "127.0.0.0/29"};
+        var conditions = new StubConditionsModel { ClientIp = "127.0.0.0/29" };
 
         _clientIpResolverMock
             .Setup(m => m.GetClientIp())
             .Returns(clientIp);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel {Id = stubId, Conditions = conditions},
+        var result = await _checker.ValidateAsync(new StubModel { Id = stubId, Conditions = conditions },
             CancellationToken.None);
 
         // assert
@@ -99,14 +99,14 @@ public class ClientIpConditionCheckerFacts
         // arrange
         const string stubId = "stub1";
         const string clientIp = "127.0.0.6";
-        var conditions = new StubConditionsModel {ClientIp = "127.0.0.0/29"};
+        var conditions = new StubConditionsModel { ClientIp = "127.0.0.0/29" };
 
         _clientIpResolverMock
             .Setup(m => m.GetClientIp())
             .Returns(clientIp);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel {Id = stubId, Conditions = conditions},
+        var result = await _checker.ValidateAsync(new StubModel { Id = stubId, Conditions = conditions },
             CancellationToken.None);
 
         // assert

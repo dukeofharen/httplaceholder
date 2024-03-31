@@ -53,19 +53,19 @@ public class OpenApiStubGeneratorFacts
         const string prefix = "prefix";
 
         const string tenant = "tenant1";
-        var server = new OpenApiServer {Url = "http://localhost"};
-        var lines = new[] {new OpenApiLine(), new OpenApiLine()};
-        var openApiResult = new OpenApiResult {Server = server, Lines = lines};
+        var server = new OpenApiServer { Url = "http://localhost" };
+        var lines = new[] { new OpenApiLine(), new OpenApiLine() };
+        var openApiResult = new OpenApiResult { Server = server, Lines = lines };
         openApiParserMock
             .Setup(m => m.ParseOpenApiDefinition(input))
             .Returns(openApiResult);
 
-        var stub1 = new StubModel {Id = "stub1"};
+        var stub1 = new StubModel { Id = "stub1" };
         openApiToStubConverterMock
             .Setup(m => m.ConvertToStubAsync(server, lines[0], tenant, prefix, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub1);
 
-        var stub2 = new StubModel {Id = "stub2"};
+        var stub2 = new StubModel { Id = "stub2" };
         openApiToStubConverterMock
             .Setup(m => m.ConvertToStubAsync(server, lines[1], tenant, prefix, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub2);
@@ -98,30 +98,30 @@ public class OpenApiStubGeneratorFacts
         const string prefix = "prefix";
 
         const string tenant = "tenant1";
-        var server = new OpenApiServer {Url = "http://localhost"};
-        var lines = new[] {new OpenApiLine(), new OpenApiLine()};
-        var openApiResult = new OpenApiResult {Server = server, Lines = lines};
+        var server = new OpenApiServer { Url = "http://localhost" };
+        var lines = new[] { new OpenApiLine(), new OpenApiLine() };
+        var openApiResult = new OpenApiResult { Server = server, Lines = lines };
         openApiParserMock
             .Setup(m => m.ParseOpenApiDefinition(input))
             .Returns(openApiResult);
 
-        var stub1 = new StubModel {Id = "stub1"};
+        var stub1 = new StubModel { Id = "stub1" };
         openApiToStubConverterMock
             .Setup(m => m.ConvertToStubAsync(server, lines[0], tenant, prefix, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub1);
-        var addedStub1 = new StubModel {Id = "stub1"};
+        var addedStub1 = new StubModel { Id = "stub1" };
         stubContextMock
             .Setup(m => m.AddStubAsync(stub1, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new FullStubModel {Stub = addedStub1});
+            .ReturnsAsync(new FullStubModel { Stub = addedStub1 });
 
-        var stub2 = new StubModel {Id = "stub2"};
+        var stub2 = new StubModel { Id = "stub2" };
         openApiToStubConverterMock
             .Setup(m => m.ConvertToStubAsync(server, lines[1], tenant, prefix, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub2);
-        var addedStub2 = new StubModel {Id = "stub2"};
+        var addedStub2 = new StubModel { Id = "stub2" };
         stubContextMock
             .Setup(m => m.AddStubAsync(stub2, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new FullStubModel {Stub = addedStub2});
+            .ReturnsAsync(new FullStubModel { Stub = addedStub2 });
 
         // Act
         var result = (await generator.GenerateStubsAsync(input, false, tenant, prefix, CancellationToken.None))

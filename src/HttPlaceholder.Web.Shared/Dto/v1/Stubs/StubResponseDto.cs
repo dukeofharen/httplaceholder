@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces.Mappings;
+﻿using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Web.Shared.Attributes;
@@ -64,7 +64,7 @@ public class StubResponseDto : IMapFrom<StubResponseModel>, IMapTo<StubResponseM
     ///     Gets or sets the duration of the extra.
     /// </summary>
     [YamlMember(Alias = "extraDuration")]
-    [OneOf(Types = new[] {typeof(int), typeof(StubExtraDurationDto)})]
+    [OneOf(Types = [typeof(int), typeof(StubExtraDurationDto)])]
     public object ExtraDuration { get; set; }
 
     /// <summary>

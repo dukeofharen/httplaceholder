@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -18,7 +19,7 @@ internal class SetScenarioStateResponseWriter(IStubContext stubContext) : IRespo
         if (string.IsNullOrWhiteSpace(stub.Response.Scenario?.SetScenarioState) ||
             string.IsNullOrWhiteSpace(stub.Scenario))
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         var scenario = stub.Scenario;
@@ -27,7 +28,7 @@ internal class SetScenarioStateResponseWriter(IStubContext stubContext) : IRespo
 
         scenarioState.State = stub.Response.Scenario.SetScenarioState;
         await stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        return IsExecuted(GetType().Name);
     }
 
     /// <inheritdoc />

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
+using HttPlaceholder.Persistence.Db.Entities;
 using HttPlaceholder.Persistence.Db.Implementations;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -161,14 +161,14 @@ public class RelationalDbStubCacheFacts
                 Id = 1,
                 StubId = "stub-1",
                 StubType = "json",
-                Stub = JsonConvert.SerializeObject(new StubModel {Id = "stub-1"})
+                Stub = JsonConvert.SerializeObject(new StubModel { Id = "stub-1" })
             },
             new DbStubModel
             {
                 Id = 2,
                 StubId = "stub-2",
                 StubType = "yaml",
-                Stub = YamlUtilities.Serialize(new StubModel {Id = "stub-2"})
+                Stub = YamlUtilities.Serialize(new StubModel { Id = "stub-2" })
             }
         };
 
@@ -212,14 +212,14 @@ public class RelationalDbStubCacheFacts
                 Id = 1,
                 StubId = "stub-1",
                 StubType = "json",
-                Stub = JsonConvert.SerializeObject(new StubModel {Id = "stub-1"})
+                Stub = JsonConvert.SerializeObject(new StubModel { Id = "stub-1" })
             },
             new DbStubModel
             {
                 Id = 2,
                 StubId = "stub-2",
                 StubType = "yaml",
-                Stub = YamlUtilities.Serialize(new StubModel {Id = "stub-2"})
+                Stub = YamlUtilities.Serialize(new StubModel { Id = "stub-2" })
             }
         };
 
@@ -236,7 +236,7 @@ public class RelationalDbStubCacheFacts
 
         // Assert
         Assert.AreEqual(2, result.Length);
-        Assert.IsFalse(cache.StubCache.Any());
+        Assert.IsFalse(!cache.StubCache.IsEmpty);
 
         Assert.IsTrue(result.All(s => s.Id is "stub-1" or "stub-2"));
         Assert.IsNotNull(capturedParam);
@@ -272,7 +272,7 @@ public class RelationalDbStubCacheFacts
 
         var dbStubModels = new[]
         {
-            new DbStubModel {Id = 1, StubId = "stub-1", StubType = "xml", Stub = "XML, BUT NOT SUPPORTED!"}
+            new DbStubModel { Id = 1, StubId = "stub-1", StubType = "xml", Stub = "XML, BUT NOT SUPPORTED!" }
         };
         mockDatabaseContext
             .Setup(m => m.Query<DbStubModel>(getStubsQuery, It.IsAny<object>()))
@@ -322,10 +322,10 @@ public class RelationalDbStubCacheFacts
         var cache = _mocker.CreateInstance<RelationalDbStubCache>();
         var mockDatabaseContext = _mocker.GetMock<IDatabaseContext>();
 
-        var existingStub = new StubModel {Id = "stub1"};
+        var existingStub = new StubModel { Id = "stub1" };
         Assert.IsTrue(cache.StubCache.TryAdd(existingStub.Id, existingStub));
 
-        var newStub = new StubModel {Id = "stub1"};
+        var newStub = new StubModel { Id = "stub1" };
 
         // Act
         await cache.AddOrReplaceStubAsync(mockDatabaseContext.Object, newStub, CancellationToken.None);
@@ -342,10 +342,10 @@ public class RelationalDbStubCacheFacts
         var cache = _mocker.CreateInstance<RelationalDbStubCache>();
         var mockDatabaseContext = _mocker.GetMock<IDatabaseContext>();
 
-        var existingStub = new StubModel {Id = "stub2"};
+        var existingStub = new StubModel { Id = "stub2" };
         Assert.IsTrue(cache.StubCache.TryAdd(existingStub.Id, existingStub));
 
-        var newStub = new StubModel {Id = "stub1"};
+        var newStub = new StubModel { Id = "stub1" };
 
         // Act
         await cache.AddOrReplaceStubAsync(mockDatabaseContext.Object, newStub, CancellationToken.None);
@@ -367,7 +367,7 @@ public class RelationalDbStubCacheFacts
         var trackingId = Guid.NewGuid().ToString();
         cache.StubUpdateTrackingId = trackingId;
 
-        var newStub = new StubModel {Id = "stub1"};
+        var newStub = new StubModel { Id = "stub1" };
 
         const string updateTrackingIdQuery = "UPDATE TRACKING ID";
         mockQueryStore
@@ -401,7 +401,7 @@ public class RelationalDbStubCacheFacts
         var trackingId = Guid.NewGuid().ToString();
         cache.StubUpdateTrackingId = trackingId;
 
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         Assert.IsTrue(cache.StubCache.TryAdd(stub.Id, stub));
 
         const string updateTrackingIdQuery = "UPDATE TRACKING ID";
@@ -437,7 +437,7 @@ public class RelationalDbStubCacheFacts
         var trackingId = Guid.NewGuid().ToString();
         cache.StubUpdateTrackingId = trackingId;
 
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         Assert.IsTrue(cache.StubCache.TryAdd(stub.Id, stub));
 
         // Act

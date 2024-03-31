@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.Common.Tests.Utilities;
@@ -13,12 +12,12 @@ public class PathUtilitiesFacts
     [DataRow("", "")]
     [DataRow(null, null)]
     [DataRow("Folder/../File.png", "Folder/File.png")]
-    [DataRow("Folder\\..\\File.png", "Folder/File.png")]
+    [DataRow(@"Folder\..\File.png", "Folder/File.png")]
     [DataRow("Folder/$/File.png", "Folder/File.png")]
-    [DataRow("Folder\\$\\File.png", "Folder/File.png")]
+    [DataRow(@"Folder\$\File.png", "Folder/File.png")]
     [DataRow("Folder/?/File.png", "Folder/File.png")]
-    [DataRow("Folder\\?\\File.png", "Folder/File.png")]
-    [DataRow("..\\Folder\\?\\File.png", "Folder/File.png")]
+    [DataRow(@"Folder\?\File.png", "Folder/File.png")]
+    [DataRow(@"..\Folder\?\File.png", "Folder/File.png")]
     public void CleanPath_HappyFlow(string input, string expectedOutput)
     {
         // Act
@@ -38,5 +37,6 @@ public class PathUtilitiesFacts
         }
     }
 
-    private static IEnumerable<string> SplitPath(string path) => path.Split(new[] {"/", "\\"}, StringSplitOptions.None);
+    private static string[] SplitPath(string path) =>
+        path.Split(["/", "\\"], StringSplitOptions.None);
 }

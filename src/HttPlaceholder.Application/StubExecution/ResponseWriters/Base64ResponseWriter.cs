@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -21,12 +23,11 @@ internal class Base64ResponseWriter : IResponseWriter, ISingletonService
     {
         if (stub.Response?.Base64 == null)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
-        var base64Body = stub.Response.Base64;
-        response.Body = Convert.FromBase64String(base64Body);
+        response.Body = Convert.FromBase64String(stub.Response.Base64);
         response.BodyIsBinary = true;
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        return IsExecuted(GetType().Name).AsTask();
     }
 }

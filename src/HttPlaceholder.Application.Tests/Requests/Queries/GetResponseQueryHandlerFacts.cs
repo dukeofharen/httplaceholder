@@ -1,5 +1,5 @@
 ﻿using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Requests.Queries.GetResponse;
+using HttPlaceholder.Application.Requests.Queries;
 using HttPlaceholder.Application.StubExecution;
 
 namespace HttPlaceholder.Application.Tests.Requests.Queries;

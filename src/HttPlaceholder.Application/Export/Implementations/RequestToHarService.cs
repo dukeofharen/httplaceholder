@@ -4,6 +4,7 @@ using System.Text;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models.HAR;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
@@ -17,36 +18,32 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
     public string Convert(RequestResultModel request, ResponseModel response)
     {
         var requestParams = request.RequestParameters;
-        var requestContentType = requestParams.Headers.FirstOrDefault(h =>
-            h.Key.Equals(HeaderKeys.ContentType, StringComparison.OrdinalIgnoreCase)).Value;
-        var responseContentType = response.Headers.FirstOrDefault(h =>
-            h.Key.Equals(HeaderKeys.ContentType, StringComparison.OrdinalIgnoreCase)).Value;
-        var responseBody = response.Body ?? Array.Empty<byte>();
+        var requestContentType = requestParams.Headers.CaseInsensitiveSearch(HeaderKeys.ContentType);
+        var responseContentType = response.Headers.CaseInsensitiveSearch(HeaderKeys.ContentType);
+        var responseBody = response.Body ?? [];
         var uri = new Uri(requestParams.Url);
         var query = QueryHelpers.ParseQuery(uri.Query);
-        const string creator = "HttPlaceholder";
-        const string httpVersion = "HTTP/1.1";
         var pageId = $"page_{request.CorrelationId}";
         var version = assemblyService.GetAssemblyVersion();
+        const string httpVersion = "HTTP/1.1";
         var har = new Har
         {
             Log = new Log
             {
                 Version = "1.2",
-                Creator = new Creator {Name = creator, Version = version},
+                Creator = new Creator { Name = "HttPlaceholder", Version = version },
                 Pages =
-                    new[]
+                [
+                    new Page
                     {
-                        new Page
-                        {
-                            Id = pageId,
-                            StartedDateTime = request.RequestBeginTime,
-                            Title = string.Empty,
-                            PageTimings = new PageTimings()
-                        }
-                    },
-                Entries = new[]
-                {
+                        Id = pageId,
+                        StartedDateTime = request.RequestBeginTime,
+                        Title = string.Empty,
+                        PageTimings = new PageTimings()
+                    }
+                ],
+                Entries =
+                [
                     new Entry
                     {
                         PageRef = pageId,
@@ -58,7 +55,7 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                             HttpVersion = httpVersion,
                             Headers =
                                 requestParams.Headers
-                                    .Select(h => new Header {Name = h.Key, Value = h.Value}).ToArray(),
+                                    .Select(h => new Header { Name = h.Key, Value = h.Value }).ToArray(),
                             Cookies = Array.Empty<Cookie>(),
                             PostData = new PostData
                             {
@@ -67,28 +64,27 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                                     Encoding.UTF8.GetString(requestParams.BinaryBody ??
                                                             Array.Empty<byte>())
                             },
-                            QueryString = query.Select(q => new Query
-                            {
-                                Name = q.Key, Value = q.Value.FirstOrDefault()
-                            }).ToArray()
+                            QueryString =
+                                query.Select(q => new Query { Name = q.Key, Value = q.Value.FirstOrDefault() })
+                                    .ToArray()
                         },
                         Response = new Response
                         {
                             Status = response.StatusCode,
                             StatusText = ReasonPhrases.GetReasonPhrase(response.StatusCode),
                             HttpVersion = httpVersion,
-                            Headers = response.Headers.Select(h => new Header
-                            {
-                                Name = h.Key,
-                                Value = h.Value
-                            }).ToArray(),
+                            Headers =
+                                response.Headers.Select(h => new Header { Name = h.Key, Value = h.Value })
+                                    .ToArray(),
                             Cookies = Array.Empty<Cookie>(),
                             Content = new Content
                             {
                                 Encoding = response.BodyIsBinary ? "base64" : null,
                                 MimeType = responseContentType,
                                 Size = responseBody.Length,
-                                Text = response.BodyIsBinary ? ConvertUtil.ToBase64String(responseBody) : Encoding.UTF8.GetString(responseBody)
+                                Text = response.BodyIsBinary
+                                    ? ConvertUtil.ToBase64String(responseBody)
+                                    : Encoding.UTF8.GetString(responseBody)
                             },
                             RedirectUrl = string.Empty
                         },
@@ -98,12 +94,10 @@ internal class RequestToHarService(IAssemblyService assemblyService) : IRequestT
                         ServerIpAddress = string.Empty,
                         Connection = string.Empty
                     }
-                }
+                ]
             }
         };
-        return JsonConvert.SerializeObject(har, settings: new JsonSerializerSettings
-        {
-            NullValueHandling = NullValueHandling.Ignore
-        });
+        return JsonConvert.SerializeObject(har,
+            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
     }
 }

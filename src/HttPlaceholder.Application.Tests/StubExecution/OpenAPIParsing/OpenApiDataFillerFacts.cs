@@ -37,8 +37,8 @@ public class OpenApiDataFillerFacts
             Url = "{scheme}://localhost/api/{apiVersion}",
             Variables = new Dictionary<string, OpenApiServerVariable>
             {
-                {"scheme", new OpenApiServerVariable {Default = "https"}},
-                {"apiVersion", new OpenApiServerVariable {Default = "v3"}}
+                { "scheme", new OpenApiServerVariable { Default = "https" } },
+                { "apiVersion", new OpenApiServerVariable { Default = "v3" } }
             }
         };
 
@@ -82,7 +82,7 @@ public class OpenApiDataFillerFacts
     {
         // Arrange
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
-        var response = new OpenApiResponse {Content = null};
+        var response = new OpenApiResponse { Content = null };
 
         // Act
         var result = filler.BuildResponseBody(response);
@@ -96,7 +96,7 @@ public class OpenApiDataFillerFacts
     {
         // Arrange
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
-        var response = new OpenApiResponse {Content = new Dictionary<string, OpenApiMediaType>()};
+        var response = new OpenApiResponse { Content = new Dictionary<string, OpenApiMediaType>() };
 
         // Act
         var result = filler.BuildResponseBody(response);
@@ -112,7 +112,7 @@ public class OpenApiDataFillerFacts
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
         var response = new OpenApiResponse
         {
-            Content = new Dictionary<string, OpenApiMediaType> {{MimeTypes.TextMime, new OpenApiMediaType()}}
+            Content = new Dictionary<string, OpenApiMediaType> { { MimeTypes.TextMime, new OpenApiMediaType() } }
         };
 
         // Act
@@ -130,10 +130,10 @@ public class OpenApiDataFillerFacts
         var generatorMock = _mocker.GetMock<IOpenApiFakeDataGenerator>();
 
         var schema = new OpenApiSchema();
-        var mediaType = new OpenApiMediaType {Schema = schema};
+        var mediaType = new OpenApiMediaType { Schema = schema };
         var response = new OpenApiResponse
         {
-            Content = new Dictionary<string, OpenApiMediaType> {{MimeTypes.JsonMime, mediaType}}
+            Content = new Dictionary<string, OpenApiMediaType> { { MimeTypes.JsonMime, mediaType } }
         };
 
         const string example = "JSON EXAMPLE";
@@ -165,7 +165,7 @@ public class OpenApiDataFillerFacts
         {
             Content = new Dictionary<string, OpenApiMediaType>
             {
-                {MimeTypes.JsonMime, new OpenApiMediaType {Schema = schema}}
+                { MimeTypes.JsonMime, new OpenApiMediaType { Schema = schema } }
             }
         };
 
@@ -186,10 +186,10 @@ public class OpenApiDataFillerFacts
         var headerSchema = new OpenApiSchema();
         var response = new OpenApiResponse
         {
-            Content = new Dictionary<string, OpenApiMediaType> {{MimeTypes.JsonMime, new OpenApiMediaType()}},
+            Content = new Dictionary<string, OpenApiMediaType> { { MimeTypes.JsonMime, new OpenApiMediaType() } },
             Headers = new Dictionary<string, OpenApiHeader>
             {
-                {"x-api-key", new OpenApiHeader {Schema = headerSchema}}
+                { "x-api-key", new OpenApiHeader { Schema = headerSchema } }
             }
         };
         const string randomString = "random string";
@@ -219,7 +219,7 @@ public class OpenApiDataFillerFacts
             Content = new Dictionary<string, OpenApiMediaType>(),
             Headers = new Dictionary<string, OpenApiHeader>
             {
-                {"x-api-key", new OpenApiHeader {Schema = headerSchema}}
+                { "x-api-key", new OpenApiHeader { Schema = headerSchema } }
             }
         };
         const string randomString = "random string";
@@ -243,11 +243,11 @@ public class OpenApiDataFillerFacts
         var generatorMock = _mocker.GetMock<IOpenApiFakeDataGenerator>();
 
         var headerSchema = new OpenApiSchema();
-        var header = new OpenApiHeader {Schema = headerSchema};
+        var header = new OpenApiHeader { Schema = headerSchema };
         var response = new OpenApiResponse
         {
             Content = new Dictionary<string, OpenApiMediaType>(),
-            Headers = new Dictionary<string, OpenApiHeader> {{"x-api-key", header}}
+            Headers = new Dictionary<string, OpenApiHeader> { { "x-api-key", header } }
         };
 
         const string example = "example string";
@@ -268,7 +268,7 @@ public class OpenApiDataFillerFacts
     {
         // Arrange
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
-        var operation = new OpenApiOperation {RequestBody = new OpenApiRequestBody {Content = null}};
+        var operation = new OpenApiOperation { RequestBody = new OpenApiRequestBody { Content = null } };
 
 
         // Act
@@ -285,7 +285,7 @@ public class OpenApiDataFillerFacts
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
         var operation = new OpenApiOperation
         {
-            RequestBody = new OpenApiRequestBody {Content = new Dictionary<string, OpenApiMediaType>()}
+            RequestBody = new OpenApiRequestBody { Content = new Dictionary<string, OpenApiMediaType>() }
         };
 
         // Act
@@ -306,7 +306,7 @@ public class OpenApiDataFillerFacts
             {
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
-                    {MimeTypes.TextMime, new OpenApiMediaType()}
+                    { MimeTypes.TextMime, new OpenApiMediaType() }
                 }
             }
         };
@@ -337,7 +337,7 @@ public class OpenApiDataFillerFacts
             {
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
-                    {MimeTypes.JsonMime, new OpenApiMediaType {Schema = schema}}
+                    { MimeTypes.JsonMime, new OpenApiMediaType { Schema = schema } }
                 }
             }
         };
@@ -357,12 +357,12 @@ public class OpenApiDataFillerFacts
         var generatorMock = _mocker.GetMock<IOpenApiFakeDataGenerator>();
 
         var schema = new OpenApiSchema();
-        var mediaType = new OpenApiMediaType {Schema = schema};
+        var mediaType = new OpenApiMediaType { Schema = schema };
         var operation = new OpenApiOperation
         {
             RequestBody = new OpenApiRequestBody
             {
-                Content = new Dictionary<string, OpenApiMediaType> {{MimeTypes.JsonMime, mediaType}}
+                Content = new Dictionary<string, OpenApiMediaType> { { MimeTypes.JsonMime, mediaType } }
             }
         };
 
@@ -394,13 +394,13 @@ public class OpenApiDataFillerFacts
                 {
                     Name = "username",
                     In = ParameterLocation.Path,
-                    Schema = new OpenApiSchema {Type = "string"}
+                    Schema = new OpenApiSchema { Type = "string" }
                 },
                 new()
                 {
                     Name = "orderId",
                     In = ParameterLocation.Path,
-                    Schema = new OpenApiSchema {Type = "integer"}
+                    Schema = new OpenApiSchema { Type = "integer" }
                 }
             }
         };
@@ -436,37 +436,40 @@ public class OpenApiDataFillerFacts
                 {
                     Name = "username",
                     In = ParameterLocation.Path,
-                    Schema = new OpenApiSchema {Type = "string"}
+                    Schema = new OpenApiSchema { Type = "string" }
                 },
                 new()
                 {
                     Name = "orderId",
                     In = ParameterLocation.Path,
-                    Schema = new OpenApiSchema {Type = "integer"}
+                    Schema = new OpenApiSchema { Type = "integer" }
                 },
                 new()
                 {
                     Name = "filter",
                     In = ParameterLocation.Query,
-                    Schema = new OpenApiSchema {Type = "string"}
+                    Schema = new OpenApiSchema { Type = "string" }
                 },
                 new()
                 {
                     Name = "anotherquery",
                     In = ParameterLocation.Query,
-                    Schema = new OpenApiSchema {Type = "string"}
+                    Schema = new OpenApiSchema { Type = "string" }
                 },
                 new()
                 {
                     Name = "headerkey",
                     In = ParameterLocation.Header,
-                    Schema = new OpenApiSchema {Type = "string"}
+                    Schema = new OpenApiSchema { Type = "string" }
                 },
                 new()
                 {
                     Name = "arraykey",
                     In = ParameterLocation.Query,
-                    Schema = new OpenApiSchema {Type = "array", Items = new OpenApiSchema {Type = "string"}}
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "array", Items = new OpenApiSchema { Type = "string" }
+                    }
                 }
             }
         };
@@ -526,20 +529,20 @@ public class OpenApiDataFillerFacts
                 {
                     Name = "x-header-1",
                     In = ParameterLocation.Header,
-                    Schema = new OpenApiSchema {Type = "string"}
+                    Schema = new OpenApiSchema { Type = "string" }
                 },
                 new()
                 {
                     Name = "orderId",
                     In = ParameterLocation.Path,
-                    Schema = new OpenApiSchema {Type = "integer"}
+                    Schema = new OpenApiSchema { Type = "integer" }
                 }
             },
             RequestBody = new OpenApiRequestBody
             {
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
-                    {MimeTypes.TextMime, new OpenApiMediaType()}
+                    { MimeTypes.TextMime, new OpenApiMediaType() }
                 }
             }
         };
@@ -572,13 +575,13 @@ public class OpenApiDataFillerFacts
                 {
                     Name = "x-header-1",
                     In = ParameterLocation.Header,
-                    Schema = new OpenApiSchema {Type = "string"}
+                    Schema = new OpenApiSchema { Type = "string" }
                 },
                 new()
                 {
                     Name = "orderId",
                     In = ParameterLocation.Path,
-                    Schema = new OpenApiSchema {Type = "integer"}
+                    Schema = new OpenApiSchema { Type = "integer" }
                 }
             }
         };

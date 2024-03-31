@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Configuration;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using Microsoft.Extensions.Options;
 using Moq;
 

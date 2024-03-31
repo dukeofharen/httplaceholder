@@ -1,7 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -17,11 +19,11 @@ internal class AbortConnectionResponseWriter : IResponseWriter, ISingletonServic
         var abortConnection = stub.Response?.AbortConnection == true;
         if (!abortConnection)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
         response.AbortConnection = true;
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        return IsExecuted(GetType().Name).AsTask();
     }
 
     /// <inheritdoc />

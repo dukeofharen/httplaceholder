@@ -14,7 +14,7 @@ public class FormHandlerFacts
     public async Task FormHandler_HandleStubGenerationAsync_NoContentTypeSet_ShouldReturnFalse()
     {
         // Arrange
-        var request = new HttpRequestModel {Headers = new Dictionary<string, string>()};
+        var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
         var conditions = new StubConditionsModel();
 
         // Act
@@ -31,7 +31,7 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}}
+            Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.JsonMime } }
         };
         var conditions = new StubConditionsModel();
 
@@ -52,7 +52,7 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.UrlEncodedFormMime}},
+            Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.UrlEncodedFormMime } },
             Body = body
         };
         var conditions = new StubConditionsModel();
@@ -71,10 +71,10 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.UrlEncodedFormMime}},
+            Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, MimeTypes.UrlEncodedFormMime } },
             Body = "invalid form body"
         };
-        var conditions = new StubConditionsModel {Body = new[] {"body1", "body2"}};
+        var conditions = new StubConditionsModel { Body = new[] { "body1", "body2" } };
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
@@ -93,7 +93,7 @@ public class FormHandlerFacts
         const string form = "form1=val1&form2=val2";
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, contentType}}, Body = form
+            Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, contentType } }, Body = form
         };
         var conditions = new StubConditionsModel();
 

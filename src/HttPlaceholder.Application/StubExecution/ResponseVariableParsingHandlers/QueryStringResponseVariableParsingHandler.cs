@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -13,10 +13,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a given query parameter in the response.
 /// </summary>
-internal class QueryStringResponseVariableParsingHandler(
-    IHttpContextService httpContextService,
-    IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class QueryStringResponseVariableParsingHandler(IHttpContextService httpContextService)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "query";
@@ -25,17 +23,19 @@ internal class QueryStringResponseVariableParsingHandler(
     public override string FullName => "Query string";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:query_string_key))"};
+    public override string[] Examples => [$"(({Name}:query_string_key))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var queryDict = httpContextService.GetQueryStringDictionary();
-        return Task.FromResult(matches
+    public override string GetDescription() => ResponseVariableParsingResources.Query;
+
+    /// <inheritdoc />
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
+        CancellationToken cancellationToken) =>
+        matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertQuery(current, match, queryDict)));
-    }
+            .Aggregate(input,
+                (current, match) => InsertQuery(current, match, httpContextService.GetQueryStringDictionary()))
+            .AsTask();
 
     private static string InsertQuery(string current, Match match, IDictionary<string, string> queryDict)
     {

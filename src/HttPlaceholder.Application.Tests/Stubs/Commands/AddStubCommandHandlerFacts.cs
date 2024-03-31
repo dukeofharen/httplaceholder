@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.Stubs.Commands.AddStub;
+using HttPlaceholder.Application.Stubs.Commands;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Commands;
 
@@ -27,10 +27,10 @@ public class AddStubCommandHandlerFacts
     public async Task Handle_HasValidationErrors_ShouldThrowValidationException()
     {
         // Arrange
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         var request = new AddStubCommand(stub);
 
-        var errors = new[] {"error1"};
+        var errors = new[] { "error1" };
 
         _mockStubModelValidator
             .Setup(m => m.ValidateStubModel(stub))
@@ -51,7 +51,7 @@ public class AddStubCommandHandlerFacts
     public async Task Handle_NoValidationErrors_ShouldAddStub()
     {
         // Arrange
-        var stub = new StubModel {Id = "stub1"};
+        var stub = new StubModel { Id = "stub1" };
         var request = new AddStubCommand(stub);
 
         var errors = Array.Empty<string>();

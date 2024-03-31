@@ -3,13 +3,14 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -34,7 +35,7 @@ internal class FileResponseWriter(
         var settings = options.CurrentValue;
         if (stub.Response?.File == null && stub.Response?.TextFile == null)
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         var file = stub.Response?.File ?? stub.Response?.TextFile;
@@ -48,7 +49,7 @@ internal class FileResponseWriter(
                     $"Path '{finalFilePath}' found, but can't be used because setting '{ConfigKeys.AllowGlobalFileSearch}' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.");
             }
 
-            logger.LogInformation($"Path '{finalFilePath}' found.");
+            logger.LogInformation("Path '{FinalFilePath}' found.", finalFilePath);
         }
         else
         {
@@ -59,11 +60,11 @@ internal class FileResponseWriter(
                 var tempPath = Path.Combine(path, PathUtilities.CleanPath(file));
                 if (!await fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
-                    logger.LogInformation($"Path '{tempPath}' not found.");
+                    logger.LogInformation("Path '{TempPath}' not found.", tempPath);
                     continue;
                 }
 
-                logger.LogInformation($"Path '{tempPath}' found.");
+                logger.LogInformation("Path '{TempPath}' found.", tempPath);
                 finalFilePath = tempPath;
                 break;
             }
@@ -71,12 +72,12 @@ internal class FileResponseWriter(
 
         if (finalFilePath == null)
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, mimeService.GetMimeType(finalFilePath));
         response.Body = await fileService.ReadAllBytesAsync(finalFilePath, cancellationToken);
-        response.BodyIsBinary = string.IsNullOrWhiteSpace(stub.Response.TextFile);
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        response.BodyIsBinary = string.IsNullOrWhiteSpace(stub.Response?.TextFile);
+        return IsExecuted(GetType().Name);
     }
 }

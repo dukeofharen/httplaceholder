@@ -17,7 +17,6 @@ public abstract class BackgroundService : ICustomHostedService
     private readonly IAsyncService _asyncService;
 
     private readonly IDateTime _dateTime;
-    private readonly CrontabSchedule _schedule;
 
     /// <summary>
     ///     The logger.
@@ -25,6 +24,7 @@ public abstract class BackgroundService : ICustomHostedService
     protected readonly ILogger<BackgroundService> Logger;
 
     internal readonly CancellationTokenSource StoppingCts = new();
+    private CrontabSchedule _schedule;
     internal Task ExecutingTask;
 
     /// <summary>
@@ -35,13 +35,10 @@ public abstract class BackgroundService : ICustomHostedService
         IDateTime dateTime,
         IAsyncService asyncService)
     {
-        _schedule = CrontabSchedule.Parse(Schedule);
         Logger = logger;
         _dateTime = dateTime;
         _asyncService = asyncService;
-        NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
-        Logger.LogDebug(
-            $"New hosted service with name '{GetType().Name}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'");
+        Initialize();
     }
 
     /// <inheritdoc />
@@ -78,7 +75,7 @@ public abstract class BackgroundService : ICustomHostedService
         try
         {
             // Signal cancellation to the executing method.
-            StoppingCts.Cancel();
+            await StoppingCts.CancelAsync();
         }
         finally
         {
@@ -91,6 +88,15 @@ public abstract class BackgroundService : ICustomHostedService
     /// <inheritdoc />
     public abstract Task ProcessAsync(CancellationToken cancellationToken);
 
+    private void Initialize()
+    {
+        _schedule = CrontabSchedule.Parse(Schedule);
+        NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
+        Logger.LogDebug(
+            "New hosted service with name '{Service}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'",
+            GetType().Name, Schedule, NextRunDateTime);
+    }
+
     private async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         do
@@ -98,18 +104,21 @@ public abstract class BackgroundService : ICustomHostedService
             if (_dateTime.Now > NextRunDateTime)
             {
                 Logger.LogDebug(
-                    $"Executing hosted service with name '{GetType().Name}' and schedule '{Schedule}'");
+                    "Executing hosted service with name '{Service}' and schedule '{Schedule}'", GetType().Name,
+                    Schedule);
                 try
                 {
                     await ProcessAsync(stoppingToken);
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError($"Unexpected exception thrown while executing service '{GetType().Name}': {ex}");
+                    Logger.LogError(ex, "Unexpected exception thrown while executing service '{Service}'.",
+                        GetType().Name);
                 }
 
                 NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
-                Logger.LogInformation($"Next run time of hosted service '{GetType().Name}': {NextRunDateTime}");
+                Logger.LogInformation("Next run time of hosted service '{Service}': {NextRunDateTime}", GetType().Name,
+                    NextRunDateTime);
             }
 
             await _asyncService.DelayAsync(5000, stoppingToken);

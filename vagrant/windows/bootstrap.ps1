@@ -149,7 +149,8 @@ $sitePath = "C:\bin\httplaceholder"
 Write-Host "Adding site to IIS."
 New-WebSite -Name $iisSite -Port $httpPort -PhysicalPath $sitePath -Force
 $binding = Get-WebBinding -Name $iisSite -Port $httpsPort -Protocol $httpsProto
-if ($binding -eq $null) {
+if ($binding -eq $null)
+{
     New-WebBinding -Name $iisSite -Port $httpsPort -Protocol "https" -SslFlags 0
     $binding = Get-WebBinding -Name $iisSite -Port $httpsPort -Protocol $httpsProto
 }

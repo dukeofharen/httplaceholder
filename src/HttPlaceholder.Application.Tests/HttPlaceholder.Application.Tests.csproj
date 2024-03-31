@@ -22,7 +22,6 @@
     <ItemGroup>
         <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
         <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj" />
-        <ProjectReference Include="..\HttPlaceholder.Resources\HttPlaceholder.Resources.csproj" />
         <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
     </ItemGroup>
 

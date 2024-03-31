@@ -1,6 +1,6 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;
 
@@ -16,8 +16,8 @@ public abstract class RestApiIntegrationTestBase : IntegrationTestBase
         ReadOnlyStubSource = new Mock<IStubSource>();
 
         InitializeIntegrationTest(
-            new (Type, object)[] {(typeof(IClientDataResolver), ClientDataResolverMock.Object)},
-            new[] {StubSource, ReadOnlyStubSource.Object});
+            [(typeof(IClientDataResolver), ClientDataResolverMock.Object)],
+            new[] { StubSource, ReadOnlyStubSource.Object });
     }
 
     protected void CleanupRestApiIntegrationTest() => CleanupIntegrationTest();

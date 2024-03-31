@@ -1,5 +1,6 @@
 $pfxFile = Join-Path -Path $PSScriptRoot "key.pfx"
-if(!(Test-Path $pfxFile)) {
+if (!(Test-Path $pfxFile))
+{
     Write-Error "File $pfxFile not found."
     Exit -1
 }

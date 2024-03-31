@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +7,7 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
@@ -15,77 +15,62 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 ///     Condition checker for validating whether the XML in the request body corresponds to a given list of XPath
 ///     expressions.
 /// </summary>
-public class XPathConditionChecker : IConditionChecker, ISingletonService
+public class XPathConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    /// <summary>
-    ///     Constructs a <see cref="BasicAuthenticationConditionChecker" /> instance.
-    /// </summary>
-    public XPathConditionChecker(IHttpContextService httpContextService)
-    {
-        _httpContextService = httpContextService;
-    }
+    /// <inheritdoc />
+    public override int Priority => 0;
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Xpath?.Any() == true;
+
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
-        var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? Array.Empty<StubXpathModel>();
-        if (!xpathConditions.Any())
-        {
-            return result;
-        }
-
+        var xpathConditions = stub.Conditions.Xpath.ToArray();
         var validXpaths = 0;
-        var body = await _httpContextService.GetBodyAsync(cancellationToken);
-        try
+        var body = await httpContextService.GetBodyAsync(cancellationToken);
+        var doc = XmlUtilities.LoadXmlDocument(body);
+        foreach (var condition in xpathConditions)
         {
-            var doc = new XmlDocument();
-            doc.LoadXml(body);
-            foreach (var condition in xpathConditions)
+            var nsManager = GetNamespaces(condition.Namespaces, doc, body);
+            var elements = doc.SelectNodes(condition.QueryString, nsManager);
+            if (elements is { Count: 0 })
             {
-                var nsManager = new XmlNamespaceManager(doc.NameTable);
-                var namespaces = condition.Namespaces;
-                if (namespaces != null)
-                {
-                    foreach (var ns in namespaces)
-                    {
-                        nsManager.AddNamespace(ns.Key, ns.Value);
-                    }
-                }
-                else
-                {
-                    // If no namespaces are defined, check the XML namespaces with a regex.
-                    nsManager.ParseBodyAndAssignNamespaces(body);
-                }
-
-                var elements = doc.SelectNodes(condition.QueryString, nsManager);
-                if (elements is {Count: 0})
-                {
-                    // No suitable XML results found.
-                    result.Log = $"No suitable XML results found with XPath query {condition.QueryString}.";
-                    break;
-                }
-
-                validXpaths++;
+                // No suitable XML results found.
+                return await InvalidAsync(
+                    $"No suitable XML results found with XPath query {condition.QueryString}.");
             }
 
-            // If the number of succeeded conditions is equal to the actual number of conditions,
-            // the header condition is passed and the stub ID is passed to the result.
-            result.ConditionValidation = validXpaths == xpathConditions.Length
-                ? ConditionValidationType.Valid
-                : ConditionValidationType.Invalid;
-        }
-        catch (XmlException ex)
-        {
-            result.ConditionValidation = ConditionValidationType.Invalid;
-            result.Log = ex.Message;
+            validXpaths++;
         }
 
-        return result;
+        // If the number of succeeded conditions is equal to the actual number of conditions,
+        // the header condition is passed and the stub ID is passed to the result.
+        return validXpaths == xpathConditions.Length
+            ? await ValidAsync()
+            : await InvalidAsync();
     }
 
-    /// <inheritdoc />
-    public int Priority => 0;
+    private static XmlNamespaceManager GetNamespaces(
+        IDictionary<string, string> namespaces,
+        XmlDocument doc,
+        string body)
+    {
+        var nsManager = new XmlNamespaceManager(doc.NameTable);
+        if (namespaces != null)
+        {
+            foreach (var ns in namespaces)
+            {
+                nsManager.AddNamespace(ns.Key, ns.Value);
+            }
+        }
+        else
+        {
+            // If no namespaces are defined, check the XML namespaces with a regex.
+            nsManager.ParseBodyAndAssignNamespaces(body);
+        }
+
+        return nsManager;
+    }
 }

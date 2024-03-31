@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
@@ -14,10 +13,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 ///     Response variable parsing handler that is used to insert a request header in the response.
 /// </summary>
-internal class RequestHeaderResponseVariableParsingHandler(
-    IHttpContextService httpContextService,
-    IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+internal class RequestHeaderResponseVariableParsingHandler(IHttpContextService httpContextService)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "request_header";
@@ -26,17 +23,18 @@ internal class RequestHeaderResponseVariableParsingHandler(
     public override string FullName => "Request header";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:X-Api-Key))"};
+    public override string[] Examples => [$"(({Name}:X-Api-Key))"];
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
-        CancellationToken cancellationToken)
-    {
-        var headers = httpContextService.GetHeaders();
-        return Task.FromResult(matches
+    public override string GetDescription() => ResponseVariableParsingResources.RequestHeader;
+
+    /// <inheritdoc />
+    protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
+        CancellationToken cancellationToken) =>
+        matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertHeader(current, match, headers)));
-    }
+            .Aggregate(input, (current, match) => InsertHeader(current, match, httpContextService.GetHeaders()))
+            .AsTask();
 
     private static string InsertHeader(string current, Match match, IDictionary<string, string> headers)
     {

@@ -188,7 +188,7 @@ public sealed class StubResponseBuilder
     /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
     public StubResponseBuilder WithMinimumExtraDuration(int min)
     {
-        _response.ExtraDuration = new StubExtraDurationDto {Min = min};
+        _response.ExtraDuration = new StubExtraDurationDto { Min = min };
         return this;
     }
 
@@ -200,7 +200,7 @@ public sealed class StubResponseBuilder
     /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
     public StubResponseBuilder WithExtraDuration(int min, int max)
     {
-        _response.ExtraDuration = new StubExtraDurationDto {Min = min, Max = max};
+        _response.ExtraDuration = new StubExtraDurationDto { Min = min, Max = max };
         return this;
     }
 
@@ -424,7 +424,7 @@ public sealed class StubResponseBuilder
     public StubResponseBuilder RegexReplace(string regex, string replaceWith)
     {
         EnsureReplaceDtos();
-        AddResponseReplaceDto(new StubResponseReplaceDto {Regex = regex, ReplaceWith = replaceWith});
+        AddResponseReplaceDto(new StubResponseReplaceDto { Regex = regex, ReplaceWith = replaceWith });
         return this;
     }
 
@@ -438,7 +438,7 @@ public sealed class StubResponseBuilder
     {
         var replace = _response.Replace != null
             ? (List<StubResponseReplaceDto>)_response.Replace
-            : new List<StubResponseReplaceDto>();
+            : [];
         replace.Add(dto);
     }
 

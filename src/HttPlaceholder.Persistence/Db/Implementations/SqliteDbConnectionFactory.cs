@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Common;
 using System.Data.SQLite;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,8 @@ internal class SqliteDbConnectionFactory(IConfiguration configuration) : IDbConn
 
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
-        new SQLiteConnection(configuration.GetConnectionString(ConnectionStringKey));
+        new SQLiteConnection(configuration.GetConnectionString(ConnectionStringKey) ??
+                             throw new InvalidOperationException("Sqlite connection string not found."));
 
     /// <inheritdoc />
     public DbDataSource GetDataSource() => null;

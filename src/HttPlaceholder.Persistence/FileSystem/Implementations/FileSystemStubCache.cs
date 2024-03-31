@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem.Models;
@@ -64,11 +64,11 @@ internal class FileSystemStubCache(
 
         StubCache.Clear();
         var newCache = await GetStubsAsync(path, cancellationToken);
-        foreach (var item in newCache)
+        foreach (var stub in newCache)
         {
-            if (!StubCache.TryAdd(item.Id, item))
+            if (!StubCache.TryAdd(stub.Id, stub))
             {
-                logger.LogWarning($"Could not add stub with ID '{item.Id}' to cache.");
+                logger.LogWarning("Could not add stub with ID '{StubId}' to cache.", stub.Id);
             }
         }
 
@@ -78,7 +78,7 @@ internal class FileSystemStubCache(
     /// <inheritdoc />
     public void AddOrReplaceStub(StubModel stubModel)
     {
-        var item = StubCache.ContainsKey(stubModel.Id) ? StubCache[stubModel.Id] : null;
+        var item = StubCache.TryGetValue(stubModel.Id, out var value) ? value : null;
         if (item != null)
         {
             StubCache.Remove(stubModel.Id, out _);
@@ -86,7 +86,7 @@ internal class FileSystemStubCache(
 
         if (!StubCache.TryAdd(stubModel.Id, stubModel))
         {
-            logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
+            logger.LogWarning("Could not add stub with ID '{StubId}' to cache.", stubModel.Id);
         }
 
         var metadata = UpdateMetadata(GetMetadataPath());
@@ -144,7 +144,7 @@ internal class FileSystemStubCache(
         FileStorageMetadataModel model;
         lock (_cacheUpdateLock)
         {
-            model = new FileStorageMetadataModel {StubUpdateTrackingId = Guid.NewGuid().ToString()};
+            model = new FileStorageMetadataModel { StubUpdateTrackingId = Guid.NewGuid().ToString() };
             fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
         }
 

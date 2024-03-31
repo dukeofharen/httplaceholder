@@ -1,71 +1,47 @@
-﻿using System;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker that is used to verify incoming basic authentication credentials.
 /// </summary>
-public class BasicAuthenticationConditionChecker : IConditionChecker, ISingletonService
+public class BasicAuthenticationConditionChecker(IHttpContextService httpContextService)
+    : BaseConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
+    /// <inheritdoc />
+    public override int Priority => 9;
 
-    /// <summary>
-    ///     Constructs a <see cref="BasicAuthenticationConditionChecker" /> instance.
-    /// </summary>
-    public BasicAuthenticationConditionChecker(IHttpContextService httpContextService)
+    /// <inheritdoc />
+    protected override bool ShouldBeExecuted(StubModel stub)
     {
-        _httpContextService = httpContextService;
+        var condition = stub.Conditions?.BasicAuthentication;
+        return condition != null && StringHelper.NoneAreNullOrWhitespace(condition.Username, condition.Password);
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
-        var basicAuthenticationCondition = stub.Conditions?.BasicAuthentication;
-        if (basicAuthenticationCondition == null ||
-            (string.IsNullOrWhiteSpace(basicAuthenticationCondition.Username) &&
-             string.IsNullOrWhiteSpace(basicAuthenticationCondition.Password)))
-        {
-            return Task.FromResult(result);
-        }
-
-        var headers = _httpContextService.GetHeaders();
+        var condition = stub.Conditions.BasicAuthentication;
 
         // Try to retrieve the Authorization header.
-        if (!headers.TryGetValue("Authorization", out var authorization))
+        var headers = httpContextService.GetHeaders();
+        if (!headers.TryGetCaseInsensitive(HeaderKeys.Authorization, out var authorization))
         {
-            result.ConditionValidation = ConditionValidationType.Invalid;
-            result.Log = "No Authorization header found in request.";
-        }
-        else
-        {
-            var expectedBase64UsernamePassword = Convert.ToBase64String(
-                Encoding.UTF8.GetBytes(
-                    $"{basicAuthenticationCondition.Username}:{basicAuthenticationCondition.Password}"));
-            var expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
-            if (expectedAuthorizationHeader == authorization)
-            {
-                result.Log = $"Basic authentication condition passed for stub '{stub.Id}'.";
-                result.ConditionValidation = ConditionValidationType.Valid;
-            }
-            else
-            {
-                result.Log =
-                    $"Basic authentication condition failed for stub '{stub.Id}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.";
-                result.ConditionValidation = ConditionValidationType.Invalid;
-            }
+            return InvalidAsync("No Authorization header found in request.");
         }
 
-        return Task.FromResult(result);
+        var expectedBase64UsernamePassword = $"{condition.Username}:{condition.Password}".Base64Encode();
+        var expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
+        return expectedAuthorizationHeader == authorization
+            ? ValidAsync($"Basic authentication condition passed for stub '{stub.Id}'.")
+            : InvalidAsync(
+                $"Basic authentication condition failed for stub '{stub.Id}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.");
     }
-
-    /// <inheritdoc />
-    public int Priority => 9;
 }

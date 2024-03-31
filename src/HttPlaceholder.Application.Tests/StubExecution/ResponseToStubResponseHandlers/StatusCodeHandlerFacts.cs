@@ -12,7 +12,7 @@ public class StatusCodeHandlerFacts
     public async Task HandleStubGenerationAsync_StatusCodeSet_ShouldSetStatusCode()
     {
         // Arrange
-        var response = new HttpResponseModel {StatusCode = 204};
+        var response = new HttpResponseModel { StatusCode = 204 };
         var stubResponse = new StubResponseModel();
 
         // Act
@@ -27,7 +27,7 @@ public class StatusCodeHandlerFacts
     public async Task HandleStubGenerationAsync_StatusCodeNotSet_ShouldNotSetStatusCode()
     {
         // Arrange
-        var response = new HttpResponseModel {StatusCode = 0};
+        var response = new HttpResponseModel { StatusCode = 0 };
         var stubResponse = new StubResponseModel();
 
         // Act

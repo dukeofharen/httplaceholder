@@ -12,7 +12,7 @@ public class HttpRequestModelFacts
     public void Map_BodyIsSet_ShouldUseBodyInMapping()
     {
         // Arrange
-        var model = new RequestParametersModel {Body = "request body"};
+        var model = new RequestParametersModel { Body = "request body" };
 
         // Act
         var result = _mapper.Map<HttpRequestModel>(model);
@@ -25,7 +25,7 @@ public class HttpRequestModelFacts
     public void Map_BodyIsNotSet_BinaryBodyIsSet_BinaryIsText_ShouldUseBodyInMapping()
     {
         // Arrange
-        var model = new RequestParametersModel {BinaryBody = "request body"u8.ToArray()};
+        var model = new RequestParametersModel { BinaryBody = "request body"u8.ToArray() };
 
         // Act
         var result = _mapper.Map<HttpRequestModel>(model);
@@ -38,7 +38,7 @@ public class HttpRequestModelFacts
     public void Map_BodyIsNotSet_BinaryBodyIsSet_BinaryIsNotText_ShouldLeaveBodyEmpty()
     {
         // Arrange
-        var model = new RequestParametersModel {BinaryBody = new byte[] {255}};
+        var model = new RequestParametersModel { BinaryBody = [255] };
 
         // Act
         var result = _mapper.Map<HttpRequestModel>(model);

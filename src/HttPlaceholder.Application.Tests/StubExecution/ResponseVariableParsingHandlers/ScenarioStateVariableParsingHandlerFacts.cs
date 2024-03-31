@@ -39,14 +39,14 @@ public class ScenarioStateVariableParsingHandlerFacts
             "((scenario_state)) ((scenario_state:scenario_exists)) ((scenario_state:scenario_doesnt_exist))";
         const string expectedResult = "state_from_stub state_from_other_scenario ";
 
-        var stubModel = new StubModel {Scenario = "stub-scenario"};
+        var stubModel = new StubModel { Scenario = "stub-scenario" };
 
         stubContextMock
             .Setup(m => m.GetScenarioAsync(stubModel.Scenario, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ScenarioStateModel {State = "state_from_stub"});
+            .ReturnsAsync(new ScenarioStateModel { State = "state_from_stub" });
         stubContextMock
             .Setup(m => m.GetScenarioAsync("scenario_exists", It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ScenarioStateModel {State = "state_from_other_scenario"});
+            .ReturnsAsync(new ScenarioStateModel { State = "state_from_other_scenario" });
         stubContextMock
             .Setup(m => m.GetScenarioAsync("scenario_doesnt_exist", It.IsAny<CancellationToken>()))
             .ReturnsAsync((ScenarioStateModel)null);
@@ -69,11 +69,11 @@ public class ScenarioStateVariableParsingHandlerFacts
             "((scenario_state))";
         const string expectedResult = "state_from_HttpContext";
 
-        var stubModel = new StubModel {Scenario = "stub-scenario"};
+        var stubModel = new StubModel { Scenario = "stub-scenario" };
 
         cacheServiceMock
             .Setup(m => m.GetScopedItem<ScenarioStateModel>(CachingKeys.ScenarioState))
-            .Returns(new ScenarioStateModel {State = "state_from_HttpContext"});
+            .Returns(new ScenarioStateModel { State = "state_from_HttpContext" });
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);

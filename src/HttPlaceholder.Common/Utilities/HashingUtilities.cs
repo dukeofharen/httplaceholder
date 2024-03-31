@@ -16,8 +16,7 @@ public static class HashingUtilities
     /// <returns>The hashed MD5 string.</returns>
     public static string GetMd5String(string input)
     {
-        using var md5 = MD5.Create();
-        var data = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
+        var data = MD5.HashData(Encoding.UTF8.GetBytes(input));
         var builder = new StringBuilder();
         foreach (var t in data)
         {
@@ -34,9 +33,8 @@ public static class HashingUtilities
     /// <returns>The hashed SHA1 string.</returns>
     public static string GetSha512String(string input)
     {
-        using var sha = SHA512.Create();
         var bytes = Encoding.UTF8.GetBytes(input);
-        var hash = sha.ComputeHash(bytes);
+        var hash = SHA512.HashData(bytes);
         return Convert.ToBase64String(hash);
     }
 }

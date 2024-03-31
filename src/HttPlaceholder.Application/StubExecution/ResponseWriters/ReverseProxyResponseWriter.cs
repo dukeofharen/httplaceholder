@@ -12,6 +12,7 @@ using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -26,16 +27,16 @@ internal class ReverseProxyResponseWriter(
     : IResponseWriter, ISingletonService
 {
     private static readonly string[] _excludedRequestHeaderNames =
-    {
+    [
         HeaderKeys.ContentType, HeaderKeys.ContentLength, HeaderKeys.Host, HeaderKeys.Connection,
         HeaderKeys.AcceptEncoding
-    };
+    ];
 
     private static readonly string[] _excludedResponseHeaderNames =
-    {
+    [
         HeaderKeys.XHttPlaceholderCorrelation, HeaderKeys.XHttPlaceholderExecutedStub, HeaderKeys.TransferEncoding,
         HeaderKeys.ContentLength
-    };
+    ];
 
     /// <inheritdoc />
     public int Priority => -10;
@@ -46,7 +47,7 @@ internal class ReverseProxyResponseWriter(
     {
         if (stub.Response.ReverseProxy == null || string.IsNullOrWhiteSpace(stub.Response.ReverseProxy.Url))
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         var proxyUrl = stub.Response.ReverseProxy.Url;
@@ -105,7 +106,7 @@ internal class ReverseProxyResponseWriter(
         }
         catch (Exception ex)
         {
-            logger.LogInformation(ex, $"Exception occurred while calling URL {proxyUrl}");
+            logger.LogInformation(ex, "Exception occurred while calling URL {ProxyUrl}.", proxyUrl);
             log.AppendLine($"Exception occurred while calling URL {proxyUrl}: {ex.Message}");
             response.Body = "502 Bad Gateway"u8.ToArray();
             response.StatusCode = (int)HttpStatusCode.BadGateway;
@@ -113,15 +114,13 @@ internal class ReverseProxyResponseWriter(
             response.BodyIsBinary = false;
         }
 
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name, log.ToString());
+        return IsExecuted(GetType().Name, log.ToString());
     }
 
-    private static IDictionary<string, string> GetResponseHeaders(HttpResponseMessage responseMessage,
+    private static Dictionary<string, string> GetResponseHeaders(HttpResponseMessage responseMessage,
         Dictionary<string, string> rawResponseHeaders)
     {
-        var contentHeaders = responseMessage.Content != null
-            ? responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First())
-            : new Dictionary<string, string>();
+        var contentHeaders = responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First());
         return rawResponseHeaders
             .Concat(contentHeaders)
             .Where(h => !_excludedResponseHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
@@ -136,7 +135,7 @@ internal class ReverseProxyResponseWriter(
         bool appendPath,
         Dictionary<string, string> rawResponseHeaders)
     {
-        var rootUrlParts = proxyUrl.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
+        var rootUrlParts = proxyUrl.Split(["/"], StringSplitOptions.RemoveEmptyEntries);
         var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
         var httPlaceholderRootUrl = urlResolver.GetRootUrl();
         var path = GetPath(stub);
@@ -159,7 +158,7 @@ internal class ReverseProxyResponseWriter(
         CancellationToken cancellationToken)
     {
         var requestBody = await httpContextService.GetBodyAsBytesAsync(cancellationToken);
-        if (!requestBody.Any())
+        if (requestBody.Length == 0)
         {
             return;
         }

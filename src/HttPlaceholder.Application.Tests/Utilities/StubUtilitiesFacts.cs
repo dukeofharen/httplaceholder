@@ -21,8 +21,8 @@ public class StubUtilitiesFacts
     [DataTestMethod]
     [DataRow("../stub-id", "stub-id")]
     [DataRow("stub-id", "stub-id")]
-    [DataRow("..\\stub-id", "stub-id")]
-    [DataRow("..\\..\\stub-id", "stub-id")]
+    [DataRow(@"..\stub-id", "stub-id")]
+    [DataRow(@"..\..\stub-id", "stub-id")]
     public void CleanStubId_IdSet_ShouldClean(string id, string expectedResult)
     {
         // Arrange
@@ -38,8 +38,8 @@ public class StubUtilitiesFacts
     [DataTestMethod]
     [DataRow("../scenario-name", "scenario-name")]
     [DataRow("scenario-name", "scenario-name")]
-    [DataRow("..\\scenario-name", "scenario-name")]
-    [DataRow("..\\..\\scenario-name", "scenario-name")]
+    [DataRow(@"..\scenario-name", "scenario-name")]
+    [DataRow(@"..\..\scenario-name", "scenario-name")]
     public void CleanScenarioName_HappyFlow(string scenario, string expectedResult)
     {
         // Act

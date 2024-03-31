@@ -9,10 +9,12 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class CheckFeatureFacts : BaseClientTest
 {
-    private const string FeatureResponse = @"{
-    ""featureFlag"": 0,
-    ""enabled"": true
-}";
+    private const string FeatureResponse = """
+                                           {
+                                               "featureFlag": 0,
+                                               "enabled": true
+                                           }
+                                           """;
 
     [TestMethod]
     public async Task CheckFeature_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

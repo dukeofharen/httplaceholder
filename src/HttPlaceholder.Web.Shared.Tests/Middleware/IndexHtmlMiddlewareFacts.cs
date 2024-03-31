@@ -56,6 +56,7 @@ public class IndexHtmlMiddlewareFacts
     {
         // Arrange
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var assemblyServiceMock = _mocker.GetMock<IAssemblyService>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var urlResolverMock = _mocker.GetMock<IUrlResolver>();
         var htmlServiceMock = _mocker.GetMock<IHtmlService>();
@@ -86,6 +87,10 @@ public class IndexHtmlMiddlewareFacts
             .Setup(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .Callback<string, CancellationToken>((h, _) => capturedHtml = h);
 
+        assemblyServiceMock
+            .Setup(m => m.GetAssemblyVersion())
+            .Returns("1.2.3.4");
+
         // Act
         await middleware.Invoke(new MockHttpContext());
 
@@ -93,7 +98,7 @@ public class IndexHtmlMiddlewareFacts
         Assert.IsFalse(_nextCalled);
         Assert.IsNotNull(capturedHtml);
         Assert.AreEqual(
-            """<html><head><base href="http://localhost/httplaceholder/ph-ui/"><script type="text/javascript">window.rootUrl = "http://localhost/httplaceholder";</script></head><body></body></html>""",
+            """<html><head><meta name="httplaceholder:version" content="1.2.3.4"><base href="http://localhost/httplaceholder/ph-ui/"><script type="text/javascript">window.rootUrl = "http://localhost/httplaceholder";</script></head><body></body></html>""",
             capturedHtml);
         httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime));
     }

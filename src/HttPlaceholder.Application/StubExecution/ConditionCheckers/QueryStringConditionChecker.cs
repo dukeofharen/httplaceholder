@@ -5,39 +5,29 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker for validating the query strings.
 /// </summary>
-public class QueryStringConditionChecker : IConditionChecker, ISingletonService
+public class QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
+    : BaseConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="QueryStringConditionChecker" /> instance.
-    /// </summary>
-    public QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    {
-        _httpContextService = httpContextService;
-        _stringChecker = stringChecker;
-    }
+    /// <inheritdoc />
+    public override int Priority => 8;
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var result = new ConditionCheckResultModel();
-        var queryStringConditions = stub.Conditions?.Url?.Query;
-        if (queryStringConditions == null || queryStringConditions.Any() != true)
-        {
-            return Task.FromResult(result);
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Url?.Query?.Any() == true;
 
+    /// <inheritdoc />
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var queryStringConditions = stub.Conditions.Url.Query;
         var validQueryStrings = 0;
-        var queryString = _httpContextService.GetQueryStringDictionary();
+        var queryString = httpContextService.GetQueryStringDictionary();
         foreach (var condition in queryStringConditions)
         {
             // Do a present check, if needed.
@@ -63,11 +53,10 @@ public class QueryStringConditionChecker : IConditionChecker, ISingletonService
             }
 
             // Check whether the condition query value is available in the actual query string.
-            if (!_stringChecker.CheckString(queryValue, condition.Value, out var outputForLogging))
+            if (!stringChecker.CheckString(queryValue, condition.Value, out var outputForLogging))
             {
                 // If the check failed, it means the query string is incorrect and the condition should fail.
-                result.Log = $"Query string condition '{condition.Key}: {outputForLogging}' failed.";
-                break;
+                return InvalidAsync($"Query string condition '{condition.Key}: {outputForLogging}' failed.");
             }
 
             validQueryStrings++;
@@ -75,13 +64,8 @@ public class QueryStringConditionChecker : IConditionChecker, ISingletonService
 
         // If the number of succeeded conditions is equal to the actual number of conditions,
         // the query string condition is passed and the stub ID is passed to the result.
-        result.ConditionValidation = validQueryStrings == queryStringConditions.Count
-            ? ConditionValidationType.Valid
-            : ConditionValidationType.Invalid;
-
-        return Task.FromResult(result);
+        return validQueryStrings == queryStringConditions.Count
+            ? ValidAsync()
+            : InvalidAsync();
     }
-
-    /// <inheritdoc />
-    public int Priority => 8;
 }

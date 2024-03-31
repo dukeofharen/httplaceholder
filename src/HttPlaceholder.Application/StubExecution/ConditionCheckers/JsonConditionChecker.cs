@@ -7,61 +7,35 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker that validates if a JSON request body corresponds to a given set of properties.
 /// </summary>
-public class JsonConditionChecker : IConditionChecker, ISingletonService
+public class JsonConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    /// <summary>
-    ///     Constructs a <see cref="JsonConditionChecker" /> instance.
-    /// </summary>
-    public JsonConditionChecker(IHttpContextService httpContextService)
-    {
-        _httpContextService = httpContextService;
-    }
+    /// <inheritdoc />
+    public override int Priority => 1;
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var result = new ConditionCheckResultModel();
-        if (stub.Conditions?.Json == null)
-        {
-            return result;
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Json != null;
 
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
         var convertedJsonConditions = ConvertJsonConditions(stub.Conditions.Json);
-
-        var body = await _httpContextService.GetBodyAsync(cancellationToken);
-        try
-        {
-            var jToken = JToken.Parse(body);
-            var logResults = new List<string>();
-            result.ConditionValidation = CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
-                ? ConditionValidationType.Valid
-                : ConditionValidationType.Invalid;
-            result.Log = string.Join(Environment.NewLine, logResults);
-        }
-        catch (JsonReaderException ex)
-        {
-            result.ConditionValidation = ConditionValidationType.Invalid;
-            result.Log = ex.Message;
-        }
-
-        return result;
+        var jToken = JToken.Parse(await httpContextService.GetBodyAsync(cancellationToken));
+        var logResults = new List<string>();
+        return CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
+            ? await ValidAsync(string.Join(Environment.NewLine, logResults))
+            : await InvalidAsync(string.Join(Environment.NewLine, logResults));
     }
 
-    /// <inheritdoc />
-    public int Priority => 1;
-
-    internal bool CheckSubmittedJson(object input, JToken jToken, List<string> logResults)
+    internal bool CheckSubmittedJson(object input, JToken jToken, List<string> logging)
     {
         var jtType = jToken.Type;
         if (
@@ -74,13 +48,13 @@ public class JsonConditionChecker : IConditionChecker, ISingletonService
         switch (input)
         {
             case List<object> list:
-                return HandleList(list, jToken, logResults);
+                return HandleList(list, jToken, logging);
             case Dictionary<object, object> obj:
-                return HandleObject(obj, jToken, logResults);
+                return HandleObject(obj, jToken, logging);
             case string text:
-                return HandleString(text, jToken, logResults);
+                return HandleString(text, jToken, logging);
             default:
-                logResults.Add($"Type for input '{input}' ({input.GetType()}) is not supported.");
+                logging.Add($"Type for input '{input}' ({input.GetType()}) is not supported.");
                 return false;
         }
     }
@@ -155,7 +129,7 @@ public class JsonConditionChecker : IConditionChecker, ISingletonService
         return passed;
     }
 
-    private static bool HandleString(string text, JToken jToken, ICollection<string> logging)
+    private static bool HandleString(string text, JToken jToken, List<string> logging)
     {
         switch (jToken.Type)
         {

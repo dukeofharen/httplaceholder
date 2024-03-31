@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
@@ -51,13 +51,11 @@ internal class StubContext(
         foreach (var source in stubSources)
         {
             var stubSourceIsReadOnly = source is not IWritableStubSource;
-            var fullStubModels =
-                (await source.GetStubsOverviewAsync(stubRequestContext.DistributionKey, cancellationToken))
+            result.AddRange((await source.GetStubsOverviewAsync(stubRequestContext.DistributionKey, cancellationToken))
                 .Select(s => new FullStubOverviewModel
                 {
                     Stub = s.Stub, Metadata = MapMetadata(stubSourceIsReadOnly, s.Metadata)
-                });
-            result.AddRange(fullStubModels);
+                }));
         }
 
         return result;
@@ -282,7 +280,7 @@ internal class StubContext(
         }
 
         var key = stubRequestContext.DistributionKey ?? string.Empty;
-        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        await ExecuteLockedScenarioAction(key, async () =>
         {
             var stubSource = GetWritableStubSource();
             var scenarioStateModel = await GetOrAddScenarioState(scenario, key, cancellationToken);
@@ -292,7 +290,7 @@ internal class StubContext(
 
             await scenarioNotify.ScenarioSetAsync(scenarioStateModel, key, cancellationToken);
             return scenarioStateModel;
-        });
+        }, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -304,8 +302,8 @@ internal class StubContext(
         }
 
         var key = stubRequestContext.DistributionKey ?? string.Empty;
-        var result = await ExecuteLockedScenarioAction(scenario, key, cancellationToken,
-            async () => await GetOrAddScenarioState(scenario, key, cancellationToken));
+        var result = await ExecuteLockedScenarioAction(key,
+            async () => await GetOrAddScenarioState(scenario, key, cancellationToken), cancellationToken);
         return result.HitCount;
     }
 
@@ -336,7 +334,7 @@ internal class StubContext(
         }
 
         var key = stubRequestContext.DistributionKey ?? string.Empty;
-        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        await ExecuteLockedScenarioAction(key, async () =>
         {
             var stubSource = GetWritableStubSource();
             var existingScenario = await stubSource.GetScenarioAsync(scenario, key, cancellationToken);
@@ -367,7 +365,7 @@ internal class StubContext(
             }
 
             return scenarioState;
-        });
+        }, cancellationToken);
 
         await scenarioNotify.ScenarioSetAsync(scenarioState, key, cancellationToken);
     }
@@ -384,12 +382,12 @@ internal class StubContext(
         var result = false;
         var stubSource = GetWritableStubSource();
         var key = stubRequestContext.DistributionKey ?? string.Empty;
-        await ExecuteLockedScenarioAction(scenario, key, cancellationToken, async () =>
+        await ExecuteLockedScenarioAction(key, async () =>
         {
             result = await stubSource.DeleteScenarioAsync(scenario, key, cancellationToken);
             cacheService.DeleteScopedItem(CachingKeys.ScenarioState);
             return null;
-        });
+        }, cancellationToken);
 
         await scenarioNotify.ScenarioDeletedAsync(scenario, key, cancellationToken);
         return result;
@@ -404,11 +402,11 @@ internal class StubContext(
         await scenarioNotify.AllScenariosDeletedAsync(key, cancellationToken);
     }
 
-    private async Task<ScenarioStateModel> ExecuteLockedScenarioAction(string scenario, string distributionKey,
-        CancellationToken cancellationToken,
-        Func<Task<ScenarioStateModel>> func)
+    private static async Task<ScenarioStateModel> ExecuteLockedScenarioAction(string distributionKey,
+        Func<Task<ScenarioStateModel>> func,
+        CancellationToken cancellationToken)
     {
-        var semaphore = _scenarioLocks.GetOrAdd(distributionKey, k => new SemaphoreSlim(1, 1));
+        var semaphore = _scenarioLocks.GetOrAdd(distributionKey, _ => new SemaphoreSlim(1, 1));
         await semaphore.WaitAsync(cancellationToken);
         try
         {
@@ -462,7 +460,7 @@ internal class StubContext(
         return result;
     }
 
-    private static StubMetadataModel MapMetadata(bool stubSourceIsReadOnly, IDictionary<string, string> metadata = null)
+    private static StubMetadataModel MapMetadata(bool stubSourceIsReadOnly, Dictionary<string, string> metadata = null)
     {
         var result = new StubMetadataModel { ReadOnly = stubSourceIsReadOnly };
         if (metadata != null && metadata.TryGetValue(StubMetadataKeys.Filename, out var filename))

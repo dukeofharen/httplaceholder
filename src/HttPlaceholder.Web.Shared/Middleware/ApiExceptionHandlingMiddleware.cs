@@ -2,6 +2,7 @@
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Web.Shared.Middleware;
@@ -9,49 +10,35 @@ namespace HttPlaceholder.Web.Shared.Middleware;
 /// <summary>
 ///     A piece of middleware for handling exceptions.
 /// </summary>
-public class ApiExceptionHandlingMiddleware
+public class ApiExceptionHandlingMiddleware(RequestDelegate next, IHttpContextService httpContextService)
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly RequestDelegate _next;
-
-    /// <summary>
-    ///     Constructs an <see cref="ApiExceptionHandlingMiddleware" /> instance.
-    /// </summary>
-    /// <param name="next"></param>
-    /// <param name="httpContextService"></param>
-    public ApiExceptionHandlingMiddleware(RequestDelegate next, IHttpContextService httpContextService)
-    {
-        _next = next;
-        _httpContextService = httpContextService;
-    }
-
     /// <summary>
     ///     Handles the middleware.
     /// </summary>
     public async Task Invoke(HttpContext context)
     {
-        if (_httpContextService.Path?.Contains("ph-api/") == true)
+        if (httpContextService.Path?.Contains("ph-api/") == true)
         {
             var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
             try
             {
-                await _next(context);
+                await next(context);
             }
             catch (ConflictException)
             {
-                _httpContextService.SetStatusCode(HttpStatusCode.Conflict);
+                httpContextService.SetStatusCode(HttpStatusCode.Conflict);
             }
             catch (NotFoundException)
             {
-                _httpContextService.SetStatusCode(HttpStatusCode.NotFound);
+                httpContextService.SetStatusCode(HttpStatusCode.NotFound);
             }
             catch (ForbiddenException)
             {
-                _httpContextService.SetStatusCode(HttpStatusCode.Forbidden);
+                httpContextService.SetStatusCode(HttpStatusCode.Forbidden);
             }
             catch (ArgumentException ex)
             {
-                await WriteResponseBody(new[] {ex.Message}, HttpStatusCode.BadRequest, cancellationToken);
+                await WriteResponseBody(new[] { ex.Message }, HttpStatusCode.BadRequest, cancellationToken);
             }
             catch (ValidationException ex)
             {
@@ -60,15 +47,15 @@ public class ApiExceptionHandlingMiddleware
         }
         else
         {
-            await _next(context);
+            await next(context);
         }
     }
 
     private async Task WriteResponseBody(object body, HttpStatusCode httpStatusCode,
         CancellationToken cancellationToken)
     {
-        _httpContextService.SetStatusCode(httpStatusCode);
-        _httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.JsonMime);
-        await _httpContextService.WriteAsync(JsonConvert.SerializeObject(body), cancellationToken);
+        httpContextService.SetStatusCode(httpStatusCode);
+        httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.JsonMime);
+        await httpContextService.WriteAsync(JsonConvert.SerializeObject(body), cancellationToken);
     }
 }

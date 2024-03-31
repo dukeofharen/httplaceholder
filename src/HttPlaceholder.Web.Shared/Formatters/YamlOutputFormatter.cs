@@ -29,30 +29,19 @@ public class YamlOutputFormatter : TextOutputFormatter
     /// <inheritdoc />
     public override async Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
     {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
-
-        if (selectedEncoding == null)
-        {
-            throw new ArgumentNullException(nameof(selectedEncoding));
-        }
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(selectedEncoding);
 
         var response = context.HttpContext.Response;
         await using var writer = context.WriterFactory(response.Body, selectedEncoding);
         WriteObject(writer, context.Object);
 
-        await writer.FlushAsync();
+        await writer.FlushAsync(context.HttpContext.RequestAborted);
     }
 
     private void WriteObject(TextWriter writer, object value)
     {
-        if (writer == null)
-        {
-            throw new ArgumentNullException(nameof(writer));
-        }
-
+        ArgumentNullException.ThrowIfNull(writer);
         _serializer.Serialize(writer, value);
     }
 }

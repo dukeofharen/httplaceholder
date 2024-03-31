@@ -8,33 +8,47 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Bogus" Version="35.4.0" />
+        <PackageReference Include="Bogus" Version="35.5.0" />
         <PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
         <PackageReference Include="IPAddressRange" Version="6.0.0" />
         <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17"/>
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.3" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Primitives" Version="8.0.0" />
-        <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.13" />
+        <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.14" />
         <PackageReference Include="NCrontab" Version="3.3.3" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.2" />
-        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.1" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.3" />
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.2" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj"/>
         <ProjectReference Include="..\HttPlaceholder.Domain\HttPlaceholder.Domain.csproj"/>
-
-
-
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="StubExecution\ResponseVariableParsingHandlers\ResponseVariableParsingResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ResponseVariableParsingResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="StubExecution\ResponseVariableParsingHandlers\ResponseVariableParsingResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ResponseVariableParsingResources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
 
-
+    <ItemGroup>
+      <Content Include="Resources\**\*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 </Project>

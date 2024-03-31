@@ -12,25 +12,29 @@ public class ConfigurationParserFacts
     private const string ExampleArgs =
         "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --configJsonLocation /var/httpl_config.json";
 
-    private const string ExampleConfigJson = @"
-{
-    ""enableUserInterface"": true,
-    ""storeResponses"": false,
-    ""oldRequestsQueueLength"": 101
-}";
+    private const string ExampleConfigJson = """
 
-    private const string ExampleConfigWithWeirdCasing = @"
-{
-    ""APIUSERNAME"": ""user"",
-    ""apipassword"": ""pass"",
-    ""enableUserInterface"": false
-}";
+                                             {
+                                                 "enableUserInterface": true,
+                                                 "storeResponses": false,
+                                                 "oldRequestsQueueLength": 101
+                                             }
+                                             """;
+
+    private const string ExampleConfigWithWeirdCasing = """
+
+                                                        {
+                                                            "APIUSERNAME": "user",
+                                                            "apipassword": "pass",
+                                                            "enableUserInterface": false
+                                                        }
+                                                        """;
 
     private readonly Mock<IEnvService> _envServiceMock = new();
 
     private readonly IDictionary<string, string> _exampleEnv = new Dictionary<string, string>
     {
-        {"port", "9999"}, {"oldRequestsQueueLength", "100"}
+        { "port", "9999" }, { "oldRequestsQueueLength", "100" }
     };
 
     private readonly Mock<IFileService> _fileServiceMock = new();
@@ -102,7 +106,7 @@ public class ConfigurationParserFacts
     }
 
     [DataTestMethod]
-    [DataRow("WINDOWS", "C:\\Users\\duco", "C:\\Users\\duco\\.httplaceholder", true)]
+    [DataRow("WINDOWS", @"C:\Users\duco", @"C:\Users\duco\.httplaceholder", true)]
     [DataRow("LINUX", "/home/duco", "/home/duco/.httplaceholder", true)]
     [DataRow("OSX", "/home/duco", "/home/duco/.httplaceholder", true)]
     [DataRow(null, "", "", false)]
@@ -158,7 +162,7 @@ public class ConfigurationParserFacts
     {
         // Arrange
         var args = "--POrT 5001 --httpsPORT 5051".Split(' ');
-        var env = new Dictionary<string, string> {{"FILEStorageLocation", "/tmp/stubs"}};
+        var env = new Dictionary<string, string> { { "FILEStorageLocation", "/tmp/stubs" } };
 
         _envServiceMock
             .Setup(m => m.GetEnvironmentVariables())
@@ -195,29 +199,5 @@ public class ConfigurationParserFacts
         Assert.AreEqual("user", result["Authentication:ApiUsername"]);
         Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
         Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
-    }
-
-    [DataTestMethod]
-    [DataRow("-V", true)]
-    [DataRow("--verbose", true)]
-    [DataRow("-v", false)]
-    public void ArgsArray_Verbose(string arg, bool shouldBeVerbose)
-    {
-        // Arrange
-        var args = $"{arg} --port 80".Split(' ');
-
-        // Act
-        var result = _parser.ParseConfiguration(args);
-
-        // Assert
-        const string key = "Logging:VerboseLoggingEnabled";
-        if (shouldBeVerbose)
-        {
-            Assert.AreEqual("True", result[key]);
-        }
-        else
-        {
-            Assert.IsFalse(result.Keys.Any(k => k == key));
-        }
     }
 }

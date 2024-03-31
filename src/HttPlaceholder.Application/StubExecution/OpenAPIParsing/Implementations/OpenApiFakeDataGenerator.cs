@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Bogus;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -14,7 +15,7 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
-internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator, ISingletonService
+internal class OpenApiFakeDataGenerator(IDateTime dateTime) : IOpenApiFakeDataGenerator, ISingletonService
 {
     private static readonly Faker _faker = new();
 
@@ -58,7 +59,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator, ISingletonS
         return example == null ? null : ExtractExampleFromOpenApiAny(example);
     }
 
-    internal static object GetRandomValue(OpenApiSchema schema)
+    internal object GetRandomValue(OpenApiSchema schema)
     {
         if (schema == null)
         {
@@ -103,7 +104,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator, ISingletonS
         };
     }
 
-    private static object[] GetRandomArray(OpenApiSchema schema)
+    private object[] GetRandomArray(OpenApiSchema schema)
     {
         var result = new List<object>();
         var noOfItems = _faker.Random.Int(1, 3);
@@ -115,10 +116,10 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator, ISingletonS
         return result.ToArray();
     }
 
-    private static IDictionary<string, object> GetRandomObject(OpenApiSchema schema) =>
+    private Dictionary<string, object> GetRandomObject(OpenApiSchema schema) =>
         schema.Properties.ToDictionary(property => property.Key, property => GetRandomValue(property.Value));
 
-    private static string GenerateFakeString(string format, IList<IOpenApiAny> enumValues)
+    private string GenerateFakeString(string format, IList<IOpenApiAny> enumValues)
     {
         if (enumValues?.Any() == true)
         {
@@ -127,7 +128,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator, ISingletonS
             return (enumValue as OpenApiString)?.Value;
         }
 
-        var date = _faker.Date.Between(DateTime.Now.AddYears(-2), DateTime.Now);
+        var date = _faker.Date.Between(dateTime.Now.AddYears(-2), dateTime.Now);
         switch (format)
         {
             case "byte":
@@ -161,7 +162,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator, ISingletonS
         using var stringWriter = new StringWriter();
         example.Write(
             new OpenApiJsonWriter(stringWriter,
-                new OpenApiWriterSettings {InlineExternalReferences = true, InlineLocalReferences = true}),
+                new OpenApiWriterSettings { InlineExternalReferences = true, InlineLocalReferences = true }),
             OpenApiSpecVersion.OpenApi3_0);
         var result = stringWriter.ToString();
         return result;

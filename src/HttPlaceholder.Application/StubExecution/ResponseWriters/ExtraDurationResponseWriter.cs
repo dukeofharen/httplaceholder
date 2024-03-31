@@ -5,6 +5,7 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -25,24 +26,19 @@ internal class ExtraDurationResponseWriter(IAsyncService asyncService) : IRespon
         // Simulate sluggish response here, if configured.
         if (stub.Response?.ExtraDuration == null)
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
-        int duration;
-        var parsedDuration = ConversionUtilities.ParseInteger(stub.Response.ExtraDuration);
-        if (parsedDuration != null)
-        {
-            duration = parsedDuration.Value;
-        }
-        else
-        {
-            var durationDto = ConversionUtilities.Convert<StubExtraDurationModel>(stub.Response.ExtraDuration);
-            var min = durationDto?.Min ?? 0;
-            var max = durationDto?.Max ?? (durationDto?.Min ?? 0) + 10000;
-            duration = _random.Next(min, max);
-        }
-
+        var duration = ConversionUtilities.ParseInteger(stub.Response.ExtraDuration) ?? GetDurationInRange(stub);
         await asyncService.DelayAsync(duration, cancellationToken);
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        return IsExecuted(GetType().Name);
+    }
+
+    private static int GetDurationInRange(StubModel stub)
+    {
+        var durationDto = ConversionUtilities.Convert<StubExtraDurationModel>(stub.Response.ExtraDuration);
+        var min = durationDto?.Min ?? 0;
+        var max = durationDto?.Max ?? (durationDto?.Min ?? 0) + 10000;
+        return _random.Next(min, max);
     }
 }

@@ -65,9 +65,11 @@ public class RequestBodyResponseVariableParsingHandlerFacts
     {
         // arrange
         const string input = "Posted content: ((request_body:'key2=([a-z0-9]*)'))";
-        const string body = @"key1=value1
-key2=value2
-key3=value3";
+        const string body = """
+                            key1=value1
+                            key2=value2
+                            key3=value3
+                            """;
 
         const string expectedResult = "Posted content: value2";
 
@@ -91,9 +93,11 @@ key3=value3";
     {
         // arrange
         const string input = "Posted content: ((request_body:'key4=([a-z0-9]*)'))";
-        const string body = @"key1=value1
-key2=value2
-key3=value3";
+        const string body = """
+                            key1=value1
+                            key2=value2
+                            key3=value3
+                            """;
 
         const string expectedResult = "Posted content: ";
 

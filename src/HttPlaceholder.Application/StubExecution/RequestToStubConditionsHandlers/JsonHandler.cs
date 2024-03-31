@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -18,6 +19,8 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// </summary>
 internal class JsonHandler(ILogger<JsonHandler> logger) : IRequestToStubConditionsHandler, ISingletonService
 {
+    private static readonly string[] _supportedContentTypes = [MimeTypes.JsonMime];
+
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
         CancellationToken cancellationToken)
@@ -25,26 +28,22 @@ internal class JsonHandler(ILogger<JsonHandler> logger) : IRequestToStubConditio
         var pair = request.Headers.FirstOrDefault(p =>
             p.Key.Equals(HeaderKeys.ContentType, StringComparison.OrdinalIgnoreCase));
         var contentType = pair.Value;
-        if (string.IsNullOrWhiteSpace(contentType))
+        if (
+            string.IsNullOrWhiteSpace(contentType) ||
+            !_supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
         {
-            return Task.FromResult(false);
-        }
-
-        var supportedContentTypes = new[] {MimeTypes.JsonMime};
-        if (!supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
-        {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
         try
         {
             conditions.Json = JToken.Parse(request.Body);
-            return Task.FromResult(true);
+            return true.AsTask();
         }
         catch (Exception ex)
         {
             logger.LogWarning(ex, "Exception occurred while trying to parse JSON.");
-            return Task.FromResult(false);
+            return false.AsTask();
         }
     }
 

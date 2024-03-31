@@ -6,11 +6,11 @@ namespace HttPlaceholder.Common.Tests.Utilities;
 [TestClass]
 public class StringHelperFacts
 {
-    public static IEnumerable<object> GetFirstNonWhitespaceString_TestData =>
+    public static IEnumerable<object> GetFirstNonWhitespaceStringTestData =>
         new[]
         {
-            new object[] {new[] {"1", "2", "3"}, "1"}, new object[] {new[] {"", "2", "3"}, "2"},
-            new object[] {new[] {"", null, "3"}, "3"}, new object[] {new[] {"", null, null}, null}
+            [new[] { "1", "2", "3" }, "1"], [new[] { "", "2", "3" }, "2"], [new[] { "", null, "3" }, "3"],
+            new object[] { new[] { "", null, null }, null }
         };
 
     [TestMethod]
@@ -116,8 +116,57 @@ public class StringHelperFacts
         Assert.AreEqual("text", result[2]);
     }
 
+    [DataTestMethod]
+    [DataRow("not|empty|or|null", false)]
+    [DataRow("not|empty||null", true)]
+    [DataRow("|||null", true)]
+    [DataRow("|||", true)]
+    public void AnyAreNullOrWhitespace_HappyFlow(string input, bool expectedResult)
+    {
+        // Arrange
+        var strings = input.Split('|');
+
+        // Act
+        var result = StringHelper.AnyAreNullOrWhitespace(strings);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [DataTestMethod]
+    [DataRow("not|empty|or|null", false)]
+    [DataRow("|||null", false)]
+    [DataRow("|||", true)]
+    public void AllAreNullOrWhitespace_HappyFlow(string input, bool expectedResult)
+    {
+        // Arrange
+        var strings = input.Split('|');
+
+        // Act
+        var result = StringHelper.AllAreNullOrWhitespace(strings);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [DataTestMethod]
+    [DataRow("not|empty|or|null", true)]
+    [DataRow("|||null", false)]
+    [DataRow("|||", false)]
+    public void NoneAreNullOrWhitespace_HappyFlow(string input, bool expectedResult)
+    {
+        // Arrange
+        var strings = input.Split('|');
+
+        // Act
+        var result = StringHelper.NoneAreNullOrWhitespace(strings);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
+
     [TestMethod]
-    [DynamicData(nameof(GetFirstNonWhitespaceString_TestData))]
+    [DynamicData(nameof(GetFirstNonWhitespaceStringTestData))]
     public void GetFirstNonWhitespaceString_HappyFlow(string[] input, string expectedOutput)
     {
         // Act
@@ -125,5 +174,31 @@ public class StringHelperFacts
 
         // Assert
         Assert.AreEqual(expectedOutput, result);
+    }
+
+    [TestMethod]
+    public void Base64Encode_HappyFlow()
+    {
+        // Arrange
+        const string input = "Test 123";
+
+        // Act
+        var result = input.Base64Encode();
+
+        // Assert
+        Assert.AreEqual("VGVzdCAxMjM=", result);
+    }
+
+    [TestMethod]
+    public void Base64Decode_HappyFlow()
+    {
+        // Arrange
+        const string input = "VGVzdCAxMjM=";
+
+        // Act
+        var result = input.Base64Decode();
+
+        // Assert
+        Assert.AreEqual("Test 123", result);
     }
 }

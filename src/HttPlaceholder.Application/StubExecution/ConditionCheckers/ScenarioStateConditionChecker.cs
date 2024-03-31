@@ -2,59 +2,44 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker for validating whether the stub scenario is in a specific state.
 /// </summary>
-public class ScenarioStateConditionChecker : IConditionChecker, ISingletonService
+public class ScenarioStateConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
-    private readonly IStubContext _stubContext;
-
-    /// <summary>
-    ///     Constructs a <see cref="ScenarioStateConditionChecker" /> instance.
-    /// </summary>
-    public ScenarioStateConditionChecker(IStubContext stubContext)
-    {
-        _stubContext = stubContext;
-    }
+    /// <inheritdoc />
+    public override int Priority => 8;
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var result = new ConditionCheckResultModel();
-        var state = stub.Conditions?.Scenario?.ScenarioState;
-        var scenario = stub.Scenario;
-        if (string.IsNullOrWhiteSpace(state) || string.IsNullOrWhiteSpace(scenario))
-        {
-            return result;
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) =>
+        StringHelper.NoneAreNullOrWhitespace(stub.Conditions?.Scenario?.ScenarioState, stub.Scenario);
 
-        var scenarioState = await _stubContext.GetScenarioAsync(scenario, cancellationToken);
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var state = stub.Conditions.Scenario.ScenarioState.Trim();
+        var scenario = stub.Scenario;
+        var scenarioState = await stubContext.GetScenarioAsync(scenario, cancellationToken);
         if (scenarioState == null)
         {
             scenarioState = new ScenarioStateModel(scenario);
-            await _stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);
+            await stubContext.SetScenarioAsync(scenario, scenarioState, cancellationToken);
         }
 
         if (!string.Equals(scenarioState.State.Trim(), state.Trim(), StringComparison.OrdinalIgnoreCase))
         {
-            result.Log =
-                $"Scenario '{stub.Scenario}' is in state '{scenarioState.State}', but '{state}' was expected.";
-            result.ConditionValidation = ConditionValidationType.Invalid;
-        }
-        else
-        {
-            result.ConditionValidation = ConditionValidationType.Valid;
+            return await InvalidAsync(
+                $"Scenario '{stub.Scenario}' is in state '{scenarioState.State}', but '{state}' was expected.");
         }
 
-        return result;
+        return await ValidAsync();
     }
-
-    /// <inheritdoc />
-    public int Priority => 8;
 }

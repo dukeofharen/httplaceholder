@@ -8,18 +8,22 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 public class StringReplaceResponseWriterFacts
 {
     private readonly ResponseModel _response = new();
-    private readonly StubModel _stub = new() {Response = new StubResponseModel()};
+    private readonly StubModel _stub = new() { Response = new StubResponseModel() };
     private readonly StringReplaceResponseWriter _writer = new();
 
     public static IEnumerable<object[]> ProvideStringReplaceData => new[]
     {
-        new object[] {new[] {GetModel("VALUE1", "VALUE2", false)}, "VALUE1 body", "VALUE2 body"},
-        new object[] {new[] {GetModel("value1", "VALUE2", false)}, "VALUE1 body", "VALUE1 body"},
-        new object[] {new[] {GetModel("value1", "VALUE2", true)}, "VALUE1 body", "VALUE2 body"},
-        new object[] {new[] {GetModel("value1", "VALUE2", null)}, "VALUE1 body", "VALUE2 body"},
+        [new[] { GetModel("VALUE1", "VALUE2", false) }, "VALUE1 body", "VALUE2 body"],
+        [
+            new[] { GetModel("value1", "VALUE2", false) }, "VALUE1 body", "VALUE1 body"
+        ],
+        [new[] { GetModel("value1", "VALUE2", true) }, "VALUE1 body", "VALUE2 body"],
+        [
+            new[] { GetModel("value1", "VALUE2", null) }, "VALUE1 body", "VALUE2 body"
+        ],
         new object[]
         {
-            new[] {GetModel("VALUE1", "VALUE2", false), GetModel("VALUE2", "VALUE3", false)}, "VALUE1 body",
+            new[] { GetModel("VALUE1", "VALUE2", false), GetModel("VALUE2", "VALUE3", false) }, "VALUE1 body",
             "VALUE3 body"
         }
     };
@@ -28,7 +32,7 @@ public class StringReplaceResponseWriterFacts
     {
         new object[]
         {
-            new[] {GetRegexModel("\\!", "?"), GetRegexModel("Hello", "Bye")}, "Hello, World!", "Bye, World?"
+            new[] { GetRegexModel("\\!", "?"), GetRegexModel("Hello", "Bye") }, "Hello, World!", "Bye, World?"
         }
     };
 
@@ -62,7 +66,7 @@ public class StringReplaceResponseWriterFacts
     public async Task WriteToResponseAsync_ResponseBodyIsNull_ShouldReturnNotExecuted()
     {
         // Arrange
-        _stub.Response.Replace = new[] {new StubResponseReplaceModel()};
+        _stub.Response.Replace = new[] { new StubResponseReplaceModel() };
         _response.Body = null;
 
         // Act
@@ -76,7 +80,7 @@ public class StringReplaceResponseWriterFacts
     public async Task WriteToResponseAsync_ResponseBodyIsEmpty_ShouldReturnNotExecuted()
     {
         // Arrange
-        _stub.Response.Replace = new[] {new StubResponseReplaceModel()};
+        _stub.Response.Replace = new[] { new StubResponseReplaceModel() };
         _response.Body = Array.Empty<byte>();
 
         // Act
@@ -128,8 +132,8 @@ public class StringReplaceResponseWriterFacts
         await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
     private static StubResponseReplaceModel GetModel(string text, string replaceWith, bool? ignoreCase) =>
-        new() {Text = text, ReplaceWith = replaceWith, IgnoreCase = ignoreCase};
+        new() { Text = text, ReplaceWith = replaceWith, IgnoreCase = ignoreCase };
 
     private static StubResponseReplaceModel GetRegexModel(string regex, string replaceWith) =>
-        new() {Regex = regex, ReplaceWith = replaceWith};
+        new() { Regex = regex, ReplaceWith = replaceWith };
 }

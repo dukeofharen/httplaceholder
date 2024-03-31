@@ -63,7 +63,7 @@ public static class OpenApiUtilities
 
         schemaToUpdate.OneOf.Add(isPrimitiveOrString
             ? oneOfTypeSchema
-            : new JsonSchema {Reference = oneOfTypeSchema});
+            : new JsonSchema { Reference = oneOfTypeSchema });
     }
 
     private static bool IsPrimitiveOrString(Type oneOfType) => oneOfType.IsPrimitive || oneOfType == typeof(string);
@@ -87,7 +87,7 @@ public static class OpenApiUtilities
         return schemaProperty;
     }
 
-    private static OneOfAttribute GetOneOfAttribute(ICustomAttributeProvider property) =>
+    private static OneOfAttribute GetOneOfAttribute(PropertyInfo property) =>
         property
             .GetCustomAttributes(typeof(OneOfAttribute), false)
             .Cast<OneOfAttribute>()

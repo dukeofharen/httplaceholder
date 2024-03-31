@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Common;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -17,18 +13,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHandler
 {
-    private readonly Lazy<string> _loadedDescription;
-
-    protected BaseVariableParsingHandler(IFileService fileService)
-    {
-        _loadedDescription = new Lazy<string>(() =>
-        {
-            var path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), "Files", "VarParser",
-                $"{Name}-description.md");
-            return fileService.ReadAllText(path);
-        });
-    }
-
     /// <inheritdoc />
     public abstract string Name { get; }
 
@@ -36,7 +20,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     public abstract string FullName { get; }
 
     /// <inheritdoc />
-    public virtual string GetDescription() => _loadedDescription.Value;
+    public abstract string GetDescription();
 
     /// <inheritdoc />
     public abstract string[] Examples { get; }
@@ -46,7 +30,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
         CancellationToken cancellationToken)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
+        if (enumerable.Length == 0)
         {
             return input;
         }
@@ -62,6 +46,6 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     /// <param name="stub">The matched stub.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The parsed response body.</returns>
-    protected abstract Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    protected abstract Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken);
 }

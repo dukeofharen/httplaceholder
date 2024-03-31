@@ -13,7 +13,7 @@ public static class ArgsHelper
     /// </summary>
     /// <param name="args">The array of command line parameters.</param>
     /// <returns>The parsed dictionary.</returns>
-    public static IDictionary<string, string> Parse(this IEnumerable<string> args)
+    public static Dictionary<string, string> Parse(this IEnumerable<string> args)
     {
         var subResult = new Dictionary<string, List<string>>();
 
@@ -23,13 +23,13 @@ public static class ArgsHelper
             if (arg.StartsWith("--"))
             {
                 varPointer = arg.Replace("--", string.Empty);
-                subResult.Add(varPointer, new List<string>());
+                subResult.Add(varPointer, []);
             }
             else
             {
-                if (subResult.ContainsKey(varPointer))
+                if (subResult.TryGetValue(varPointer, out var value))
                 {
-                    subResult[varPointer].Add(arg);
+                    value.Add(arg);
                 }
             }
         }

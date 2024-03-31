@@ -14,8 +14,8 @@ public class BodyHandlerFacts
     {
         // Arrange
         const string body = "POSTED!";
-        var request = new HttpRequestModel {Body = body};
-        var conditions = new StubConditionsModel {Json = new object()};
+        var request = new HttpRequestModel { Body = body };
+        var conditions = new StubConditionsModel { Json = new object() };
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
@@ -28,7 +28,7 @@ public class BodyHandlerFacts
     public async Task BodyHandler_HandleStubGenerationAsync_BodyNotSetOnRequest_ShouldReturnFalse()
     {
         // Arrange
-        var request = new HttpRequestModel {Body = string.Empty};
+        var request = new HttpRequestModel { Body = string.Empty };
         var conditions = new StubConditionsModel();
 
         // Act
@@ -44,7 +44,7 @@ public class BodyHandlerFacts
     {
         // Arrange
         const string body = "POSTED!";
-        var request = new HttpRequestModel {Body = body};
+        var request = new HttpRequestModel { Body = body };
         var conditions = new StubConditionsModel();
 
         // Act

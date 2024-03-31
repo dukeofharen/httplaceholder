@@ -13,7 +13,7 @@ public class LineEndingResponseWriterFacts
     public async Task WriteToResponseAsync_LineEndingsNotSet_ShouldReturnNotExecuted()
     {
         // Arrange
-        var stub = new StubModel {Response = new StubResponseModel {LineEndings = null}};
+        var stub = new StubModel { Response = new StubResponseModel { LineEndings = null } };
         var response = new ResponseModel();
 
         // Act
@@ -27,8 +27,8 @@ public class LineEndingResponseWriterFacts
     public async Task WriteToResponseAsync_Unix_ShouldReturnUnixLineEndings()
     {
         // Arrange
-        var stub = new StubModel {Response = new StubResponseModel {LineEndings = LineEndingType.Unix}};
-        var response = new ResponseModel {Body = Encoding.UTF8.GetBytes("the\r\ncontent\r\n")};
+        var stub = new StubModel { Response = new StubResponseModel { LineEndings = LineEndingType.Unix } };
+        var response = new ResponseModel { Body = "the\r\ncontent\r\n"u8.ToArray() };
 
         // Act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
@@ -43,8 +43,8 @@ public class LineEndingResponseWriterFacts
     public async Task WriteToResponseAsync_Windows_ShouldReturnWindowsLineEndings()
     {
         // Arrange
-        var stub = new StubModel {Response = new StubResponseModel {LineEndings = LineEndingType.Windows}};
-        var response = new ResponseModel {Body = Encoding.UTF8.GetBytes("the\ncontent\n")};
+        var stub = new StubModel { Response = new StubResponseModel { LineEndings = LineEndingType.Windows } };
+        var response = new ResponseModel { Body = "the\ncontent\n"u8.ToArray() };
 
         // Act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
@@ -61,7 +61,7 @@ public class LineEndingResponseWriterFacts
         // Arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel {LineEndings = (LineEndingType)5, Text = "the\ncontent\n"}
+            Response = new StubResponseModel { LineEndings = (LineEndingType)5, Text = "the\ncontent\n" }
         };
         var response = new ResponseModel();
 
@@ -69,7 +69,7 @@ public class LineEndingResponseWriterFacts
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
-        Assert.IsTrue(result.Executed);
+        Assert.IsFalse(result.Executed);
         Assert.IsNull(response.Body);
         Assert.AreEqual("Line ending type '5' is not supported. Options are 'Unix' and 'Windows'.",
             result.Log);
@@ -83,16 +83,16 @@ public class LineEndingResponseWriterFacts
         {
             Response = new StubResponseModel
             {
-                LineEndings = LineEndingType.Windows, Base64 = Convert.ToBase64String(new byte[] {1, 2, 3})
+                LineEndings = LineEndingType.Windows, Base64 = Convert.ToBase64String(new byte[] { 1, 2, 3 })
             }
         };
-        var response = new ResponseModel {BodyIsBinary = true};
+        var response = new ResponseModel { BodyIsBinary = true };
 
         // Act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
-        Assert.IsTrue(result.Executed);
+        Assert.IsFalse(result.Executed);
         Assert.AreEqual("The response body is binary; cannot replace line endings.", result.Log);
     }
 }

@@ -2,59 +2,42 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker for validating whether the stub scenario has an exact number of hits.
 /// </summary>
-public class ScenarioExactHitCounterConditionChecker : IConditionChecker, ISingletonService
+public class ScenarioExactHitCounterConditionChecker(IStubContext stubContext) : BaseConditionChecker, ISingletonService
 {
-    private readonly IStubContext _stubContext;
-
-    /// <summary>
-    ///     Constructs a <see cref="ScenarioExactHitCounterConditionChecker" /> instance.
-    /// </summary>
-    public ScenarioExactHitCounterConditionChecker(IStubContext stubContext)
-    {
-        _stubContext = stubContext;
-    }
+    /// <inheritdoc />
+    public override int Priority => 8;
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var result = new ConditionCheckResultModel();
-        var exactHits = stub.Conditions?.Scenario?.ExactHits;
-        if (exactHits == null)
-        {
-            return result;
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Scenario?.ExactHits != null;
 
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var exactHits = stub.Conditions?.Scenario?.ExactHits;
         var scenario = stub.Scenario;
-        var rawHitCount = await _stubContext.GetHitCountAsync(scenario, cancellationToken);
+        var rawHitCount = await stubContext.GetHitCountAsync(scenario, cancellationToken);
         var actualHitCount =
             rawHitCount +
             1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
         if (actualHitCount == null)
         {
-            result.Log = "No hit count could be found.";
-            result.ConditionValidation = ConditionValidationType.Invalid;
-        }
-        else if (actualHitCount != exactHits)
-        {
-            result.Log =
-                $"Scenario '{scenario}' should have exactly '{exactHits}' hits, but '{actualHitCount}' hits were counted.";
-            result.ConditionValidation = ConditionValidationType.Invalid;
-        }
-        else
-        {
-            result.ConditionValidation = ConditionValidationType.Valid;
+            return await InvalidAsync("No hit count could be found.");
         }
 
-        return result;
+        if (actualHitCount != exactHits)
+        {
+            return await InvalidAsync(
+                $"Scenario '{scenario}' should have exactly '{exactHits}' hits, but '{actualHitCount}' hits were counted.");
+        }
+
+        return await ValidAsync();
     }
-
-    /// <inheritdoc />
-    public int Priority => 8;
 }

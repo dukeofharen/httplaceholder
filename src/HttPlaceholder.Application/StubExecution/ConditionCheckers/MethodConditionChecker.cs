@@ -6,36 +6,27 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker to validate the HTTP method.
 /// </summary>
-public class MethodConditionChecker : IConditionChecker, ISingletonService
+public class MethodConditionChecker(IHttpContextService httpContextService) : BaseConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-
-    /// <summary>
-    ///     Constructs a <see cref="MethodConditionChecker" /> instance.
-    /// </summary>
-    public MethodConditionChecker(IHttpContextService httpContextService)
-    {
-        _httpContextService = httpContextService;
-    }
+    /// <inheritdoc />
+    public override int Priority => 10;
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var result = new ConditionCheckResultModel();
-        var condition = stub.Conditions?.Method;
-        if (condition == null)
-        {
-            return Task.FromResult(result);
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Method != null;
 
-        var method = _httpContextService.Method;
+    /// <inheritdoc />
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var condition = stub.Conditions?.Method;
+        var method = httpContextService.Method;
         if ((condition is string methodCondition &&
              string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase)) || (condition is not string &&
                 ConversionUtilities
@@ -43,17 +34,9 @@ public class MethodConditionChecker : IConditionChecker, ISingletonService
                     .Any(mc => string.Equals(mc, method, StringComparison.OrdinalIgnoreCase))))
         {
             // The path matches the provided condition. Add the stub ID to the resulting list.
-            result.ConditionValidation = ConditionValidationType.Valid;
-        }
-        else
-        {
-            result.Log = $"Condition '{condition}' did not pass for request.";
-            result.ConditionValidation = ConditionValidationType.Invalid;
+            return ValidAsync();
         }
 
-        return Task.FromResult(result);
+        return InvalidAsync($"Condition '{condition}' did not pass for request.");
     }
-
-    /// <inheritdoc />
-    public int Priority => 10;
 }

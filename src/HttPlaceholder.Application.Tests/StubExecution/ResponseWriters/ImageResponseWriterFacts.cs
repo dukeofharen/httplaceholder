@@ -35,7 +35,7 @@ public class ImageResponseWriterFacts
     public async Task WriteToResponseAsync_StubNotConfigured_ShouldReturnNotExecuted()
     {
         // Arrange
-        var stub = new StubModel {Response = new StubResponseModel {Image = null}};
+        var stub = new StubModel { Response = new StubResponseModel { Image = null } };
         var response = new ResponseModel();
 
         // Act
@@ -56,12 +56,12 @@ public class ImageResponseWriterFacts
         {
             Response = new StubResponseModel
             {
-                Image = new StubResponseImageModel {Type = ResponseImageType.Jpeg, Height = 512, Width = 512}
+                Image = new StubResponseImageModel { Type = ResponseImageType.Jpeg, Height = 512, Width = 512 }
             }
         };
         var response = new ResponseModel();
 
-        var cachedBytes = new byte[] {1, 2, 3, 4};
+        var cachedBytes = new byte[] { 1, 2, 3, 4 };
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
         _mockFileService
             .Setup(m => m.FileExistsAsync(expectedCachePath, It.IsAny<CancellationToken>()))
@@ -92,7 +92,7 @@ public class ImageResponseWriterFacts
         {
             Response = new StubResponseModel
             {
-                Image = new StubResponseImageModel {Type = type, Height = 512, Width = 512}
+                Image = new StubResponseImageModel { Type = type, Height = 512, Width = 512 }
             }
         };
         var response = new ResponseModel();

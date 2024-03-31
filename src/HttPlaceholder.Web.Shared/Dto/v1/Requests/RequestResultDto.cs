@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces.Mappings;
+﻿using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Web.Shared.Dto.v1.Requests;
@@ -7,7 +7,7 @@ namespace HttPlaceholder.Web.Shared.Dto.v1.Requests;
 ///     A model for storing a request.
 /// </summary>
 public class
-    RequestResultDto : IMapFrom<RequestResultModel> //, IMapTo<RequestResultModel> // TODO niet nodig volgens mij
+    RequestResultDto : IMapFrom<RequestResultModel>
 {
     /// <summary>
     ///     Gets or sets the correlation identifier.

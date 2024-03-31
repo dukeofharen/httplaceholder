@@ -1,16 +1,21 @@
 ﻿using HttPlaceholder.Application;
-using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Persistence;
-using HttPlaceholder.Resources;
+using HttPlaceholder.Web.Shared.Formatters;
 using HttPlaceholder.Web.Shared.Middleware;
-using HttPlaceholder.WebInfrastructure;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HttPlaceholder.Web.Shared.Utilities;
 
@@ -20,6 +25,54 @@ namespace HttPlaceholder.Web.Shared.Utilities;
 public static class StartupUtilities
 {
     /// <summary>
+    ///     Configures the web application.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
+    /// <param name="preloadStubs">Whether to preload the stubs or not.</param>
+    /// <param name="settings">The HttPlaceholder settings.</param>
+    public static IApplicationBuilder Configure(this IApplicationBuilder app, bool preloadStubs,
+        SettingsModel settings) =>
+        app
+            .UseHttPlaceholder()
+            .UseCustomOpenApi()
+            .UseSwaggerUi()
+            .UseGui(settings?.Gui?.EnableUserInterface == true)
+            .PreloadStubs(preloadStubs)
+            .UseRouting();
+
+    /// <summary>
+    ///     Configures the service collection.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The configuration.</param>
+    public static IServiceCollection ConfigureServices<TStartup>(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services
+            .AddMvc()
+            .AddNewtonsoftJson(o =>
+            {
+                o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                o.SerializerSettings.Converters.Add(new StringEnumConverter());
+            })
+            .AddApplicationPart(typeof(TStartup).Assembly);
+        services.Configure<MvcOptions>(o =>
+        {
+            o.RespectBrowserAcceptHeader = true;
+            o.ReturnHttpNotAcceptable = true;
+            o
+                .AddYamlFormatting()
+                .AddPlainTextFormatting();
+        });
+        services
+            .AddHttPlaceholder(configuration)
+            .AddHttpContextAccessor()
+            .AddLogging()
+            .AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
+        return services;
+    }
+
+    /// <summary>
     ///     Add the necessary HttPlaceholder classes to the service collection.
     /// </summary>
     /// <param name="services">The service collection.</param>
@@ -28,12 +81,10 @@ public static class StartupUtilities
         IConfiguration configuration) =>
         services
             .Configure<SettingsModel>(configuration)
-            .AddWebInfrastructureModule()
             .AddInfrastructureModule()
             .AddApplicationModule()
             .AddPersistenceModule(configuration)
             .Scan(scan => scan.FromCallingAssembly().RegisterDependencies())
-            .AddResourcesModule()
             .AddAutoMapper(
                 config => config.AllowNullCollections = true,
                 typeof(StartupUtilities).Assembly,
@@ -51,30 +102,17 @@ public static class StartupUtilities
             return app;
         }
 
-        var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
-        if (Directory.Exists(path))
+        var guiPath = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
+        if (Directory.Exists(guiPath))
         {
-            app.UseMiddleware<IndexHtmlMiddleware>(path);
+            app.UseMiddleware<IndexHtmlMiddleware>(guiPath);
             app.UseFileServer(new FileServerOptions
             {
-                EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(path), RequestPath = "/ph-ui"
+                EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(guiPath), RequestPath = "/ph-ui"
             });
         }
 
         return app;
-    }
-
-    /// <summary>
-    ///     Adds a file server for serving several other static files
-    /// </summary>
-    /// <param name="app">The application builder.</param>
-    public static IApplicationBuilder UsePhStatic(this IApplicationBuilder app)
-    {
-        var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/ph-static";
-        return app.UseFileServer(new FileServerOptions
-        {
-            EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(path), RequestPath = "/ph-static"
-        });
     }
 
     /// <summary>

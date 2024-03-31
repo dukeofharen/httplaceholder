@@ -41,7 +41,7 @@ public class UpdateAllStubsByTenantFacts : BaseClientTest
             .WithPartialContent("stub2")
             .Respond(HttpStatusCode.NoContent)));
 
-        var input = new[] {new StubDto {Id = "stub1"}, new StubDto {Id = "stub2"}};
+        var input = new[] { new StubDto { Id = "stub1" }, new StubDto { Id = "stub2" } };
 
         // Act / Assert
         await client.UpdateAllStubsByTenantAsync(tenant, input);
@@ -60,7 +60,7 @@ public class UpdateAllStubsByTenantFacts : BaseClientTest
 
         var stub1 = StubBuilder.Begin().WithId("stub1");
         var stub2 = StubBuilder.Begin().WithId("stub2");
-        var input = new[] {stub1, stub2};
+        var input = new[] { stub1, stub2 };
 
         // Act / Assert
         await client.UpdateAllStubsByTenantAsync(tenant, input);

@@ -8,7 +8,7 @@ namespace HttPlaceholder.TestUtilities.Http;
 
 internal class MockSession : ISession
 {
-    private readonly IDictionary<string, byte[]> _dictionary = new Dictionary<string, byte[]>();
+    private readonly Dictionary<string, byte[]> _dictionary = new();
 
     public Task LoadAsync(CancellationToken cancellationToken = new()) => throw new NotImplementedException();
 

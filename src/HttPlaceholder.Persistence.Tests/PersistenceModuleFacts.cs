@@ -2,7 +2,7 @@
 using System.Linq;
 using HttPlaceholder.Persistence.Db.Implementations;
 using HttPlaceholder.Persistence.FileSystem.Implementations;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +11,7 @@ namespace HttPlaceholder.Persistence.Tests;
 [TestClass]
 public class PersistenceModuleFacts
 {
-    private readonly IDictionary<string, string> _args = new Dictionary<string, string>();
+    private readonly Dictionary<string, string> _args = new();
     private readonly IServiceCollection _services = new ServiceCollection();
 
     [TestMethod]

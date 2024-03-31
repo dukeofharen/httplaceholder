@@ -16,7 +16,7 @@ namespace HttPlaceholder.Client.Examples;
 
 internal static class Program
 {
-    private static async Task Main(string[] args)
+    private static async Task Main()
     {
         var services = new ServiceCollection();
         services.AddHttPlaceholderClient(c =>
@@ -56,7 +56,7 @@ internal static class Program
             // Create stub.
             var createdStub = await client.CreateStubAsync(new StubDto
             {
-                Id = "test-stub-123", Response = new StubResponseDto {Text = "Let's go yeah!"}
+                Id = "test-stub-123", Response = new StubResponseDto { Text = "Let's go yeah!" }
             });
 
             // Create stub using a builder.
@@ -67,16 +67,16 @@ internal static class Program
                     .WithPath(StringEquals("/test-path"))
                     .WithHttpMethod(HttpMethod.Get))
                 .WithResponse(StubResponseBuilder.Begin()
-                    .WithJsonBody(new {key1 = "val1", key2 = "val2"})));
+                    .WithJsonBody(new { key1 = "val1", key2 = "val2" })));
 
             // Create multiple stubs.
             var createdStubs = await client.CreateStubsAsync(
-                new StubDto {Id = "test-stub-1", Response = new StubResponseDto {Text = "Let's go yeah!"}},
-                new StubDto {Id = "test-stub-2", Response = new StubResponseDto {Text = "Let's go yeah!"}});
+                new StubDto { Id = "test-stub-1", Response = new StubResponseDto { Text = "Let's go yeah!" } },
+                new StubDto { Id = "test-stub-2", Response = new StubResponseDto { Text = "Let's go yeah!" } });
 
             // Update stub.
             await client.UpdateStubAsync(
-                new StubDto {Id = "test-stub-123", Response = new StubResponseDto {Text = "Let's go yeah!!"}},
+                new StubDto { Id = "test-stub-123", Response = new StubResponseDto { Text = "Let's go yeah!!" } },
                 "test-stub-123");
 
             // Get all stubs.
@@ -102,8 +102,8 @@ internal static class Program
             await client.UpdateAllStubsByTenantAsync("test-tenant",
                 new[]
                 {
-                    new StubDto {Id = "tenant-stub-1", Response = new StubResponseDto {Text = "response 1"}},
-                    new StubDto {Id = "tenant-stub-2", Response = new StubResponseDto {Text = "response 2"}}
+                    new StubDto { Id = "tenant-stub-1", Response = new StubResponseDto { Text = "response 1" } },
+                    new StubDto { Id = "tenant-stub-2", Response = new StubResponseDto { Text = "response 2" } }
                 });
 
             // Get stubs by tenant.
@@ -126,7 +126,7 @@ internal static class Program
 
             // Set scenario.
             await client.SetScenarioAsync("scenario-1",
-                new ScenarioStateInputDto {State = "new-state", HitCount = 1});
+                new ScenarioStateInputDto { State = "new-state", HitCount = 1 });
 
             // Get scenario.
             var scenarioState = await client.GetScenarioStateAsync("scenario-1");
@@ -141,40 +141,42 @@ internal static class Program
             await client.DeleteAllScenariosAsync();
 
             // Create stubs based on cURL commands.
-            const string commands = @"curl 'https://site.com/_nuxt/fonts/fa-solid-900.3eb06c7.woff2' \
-  -H 'sec-ch-ua: "" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""' \
-  -H 'Referer: ' \
-  -H 'Origin: https://site.com' \
-  -H 'sec-ch-ua-mobile: ?0' \
-  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
-  -H 'sec-ch-ua-platform: ""Linux""' \
-  --compressed ;
-curl 'https://site.com/_nuxt/css/4cda201.css' \
-  -H 'authority: site.com' \
-  -H 'sec-ch-ua: "" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""' \
-  -H 'sec-ch-ua-mobile: ?0' \
-  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
-  -H 'sec-ch-ua-platform: ""Linux""' \
-  -H 'accept: text/css,*/*;q=0.1' \
-  -H 'sec-fetch-site: same-origin' \
-  -H 'sec-fetch-mode: no-cors' \
-  -H 'sec-fetch-dest: style' \
-  -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \
-  -H 'cookie: Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=' \
-  --compressed ;
-curl 'https://site.com/_nuxt/1d6c3a9.js' \
-  -H 'authority: site.com' \
-  -H 'sec-ch-ua: "" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""' \
-  -H 'sec-ch-ua-mobile: ?0' \
-  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
-  -H 'sec-ch-ua-platform: ""Linux""' \
-  -H 'accept: */*' \
-  -H 'sec-fetch-site: same-origin' \
-  -H 'sec-fetch-mode: no-cors' \
-  -H 'sec-fetch-dest: script' \
-  -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \
-  -H 'cookie: Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=' \
-  --compressed";
+            const string commands = """
+                                    curl 'https://site.com/_nuxt/fonts/fa-solid-900.3eb06c7.woff2' \
+                                      -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"' \
+                                      -H 'Referer: ' \
+                                      -H 'Origin: https://site.com' \
+                                      -H 'sec-ch-ua-mobile: ?0' \
+                                      -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
+                                      -H 'sec-ch-ua-platform: "Linux"' \
+                                      --compressed ;
+                                    curl 'https://site.com/_nuxt/css/4cda201.css' \
+                                      -H 'authority: site.com' \
+                                      -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"' \
+                                      -H 'sec-ch-ua-mobile: ?0' \
+                                      -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
+                                      -H 'sec-ch-ua-platform: "Linux"' \
+                                      -H 'accept: text/css,*/*;q=0.1' \
+                                      -H 'sec-fetch-site: same-origin' \
+                                      -H 'sec-fetch-mode: no-cors' \
+                                      -H 'sec-fetch-dest: style' \
+                                      -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \
+                                      -H 'cookie: Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=' \
+                                      --compressed ;
+                                    curl 'https://site.com/_nuxt/1d6c3a9.js' \
+                                      -H 'authority: site.com' \
+                                      -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"' \
+                                      -H 'sec-ch-ua-mobile: ?0' \
+                                      -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
+                                      -H 'sec-ch-ua-platform: "Linux"' \
+                                      -H 'accept: */*' \
+                                      -H 'sec-fetch-site: same-origin' \
+                                      -H 'sec-fetch-mode: no-cors' \
+                                      -H 'sec-fetch-dest: script' \
+                                      -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \
+                                      -H 'cookie: Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=' \
+                                      --compressed
+                                    """;
             var curlCommandResult = await client.CreateCurlStubsAsync(new ImportStubsModel(commands));
 
             // Create stubs based on HTTP archive (HAR).
@@ -193,7 +195,7 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
 
             // Update configuration
             await client.UpdateConfigurationValueAsync(
-                new UpdateConfigurationValueInputDto {ConfigurationKey = "storeResponses", NewValue = "false"});
+                new UpdateConfigurationValueInputDto { ConfigurationKey = "storeResponses", NewValue = "false" });
 
             // Retrieve the configuration.
             var config = await client.GetConfigurationAsync();

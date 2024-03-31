@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,9 +16,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class ScenarioHitCountVariableParsingHandler(
     IStubContext stubContext,
-    IFileService fileService,
     ICacheService cacheService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "scenario_hitcount";
@@ -25,10 +25,13 @@ internal class ScenarioHitCountVariableParsingHandler(
     /// <inheritdoc />
     public override string FullName => "Scenario hit count";
 
-    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
+    public override string[] Examples => [$"(({Name}))", $"(({Name}:scenario name))"];
 
     /// <inheritdoc />
-    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    public override string GetDescription() => ResponseVariableParsingResources.ScenarioHitcount;
+
+    /// <inheritdoc />
+    protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
         var result = input;

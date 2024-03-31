@@ -27,14 +27,14 @@ public class OpenApiToStubConverterFacts
 
         var line = new OpenApiLine
         {
-            Operation = new OpenApiOperation {Summary = "API to get users"},
+            Operation = new OpenApiOperation { Summary = "API to get users" },
             OperationType = OperationType.Post,
             PathKey = "/users",
             Response = new OpenApiResponse(),
             ResponseKey = "200"
         };
         const string serverUrl = "http://localhost";
-        var server = new OpenApiServer {Url = serverUrl};
+        var server = new OpenApiServer { Url = serverUrl };
         const string tenant = "tenant1";
         const string prefix = "prefix";
 

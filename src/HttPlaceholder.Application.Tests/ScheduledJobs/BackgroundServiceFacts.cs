@@ -4,7 +4,7 @@ using HttPlaceholder.Common;
 using HttPlaceholder.TestUtilities.Logging;
 using Microsoft.Extensions.Logging;
 
-namespace HttPlaceholder.Web.Shared.Tests.HostedServices;
+namespace HttPlaceholder.Application.Tests.ScheduledJobs;
 
 [TestClass]
 public class BackgroundServiceFacts
@@ -30,7 +30,7 @@ public class BackgroundServiceFacts
 
         var service = _mocker.CreateInstance<SucceedingBackgroundService>();
 
-        service.StoppingCts.Cancel();
+        await service.StoppingCts.CancelAsync();
 
         // Act
         await service.StartAsync(CancellationToken.None);
@@ -54,7 +54,7 @@ public class BackgroundServiceFacts
             .Setup(m => m.Now)
             .Returns(new DateTime(2022, 2, 6, 4, 5, 1));
 
-        service.StoppingCts.Cancel();
+        await service.StoppingCts.CancelAsync();
 
         // Act
         await service.StartAsync(CancellationToken.None);
@@ -78,7 +78,7 @@ public class BackgroundServiceFacts
             .Setup(m => m.Now)
             .Returns(new DateTime(2022, 2, 6, 4, 5, 1));
 
-        service.StoppingCts.Cancel();
+        await service.StoppingCts.CancelAsync();
 
         // Act
         await service.StartAsync(CancellationToken.None);
@@ -87,7 +87,7 @@ public class BackgroundServiceFacts
         Assert.IsTrue(service.ProcessCalled);
         var logEvent = _loggerMock.Entries.Single(e => e.LogLevel == LogLevel.Error);
         Assert.IsTrue(logEvent.State.Contains("Unexpected exception thrown while executing service") &&
-                      logEvent.State.Contains("PROCESSING WENT WRONG!"));
+                      logEvent.Exception.Message.Contains("PROCESSING WENT WRONG!"));
     }
 
     [TestMethod]
@@ -117,7 +117,7 @@ public class BackgroundServiceFacts
         Assert.IsTrue(service.StoppingCts.IsCancellationRequested);
     }
 
-    private class SucceedingBackgroundService(
+    private sealed class SucceedingBackgroundService(
         ILogger<BackgroundService> logger,
         IDateTime dateTime,
         IAsyncService asyncService)
@@ -138,7 +138,7 @@ public class BackgroundServiceFacts
         }
     }
 
-    private class FailingBackgroundService(
+    private sealed class FailingBackgroundService(
         ILogger<BackgroundService> logger,
         IDateTime dateTime,
         IAsyncService asyncService)

@@ -51,8 +51,8 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
         var parsedHttpMethod = new HttpMethod(httpMethod);
         var request =
             new HttpRequestMessage(parsedHttpMethod, $"{TestServer.BaseAddress}{relativeUrl}");
-        request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
-        var methodsToCheck = new[] {HttpMethod.Patch, HttpMethod.Post, HttpMethod.Put};
+        request.Headers.Add(HeaderKeys.Authorization, HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
+        var methodsToCheck = new[] { HttpMethod.Patch, HttpMethod.Post, HttpMethod.Put };
         if (methodsToCheck.Contains(parsedHttpMethod))
         {
             request.Content = new StringContent(postArray ? "[]" : "{}", Encoding.UTF8, MimeTypes.JsonMime);
@@ -109,7 +109,7 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
         var parsedHttpMethod = new HttpMethod(httpMethod);
         var request =
             new HttpRequestMessage(parsedHttpMethod, $"{TestServer.BaseAddress}{relativeUrl}");
-        request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
+        request.Headers.Add(HeaderKeys.Authorization, HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
         if (parsedHttpMethod == HttpMethod.Post || parsedHttpMethod == HttpMethod.Put)
         {
             request.Content = new StringContent("{}", Encoding.UTF8, MimeTypes.JsonMime);

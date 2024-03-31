@@ -21,11 +21,11 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}todoitems/todos/1";
-        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { RequestUri = new Uri(url) };
 
         MockHttp
             .When(HttpMethod.Get, "https://jsonplaceholder.typicode.com/todos/1")
-            .Respond(HttpStatusCode.OK, new Dictionary<string, string> {{"X-Header", "value-from-proxy"}},
+            .Respond(HttpStatusCode.OK, new Dictionary<string, string> { { "X-Header", "value-from-proxy" } },
                 MimeTypes.TextMime, "OK from Proxy");
 
         // Act / Assert
@@ -42,7 +42,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}todoitems/todos/1?key=val&key2=val2";
-        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { RequestUri = new Uri(url) };
 
         MockHttp
             .When(HttpMethod.Get, "https://jsonplaceholder.typicode.com/todos/1?key=val&key2=val2")

@@ -3,45 +3,26 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker that is used to verify the hostname.
 /// </summary>
-public class HostConditionChecker : IConditionChecker, ISingletonService
+public class HostConditionChecker(IClientDataResolver clientDataResolver, IStringChecker stringChecker)
+    : BaseConditionChecker, ISingletonService
 {
-    private readonly IClientDataResolver _clientDataResolver;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="HostConditionChecker" /> instance.
-    /// </summary>
-    public HostConditionChecker(IClientDataResolver clientDataResolver, IStringChecker stringChecker)
-    {
-        _clientDataResolver = clientDataResolver;
-        _stringChecker = stringChecker;
-    }
+    /// <inheritdoc />
+    public override int Priority => 10;
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var result = new ConditionCheckResultModel();
-        var hostCondition = stub.Conditions?.Host;
-        if (hostCondition == null)
-        {
-            return Task.FromResult(result);
-        }
-
-        var host = _clientDataResolver.GetHost();
-        result.ConditionValidation = !_stringChecker.CheckString(host, hostCondition, out _)
-            ? ConditionValidationType.Invalid
-            : ConditionValidationType.Valid;
-
-        return Task.FromResult(result);
-    }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Host != null;
 
     /// <inheritdoc />
-    public int Priority => 10;
+    protected override Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken) =>
+        !stringChecker.CheckString(clientDataResolver.GetHost(), stub.Conditions.Host, out _)
+            ? InvalidAsync()
+            : ValidAsync();
 }

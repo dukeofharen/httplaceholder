@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Infrastructure.Implementations;
@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 [TestClass]
 public class StubModelValidatorFacts
 {
-    private readonly SettingsModel _settings = new() {Stub = new StubSettingsModel()};
+    private readonly SettingsModel _settings = new() { Stub = new StubSettingsModel() };
 
     private StubModelValidator _validator;
 
@@ -22,7 +22,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_IdNotSet_ShouldReturnError()
     {
         // Arrange
-        var model = new StubModel {Id = null};
+        var model = new StubModel { Id = null };
 
         // Act
         var result = _validator.ValidateStubModel(model);
@@ -35,7 +35,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ResponseNotSet_ShouldReturnError()
     {
         // Arrange
-        var model = new StubModel {Id = "stub-1", Response = null};
+        var model = new StubModel { Id = "stub-1", Response = null };
 
         // Act
         var result = _validator.ValidateStubModel(model);
@@ -56,7 +56,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateStatusCodes(int? statusCode, bool shouldSucceed)
     {
         // Arrange
-        var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {StatusCode = statusCode}};
+        var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { StatusCode = statusCode } };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();
@@ -81,7 +81,7 @@ public class StubModelValidatorFacts
     {
         // Arrange
         _settings.Stub.MaximumExtraDurationMillis = configuredMillis;
-        var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {ExtraDuration = stubMillis}};
+        var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { ExtraDuration = stubMillis } };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();
@@ -106,7 +106,7 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Min = min, Max = max}}
+            Response = new StubResponseModel { ExtraDuration = new StubExtraDurationModel { Min = min, Max = max } }
         };
 
         // Act
@@ -128,7 +128,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateLineEndings(LineEndingType? lineEndingType, bool shouldSucceed)
     {
         // Arrange
-        var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {LineEndings = lineEndingType}};
+        var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { LineEndings = lineEndingType } };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();
@@ -155,7 +155,10 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel {Image = new StubResponseImageModel {BackgroundColor = colorHexCode}}
+            Response = new StubResponseModel
+            {
+                Image = new StubResponseImageModel { BackgroundColor = colorHexCode }
+            }
         };
 
         // Act
@@ -184,7 +187,7 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel {Image = new StubResponseImageModel {FontColor = colorHexCode}}
+            Response = new StubResponseModel { Image = new StubResponseImageModel { FontColor = colorHexCode } }
         };
 
         // Act
@@ -210,7 +213,7 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel {Image = new StubResponseImageModel {JpegQuality = jpegQuality}}
+            Response = new StubResponseModel { Image = new StubResponseImageModel { JpegQuality = jpegQuality } }
         };
 
         // Act
@@ -286,7 +289,7 @@ public class StubModelValidatorFacts
         var result = _validator.ValidateStubModel(model).ToArray();
         if (expectedError == null)
         {
-            Assert.IsFalse(result.Any(),
+            Assert.IsFalse(result.Length != 0,
                 $"No validation errors expected, but got at least one: {string.Join(Environment.NewLine, result)}");
         }
         else
@@ -351,7 +354,7 @@ public class StubModelValidatorFacts
         // Arrange
         var model = new StubModel
         {
-            Id = "stub", Response = new StubResponseModel {StatusCode = statusCode, Text = "Some response"}
+            Id = "stub", Response = new StubResponseModel { StatusCode = statusCode, Text = "Some response" }
         };
 
         // Act
@@ -387,7 +390,7 @@ public class StubModelValidatorFacts
             Id = "stub",
             Response = new StubResponseModel
             {
-                Text = "Some response", Headers = headers.Split(',').ToDictionary(h => h, h => "headerValue")
+                Text = "Some response", Headers = headers.Split(',').ToDictionary(h => h, _ => "headerValue")
             }
         };
 
@@ -408,7 +411,7 @@ public class StubModelValidatorFacts
 
     [DataTestMethod]
     [DataRow("text", "regex", null, "replace", "Replace [0]: 'text' and 'regex' can't both be set.")]
-    [DataRow(null, null, null, "replace", "Replace [0]: either 'text' or 'regex' neets to be set.")]
+    [DataRow(null, null, null, "replace", "Replace [0]: either 'text' or 'regex' needs to be set.")]
     [DataRow(null, "regex", true, "replace",
         "Replace [0]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.")]
     [DataRow(null, "regex", null, null, "Replace [0]: 'replaceWith' should be set.")]
@@ -423,7 +426,7 @@ public class StubModelValidatorFacts
         {
             Text = text, Regex = regex, IgnoreCase = ignoreCase, ReplaceWith = replaceWith
         };
-        var model = new StubModel {Id = "stub", Response = new StubResponseModel {Replace = new[] {dto}}};
+        var model = new StubModel { Id = "stub", Response = new StubResponseModel { Replace = new[] { dto } } };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();

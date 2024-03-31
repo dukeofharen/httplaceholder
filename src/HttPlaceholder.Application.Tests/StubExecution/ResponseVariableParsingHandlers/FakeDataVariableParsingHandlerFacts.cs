@@ -1,10 +1,8 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
-using HttPlaceholder.Common;
 using Match = System.Text.RegularExpressions.Match;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
@@ -31,7 +29,7 @@ public class FakeDataVariableParsingHandlerFacts
         string expectedFormatting)
     {
         // Arrange
-        var locales = new[] {"en_US"};
+        var locales = new[] { "en_US" };
         var fakerServiceMock = _mocker.GetMock<IFakerService>();
         fakerServiceMock
             .Setup(m => m.GetLocales())
@@ -52,18 +50,10 @@ public class FakeDataVariableParsingHandlerFacts
     public void GetDescription_HappyFlow()
     {
         // Arrange
-        var locales = new[] {"en_US", "nl"};
-        const string description = "the description [LOCALES]";
-        const string expectedDescription = "the description _en_US_, _nl_";
+        var locales = new[] { "en_US", "nl" };
 
-        var fileServiceMock = _mocker.GetMock<IFileService>();
         var fakerServiceMock = _mocker.GetMock<IFakerService>();
         var handler = _mocker.CreateInstance<FakeDataVariableParsingHandler>();
-
-        fileServiceMock
-            .Setup(m => m.ReadAllText(It.Is<string>(p =>
-                p.EndsWith(Path.Combine("Files", "VarParser", "fake_data-description.md")))))
-            .Returns(description);
 
         fakerServiceMock
             .Setup(m => m.GetLocales())
@@ -73,21 +63,15 @@ public class FakeDataVariableParsingHandlerFacts
         var result = handler.GetDescription();
 
         // Assert
-        Assert.AreEqual(expectedDescription, result);
-
-        // Act
-        result = handler.GetDescription();
-
-        // Assert
-        Assert.AreEqual(expectedDescription, result);
-        fileServiceMock.Verify(m => m.ReadAllText(It.IsAny<string>()), Times.Once);
+        Assert.IsTrue(result.Contains("_en_US_, _nl_"));
+        Assert.IsTrue(result.Contains("This handler can be inserted in the following ways:"));
     }
 
     [TestMethod]
     public void Examples_HappyFlow()
     {
         // Arrange
-        var locales = new[] {"en_US", "nl"};
+        var locales = new[] { "en_US", "nl" };
         var generators = new[]
         {
             new FakeDataGeneratorModel("gen1", (_, _, _) => string.Empty),
@@ -147,7 +131,7 @@ public class FakeDataVariableParsingHandlerFacts
     public async Task Parse_Matches_HappyFlow()
     {
         // Arrange
-        var locales = new[] {"en_US", "nl"};
+        var locales = new[] { "en_US", "nl" };
 
         var fakerServiceMock = _mocker.GetMock<IFakerService>();
         fakerServiceMock
@@ -158,7 +142,7 @@ public class FakeDataVariableParsingHandlerFacts
         const string input = "((fake_data:gen1)) ((fake_data:nl:gen2:5))";
         const string expectedOutput = "fake1 fake2";
 
-        var stubModel = new StubModel {Scenario = "stub-scenario"};
+        var stubModel = new StubModel { Scenario = "stub-scenario" };
 
         fakerServiceMock
             .Setup(m => m.GenerateFakeData("gen1", string.Empty, string.Empty))

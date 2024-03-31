@@ -13,7 +13,7 @@ public class RedirectResponseWriterFacts
         // arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel {PermanentRedirect = null, TemporaryRedirect = null}
+            Response = new StubResponseModel { PermanentRedirect = null, TemporaryRedirect = null }
         };
 
         var response = new ResponseModel();
@@ -30,7 +30,7 @@ public class RedirectResponseWriterFacts
     public async Task RedirectResponseWriter_WriteToResponseAsync_TempRedirect()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {TemporaryRedirect = "https://google.com"}};
+        var stub = new StubModel { Response = new StubResponseModel { TemporaryRedirect = "https://google.com" } };
 
         var response = new ResponseModel();
 
@@ -47,7 +47,7 @@ public class RedirectResponseWriterFacts
     public async Task RedirectResponseWriter_WriteToResponseAsync_MovedPermanently()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {MovedPermanently = "https://google.com"}};
+        var stub = new StubModel { Response = new StubResponseModel { MovedPermanently = "https://google.com" } };
 
         var response = new ResponseModel();
 
@@ -64,7 +64,7 @@ public class RedirectResponseWriterFacts
     public async Task RedirectResponseWriter_WriteToResponseAsync_PermanentRedirect()
     {
         // arrange
-        var stub = new StubModel {Response = new StubResponseModel {PermanentRedirect = "https://google.com"}};
+        var stub = new StubModel { Response = new StubResponseModel { PermanentRedirect = "https://google.com" } };
 
         var response = new ResponseModel();
 

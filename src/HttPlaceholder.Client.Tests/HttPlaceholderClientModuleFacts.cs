@@ -14,7 +14,7 @@ public class HttPlaceholderClientModuleFacts
         // Arrange
         var configDict = new Dictionary<string, string>
         {
-            {"RootUrl", "http://localhost:5000"}, {"Username", "username"}, {"Password", "password"}
+            { "RootUrl", "http://localhost:5000" }, { "Username", "username" }, { "Password", "password" }
         };
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(configDict)

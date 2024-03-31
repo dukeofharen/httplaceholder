@@ -4,46 +4,41 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker that verifies the incoming request body.
 /// </summary>
-public class BodyConditionChecker : IConditionChecker, ISingletonService
+public class BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
+    : BaseConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IStringChecker _stringChecker;
+    /// <inheritdoc />
+    public override int Priority => 8;
 
-    /// <summary>
-    ///     Constructs a <see cref="BodyConditionChecker" /> instance.
-    /// </summary>
-    public BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
+    /// <inheritdoc />
+    protected override bool ShouldBeExecuted(StubModel stub)
     {
-        _httpContextService = httpContextService;
-        _stringChecker = stringChecker;
+        var bodyConditions = stub.Conditions?.Body?.ToArray();
+        return bodyConditions is { Length: > 0 };
     }
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
     {
-        var result = new ConditionCheckResultModel();
-        var bodyConditions = stub.Conditions?.Body?.ToArray();
-        if (bodyConditions == null || bodyConditions?.Any() != true)
-        {
-            return result;
-        }
-
-        var body = await _httpContextService.GetBodyAsync(cancellationToken);
+        var bodyConditions = stub.Conditions.Body.ToArray();
+        var body = await httpContextService.GetBodyAsync(cancellationToken);
 
         var validBodyConditions = 0;
+        var log = string.Empty;
         foreach (var condition in bodyConditions)
         {
-            if (!_stringChecker.CheckString(body, condition, out var outputForLogging))
+            if (!stringChecker.CheckString(body, condition, out var outputForLogging))
             {
                 // If the check failed, it means the body condition is incorrect and the condition should fail.
-                result.Log = $"Body condition '{outputForLogging}' failed.";
+                log = $"Body condition '{outputForLogging}' failed.";
                 break;
             }
 
@@ -52,13 +47,8 @@ public class BodyConditionChecker : IConditionChecker, ISingletonService
 
         // If the number of succeeded conditions is equal to the actual number of conditions,
         // the body condition is passed and the stub ID is passed to the result.
-        result.ConditionValidation = validBodyConditions == bodyConditions.Length
-            ? ConditionValidationType.Valid
-            : ConditionValidationType.Invalid;
-
-        return result;
+        return validBodyConditions == bodyConditions.Length
+            ? await ValidAsync(log)
+            : await InvalidAsync(log);
     }
-
-    /// <inheritdoc />
-    public int Priority => 8;
 }

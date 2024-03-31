@@ -12,30 +12,32 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class CreateStubFacts : BaseClientTest
 {
-    private const string CreateStubResponse = @"{
-    ""stub"": {
-        ""id"": ""test-situation"",
-        ""conditions"": {
-            ""method"": ""GET"",
-            ""url"": {
-                ""path"": ""/testtesttest"",
-                ""query"": {
-                    ""id"": ""13""
-                }
-            }
-        },
-        ""response"": {
-            ""statusCode"": 200,
-            ""text"": ""OK my dude!""
-        },
-        ""priority"": 0,
-        ""tenant"": ""01-get"",
-        ""enabled"": true
-    },
-    ""metadata"": {
-        ""readOnly"": false
-    }
-}";
+    private const string CreateStubResponse = """
+                                              {
+                                                  "stub": {
+                                                      "id": "test-situation",
+                                                      "conditions": {
+                                                          "method": "GET",
+                                                          "url": {
+                                                              "path": "/testtesttest",
+                                                              "query": {
+                                                                  "id": "13"
+                                                              }
+                                                          }
+                                                      },
+                                                      "response": {
+                                                          "statusCode": 200,
+                                                          "text": "OK my dude!"
+                                                      },
+                                                      "priority": 0,
+                                                      "tenant": "01-get",
+                                                      "enabled": true
+                                                  },
+                                                  "metadata": {
+                                                      "readOnly": false
+                                                  }
+                                              }
+                                              """;
 
     [TestMethod]
     public async Task CreateStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
@@ -74,10 +76,10 @@ public class CreateStubFacts : BaseClientTest
                 Method = "GET",
                 Url = new StubUrlConditionDto
                 {
-                    Path = "/testtesttest", Query = new Dictionary<string, object> {{"id", "13"}}
+                    Path = "/testtesttest", Query = new Dictionary<string, object> { { "id", "13" } }
                 }
             },
-            Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}
+            Response = new StubResponseDto { StatusCode = 200, Text = "OK my dude!" }
         };
 
         // Act

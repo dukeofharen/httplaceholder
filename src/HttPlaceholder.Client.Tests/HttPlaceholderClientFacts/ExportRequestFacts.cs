@@ -9,7 +9,8 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class ExportRequestFacts : BaseClientTest
 {
-    private const string CurlResponse = @"{""requestExportType"":""Curl"",""result"":""curl -X PATCH 'http://localhost:5000/http-method' -H 'Accept: */*' -H 'Host: localhost:5000' -H 'User-Agent: hurl/4.0.0'""}";
+    private const string CurlResponse =
+        """{"requestExportType":"Curl","result":"curl -X PATCH 'http://localhost:5000/http-method' -H 'Accept: */*' -H 'Host: localhost:5000' -H 'User-Agent: hurl/4.0.0'"}""";
 
     [TestMethod]
     public async Task ExportRequestAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
@@ -46,6 +47,8 @@ public class ExportRequestFacts : BaseClientTest
 
         // Assert
         Assert.AreEqual(RequestExportType.Curl, result.RequestExportType);
-        Assert.AreEqual("curl -X PATCH 'http://localhost:5000/http-method' -H 'Accept: */*' -H 'Host: localhost:5000' -H 'User-Agent: hurl/4.0.0'", result.Result);
+        Assert.AreEqual(
+            "curl -X PATCH 'http://localhost:5000/http-method' -H 'Accept: */*' -H 'Host: localhost:5000' -H 'User-Agent: hurl/4.0.0'",
+            result.Result);
     }
 }

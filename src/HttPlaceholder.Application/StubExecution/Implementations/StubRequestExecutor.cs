@@ -51,7 +51,7 @@ internal class StubRequestExecutor(
                 foreach (var checker in orderedConditionCheckers)
                 {
                     var validationResult = await checker.ValidateAsync(stub, cancellationToken);
-                    validationResult.CheckerName = checker.GetType().Name;
+                    validationResult.SetCheckerName(checker.GetType().Name);
                     validationResults.Add(validationResult);
                     if (validationResult.ConditionValidation == ConditionValidationType.Invalid)
                     {
@@ -70,11 +70,11 @@ internal class StubRequestExecutor(
             }
             catch (Exception e)
             {
-                logger.LogWarning($"Exception thrown while executing checks for stub '{stub.Id}': {e}");
+                logger.LogWarning(e, "Exception thrown while executing checks for stub '{StubId}'.", stub.Id);
             }
         }
 
-        if (!foundStubs.Any())
+        if (foundStubs.Count == 0)
         {
             // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
             throw new RequestValidationException(
@@ -85,7 +85,7 @@ internal class StubRequestExecutor(
         await stubContext.IncreaseHitCountAsync(finalStub.Scenario, cancellationToken);
         requestLogger.SetExecutingStubId(finalStub.Id);
         var response = await stubResponseGenerator.GenerateResponseAsync(finalStub, cancellationToken);
-        await mediator.Publish(new BeforeStubResponseReturnedNotification {Response = response}, cancellationToken);
+        await mediator.Publish(new BeforeStubResponseReturnedNotification { Response = response }, cancellationToken);
         return response;
     }
 

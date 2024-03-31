@@ -40,7 +40,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
             Tenant = tenant
         });
 
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
         // act / assert
@@ -76,7 +76,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
             Tenant = tenant
         });
 
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
 
         // act / assert
@@ -142,14 +142,14 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
             new StubDto
             {
                 Id = "test-123",
-                Conditions = new StubConditionsDto {Method = "GET"},
-                Response = new StubResponseDto {Text = "OK"}
+                Conditions = new StubConditionsDto { Method = "GET" },
+                Response = new StubResponseDto { Text = "OK" }
             },
             new StubDto
             {
                 Id = "test-789",
-                Conditions = new StubConditionsDto {Method = "POST"},
-                Response = new StubResponseDto {Text = "OK"}
+                Conditions = new StubConditionsDto { Method = "POST" },
+                Response = new StubResponseDto { Text = "OK" }
             }
         };
 
@@ -190,7 +190,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
             Tenant = "tenant1"
         });
 
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
 
         // act / assert

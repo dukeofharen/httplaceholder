@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
@@ -14,7 +15,8 @@ internal class MysqlDbConnectionFactory(IConfiguration configuration) : IDbConne
 
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
-        new MySqlConnection(configuration.GetConnectionString(ConnectionStringKey));
+        new MySqlConnection(configuration.GetConnectionString(ConnectionStringKey) ??
+                            throw new InvalidOperationException("MySQL connection string not found."));
 
     /// <inheritdoc />
     public DbDataSource GetDataSource() => null;

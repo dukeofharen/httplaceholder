@@ -1,3 +1,6 @@
+[vnext]
+- Did a complete code cleanup and refactoring in the .NET project (https://github.com/dukeofharen/httplaceholder/pull/346/files).
+
 [2024.2.24]
 - Upgraded application to .NET 8 (https://github.com/dukeofharen/httplaceholder/pull/338).
 - Use file watches to check if the .yml stub files are updated on disk (https://github.com/dukeofharen/httplaceholder/pull/339).

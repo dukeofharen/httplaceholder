@@ -1,11 +1,11 @@
-﻿using HttPlaceholder.Application.Configuration;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
 using HttPlaceholder.Persistence.FileSystem;
 using HttPlaceholder.Persistence.FileSystem.Implementations;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -78,8 +78,7 @@ public static class PersistenceModule
         }
 
         // The YAML stub source should always be registered. If stated that the file watcher should be disabled, register the YamlFileStubSource instead.
-        var disableFileWatcher = settings?.Storage?.DisableFileWatcher ?? false;
-        if (disableFileWatcher)
+        if (settings?.Storage?.DisableFileWatcher ?? false)
         {
             services.AddSingleton<IStubSource, YamlFileStubSource>();
         }

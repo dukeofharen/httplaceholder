@@ -1,8 +1,7 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -14,6 +13,7 @@ using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -31,67 +31,69 @@ internal class ImageResponseWriter(IAssemblyService assemblyService, IFileServic
         var imgDefinition = stub.Response?.Image;
         if (imgDefinition == null || imgDefinition.Type == ResponseImageType.NotSet)
         {
-            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
+            return IsNotExecuted(GetType().Name);
         }
 
         var stubImage = stub.Response.Image;
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, stubImage.ContentTypeHeaderValue);
 
         var cacheFilePath = Path.Combine(fileService.GetTempPath(), $"{stubImage.Hash}.bin");
-        byte[] bytes;
-        if (await fileService.FileExistsAsync(cacheFilePath, cancellationToken))
-        {
-            bytes = await fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken);
-        }
-        else
-        {
-            var collection = new FontCollection();
-            collection.Add(Path.Combine(assemblyService.GetExecutingAssemblyRootPath(),
-                "Files", "Manrope-Regular.ttf"));
-            const string fontFamilyName = "Manrope";
-            if (!collection.TryGet(fontFamilyName, out var family))
-            {
-                throw new RequestValidationException($"Font family '{fontFamilyName}' not found!");
-            }
-
-            using var image = new Image<Rgba32>(stubImage.Width, stubImage.Height);
-            var font = new Font(family, stubImage.FontSize);
-            var parsedColor = Color.ParseHex(stubImage.BackgroundColor);
-            var polygon = new Rectangle(0, 0, stubImage.Width, stubImage.Height);
-            var fontColor = !string.IsNullOrWhiteSpace(stubImage.FontColor)
-                ? Color.ParseHex(stubImage.FontColor)
-                : parsedColor.InvertColor();
-            image.Mutate(i =>
-                i
-                    .Fill(parsedColor, polygon)
-                    .ApplyScalingWaterMark(font, stubImage.Text, fontColor, 5, stubImage.WordWrap));
-            using var ms = new MemoryStream();
-            switch (stubImage.Type)
-            {
-                case ResponseImageType.Bmp:
-                    await image.SaveAsBmpAsync(ms, cancellationToken);
-                    break;
-                case ResponseImageType.Gif:
-                    await image.SaveAsGifAsync(ms, cancellationToken);
-                    break;
-                case ResponseImageType.Jpeg:
-                    await image.SaveAsJpegAsync(ms, new JpegEncoder {Quality = stubImage.JpegQuality},
-                        cancellationToken);
-                    break;
-                default:
-                    await image.SaveAsPngAsync(ms, cancellationToken);
-                    break;
-            }
-
-            bytes = ms.ToArray();
-            await fileService.WriteAllBytesAsync(cacheFilePath, bytes, cancellationToken);
-        }
-
+        var bytes = await fileService.FileExistsAsync(cacheFilePath, cancellationToken)
+            ? await fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken)
+            : await GetImageAsync(stubImage, cacheFilePath, cancellationToken);
         response.Body = bytes;
-        response.BodyIsBinary = bytes.Any();
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        response.BodyIsBinary = bytes.Length != 0;
+        return IsExecuted(GetType().Name);
     }
 
     /// <inheritdoc />
     public int Priority => -11;
+
+    private async Task<byte[]> GetImageAsync(
+        StubResponseImageModel stubImage,
+        string cacheFilePath,
+        CancellationToken cancellationToken)
+    {
+        var collection = new FontCollection();
+        collection.Add(Path.Combine(assemblyService.GetExecutingAssemblyRootPath(),
+            "Resources", "Manrope-Regular.ttf"));
+        const string fontFamilyName = "Manrope";
+        if (!collection.TryGet(fontFamilyName, out var family))
+        {
+            throw new InvalidOperationException($"Font family '{fontFamilyName}' not found!");
+        }
+
+        using var image = new Image<Rgba32>(stubImage.Width, stubImage.Height);
+        var font = new Font(family, stubImage.FontSize);
+        var parsedColor = Color.ParseHex(stubImage.BackgroundColor);
+        var polygon = new Rectangle(0, 0, stubImage.Width, stubImage.Height);
+        var fontColor = !string.IsNullOrWhiteSpace(stubImage.FontColor)
+            ? Color.ParseHex(stubImage.FontColor)
+            : parsedColor.InvertColor();
+        image.Mutate(i =>
+            i
+                .Fill(parsedColor, polygon)
+                .ApplyScalingWaterMark(font, stubImage.Text, fontColor, 5, stubImage.WordWrap));
+        using var ms = new MemoryStream();
+        switch (stubImage.Type)
+        {
+            case ResponseImageType.Bmp:
+                await image.SaveAsBmpAsync(ms, cancellationToken);
+                break;
+            case ResponseImageType.Gif:
+                await image.SaveAsGifAsync(ms, cancellationToken);
+                break;
+            case ResponseImageType.Jpeg:
+                await image.SaveAsJpegAsync(ms, new JpegEncoder { Quality = stubImage.JpegQuality },
+                    cancellationToken);
+                break;
+            default:
+                await image.SaveAsPngAsync(ms, cancellationToken);
+                break;
+        }
+
+        var result = ms.ToArray();
+        await fileService.WriteAllBytesAsync(cacheFilePath, result, cancellationToken);
+        return result;
+    }
 }

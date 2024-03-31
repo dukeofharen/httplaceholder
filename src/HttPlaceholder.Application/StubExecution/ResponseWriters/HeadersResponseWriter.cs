@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -22,7 +23,7 @@ internal class HeadersResponseWriter : IResponseWriter, ISingletonService
         var stubResponseHeaders = stub.Response?.Headers;
         if (stubResponseHeaders == null || stubResponseHeaders.Any() != true)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return IsNotExecuted(GetType().Name).AsTask();
         }
 
         foreach (var header in stubResponseHeaders)
@@ -30,6 +31,6 @@ internal class HeadersResponseWriter : IResponseWriter, ISingletonService
             response.Headers.AddOrReplaceCaseInsensitive(header.Key, header.Value);
         }
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        return IsExecuted(GetType().Name).AsTask();
     }
 }

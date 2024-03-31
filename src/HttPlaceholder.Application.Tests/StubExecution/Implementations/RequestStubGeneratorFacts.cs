@@ -39,7 +39,7 @@ public class RequestStubGeneratorFacts
         const string expectedStubId = "generated-b7a0313774b50962789dc0b2841f1458";
 
         var request =
-            new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()};
+            new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() };
 
         stubContextMock
             .Setup(m => m.GetRequestResultAsync("2", It.IsAny<CancellationToken>()))
@@ -80,7 +80,7 @@ public class RequestStubGeneratorFacts
         const string expectedStubId = "generated-b7a0313774b50962789dc0b2841f1458";
 
         var request =
-            new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()};
+            new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() };
 
         stubContextMock
             .Setup(m => m.GetRequestResultAsync("2", It.IsAny<CancellationToken>()))
@@ -122,7 +122,7 @@ public class RequestStubGeneratorFacts
         const string expectedStubId = "generated-0d64002c8a32c99f1863f8f748d6dc12";
 
         var request =
-            new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()};
+            new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() };
 
         stubContextMock
             .Setup(m => m.GetRequestResultAsync("2", It.IsAny<CancellationToken>()))

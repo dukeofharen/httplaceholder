@@ -18,12 +18,12 @@ public class HeaderConditionCheckerFacts
     public async Task ValidateAsync_StubsFound_ButNoHeaderConditions_ShouldReturnNotExecuted()
     {
         // arrange
-        var conditions = new StubConditionsModel {Headers = null};
+        var conditions = new StubConditionsModel { Headers = null };
         var checker = _mocker.CreateInstance<HeaderConditionChecker>();
 
         // act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -35,10 +35,10 @@ public class HeaderConditionCheckerFacts
         // Arrange
         var conditions = new StubConditionsModel
         {
-            Headers = new Dictionary<string, object> {{"Header-1", "Value-1"}, {"Header-2", "Value-2"}}
+            Headers = new Dictionary<string, object> { { "Header-1", "Value-1" }, { "Header-2", "Value-2" } }
         };
 
-        var headers = new Dictionary<string, string> {{"Header-1", "bla1"}, {"Header-2", "bla2"}};
+        var headers = new Dictionary<string, string> { { "Header-1", "bla1" }, { "Header-2", "bla2" } };
 
         var checker = _mocker.CreateInstance<HeaderConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
@@ -54,7 +54,7 @@ public class HeaderConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -66,10 +66,10 @@ public class HeaderConditionCheckerFacts
         // Arrange
         var conditions = new StubConditionsModel
         {
-            Headers = new Dictionary<string, object> {{"Header-1", "Value-1"}, {"Header-2", "Value-2"}}
+            Headers = new Dictionary<string, object> { { "Header-1", "Value-1" }, { "Header-2", "Value-2" } }
         };
 
-        var headers = new Dictionary<string, string> {{"Header-1", "bla1"}, {"Header-2", "bla2"}};
+        var headers = new Dictionary<string, string> { { "Header-1", "bla1" }, { "Header-2", "bla2" } };
 
         var checker = _mocker.CreateInstance<HeaderConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
@@ -88,7 +88,7 @@ public class HeaderConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -100,10 +100,10 @@ public class HeaderConditionCheckerFacts
         // Arrange
         var conditions = new StubConditionsModel
         {
-            Headers = new Dictionary<string, object> {{"Header-1", "Value-1"}, {"Header-2", "Value-2"}}
+            Headers = new Dictionary<string, object> { { "Header-1", "Value-1" }, { "Header-2", "Value-2" } }
         };
 
-        var headers = new Dictionary<string, string> {{"Header-1", "bla1"}, {"Header-2", "bla2"}};
+        var headers = new Dictionary<string, string> { { "Header-1", "bla1" }, { "Header-2", "bla2" } };
 
         var checker = _mocker.CreateInstance<HeaderConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
@@ -122,7 +122,7 @@ public class HeaderConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+            await checker.ValidateAsync(new StubModel { Id = "id", Conditions = conditions }, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -130,51 +130,51 @@ public class HeaderConditionCheckerFacts
 
     public static IEnumerable<object[]> GetPresentData()
     {
-        yield return new object[]
-        {
+        yield return
+        [
             new Dictionary<string, object>
             {
-                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
-                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+                { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
+                { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
-            new Dictionary<string, string> {{"Header-1", "someval"}}, true
-        };
-        yield return new object[]
-        {
+            new Dictionary<string, string> { { "Header-1", "someval" } }, true
+        ];
+        yield return
+        [
             new Dictionary<string, object>
             {
-                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
-                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+                { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
+                { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
-            new Dictionary<string, string> {{"header-1", "someval"}}, true
-        };
-        yield return new object[]
-        {
+            new Dictionary<string, string> { { "header-1", "someval" } }, true
+        ];
+        yield return
+        [
             new Dictionary<string, object>
             {
-                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
-                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+                { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
+                { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
-            new Dictionary<string, string> {{"Header-1", "someval"}, {"Header-2", "someval"}}, false
-        };
-        yield return new object[]
-        {
+            new Dictionary<string, string> { { "Header-1", "someval" }, { "Header-2", "someval" } }, false
+        ];
+        yield return
+        [
             new Dictionary<string, object>
             {
-                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
-                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+                { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
+                { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
-            new Dictionary<string, string> {{"header-1", "someval"}, {"header-2", "someval"}}, false
-        };
-        yield return new object[]
-        {
+            new Dictionary<string, string> { { "header-1", "someval" }, { "header-2", "someval" } }, false
+        ];
+        yield return
+        [
             new Dictionary<string, object>
             {
-                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
-                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+                { "Header-1", TestObjectFactory.CreateStringCheckingModel(true) },
+                { "Header-2", TestObjectFactory.CreateStringCheckingModel(false) }
             },
-            new Dictionary<string, string> {{"header-1", "someval"}, {"header-5", "someval"}}, true
-        };
+            new Dictionary<string, string> { { "header-1", "someval" }, { "header-5", "someval" } }, true
+        ];
     }
 
     [DataTestMethod]
@@ -194,7 +194,7 @@ public class HeaderConditionCheckerFacts
         // Act
         var result =
             await checker.ValidateAsync(
-                new StubModel {Conditions = new StubConditionsModel {Headers = headerConditions}},
+                new StubModel { Conditions = new StubConditionsModel { Headers = headerConditions } },
                 CancellationToken.None);
 
         // Assert

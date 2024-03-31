@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -7,38 +6,28 @@ using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
+using static HttPlaceholder.Domain.ConditionCheckResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
 ///     Condition checker that is used to validate a posted form.
 /// </summary>
-public class FormValueConditionChecker : IConditionChecker, ISingletonService
+public class FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
+    : BaseConditionChecker, ISingletonService
 {
-    private readonly IHttpContextService _httpContextService;
-    private readonly IStringChecker _stringChecker;
-
-    /// <summary>
-    ///     Constructs a <see cref="FormValueConditionChecker" /> instance.
-    /// </summary>
-    public FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
-    {
-        _httpContextService = httpContextService;
-        _stringChecker = stringChecker;
-    }
+    /// <inheritdoc />
+    public override int Priority => 8;
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
-    {
-        var result = new ConditionCheckResultModel();
-        var formConditions = stub.Conditions?.Form?.ToArray() ?? Array.Empty<StubFormModel>();
-        if (!formConditions.Any())
-        {
-            return result;
-        }
+    protected override bool ShouldBeExecuted(StubModel stub) => stub.Conditions?.Form?.ToArray()?.Length > 0;
 
-        var form = await _httpContextService.GetFormValuesAsync(cancellationToken);
+    /// <inheritdoc />
+    protected override async Task<ConditionCheckResultModel> PerformValidationAsync(StubModel stub,
+        CancellationToken cancellationToken)
+    {
+        var formConditions = stub.Conditions.Form.ToArray();
+        var form = await httpContextService.GetFormValuesAsync(cancellationToken);
         var validConditions = 0;
         foreach (var condition in formConditions)
         {
@@ -61,31 +50,21 @@ public class FormValueConditionChecker : IConditionChecker, ISingletonService
             var (formKey, formValues) = form.FirstOrDefault(f => f.Item1 == condition.Key);
             if (formKey == null)
             {
-                result.ConditionValidation = ConditionValidationType.Invalid;
-                result.Log = $"No form value with key '{condition.Key}' found.";
-                break;
+                return await InvalidAsync($"No form value with key '{condition.Key}' found.");
             }
 
             validConditions += formValues
-                .Count(value => _stringChecker.CheckString(HttpUtility.UrlDecode(value), condition.Value, out _));
+                .Count(value => stringChecker.CheckString(HttpUtility.UrlDecode(value), condition.Value, out _));
         }
 
         // If the number of succeeded conditions is equal to the actual number of conditions,
         // the form condition is passed and the stub ID is passed to the result.
         if (validConditions == formConditions.Length)
         {
-            result.ConditionValidation = ConditionValidationType.Valid;
-        }
-        else
-        {
-            result.Log =
-                $"Number of configured form conditions: '{formConditions.Length}'; number of passed form conditions: '{validConditions}'";
-            result.ConditionValidation = ConditionValidationType.Invalid;
+            return await ValidAsync();
         }
 
-        return result;
+        return await InvalidAsync(
+            $"Number of configured form conditions: '{formConditions.Length}'; number of passed form conditions: '{validConditions}'");
     }
-
-    /// <inheritdoc />
-    public int Priority => 8;
 }

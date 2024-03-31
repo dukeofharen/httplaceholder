@@ -89,6 +89,6 @@ public class ScenarioMaxHitCounterConditionCheckerFacts
         new()
         {
             Scenario = scenario,
-            Conditions = new StubConditionsModel {Scenario = new StubConditionScenarioModel {MaxHits = maxHits}}
+            Conditions = new StubConditionsModel { Scenario = new StubConditionScenarioModel { MaxHits = maxHits } }
         };
 }

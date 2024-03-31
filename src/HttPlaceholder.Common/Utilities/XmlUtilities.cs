@@ -6,9 +6,12 @@ namespace HttPlaceholder.Common.Utilities;
 /// <summary>
 ///     A utility class for working with XML.
 /// </summary>
-public static class XmlUtilities
+public static partial class XmlUtilities
 {
-    private static Regex NamespaceRegex { get; } = new("xmlns:(.*?)=\"(.*?)\"", RegexOptions.Compiled);
+    private static Regex NamespaceRegex { get; } = CompiledNamespaceRegex();
+
+    [GeneratedRegex("xmlns:(.*?)=\"(.*?)\"", RegexOptions.Compiled)]
+    private static partial Regex CompiledNamespaceRegex();
 
     /// <summary>
     ///     Parses a given body and assign the found namespaces to the <see cref="XmlNamespaceManager" />.
@@ -32,5 +35,17 @@ public static class XmlUtilities
             var uri = match.Groups[2].Value;
             nsManager.AddNamespace(prefix, uri);
         }
+    }
+
+    /// <summary>
+    ///     Reads and returns an XML document.
+    /// </summary>
+    /// <param name="xml">The XML.</param>
+    /// <returns>The XML document.</returns>
+    public static XmlDocument LoadXmlDocument(string xml)
+    {
+        var doc = new XmlDocument();
+        doc.LoadXml(xml);
+        return doc;
     }
 }

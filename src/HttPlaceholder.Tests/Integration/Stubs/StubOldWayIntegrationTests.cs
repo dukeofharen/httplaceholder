@@ -18,7 +18,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}path-old-way";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -32,7 +32,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}path-old-wa";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -44,7 +44,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}full-path-old-way?q1=val1";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -58,7 +58,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}full-path-old-wa?q1=val1";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -70,7 +70,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}query-old-way?q1=val1&q2=val2";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -84,7 +84,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}query-old-way?q1=val1&q2=val3";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -132,7 +132,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Get,
             RequestUri = new Uri(url),
-            Headers = {{"Header-1", "val1"}, {"Header-2", "val2"}}
+            Headers = { { "Header-1", "val1" }, { "Header-2", "val2" } }
         };
 
         // act / assert
@@ -151,7 +151,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Get,
             RequestUri = new Uri(url),
-            Headers = {{"Header-1", "val1"}, {"Header-2", "val3"}}
+            Headers = { { "Header-1", "val1" }, { "Header-2", "val3" } }
         };
 
         // act / assert
@@ -170,7 +170,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
             RequestUri = new Uri(url),
             Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                {"key1", "val1"}, {"key2", "val2"}, {"key3", "val3"}
+                { "key1", "val1" }, { "key2", "val2" }, { "key3", "val3" }
             })
         };
 
@@ -192,7 +192,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
             RequestUri = new Uri(url),
             Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                {"key1", "val1"}, {"key2", "val3"}, {"key3", "val3"}
+                { "key1", "val1" }, { "key2", "val3" }, { "key3", "val3" }
             })
         };
 
@@ -209,7 +209,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         ClientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns("httplaceholder.com");
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -226,7 +226,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         ClientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns("httplaceholder.net");
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
         // act / assert
         using var response = await Client.SendAsync(request);

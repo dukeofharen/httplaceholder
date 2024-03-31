@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Configuration.Provider;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -29,11 +28,11 @@ public abstract class IntegrationTestBase
         servicesToReplace ??= Array.Empty<(Type, object)>();
         stubSources ??= Array.Empty<IStubSource>();
         var config = new ConfigurationBuilder()
-            .AddCustomInMemoryCollection(new Dictionary<string, string>
+            .AddInMemoryCollection(new Dictionary<string, string>
             {
-                {"Storage:InputFile", @"C:\tmp"},
-                {"Storage:CleanOldRequestsInBackgroundJob", "true"},
-                {"Gui:EnableUserInterface", "true"}
+                { "Storage:InputFile", @"C:\tmp" },
+                { "Storage:CleanOldRequestsInBackgroundJob", "true" },
+                { "Gui:EnableUserInterface", "true" }
             })
             .Build();
         servicesToReplace = servicesToReplace.Concat(new (Type, object)[]

@@ -25,7 +25,9 @@ internal class HttpRequestToConditionsService(
             var executed =
                 await handler.HandleStubGenerationAsync(request, conditions, cancellationToken);
             logger.LogDebug(
-                $"Handler '{handler.GetType().Name}' {(executed ? "executed" : "not executed")}.");
+                "Handler '{HandlerName}' execution result: {ExecutionResult}.",
+                handler.GetType().Name,
+                executed ? "executed" : "not executed");
         }
 
         return conditions;

@@ -14,7 +14,7 @@ public class HttpRequestToConditionsServiceFacts
 
     [TestInitialize]
     public void Initialize() =>
-        _mocker.Use<IEnumerable<IRequestToStubConditionsHandler>>(new[] {_handlerMock1.Object, _handlerMock2.Object});
+        _mocker.Use<IEnumerable<IRequestToStubConditionsHandler>>(new[] { _handlerMock1.Object, _handlerMock2.Object });
 
     [TestMethod]
     public async Task ConvertToConditionsAsync_HappyFlow()

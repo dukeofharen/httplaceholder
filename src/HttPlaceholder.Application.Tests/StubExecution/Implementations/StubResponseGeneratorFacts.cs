@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -15,7 +15,7 @@ public class StubResponseGeneratorFacts
     private readonly Mock<IRequestLogger> _requestLoggerMock = new();
     private readonly Mock<IResponseWriter> _responseWriterMock1 = new();
     private readonly Mock<IResponseWriter> _responseWriterMock2 = new();
-    private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
+    private readonly SettingsModel _settings = new() { Storage = new StorageSettingsModel() };
 
     [TestInitialize]
     public void Initialize()
@@ -24,7 +24,7 @@ public class StubResponseGeneratorFacts
             .Setup(m => m.GetRequestLogger())
             .Returns(_requestLoggerMock.Object);
         _mocker.Use(_requestLoggerFactoryMock.Object);
-        _mocker.Use<IEnumerable<IResponseWriter>>(new[] {_responseWriterMock1.Object, _responseWriterMock2.Object});
+        _mocker.Use<IEnumerable<IResponseWriter>>(new[] { _responseWriterMock1.Object, _responseWriterMock2.Object });
         _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 

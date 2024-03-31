@@ -20,7 +20,7 @@ internal class CurlStubGenerator(
         string stubIdPrefix,
         CancellationToken cancellationToken)
     {
-        logger.LogDebug($"Creating stubs based on cURL command {input}.");
+        logger.LogDebug("Creating stubs based on cURL command {CurlCommand}.", input);
         var requests = curlToHttpRequestMapper.MapCurlCommandsToHttpRequest(input);
         var results = new List<FullStubModel>();
         foreach (var request in requests)
@@ -31,7 +31,7 @@ internal class CurlStubGenerator(
                 Tenant = tenant,
                 Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
                 Conditions = conditions,
-                Response = {Text = "OK!"}
+                Response = { Text = "OK!" }
             };
 
             // Generate an ID based on the created stub.
@@ -47,7 +47,7 @@ internal class CurlStubGenerator(
     {
         if (doNotCreateStub)
         {
-            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
+            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
         }
 
         await stubContext.DeleteStubAsync(stub.Id, cancellationToken);

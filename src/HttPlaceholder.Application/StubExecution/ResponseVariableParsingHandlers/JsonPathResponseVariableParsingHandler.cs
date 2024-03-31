@@ -1,10 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
@@ -19,9 +19,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class JsonPathResponseVariableParsingHandler(
     IHttpContextService httpContextService,
-    ILogger<JsonPathResponseVariableParsingHandler> logger,
-    IFileService fileService)
-    : BaseVariableParsingHandler(fileService), ISingletonService
+    ILogger<JsonPathResponseVariableParsingHandler> logger)
+    : BaseVariableParsingHandler, ISingletonService
 {
     /// <inheritdoc />
     public override string Name => "jsonpath";
@@ -30,14 +29,16 @@ internal class JsonPathResponseVariableParsingHandler(
     public override string FullName => "JSONPath";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
+    public override string[] Examples => [$"(({Name}:$.values[1].title))"];
 
     /// <inheritdoc />
-    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+    public override string GetDescription() => ResponseVariableParsingResources.JsonPath;
+
+    /// <inheritdoc />
+    protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken)
     {
-        var body = await httpContextService.GetBodyAsync(cancellationToken);
-        var json = ParseJson(body);
+        var json = ParseJson(await httpContextService.GetBodyAsync(cancellationToken));
         return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input,
@@ -52,7 +53,7 @@ internal class JsonPathResponseVariableParsingHandler(
         }
         catch (JsonException je)
         {
-            logger.LogInformation($"Exception occurred while trying to parse response body as JSON: {je}");
+            logger.LogInformation(je, "Exception occurred while trying to parse response body as JSON.");
         }
 
         return null;

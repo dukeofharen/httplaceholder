@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -15,18 +16,13 @@ internal class BodyHandler : IRequestToStubConditionsHandler, ISingletonService
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
         CancellationToken cancellationToken)
     {
-        if (conditions.Json != null)
+        if (conditions.Json != null || string.IsNullOrWhiteSpace(request.Body))
         {
-            return Task.FromResult(false);
+            return false.AsTask();
         }
 
-        if (string.IsNullOrWhiteSpace(request.Body))
-        {
-            return Task.FromResult(false);
-        }
-
-        conditions.Body = new[] {new StubConditionStringCheckingModel {StringEquals = request.Body}};
-        return Task.FromResult(true);
+        conditions.Body = new[] { new StubConditionStringCheckingModel { StringEquals = request.Body } };
+        return true.AsTask();
     }
 
     /// <inheritdoc />

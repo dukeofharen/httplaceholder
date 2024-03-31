@@ -8,7 +8,7 @@ using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Persistence.Implementations.StubSources;
+using HttPlaceholder.Persistence.StubSources;
 using HttPlaceholder.Web.Shared.Dto.v1.Scenarios;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -56,7 +56,8 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             new Mock<ILogger<YamlFileStubSource>>().Object,
             Options,
             new Mock<IStubModelValidator>().Object,
-            new Mock<IStubNotify>().Object);
+            new Mock<IStubNotify>().Object,
+            DateTimeMock.Object);
 
         MockHttp = new MockHttpMessageHandler();
         var mockHttpClientFactory = new Mock<IHttpClientFactory>();
@@ -66,12 +67,11 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
 
         InMemoryStubSource = new InMemoryStubSource(Options);
         InitializeIntegrationTest(
-            new (Type, object)[]
-            {
-                (typeof(IClientDataResolver), ClientDataResolverMock.Object),
-                (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object),
-                (typeof(IHttpClientFactory), mockHttpClientFactory.Object)
-            }, new IStubSource[] {_stubSource, InMemoryStubSource});
+        [
+            (typeof(IClientDataResolver), ClientDataResolverMock.Object),
+            (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object),
+            (typeof(IHttpClientFactory), mockHttpClientFactory.Object)
+        ], new IStubSource[] { _stubSource, InMemoryStubSource });
     }
 
     protected async Task SetScenario(string scenarioName, ScenarioStateInputDto scenario)

@@ -1,5 +1,7 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Web.Shared.Formatters;
@@ -15,7 +17,6 @@ public class YamlInputFormatter : TextInputFormatter
     /// <summary>
     ///     Constructs a <see cref="YamlInputFormatter" /> instance.
     /// </summary>
-    /// <param name="deserializer"></param>
     public YamlInputFormatter(IDeserializer deserializer)
     {
         _deserializer = deserializer;
@@ -30,15 +31,8 @@ public class YamlInputFormatter : TextInputFormatter
     public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context,
         Encoding encoding)
     {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
-
-        if (encoding == null)
-        {
-            throw new ArgumentNullException(nameof(encoding));
-        }
+        ArgumentNullException.ThrowIfNull(context);
+        ArgumentNullException.ThrowIfNull(encoding);
 
         var request = context.HttpContext.Request;
 

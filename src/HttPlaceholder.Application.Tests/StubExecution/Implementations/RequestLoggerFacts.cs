@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -40,7 +38,7 @@ public class RequestLoggerFacts
         // arrange
         const string method = "POST";
         const string url = "https://google.com";
-        var body = Encoding.UTF8.GetBytes("HACKING GOOGLE!");
+        var body = "HACKING GOOGLE!"u8.ToArray();
         const string clientIp = "127.0.0.1";
         var headers = new Dictionary<string, string>();
 
@@ -76,19 +74,10 @@ public class RequestLoggerFacts
         // arrange
         const string stubId = "stub-01";
 
-        var condition1 = new ConditionCheckResultModel
-        {
-            CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.Invalid
-        };
-        var condition2 = new ConditionCheckResultModel
-        {
-            CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.Valid
-        };
-        var condition3 = new ConditionCheckResultModel
-        {
-            CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.NotExecuted
-        };
-        var conditions = new[] {condition1, condition2, condition3};
+        var condition1 = ConditionCheckResultModel.Invalid().SetCheckerName(Guid.NewGuid().ToString());
+        var condition2 = ConditionCheckResultModel.Valid().SetCheckerName(Guid.NewGuid().ToString());
+        var condition3 = ConditionCheckResultModel.NotExecuted().SetCheckerName(Guid.NewGuid().ToString());
+        var conditions = new[] { condition1, condition2, condition3 };
 
         // act
         _logger.SetStubExecutionResult(stubId, false, conditions);

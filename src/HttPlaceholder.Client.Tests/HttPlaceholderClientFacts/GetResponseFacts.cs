@@ -8,14 +8,16 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
 [TestClass]
 public class GetResponseFacts : BaseClientTest
 {
-    private const string ResponseResponse = @"{
-    ""statusCode"": 200,
-    ""body"": ""OGU0Y2I2OGItMmU2Yi00NDBjLWEwYTAtNzRiNTcyMzIwZGUyCmVkMTk2ZGY2LWRmMzItNDhjMC1iMzE5LWM2OThmNGY4NjhiYg=="",
-    ""bodyIsBinary"": false,
-    ""headers"": {
-        ""Content-Type"": ""text/plain""
-    }
-}";
+    private const string ResponseResponse = """
+                                            {
+                                                "statusCode": 200,
+                                                "body": "OGU0Y2I2OGItMmU2Yi00NDBjLWEwYTAtNzRiNTcyMzIwZGUyCmVkMTk2ZGY2LWRmMzItNDhjMC1iMzE5LWM2OThmNGY4NjhiYg==",
+                                                "bodyIsBinary": false,
+                                                "headers": {
+                                                    "Content-Type": "text/plain"
+                                                }
+                                            }
+                                            """;
 
     [TestMethod]
     public async Task GetResponseAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()

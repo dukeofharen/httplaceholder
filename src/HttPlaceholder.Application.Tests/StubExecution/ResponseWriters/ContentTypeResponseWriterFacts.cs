@@ -13,7 +13,7 @@ public class ContentTypeResponseWriterFacts
         // Arrange
         var response = new ResponseModel();
         response.Headers.Add(HeaderKeys.ContentType, MimeTypes.TextMime);
-        var stub = new StubModel {Response = new StubResponseModel {ContentType = string.Empty}};
+        var stub = new StubModel { Response = new StubResponseModel { ContentType = string.Empty } };
 
         // Act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
@@ -29,7 +29,7 @@ public class ContentTypeResponseWriterFacts
         // Arrange
         var response = new ResponseModel();
         response.Headers.Add(HeaderKeys.ContentType, MimeTypes.TextMime);
-        var stub = new StubModel {Response = new StubResponseModel {ContentType = "text/csv"}};
+        var stub = new StubModel { Response = new StubResponseModel { ContentType = "text/csv" } };
 
         // Act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);

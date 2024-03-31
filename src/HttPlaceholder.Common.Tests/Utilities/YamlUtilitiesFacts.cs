@@ -35,7 +35,7 @@ public class YamlUtilitiesFacts
     public void Serialize_HappyFlow()
     {
         // Arrange
-        var input = new TestModel {Value = "val1"};
+        var input = new TestModel { Value = "val1" };
 
         // Act
         var result = YamlUtilities.Serialize(input);

@@ -12,15 +12,8 @@ internal class StringChecker : IStringChecker, ISingletonService
     /// <inheritdoc />
     public bool CheckString(string input, object condition, out string outputForLogging)
     {
-        if (input == null)
-        {
-            throw new ArgumentNullException(nameof(input));
-        }
-
-        if (condition == null)
-        {
-            throw new ArgumentNullException(nameof(condition));
-        }
+        ArgumentNullException.ThrowIfNull(input);
+        ArgumentNullException.ThrowIfNull(condition);
 
         if (condition is string stringCondition)
         {

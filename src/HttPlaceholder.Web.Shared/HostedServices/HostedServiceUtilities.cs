@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.ScheduledJobs;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Web.Shared.HostedServices;
 
