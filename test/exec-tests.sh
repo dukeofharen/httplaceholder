@@ -18,8 +18,8 @@ function assert-test-ok() {
 
 # Starting up database containers.
 DEVENV_SCRIPT_PATH="$DIR/../scripts/dev/docker-compose.yml"
-docker-compose -f "$DEVENV_SCRIPT_PATH" down -v
-docker-compose -f "$DEVENV_SCRIPT_PATH" up -d
+docker compose -f "$DEVENV_SCRIPT_PATH" down -v
+docker compose -f "$DEVENV_SCRIPT_PATH" up -d
 
 # Run HttPlaceholder tests for in memory configuration.
 echo "Testing HttPlaceholder with in memory configuration"
@@ -97,4 +97,4 @@ assert-test-ok
 sudo killall HttPlaceholder
 
 # Stop the Docker containers.
-docker-compose -f "$DEVENV_SCRIPT_PATH" down
+docker compose -f "$DEVENV_SCRIPT_PATH" down
