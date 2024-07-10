@@ -81,4 +81,6 @@ export const elementDescriptions = {
     "A response writer for replacing a string in the response body. Can be used with the dynamic mode.",
   regexReplace:
     "A response writer for replacing a string in the response body based on a regular expression. Can be used with the dynamic mode.",
+  jsonPathReplace:
+    "A response writer for replacing a value in a JSON response body based on a JSONPath expression. Can be used with the dynamic mode.",
 };
