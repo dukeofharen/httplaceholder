@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-///     Response writer that is used to to a string or regex replace in the response.
+///     Response writer that is used to perform a string, regex or JSONPath replace in the response.
 /// </summary>
-public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
+public class StringReplaceResponseWriter() : IResponseWriter, ISingletonService
 {
     /// <inheritdoc />
     public int Priority => -11;
@@ -53,6 +55,21 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
             foreach (var match in matches)
             {
                 body = body.Replace(match.ToString() ?? string.Empty, model.ReplaceWith);
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.JsonPath))
+        {
+            try
+            {
+                var jObject = JToken.Parse(body);
+                jObject = jObject.ReplacePath(model.JsonPath, model.ReplaceWith);
+                body = jObject.ToString(Formatting.None);
+            }
+            catch (JsonReaderException ex)
+            {
+                // TODO move this to RequestLogger
+                Console.WriteLine(ex.Message);
             }
         }
 

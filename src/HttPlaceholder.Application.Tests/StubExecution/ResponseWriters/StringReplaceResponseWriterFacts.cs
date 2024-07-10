@@ -128,6 +128,41 @@ public class StringReplaceResponseWriterFacts
         Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
     }
 
+    public static IEnumerable<object[]> ProvideJsonPathReplaceData => new[]
+    {
+        new object[]
+        {
+            new[] { GetJsonPathModel("$.name", "Henk") }, """{"name":"Klaas"}""", """{"name":"Henk"}"""
+        },
+        new object[]
+        {
+            new[] { GetJsonPathModel("$[1].name", "Henk") }, """[{"name":"Klaas"},{"name":"Piet"}]""", """[{"name":"Klaas"},{"name":"Henk"}]"""
+        },
+        new object[]
+        {
+            new[] { GetJsonPathModel("$[*].name", "Henk") }, """[{"name":"Klaas"},{"name":"Piet"}]""", """[{"name":"Henk"},{"name":"Henk"}]"""
+        },
+    };
+
+    [TestMethod]
+    [DynamicData(nameof(ProvideJsonPathReplaceData))]
+    public async Task WriteToResponseAsync_JsonPathReplace_HappyFlow(
+        IEnumerable<StubResponseReplaceModel> models,
+        string responseBody,
+        string expectedBody)
+    {
+        // Arrange
+        _stub.Response.Replace = models;
+        _response.Body = Encoding.UTF8.GetBytes(responseBody);
+
+        // Act
+        var result = await WriteToResponseAsync(_stub, _response);
+
+        // Assert
+        Assert.IsTrue(result.Executed);
+        Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
+    }
+
     private async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response) =>
         await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
@@ -136,4 +171,7 @@ public class StringReplaceResponseWriterFacts
 
     private static StubResponseReplaceModel GetRegexModel(string regex, string replaceWith) =>
         new() { Regex = regex, ReplaceWith = replaceWith };
+
+    private static StubResponseReplaceModel GetJsonPathModel(string jsonPath, string replaceWith) =>
+        new() { JsonPath = jsonPath, ReplaceWith = replaceWith };
 }
