@@ -27,6 +27,13 @@ public class StubResponseReplaceDto : IMapFrom<StubResponseReplaceModel>, IMapTo
     [YamlMember(Alias = "regex")]
     public string Regex { get; set; }
 
+
+    /// <summary>
+    ///     The JSONPath expression that should be looked for in the JSON.
+    /// </summary>
+    [YamlMember(Alias = "jsonPath")]
+    public string JsonPath { get; set; }
+
     /// <summary>
     ///     The value the found text or regex matches should be replaced with.
     /// </summary>
