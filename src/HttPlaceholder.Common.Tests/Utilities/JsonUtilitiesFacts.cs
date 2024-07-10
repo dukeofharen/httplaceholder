@@ -59,4 +59,19 @@ public class JsonUtilitiesFacts
         // Assert
         Assert.AreEqual("JSON type 'Newtonsoft.Json.Linq.JObject' not supported.", exception.Message);
     }
+
+    [TestMethod]
+    public void ReplacePath_HappyFlow()
+    {
+        // Arrange
+        var input = JObject.Parse("""{"name": "Piet"}""");
+        const string jsonPath = "$.name";
+        const string replaceWith = "Kees";
+
+        // Act
+        var result = input.ReplacePath(jsonPath, replaceWith);
+
+        // Assert
+        Assert.AreEqual(replaceWith, result["name"]);
+    }
 }
