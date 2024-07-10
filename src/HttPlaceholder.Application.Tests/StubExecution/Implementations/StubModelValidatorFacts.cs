@@ -410,21 +410,23 @@ public class StubModelValidatorFacts
     }
 
     [DataTestMethod]
-    [DataRow("text", "regex", null, "replace", "Replace [0]: 'text' and 'regex' can't both be set.")]
-    [DataRow(null, null, null, "replace", "Replace [0]: either 'text' or 'regex' needs to be set.")]
-    [DataRow(null, "regex", true, "replace",
-        "Replace [0]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.")]
-    [DataRow(null, "regex", null, null, "Replace [0]: 'replaceWith' should be set.")]
-    [DataRow(null, "regex", null, "replace", null)]
-    [DataRow("text", null, true, "replace", null)]
-    [DataRow(null, "regex", null, "replace", null)]
-    public void ValidateStringRegexReplace(string text, string regex, bool? ignoreCase, string replaceWith,
+    [DataRow("text", "regex", "jsonPath", null, "replace", "Replace [0]: set either 'text', 'regex' or 'jsonReplace'.")]
+    [DataRow(null, null, null, null, "replace", "Replace [0]: either 'text', 'regex' or 'jsonReplace' needs to be set.")]
+    [DataRow(null, "regex", null, true, "replace",
+        "Replace [0]: 'ignoreCase' can only be used with 'text'.")]
+    [DataRow(null, null, "jsonPath", true, "replace",
+        "Replace [0]: 'ignoreCase' can only be used with 'text'.")]
+    [DataRow(null, "regex", null, null, null, "Replace [0]: 'replaceWith' should be set.")]
+    [DataRow(null, "regex", null, null, "replace", null)]
+    [DataRow("text", null, null, true, "replace", null)]
+    [DataRow(null, null, "jsonPath", null, "replace", null)]
+    public void ValidateStringRegexReplace(string text, string regex, string jsonPath, bool? ignoreCase, string replaceWith,
         string expectedError)
     {
         // Arrange
         var dto = new StubResponseReplaceModel
         {
-            Text = text, Regex = regex, IgnoreCase = ignoreCase, ReplaceWith = replaceWith
+            Text = text, Regex = regex, IgnoreCase = ignoreCase, ReplaceWith = replaceWith, JsonPath = jsonPath
         };
         var model = new StubModel { Id = "stub", Response = new StubResponseModel { Replace = new[] { dto } } };
 
@@ -438,7 +440,7 @@ public class StubModelValidatorFacts
         }
         else
         {
-            Assert.AreEqual(1, result.Count(r => r.Equals(expectedError)));
+            Assert.AreEqual(1, result.Count(r => r.Equals(expectedError)), $"Expected error: {expectedError}. Actual errors: {string.Join(',', result)}");
         }
     }
 }
