@@ -430,4 +430,21 @@ public class StubResponseBuilderFacts
         Assert.AreEqual("(.*)", dto.Regex);
         Assert.AreEqual("replace with", dto.ReplaceWith);
     }
+
+    [TestMethod]
+    public void JsonPathReplace()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .JsonPathReplace("$.name", "replace with")
+            .Build();
+
+        // Assert
+        var replace = (List<StubResponseReplaceDto>)response.Replace;
+        Assert.AreEqual(1, replace.Count);
+
+        var dto = replace.Single();
+        Assert.AreEqual("$.name", dto.JsonPath);
+        Assert.AreEqual("replace with", dto.ReplaceWith);
+    }
 }
