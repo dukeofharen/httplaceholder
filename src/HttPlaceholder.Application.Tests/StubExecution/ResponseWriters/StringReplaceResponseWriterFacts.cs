@@ -163,6 +163,22 @@ public class StringReplaceResponseWriterFacts
         Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
     }
 
+    [TestMethod]
+    public async Task WriteToResponseAsync_JsonPathReplace_CorruptJson_ShouldLogMessage()
+    {
+        // Arrange
+        _stub.Response.Replace = [GetJsonPathModel("$.name", "replace value")];
+        _response.Body = "invalid JSON"u8.ToArray();
+
+        // Act
+        var result = await WriteToResponseAsync(_stub, _response);
+
+        // Assert
+        Assert.IsTrue(result.Executed);
+        Assert.AreEqual("invalid JSON", Encoding.UTF8.GetString(_response.Body));
+        Assert.IsTrue(result.Log.Contains("Unexpected character encountered"));
+    }
+
     private async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response) =>
         await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
