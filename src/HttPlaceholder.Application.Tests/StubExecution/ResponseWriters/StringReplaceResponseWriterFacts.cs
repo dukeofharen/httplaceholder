@@ -36,6 +36,24 @@ public class StringReplaceResponseWriterFacts
         }
     };
 
+    public static IEnumerable<object[]> ProvideJsonPathReplaceData => new[]
+    {
+        new object[]
+        {
+            new[] { GetJsonPathModel("$.name", "Henk") }, """{"name":"Klaas"}""", """{"name":"Henk"}"""
+        },
+        new object[]
+        {
+            new[] { GetJsonPathModel("$[1].name", "Henk") }, """[{"name":"Klaas"},{"name":"Piet"}]""",
+            """[{"name":"Klaas"},{"name":"Henk"}]"""
+        },
+        new object[]
+        {
+            new[] { GetJsonPathModel("$[*].name", "Henk") }, """[{"name":"Klaas"},{"name":"Piet"}]""",
+            """[{"name":"Henk"},{"name":"Henk"}]"""
+        }
+    };
+
     [TestMethod]
     public async Task WriteToResponseAsync_ReplaceIsNull_ShouldReturnNotExecuted()
     {
@@ -127,22 +145,6 @@ public class StringReplaceResponseWriterFacts
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
     }
-
-    public static IEnumerable<object[]> ProvideJsonPathReplaceData => new[]
-    {
-        new object[]
-        {
-            new[] { GetJsonPathModel("$.name", "Henk") }, """{"name":"Klaas"}""", """{"name":"Henk"}"""
-        },
-        new object[]
-        {
-            new[] { GetJsonPathModel("$[1].name", "Henk") }, """[{"name":"Klaas"},{"name":"Piet"}]""", """[{"name":"Klaas"},{"name":"Henk"}]"""
-        },
-        new object[]
-        {
-            new[] { GetJsonPathModel("$[*].name", "Henk") }, """[{"name":"Klaas"},{"name":"Piet"}]""", """[{"name":"Henk"},{"name":"Henk"}]"""
-        },
-    };
 
     [TestMethod]
     [DynamicData(nameof(ProvideJsonPathReplaceData))]

@@ -411,7 +411,8 @@ public class StubModelValidatorFacts
 
     [DataTestMethod]
     [DataRow("text", "regex", "jsonPath", null, "replace", "Replace [0]: set either 'text', 'regex' or 'jsonReplace'.")]
-    [DataRow(null, null, null, null, "replace", "Replace [0]: either 'text', 'regex' or 'jsonReplace' needs to be set.")]
+    [DataRow(null, null, null, null, "replace",
+        "Replace [0]: either 'text', 'regex' or 'jsonReplace' needs to be set.")]
     [DataRow(null, "regex", null, true, "replace",
         "Replace [0]: 'ignoreCase' can only be used with 'text'.")]
     [DataRow(null, null, "jsonPath", true, "replace",
@@ -420,13 +421,18 @@ public class StubModelValidatorFacts
     [DataRow(null, "regex", null, null, "replace", null)]
     [DataRow("text", null, null, true, "replace", null)]
     [DataRow(null, null, "jsonPath", null, "replace", null)]
-    public void ValidateStringRegexReplace(string text, string regex, string jsonPath, bool? ignoreCase, string replaceWith,
+    public void ValidateStringRegexReplace(string text, string regex, string jsonPath, bool? ignoreCase,
+        string replaceWith,
         string expectedError)
     {
         // Arrange
         var dto = new StubResponseReplaceModel
         {
-            Text = text, Regex = regex, IgnoreCase = ignoreCase, ReplaceWith = replaceWith, JsonPath = jsonPath
+            Text = text,
+            Regex = regex,
+            IgnoreCase = ignoreCase,
+            ReplaceWith = replaceWith,
+            JsonPath = jsonPath
         };
         var model = new StubModel { Id = "stub", Response = new StubResponseModel { Replace = new[] { dto } } };
 
@@ -440,7 +446,8 @@ public class StubModelValidatorFacts
         }
         else
         {
-            Assert.AreEqual(1, result.Count(r => r.Equals(expectedError)), $"Expected error: {expectedError}. Actual errors: {string.Join(',', result)}");
+            Assert.AreEqual(1, result.Count(r => r.Equals(expectedError)),
+                $"Expected error: {expectedError}. Actual errors: {string.Join(',', result)}");
         }
     }
 }
