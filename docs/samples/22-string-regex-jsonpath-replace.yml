@@ -1,4 +1,4 @@
-# Use the "replace" response writer to either perform a string or regular expression replacement in the response body.
+# Use the "replace" response writer to either perform a string, regular expression or JSONPath replacement in the response body.
 - id: string-replace
   conditions:
     method: GET
@@ -52,3 +52,18 @@
   priority: 0
   tenant: integration
   enabled: true
+- id: jsonpath-replace
+  tenant: integration
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /jsonpath-replace
+  response:
+    enableDynamicMode: true
+    json: '{"name": "Bassie", "city": "Amsterdam"}'
+    replace:
+      - jsonPath: '$.name'
+        replaceWith: 'Adriaan'
+      - jsonPath: '$.city'
+        replaceWith: '((query:q1))'

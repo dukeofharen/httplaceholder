@@ -74,4 +74,10 @@ export const defaultValues = {
       replaceWith: "New value",
     } as StubResponseReplaceModel,
   ],
+  jsonPathReplace: [
+    {
+      jsonPath: "$.name",
+      replaceWith: "New value",
+    } as StubResponseReplaceModel,
+  ],
 };

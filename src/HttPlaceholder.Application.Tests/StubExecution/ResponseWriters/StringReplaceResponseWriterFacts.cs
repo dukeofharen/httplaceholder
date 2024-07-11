@@ -36,6 +36,24 @@ public class StringReplaceResponseWriterFacts
         }
     };
 
+    public static IEnumerable<object[]> ProvideJsonPathReplaceData => new[]
+    {
+        new object[]
+        {
+            new[] { GetJsonPathModel("$.name", "Henk") }, """{"name":"Klaas"}""", """{"name":"Henk"}"""
+        },
+        new object[]
+        {
+            new[] { GetJsonPathModel("$[1].name", "Henk") }, """[{"name":"Klaas"},{"name":"Piet"}]""",
+            """[{"name":"Klaas"},{"name":"Henk"}]"""
+        },
+        new object[]
+        {
+            new[] { GetJsonPathModel("$[*].name", "Henk") }, """[{"name":"Klaas"},{"name":"Piet"}]""",
+            """[{"name":"Henk"},{"name":"Henk"}]"""
+        }
+    };
+
     [TestMethod]
     public async Task WriteToResponseAsync_ReplaceIsNull_ShouldReturnNotExecuted()
     {
@@ -128,6 +146,41 @@ public class StringReplaceResponseWriterFacts
         Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
     }
 
+    [TestMethod]
+    [DynamicData(nameof(ProvideJsonPathReplaceData))]
+    public async Task WriteToResponseAsync_JsonPathReplace_HappyFlow(
+        IEnumerable<StubResponseReplaceModel> models,
+        string responseBody,
+        string expectedBody)
+    {
+        // Arrange
+        _stub.Response.Replace = models;
+        _response.Body = Encoding.UTF8.GetBytes(responseBody);
+
+        // Act
+        var result = await WriteToResponseAsync(_stub, _response);
+
+        // Assert
+        Assert.IsTrue(result.Executed);
+        Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
+    }
+
+    [TestMethod]
+    public async Task WriteToResponseAsync_JsonPathReplace_CorruptJson_ShouldLogMessage()
+    {
+        // Arrange
+        _stub.Response.Replace = [GetJsonPathModel("$.name", "replace value")];
+        _response.Body = "invalid JSON"u8.ToArray();
+
+        // Act
+        var result = await WriteToResponseAsync(_stub, _response);
+
+        // Assert
+        Assert.IsTrue(result.Executed);
+        Assert.AreEqual("invalid JSON", Encoding.UTF8.GetString(_response.Body));
+        Assert.IsTrue(result.Log.Contains("Unexpected character encountered"));
+    }
+
     private async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response) =>
         await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
@@ -136,4 +189,7 @@ public class StringReplaceResponseWriterFacts
 
     private static StubResponseReplaceModel GetRegexModel(string regex, string replaceWith) =>
         new() { Regex = regex, ReplaceWith = replaceWith };
+
+    private static StubResponseReplaceModel GetJsonPathModel(string jsonPath, string replaceWith) =>
+        new() { JsonPath = jsonPath, ReplaceWith = replaceWith };
 }

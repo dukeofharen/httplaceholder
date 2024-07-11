@@ -743,6 +743,23 @@ export const useStubFormStore = defineStore({
         this.setInput(parsed);
       }, this.input);
     },
+    setDefaultJsonPathReplace(): void {
+      handle((parsed) => {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.replace) {
+          parsed.response.replace = [];
+        }
+
+        parsed.response.replace = parsed.response.replace.concat(
+          defaultValues.jsonPathReplace,
+        );
+
+        this.setInput(parsed);
+      }, this.input);
+    },
     setClearState(): void {
       handle((parsed) => {
         if (!parsed.response) {

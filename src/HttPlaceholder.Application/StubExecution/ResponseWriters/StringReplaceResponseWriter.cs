@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,12 +8,14 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using static HttPlaceholder.Domain.StubResponseWriterResultModel;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-///     Response writer that is used to to a string or regex replace in the response.
+///     Response writer that is used to perform a string, regex or JSONPath replace in the response.
 /// </summary>
 public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
 {
@@ -30,13 +33,14 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
         }
 
         var body = Encoding.UTF8.GetString(response.Body);
-        body = replace.Aggregate(body, PerformReplace);
+        var log = new List<string>();
+        body = replace.Aggregate(body, (b, m) => PerformReplace(b, m, log));
         response.Body = Encoding.UTF8.GetBytes(body);
 
-        return IsExecuted(GetType().Name).AsTask();
+        return IsExecuted(GetType().Name, string.Join(Environment.NewLine, log)).AsTask();
     }
 
-    private static string PerformReplace(string body, StubResponseReplaceModel model)
+    private static string PerformReplace(string body, StubResponseReplaceModel model, IList<string> log)
     {
         if (!string.IsNullOrWhiteSpace(model.Text))
         {
@@ -53,6 +57,20 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
             foreach (var match in matches)
             {
                 body = body.Replace(match.ToString() ?? string.Empty, model.ReplaceWith);
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.JsonPath))
+        {
+            try
+            {
+                var jObject = JToken.Parse(body);
+                jObject = jObject.ReplacePath(model.JsonPath, model.ReplaceWith);
+                body = jObject.ToString(Formatting.None);
+            }
+            catch (JsonReaderException ex)
+            {
+                log.Add(ex.Message);
             }
         }
 

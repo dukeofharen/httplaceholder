@@ -99,7 +99,7 @@
 
     &lt;div class="buttons"&gt;
         &lt;a class="button" href="[ROOT_URL]/ph-ui"&gt;Admin UI&lt;/a&gt;
-        &lt;a class="button" href="[ROOT_URL]/ph-ui/docs"&gt;Docs&lt;/a&gt;
+        &lt;a class="button" href="[ROOT_URL]/ph-ui/docs/"&gt;Docs&lt;/a&gt;
         &lt;a class="button" href="https://httplaceholder.org"&gt;Website&lt;/a&gt;
     &lt;/div&gt;
 &lt;/div&gt;

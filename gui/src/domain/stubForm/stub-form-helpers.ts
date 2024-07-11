@@ -270,6 +270,12 @@ export const stubFormHelpers = [
     defaultValueMutation: (store: any) => store.setDefaultRegexReplace(),
   },
   {
+    title: "JSONPath replace in response body",
+    subTitle: elementDescriptions.jsonPathReplace,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
+    defaultValueMutation: (store: any) => store.setDefaultJsonPathReplace(),
+  },
+  {
     title: "Line endings",
     subTitle: elementDescriptions.lineEndings,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,

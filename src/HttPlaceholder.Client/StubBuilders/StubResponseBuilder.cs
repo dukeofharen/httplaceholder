@@ -429,6 +429,19 @@ public sealed class StubResponseBuilder
     }
 
     /// <summary>
+    ///     Searches for a specific JSONPath in the JSON body and replaces the instances with <paramref name="replaceWith" />.
+    /// </summary>
+    /// <param name="jsonPath">The JSONPath expression.</param>
+    /// <param name="replaceWith">The text to replace the found matches with.</param>
+    /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
+    public StubResponseBuilder JsonPathReplace(string jsonPath, string replaceWith)
+    {
+        EnsureReplaceDtos();
+        AddResponseReplaceDto(new StubResponseReplaceDto { JsonPath = jsonPath, ReplaceWith = replaceWith });
+        return this;
+    }
+
+    /// <summary>
     ///     Builds the response definition.
     /// </summary>
     /// <returns>The built <see cref="StubResponseDto" />.</returns>

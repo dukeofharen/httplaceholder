@@ -1028,3 +1028,34 @@
         replaceWith: ((query:q1))
       - regex: '(amet|elit)'
         replaceWith: ((query:q2))
+
+- id: jsonpath-replace
+  tenant: integration
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /jsonpath-replace
+  response:
+    json: '{"name": "Bassie", "city": "Amsterdam"}'
+    replace:
+      - jsonPath: '$.name'
+        replaceWith: 'Adriaan'
+      - jsonPath: '$.city'
+        replaceWith: 'Groningen'
+
+- id: jsonpath-replace-dynamic
+  tenant: integration
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /jsonpath-replace-dynamic
+  response:
+    enableDynamicMode: true
+    json: '{"name": "Bassie", "city": "Amsterdam"}'
+    replace:
+      - jsonPath: '$.name'
+        replaceWith: ((query:q1))
+      - jsonPath: '$.city'
+        replaceWith: ((query:q2))

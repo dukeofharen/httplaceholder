@@ -21,6 +21,11 @@ public class StubResponseReplaceDto
     public string Regex { get; set; }
 
     /// <summary>
+    ///     The JSONPath expression that should be looked for in the JSON.
+    /// </summary>
+    public string JsonPath { get; set; }
+
+    /// <summary>
     ///     The value the found text or regex matches should be replaced with.
     /// </summary>
     public string ReplaceWith { get; set; }

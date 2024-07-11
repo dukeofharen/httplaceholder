@@ -182,20 +182,21 @@ internal class StubModelValidator(
         var i = 0;
         foreach (var replace in stub.Response.Replace)
         {
-            if (!string.IsNullOrEmpty(replace.Text) && !string.IsNullOrWhiteSpace(replace.Regex))
+            if (StringHelper.CountNumberOfNonWhitespaceStrings(replace.Text, replace.Regex, replace.JsonPath) > 1)
             {
-                result.Add($"Replace [{i}]: 'text' and 'regex' can't both be set.");
+                result.Add($"Replace [{i}]: set either 'text', 'regex' or 'jsonReplace'.");
             }
 
-            if (string.IsNullOrEmpty(replace.Text) && string.IsNullOrWhiteSpace(replace.Regex))
+            if (StringHelper.AllAreNullOrWhitespace(replace.Text, replace.Regex, replace.JsonPath))
             {
-                result.Add($"Replace [{i}]: either 'text' or 'regex' needs to be set.");
+                result.Add($"Replace [{i}]: either 'text', 'regex' or 'jsonReplace' needs to be set.");
             }
 
-            if (!string.IsNullOrWhiteSpace(replace.Regex) && replace.IgnoreCase.HasValue)
+            if (StringHelper.CountNumberOfNonWhitespaceStrings(replace.Regex, replace.JsonPath) > 0 &&
+                replace.IgnoreCase.HasValue)
             {
                 result.Add(
-                    $"Replace [{i}]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.");
+                    $"Replace [{i}]: 'ignoreCase' can only be used with 'text'.");
             }
 
             if (replace.ReplaceWith == null)
