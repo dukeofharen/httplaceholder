@@ -20,8 +20,7 @@ public class DevelopmentMiddleware(RequestDelegate next)
         IStubRequestContext stubRequestContext,
         IEnvService envService)
     {
-        var env = envService.GetAspNetCoreEnvironment();
-        if (string.IsNullOrWhiteSpace(env) || !env.Equals("development", StringComparison.OrdinalIgnoreCase))
+        if (!envService.IsDevelopment())
         {
             await next(context);
             return;

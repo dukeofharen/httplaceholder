@@ -35,6 +35,12 @@ public interface IEnvService
     string GetAspNetCoreEnvironment();
 
     /// <summary>
+    ///     Returns true if the variable ASPNETCORE_ENVIRONMENT is set to "Development" (case-insensitive); false otherwise.
+    /// </summary>
+    /// <returns>True if the variable ASPNETCORE_ENVIRONMENT is set to "Development" (case-insensitive); false otherwise.</returns>
+    bool IsDevelopment();
+
+    /// <summary>
     ///     A method to retrieve the runtime information.
     /// </summary>
     /// <returns>The runtime information.</returns>

@@ -26,5 +26,12 @@ internal class EnvService : IEnvService, ISingletonService
     public string GetAspNetCoreEnvironment() => GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
     /// <inheritdoc />
+    public bool IsDevelopment()
+    {
+        var env = GetAspNetCoreEnvironment();
+        return !string.IsNullOrWhiteSpace(env) && env.Equals("development", StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <inheritdoc />
     public string GetRuntime() => RuntimeInformation.FrameworkDescription;
 }

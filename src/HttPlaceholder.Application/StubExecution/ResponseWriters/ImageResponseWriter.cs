@@ -21,9 +21,14 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 ///     Response writer that is used to generate a random image (BMP, GIF, JPEG or PNG) with parameters (like quality, size
 ///     etc.) and return it to the client.
 /// </summary>
-internal class ImageResponseWriter(IAssemblyService assemblyService, IFileService fileService)
+internal class ImageResponseWriter(
+    IAssemblyService assemblyService,
+    IFileService fileService,
+    IEnvService envService)
     : IResponseWriter, ISingletonService
 {
+    private const bool UseImageSharp = true;
+
     /// <inheritdoc />
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
         CancellationToken cancellationToken)
@@ -38,7 +43,7 @@ internal class ImageResponseWriter(IAssemblyService assemblyService, IFileServic
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, stubImage.ContentTypeHeaderValue);
 
         var cacheFilePath = Path.Combine(fileService.GetTempPath(), $"{stubImage.Hash}.bin");
-        var bytes = await fileService.FileExistsAsync(cacheFilePath, cancellationToken)
+        var bytes = await fileService.FileExistsAsync(cacheFilePath, cancellationToken) && !envService.IsDevelopment()
             ? await fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken)
             : await GetImageAsync(stubImage, cacheFilePath, cancellationToken);
         response.Body = bytes;
@@ -49,7 +54,27 @@ internal class ImageResponseWriter(IAssemblyService assemblyService, IFileServic
     /// <inheritdoc />
     public int Priority => -11;
 
-    private async Task<byte[]> GetImageAsync(
+    private Task<byte[]> GetImageAsync(
+        StubResponseImageModel stubImage,
+        string cacheFilePath,
+        CancellationToken cancellationToken)
+    {
+        return UseImageSharp
+            ? GetImageSharpImageAsync(stubImage, cacheFilePath, cancellationToken)
+#pragma warning disable CS0162 // Unreachable code detected
+            : GetImageMagickImageAsync(stubImage, cacheFilePath, cancellationToken);
+#pragma warning restore CS0162 // Unreachable code detected
+    }
+
+    private Task<byte[]> GetImageMagickImageAsync(
+        StubResponseImageModel stubImage,
+        string cacheFilePath,
+        CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    private async Task<byte[]> GetImageSharpImageAsync(
         StubResponseImageModel stubImage,
         string cacheFilePath,
         CancellationToken cancellationToken)
