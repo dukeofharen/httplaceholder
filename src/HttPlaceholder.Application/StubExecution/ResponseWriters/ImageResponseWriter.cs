@@ -78,7 +78,7 @@ internal class ImageResponseWriter(
         using var image = new MagickImage(backgroundColor, stubImage.Width, stubImage.Height);
         var fontColor = !string.IsNullOrWhiteSpace(stubImage.FontColor)
             ? new MagickColor(stubImage.FontColor)
-            : new MagickColor("#000000"); // TODO invert color
+            : backgroundColor.InvertRgbColor();
         const int fontSize = 30;
         if (stubImage.WordWrap)
         {
