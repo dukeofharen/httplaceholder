@@ -14,7 +14,7 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SharpYaml;
+using YamlDotNet.Core;
 
 namespace HttPlaceholder.Persistence.StubSources;
 
