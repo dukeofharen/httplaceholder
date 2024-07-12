@@ -7,13 +7,14 @@ using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
+using ImageMagick;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-using static HttPlaceholder.Domain.StubResponseWriterResultModel;
+using TextAlignment = ImageMagick.TextAlignment;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -27,7 +28,7 @@ internal class ImageResponseWriter(
     IEnvService envService)
     : IResponseWriter, ISingletonService
 {
-    private const bool UseImageSharp = true;
+    private bool UseImageSharp = false;
 
     /// <inheritdoc />
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
@@ -36,52 +37,100 @@ internal class ImageResponseWriter(
         var imgDefinition = stub.Response?.Image;
         if (imgDefinition == null || imgDefinition.Type == ResponseImageType.NotSet)
         {
-            return IsNotExecuted(GetType().Name);
+            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
         var stubImage = stub.Response.Image;
         response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, stubImage.ContentTypeHeaderValue);
 
         var cacheFilePath = Path.Combine(fileService.GetTempPath(), $"{stubImage.Hash}.bin");
-        var bytes = await fileService.FileExistsAsync(cacheFilePath, cancellationToken) && !envService.IsDevelopment()
-            ? await fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken)
-            : await GetImageAsync(stubImage, cacheFilePath, cancellationToken);
-        response.Body = bytes;
+        var bytes =
+            response.Body = await GetImageAsync(stubImage, cacheFilePath, cancellationToken);
         response.BodyIsBinary = bytes.Length != 0;
-        return IsExecuted(GetType().Name);
+        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 
     /// <inheritdoc />
     public int Priority => -11;
 
-    private Task<byte[]> GetImageAsync(
+    private async Task<byte[]> GetImageAsync(
         StubResponseImageModel stubImage,
         string cacheFilePath,
         CancellationToken cancellationToken)
     {
-        return UseImageSharp
-            ? GetImageSharpImageAsync(stubImage, cacheFilePath, cancellationToken)
-#pragma warning disable CS0162 // Unreachable code detected
-            : GetImageMagickImageAsync(stubImage, cacheFilePath, cancellationToken);
-#pragma warning restore CS0162 // Unreachable code detected
+        if (await fileService.FileExistsAsync(cacheFilePath, cancellationToken) && !envService.IsDevelopment())
+        {
+            return await fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken);
+        }
+
+        var result = UseImageSharp
+            ? await GetImageSharpImageAsync(stubImage, cancellationToken)
+            : await GetImageMagickImageAsync(stubImage, cancellationToken);
+        await fileService.WriteAllBytesAsync(cacheFilePath, result, cancellationToken);
+        return result;
     }
 
     private Task<byte[]> GetImageMagickImageAsync(
         StubResponseImageModel stubImage,
-        string cacheFilePath,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var backgroundColor = new MagickColor(stubImage.BackgroundColor);
+        using var image = new MagickImage(backgroundColor, stubImage.Width, stubImage.Height);
+        var fontColor = !string.IsNullOrWhiteSpace(stubImage.FontColor)
+            ? new MagickColor(stubImage.FontColor)
+            : new MagickColor("#000000"); // TODO invert color
+        const int fontSize = 30;
+        if (stubImage.WordWrap)
+        {
+            using var label = new MagickImage($"caption:{stubImage.Text}",
+                new MagickReadSettings
+                {
+                    FillColor = fontColor,
+                    BackgroundColor = MagickColors.Transparent,
+                    FontPointsize = fontSize,
+                    Width = stubImage.Width,
+                    TextGravity = Gravity.Center,
+                    Font = GetFontPath()
+                });
+            image.Composite(label, 0, (stubImage.Height - label.Height) / 2, CompositeOperator.Over);
+        }
+        else
+        {
+            new Drawables()
+                .FontPointSize(fontSize)
+                .FillColor(fontColor)
+                .TextAlignment(TextAlignment.Center)
+                .Text(stubImage.Width / 2, stubImage.Height / 2, stubImage.Text)
+                .Font(GetFontPath())
+                .Draw(image);
+        }
+
+        switch (stubImage.Type)
+        {
+            case ResponseImageType.Bmp:
+                image.Format = MagickFormat.Bmp;
+                break;
+            case ResponseImageType.Gif:
+                image.Format = MagickFormat.Gif;
+                break;
+            case ResponseImageType.Jpeg:
+                image.Format = MagickFormat.Jpeg;
+                image.Quality = stubImage.JpegQuality;
+                break;
+            default:
+                image.Format = MagickFormat.Png;
+                break;
+        }
+
+        return Task.FromResult(image.ToByteArray());
     }
 
     private async Task<byte[]> GetImageSharpImageAsync(
         StubResponseImageModel stubImage,
-        string cacheFilePath,
         CancellationToken cancellationToken)
     {
         var collection = new FontCollection();
-        collection.Add(Path.Combine(assemblyService.GetExecutingAssemblyRootPath(),
-            "Resources", "Manrope-Regular.ttf"));
+        collection.Add(GetFontPath());
         const string fontFamilyName = "Manrope";
         if (!collection.TryGet(fontFamilyName, out var family))
         {
@@ -118,7 +167,10 @@ internal class ImageResponseWriter(
         }
 
         var result = ms.ToArray();
-        await fileService.WriteAllBytesAsync(cacheFilePath, result, cancellationToken);
         return result;
     }
+
+    private string GetFontPath() =>
+        Path.Combine(assemblyService.GetExecutingAssemblyRootPath(),
+            "Resources", "Manrope-Regular.ttf");
 }
