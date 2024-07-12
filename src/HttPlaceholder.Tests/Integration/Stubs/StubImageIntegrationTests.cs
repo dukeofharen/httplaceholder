@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using SixLabors.ImageSharp;
+using ImageMagick;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -33,7 +33,7 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
         Assert.AreEqual("image/jpeg",
             response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
-        using var image = await Image.LoadAsync(ms);
+        using var image = new MagickImage(ms);
         Assert.AreEqual(1024, image.Width);
         Assert.AreEqual(256, image.Height);
     }
@@ -52,7 +52,7 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
         Assert.AreEqual("image/png",
             response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
-        using var image = await Image.LoadAsync(ms);
+        using var image = new MagickImage(ms);
         Assert.AreEqual(1024, image.Width);
         Assert.AreEqual(256, image.Height);
     }
@@ -71,7 +71,7 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
         Assert.AreEqual("image/bmp",
             response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
-        using var image = await Image.LoadAsync(ms);
+        using var image = new MagickImage(ms);
         Assert.AreEqual(1024, image.Width);
         Assert.AreEqual(256, image.Height);
     }
@@ -90,7 +90,7 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
         Assert.AreEqual("image/gif",
             response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
-        using var image = await Image.LoadAsync(ms);
+        using var image = new MagickImage(ms);
         Assert.AreEqual(1024, image.Width);
         Assert.AreEqual(256, image.Height);
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -8,12 +7,6 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using ImageMagick;
-using SixLabors.Fonts;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 using TextAlignment = ImageMagick.TextAlignment;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -28,8 +21,6 @@ internal class ImageResponseWriter(
     IEnvService envService)
     : IResponseWriter, ISingletonService
 {
-    private bool UseImageSharp = false;
-
     /// <inheritdoc />
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
         CancellationToken cancellationToken)
@@ -63,9 +54,7 @@ internal class ImageResponseWriter(
             return await fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken);
         }
 
-        var result = UseImageSharp
-            ? await GetImageSharpImageAsync(stubImage, cancellationToken)
-            : await GetImageMagickImageAsync(stubImage, cancellationToken);
+        var result = await GetImageMagickImageAsync(stubImage, cancellationToken);
         await fileService.WriteAllBytesAsync(cacheFilePath, result, cancellationToken);
         return result;
     }
@@ -123,51 +112,6 @@ internal class ImageResponseWriter(
         }
 
         return Task.FromResult(image.ToByteArray());
-    }
-
-    private async Task<byte[]> GetImageSharpImageAsync(
-        StubResponseImageModel stubImage,
-        CancellationToken cancellationToken)
-    {
-        var collection = new FontCollection();
-        collection.Add(GetFontPath());
-        const string fontFamilyName = "Manrope";
-        if (!collection.TryGet(fontFamilyName, out var family))
-        {
-            throw new InvalidOperationException($"Font family '{fontFamilyName}' not found!");
-        }
-
-        using var image = new Image<Rgba32>(stubImage.Width, stubImage.Height);
-        var font = new Font(family, stubImage.FontSize);
-        var parsedColor = Color.ParseHex(stubImage.BackgroundColor);
-        var polygon = new Rectangle(0, 0, stubImage.Width, stubImage.Height);
-        var fontColor = !string.IsNullOrWhiteSpace(stubImage.FontColor)
-            ? Color.ParseHex(stubImage.FontColor)
-            : parsedColor.InvertColor();
-        image.Mutate(i =>
-            i
-                .Fill(parsedColor, polygon)
-                .ApplyScalingWaterMark(font, stubImage.Text, fontColor, 5, stubImage.WordWrap));
-        using var ms = new MemoryStream();
-        switch (stubImage.Type)
-        {
-            case ResponseImageType.Bmp:
-                await image.SaveAsBmpAsync(ms, cancellationToken);
-                break;
-            case ResponseImageType.Gif:
-                await image.SaveAsGifAsync(ms, cancellationToken);
-                break;
-            case ResponseImageType.Jpeg:
-                await image.SaveAsJpegAsync(ms, new JpegEncoder { Quality = stubImage.JpegQuality },
-                    cancellationToken);
-                break;
-            default:
-                await image.SaveAsPngAsync(ms, cancellationToken);
-                break;
-        }
-
-        var result = ms.ToArray();
-        return result;
     }
 
     private string GetFontPath() =>

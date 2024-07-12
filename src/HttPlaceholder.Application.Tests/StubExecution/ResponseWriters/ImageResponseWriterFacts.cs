@@ -3,7 +3,7 @@ using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Enums;
-using SixLabors.ImageSharp;
+using ImageMagick;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -115,7 +115,7 @@ public class ImageResponseWriterFacts
         Assert.IsTrue(response.BodyIsBinary);
         Assert.AreEqual(1, response.Headers.Count);
         await using var ms = new MemoryStream(response.Body);
-        using var image = await Image.LoadAsync(ms);
+        using var image = new MagickImage(ms);
         Assert.AreEqual(stub.Response.Image.Height, image.Height);
         Assert.AreEqual(stub.Response.Image.Width, image.Width);
         Assert.AreEqual(expectedContentType, response.Headers[HeaderKeys.ContentType]);
