@@ -74,7 +74,6 @@ Also visit the website: https://httplaceholder.org/
 - [Vue.js](https://vuejs.org/)
 - [Bootstrap](https://getbootstrap.com/)
 - [CodeMirror](https://codemirror.net/)
-- [ImageSharp](https://sixlabors.com/products/imagesharp/)
 
 ## Getting Started
 
