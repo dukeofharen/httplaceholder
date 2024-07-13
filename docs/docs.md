@@ -1593,7 +1593,7 @@ By calling the URL `http://localhost:5000/jsonpath-replace?q1=New+York`, the fol
 ### Image
 
 It is possible for HttPlaceholder to generate stub images. This can be done by setting the `image` response writer. This
-writer is built using the amazing [ImageSharp](https://docs.sixlabors.com/) library. Here is an example:
+writer is built using the amazing [Magick.NET](https://github.com/dlemstra/Magick.NET) library. Here is an example:
 
 ```yml
 id: image-example

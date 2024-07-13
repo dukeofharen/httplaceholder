@@ -1,4 +1,4 @@
-# You can let HttPlaceholder return a stub image in the form of JPEG, PNG, BMP or GIF. This image is generated using the ImageSharp library.
+# You can let HttPlaceholder return a stub image in the form of JPEG, PNG, BMP or GIF. This image is generated using the Magick.NET library (which uses ImageMagick).
 - id: image-jpeg
   tenant: 19-stub-image
   conditions:

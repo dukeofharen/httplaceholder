@@ -24,7 +24,6 @@ public static class ProgramUtilities
 {
     private static readonly Stopwatch _startupWatch = new();
 
-
     /// <summary>
     ///     Configure the logging.
     /// </summary>

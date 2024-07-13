@@ -3,7 +3,7 @@ using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Enums;
-using SixLabors.ImageSharp;
+using ImageMagick;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -14,21 +14,17 @@ public class ImageResponseWriterFacts
         OperatingSystem.IsWindows() ? @"C:\bin\httplaceholder" : "/bin/httplaceholder";
 
     private static readonly string _tempFolder = OperatingSystem.IsWindows() ? @"C:\temp" : "/tmp";
-
-    private readonly Mock<IAssemblyService> _mockAssemblyService = new();
-    private readonly Mock<IFileService> _mockFileService = new();
-    private ImageResponseWriter _responseWriter;
+    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize()
     {
-        _mockAssemblyService
+        _mocker.GetMock<IAssemblyService>()
             .Setup(m => m.GetExecutingAssemblyRootPath())
             .Returns(_executingAssemblyPath);
-        _mockFileService
+        _mocker.GetMock<IFileService>()
             .Setup(m => m.GetTempPath())
             .Returns(_tempFolder);
-        _responseWriter = new ImageResponseWriter(_mockAssemblyService.Object, _mockFileService.Object);
     }
 
     [TestMethod]
@@ -37,9 +33,10 @@ public class ImageResponseWriterFacts
         // Arrange
         var stub = new StubModel { Response = new StubResponseModel { Image = null } };
         var response = new ResponseModel();
+        var writer = _mocker.CreateInstance<ImageResponseWriter>();
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -63,15 +60,17 @@ public class ImageResponseWriterFacts
 
         var cachedBytes = new byte[] { 1, 2, 3, 4 };
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
-        _mockFileService
+        var writer = _mocker.CreateInstance<ImageResponseWriter>();
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedCachePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
-        _mockFileService
+        fileServiceMock
             .Setup(m => m.ReadAllBytesAsync(expectedCachePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(cachedBytes);
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
@@ -97,28 +96,30 @@ public class ImageResponseWriterFacts
         };
         var response = new ResponseModel();
 
-        _mockAssemblyService
+        var writer = _mocker.CreateInstance<ImageResponseWriter>();
+        _mocker.GetMock<IAssemblyService>()
             .Setup(m => m.GetExecutingAssemblyRootPath())
             .Returns(AssemblyHelper.GetExecutingAssemblyRootPath);
 
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
-        _mockFileService
+            var fileServiceMock = _mocker.GetMock<IFileService>();
+        fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedCachePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
         Assert.IsTrue(response.BodyIsBinary);
         Assert.AreEqual(1, response.Headers.Count);
         await using var ms = new MemoryStream(response.Body);
-        using var image = await Image.LoadAsync(ms);
+        using var image = new MagickImage(ms);
         Assert.AreEqual(stub.Response.Image.Height, image.Height);
         Assert.AreEqual(stub.Response.Image.Width, image.Width);
         Assert.AreEqual(expectedContentType, response.Headers[HeaderKeys.ContentType]);
-        _mockFileService
+        fileServiceMock
             .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body, It.IsAny<CancellationToken>()),
                 Times.Once);
     }
