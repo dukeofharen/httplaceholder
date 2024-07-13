@@ -1,6 +1,7 @@
 [vnext]
 - Did a complete code cleanup and refactoring in the .NET project (https://github.com/dukeofharen/httplaceholder/pull/346/files).
 - Added option to allow JSON value replacing using JSONPath in the response body (https://github.com/dukeofharen/httplaceholder/pull/347).
+- Replaced the ImageSharp library with Magick.NET due to licensing (https://github.com/dukeofharen/httplaceholder/pull/348).
 
 [2024.2.24]
 - Upgraded application to .NET 8 (https://github.com/dukeofharen/httplaceholder/pull/338).
