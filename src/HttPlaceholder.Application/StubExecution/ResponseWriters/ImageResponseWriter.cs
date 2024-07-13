@@ -54,14 +54,13 @@ internal class ImageResponseWriter(
             return await fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken);
         }
 
-        var result = await GetImageMagickImageAsync(stubImage, cancellationToken);
+        var result = GetImageMagickImageAsync(stubImage);
         await fileService.WriteAllBytesAsync(cacheFilePath, result, cancellationToken);
         return result;
     }
 
-    private Task<byte[]> GetImageMagickImageAsync(
-        StubResponseImageModel stubImage,
-        CancellationToken cancellationToken)
+    private byte[] GetImageMagickImageAsync(
+        StubResponseImageModel stubImage)
     {
         var backgroundColor = new MagickColor(stubImage.BackgroundColor);
         using var image = new MagickImage(backgroundColor, stubImage.Width, stubImage.Height);
@@ -111,7 +110,7 @@ internal class ImageResponseWriter(
                 break;
         }
 
-        return Task.FromResult(image.ToByteArray());
+        return image.ToByteArray();
     }
 
     private string GetFontPath() =>
