@@ -1,10 +1,14 @@
 export function fromBase64(input: string): string | undefined {
-  try {
-    return window.atob(input);
-  } catch (e) {
-    console.log(e);
-    return undefined;
-  }
+  // Source: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
+  return decodeURIComponent(
+    window
+      .atob(input)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join(""),
+  );
 }
 
 export function toBase64(input: string): string | undefined {
