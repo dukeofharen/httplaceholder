@@ -86,9 +86,8 @@ internal class ReverseProxyResponseWriter(
             var rawResponseHeaders = responseMessage.Headers
                 .ToDictionary(h => h.Key, h => h.Value.First());
 
-            var contentType = responseMessage.Content.Headers.ContentType?.MediaType ?? string.Empty;
-            var isBinary = !(contentType.StartsWith("text/", StringComparison.OrdinalIgnoreCase) ||
-                             content.IsValidAscii());
+            var contentType = responseMessage.Content.Headers.ContentType?.MediaType;
+            var isBinary = !content.IsValidText(contentType);
             if (stub.Response.ReverseProxy.ReplaceRootUrl == true)
             {
                 var replacedContent =
