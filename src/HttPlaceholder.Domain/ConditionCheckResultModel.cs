@@ -12,17 +12,17 @@ public class ConditionCheckResultModel
     /// <summary>
     ///     Gets or sets the name of the checker.
     /// </summary>
-    public string CheckerName { get; private set; }
+    public string CheckerName { get; set; }
 
     /// <summary>
     ///     Gets or sets the condition validation.
     /// </summary>
-    public ConditionValidationType ConditionValidation { get; private set; } = ConditionValidationType.NotExecuted;
+    public ConditionValidationType ConditionValidation { get; set; } = ConditionValidationType.NotExecuted;
 
     /// <summary>
     ///     Gets or sets the log.
     /// </summary>
-    public string Log { get; private set; }
+    public string Log { get; set; }
 
     /// <summary>
     ///     Sets the checker name.
