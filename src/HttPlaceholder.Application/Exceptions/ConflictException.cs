@@ -11,7 +11,7 @@ public class ConflictException : Exception
     ///     Constructs a <see cref="ConflictException" /> instance.
     /// </summary>
     /// <param name="message">The message.</param>
-    public ConflictException(string message) : base($"Conflict detected: {message}")
+    public ConflictException(string message) : base(string.Format(ApplicationResources.ConflictDetected, message))
     {
     }
 }

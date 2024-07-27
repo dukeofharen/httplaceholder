@@ -45,7 +45,8 @@ public class FeatureIsEnabledQueryHandler(IOptionsMonitor<SettingsModel> options
             FeatureFlagType.Authentication => new FeatureResultModel(request.FeatureFlag,
                 settings.Authentication != null && !string.IsNullOrWhiteSpace(settings.Authentication.ApiUsername) &&
                 !string.IsNullOrWhiteSpace(settings.Authentication.ApiPassword)).AsTask(),
-            _ => throw new NotImplementedException($"Feature flag '{request.FeatureFlag}' not supported.")
+            _ => throw new NotImplementedException(string.Format(ApplicationResources.FeatureFlagNotSupported,
+                request.FeatureFlag))
         };
     }
 }

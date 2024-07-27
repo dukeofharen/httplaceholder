@@ -68,5 +68,47 @@ namespace HttPlaceholder.Application {
                 return ResourceManager.GetString("ConfigProviderNotFound", resourceCulture);
             }
         }
+        
+        internal static string ConflictDetected {
+            get {
+                return ResourceManager.GetString("ConflictDetected", resourceCulture);
+            }
+        }
+        
+        internal static string EntityNotFound {
+            get {
+                return ResourceManager.GetString("EntityNotFound", resourceCulture);
+            }
+        }
+        
+        internal static string ValidationFailed {
+            get {
+                return ResourceManager.GetString("ValidationFailed", resourceCulture);
+            }
+        }
+        
+        internal static string RequestConvertionNotSupported {
+            get {
+                return ResourceManager.GetString("RequestConvertionNotSupported", resourceCulture);
+            }
+        }
+        
+        internal static string FeatureFlagNotSupported {
+            get {
+                return ResourceManager.GetString("FeatureFlagNotSupported", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioNotFound {
+            get {
+                return ResourceManager.GetString("ScenarioNotFound", resourceCulture);
+            }
+        }
+        
+        internal static string HostedJobNotFound {
+            get {
+                return ResourceManager.GetString("HostedJobNotFound", resourceCulture);
+            }
+        }
     }
 }

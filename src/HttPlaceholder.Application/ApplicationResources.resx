@@ -3,7 +3,7 @@
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -29,5 +29,27 @@
     </data>
     <data name="ConfigProviderNotFound" xml:space="preserve">
         <value>Configuration provider with type '{0}' unexpectedly not found.</value>
+    </data>
+    <data name="ConflictDetected" xml:space="preserve">
+        <value>Conflict detected: {0}</value>
+    </data>
+    <data name="EntityNotFound" xml:space="preserve">
+        <value>Entity "{0}" ({1}) was not found.</value>
+    </data>
+    <data name="ValidationFailed" xml:space="preserve">
+        <value><![CDATA[Validation failed:
+{0}]]></value>
+    </data>
+    <data name="RequestConvertionNotSupported" xml:space="preserve">
+        <value>Converting of request to {0} not supported.</value>
+    </data>
+    <data name="FeatureFlagNotSupported" xml:space="preserve">
+        <value>Feature flag '{0}' not supported.</value>
+    </data>
+    <data name="ScenarioNotFound" xml:space="preserve">
+        <value>Scenario '{0}' not found.</value>
+    </data>
+    <data name="HostedJobNotFound" xml:space="preserve">
+        <value>Hosted service with key '{0}'.</value>
     </data>
 </root>

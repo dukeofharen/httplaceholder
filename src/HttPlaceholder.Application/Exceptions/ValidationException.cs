@@ -34,5 +34,6 @@ public class ValidationException : Exception
     /// <summary>
     ///     Gets the message.
     /// </summary>
-    public override string Message => $"Validation failed:\n{string.Join("\n", ValidationErrors)}";
+    public override string Message => string.Format(ApplicationResources.ValidationFailed,
+        string.Join(Environment.NewLine, ValidationErrors));
 }
