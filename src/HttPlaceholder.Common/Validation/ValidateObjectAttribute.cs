@@ -43,7 +43,8 @@ public class ValidateObjectAttribute : ValidationAttribute
         }
 
         var compositeResults =
-            new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!");
+            new CompositeValidationResult(string.Format(CommonResources.ValidateObjectIncorrect,
+                validationContext.DisplayName));
         results.ForEach(compositeResults.AddResult);
 
         return compositeResults;

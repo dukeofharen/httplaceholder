@@ -43,6 +43,6 @@ public class BetweenAttribute : ValidationAttribute
     }
 
     /// <inheritdoc />
-    public override string FormatErrorMessage(string name) =>
-        $"Field '{name}' should be between '{_minValue}' and '{(_including ? _maxValue : _maxValue - 1)}'.";
+    public override string FormatErrorMessage(string name) => string.Format(CommonResources.BetweenIncorrect, name,
+        _minValue, _including ? _maxValue : _maxValue - 1);
 }
