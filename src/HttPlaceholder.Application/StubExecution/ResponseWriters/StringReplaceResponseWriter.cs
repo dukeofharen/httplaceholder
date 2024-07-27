@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Application.Utilities;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Newtonsoft.Json;
@@ -27,9 +28,7 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
         CancellationToken cancellationToken)
     {
         var replace = stub.Response?.Replace?.ToArray();
-        var contentType = !string.IsNullOrWhiteSpace(stub.Response?.ContentType)
-            ? stub.Response?.ContentType
-            : stub.Response?.Headers?.CaseInsensitiveSearch(HeaderKeys.ContentType);
+        var contentType = stub.GetContentType();
         if (replace == null || replace.Length == 0 || response.Body == null || response.Body.Length == 0 ||
             !response.Body.IsValidText(contentType))
         {
