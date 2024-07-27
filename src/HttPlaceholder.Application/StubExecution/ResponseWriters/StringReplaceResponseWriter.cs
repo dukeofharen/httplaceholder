@@ -27,7 +27,11 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
         CancellationToken cancellationToken)
     {
         var replace = stub.Response?.Replace?.ToArray();
-        if (replace == null || replace.Length == 0 || response.Body == null || response.Body.Length == 0)
+        var contentType = !string.IsNullOrWhiteSpace(stub.Response?.ContentType)
+            ? stub.Response?.ContentType
+            : stub.Response?.Headers?.CaseInsensitiveSearch(HeaderKeys.ContentType);
+        if (replace == null || replace.Length == 0 || response.Body == null || response.Body.Length == 0 ||
+            !response.Body.IsValidText(contentType))
         {
             return IsNotExecuted(GetType().Name).AsTask();
         }
