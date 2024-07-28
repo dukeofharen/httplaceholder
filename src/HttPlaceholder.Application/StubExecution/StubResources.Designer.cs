@@ -62,5 +62,107 @@ namespace HttPlaceholder.Application.StubExecution {
                 return ResourceManager.GetString("BasicAuthFailed", resourceCulture);
             }
         }
+        
+        internal static string BodyConditionFailed {
+            get {
+                return ResourceManager.GetString("BodyConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string FormValueNotFound {
+            get {
+                return ResourceManager.GetString("FormValueNotFound", resourceCulture);
+            }
+        }
+        
+        internal static string FormConditionFailed {
+            get {
+                return ResourceManager.GetString("FormConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string FullPathConditionFailed {
+            get {
+                return ResourceManager.GetString("FullPathConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string HeaderConditionFailed {
+            get {
+                return ResourceManager.GetString("HeaderConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string JsonTypeNotSupported {
+            get {
+                return ResourceManager.GetString("JsonTypeNotSupported", resourceCulture);
+            }
+        }
+        
+        internal static string JsonPassedItemObjectExpected {
+            get {
+                return ResourceManager.GetString("JsonPassedItemObjectExpected", resourceCulture);
+            }
+        }
+        
+        internal static string JsonNumberOfItemsTooSmall {
+            get {
+                return ResourceManager.GetString("JsonNumberOfItemsTooSmall", resourceCulture);
+            }
+        }
+        
+        internal static string JsonPropertyNotFound {
+            get {
+                return ResourceManager.GetString("JsonPropertyNotFound", resourceCulture);
+            }
+        }
+        
+        internal static string JsonPassedItemArrayExpected {
+            get {
+                return ResourceManager.GetString("JsonPassedItemArrayExpected", resourceCulture);
+            }
+        }
+        
+        internal static string JsonNumberOfItemsDoesntMatch {
+            get {
+                return ResourceManager.GetString("JsonNumberOfItemsDoesntMatch", resourceCulture);
+            }
+        }
+        
+        internal static string JsonInputDoesntCorrespondWithRegexOrSubstring {
+            get {
+                return ResourceManager.GetString("JsonInputDoesntCorrespondWithRegexOrSubstring", resourceCulture);
+            }
+        }
+        
+        internal static string JsonValueInvalidBoolean {
+            get {
+                return ResourceManager.GetString("JsonValueInvalidBoolean", resourceCulture);
+            }
+        }
+        
+        internal static string JsonValueInvalidFloat {
+            get {
+                return ResourceManager.GetString("JsonValueInvalidFloat", resourceCulture);
+            }
+        }
+        
+        internal static string JsonValueInvalidInt {
+            get {
+                return ResourceManager.GetString("JsonValueInvalidInt", resourceCulture);
+            }
+        }
+        
+        internal static string JsonValueInvalidDateTime {
+            get {
+                return ResourceManager.GetString("JsonValueInvalidDateTime", resourceCulture);
+            }
+        }
+        
+        internal static string JsonTokenTypeNotSupported {
+            get {
+                return ResourceManager.GetString("JsonTokenTypeNotSupported", resourceCulture);
+            }
+        }
     }
 }

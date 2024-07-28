@@ -54,7 +54,7 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
             case string text:
                 return HandleString(text, jToken, logging);
             default:
-                logging.Add($"Type for input '{input}' ({input.GetType()}) is not supported.");
+                logging.Add(string.Format(StubResources.JsonTypeNotSupported, input, input.GetType()));
                 return false;
         }
     }
@@ -63,15 +63,14 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
     {
         if (jToken.Type != JTokenType.Object)
         {
-            logging.Add($"Passed item is of type '{jToken.Type}', but Object was expected.");
+            logging.Add(string.Format(StubResources.JsonPassedItemObjectExpected, jToken.Type));
             return false;
         }
 
         var objDict = jToken.ToObject<Dictionary<string, JToken>>();
         if (objDict.Count < obj.Count)
         {
-            logging.Add(
-                $"Number of elements in posted object ({objDict.Count}) is smaller than the number of configured properties in the stub ({obj.Count}).");
+            logging.Add(string.Format(StubResources.JsonNumberOfItemsTooSmall, objDict.Count, obj.Count));
             return false;
         }
 
@@ -87,7 +86,7 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
             }
             else
             {
-                logging.Add($"No JSON property found for value '{pair.Key}'.");
+                logging.Add(string.Format(StubResources.JsonPropertyNotFound, pair.Key));
                 return false;
             }
         }
@@ -99,15 +98,14 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
     {
         if (jToken.Type != JTokenType.Array)
         {
-            logging.Add($"Passed item is of type '{jToken.Type}', but Array was expected.");
+            logging.Add(string.Format(StubResources.JsonPassedItemArrayExpected, jToken.Type));
             return false;
         }
 
         var objList = jToken.ToObject<List<JToken>>();
         if (objList.Count < list.Count)
         {
-            logging.Add(
-                $"Number of elements in posted list ({objList.Count}) is smaller than the number of configured properties in the stub ({list.Count}).");
+            logging.Add(string.Format(StubResources.JsonNumberOfItemsTooSmall, objList.Count, list.Count));
             return false;
         }
 
@@ -121,8 +119,7 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
         var passed = passedConditionCount == objList.Count;
         if (!passed)
         {
-            logging.Add(
-                $"Number of passed condition in posted list ({passedConditionCount}) doesn't match number of configured items in stub ({list.Count}).");
+            logging.Add(string.Format(StubResources.JsonNumberOfItemsDoesntMatch, passedConditionCount, list.Count));
             logging.AddRange(tempListLogging);
         }
 
@@ -137,7 +134,8 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
                 var passed = StringHelper.IsRegexMatchOrSubstring(jToken.ToString(), text);
                 if (!passed)
                 {
-                    logging.Add($"Input '{jToken}' did not correspond with regex/substring '{text}'.");
+                    logging.Add(
+                        string.Format(StubResources.JsonInputDoesntCorrespondWithRegexOrSubstring, jToken, text));
                 }
 
                 return passed;
@@ -155,7 +153,7 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
                     return true;
                 }
 
-                logging.Add($"Value '{text}' not recognized as valid boolean.");
+                logging.Add(string.Format(StubResources.JsonValueInvalidBoolean, text));
                 return false;
 
             case JTokenType.Float:
@@ -164,7 +162,7 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
                     return parsedFloat == (double)((JValue)jToken).Value;
                 }
 
-                logging.Add($"Value '{text}' not recognized as valid float.");
+                logging.Add(string.Format(StubResources.JsonValueInvalidFloat, text));
                 return false;
 
             case JTokenType.Integer:
@@ -173,7 +171,7 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
                     return parsedInt == (long)((JValue)jToken).Value;
                 }
 
-                logging.Add($"Value '{text}' not recognized as valid int.");
+                logging.Add(string.Format(StubResources.JsonValueInvalidInt, text));
                 return false;
 
             case JTokenType.Date:
@@ -182,11 +180,11 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
                     return parsedDate == (DateTime)((JValue)jToken).Value;
                 }
 
-                logging.Add($"Value '{text}' not recognized as valid date/time.");
+                logging.Add(string.Format(StubResources.JsonValueInvalidDateTime, text));
                 return false;
 
             default:
-                logging.Add($"JSON token type '{jToken.Type}' not supported!");
+                logging.Add(string.Format(StubResources.JsonTokenTypeNotSupported, jToken.Type));
                 return false;
         }
     }

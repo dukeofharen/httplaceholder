@@ -50,7 +50,7 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
             var (formKey, formValues) = form.FirstOrDefault(f => f.Item1 == condition.Key);
             if (formKey == null)
             {
-                return await InvalidAsync($"No form value with key '{condition.Key}' found.");
+                return await InvalidAsync(string.Format(StubResources.FormValueNotFound, condition.Key));
             }
 
             validConditions += formValues
@@ -65,6 +65,6 @@ public class FormValueConditionChecker(IHttpContextService httpContextService, I
         }
 
         return await InvalidAsync(
-            $"Number of configured form conditions: '{formConditions.Length}'; number of passed form conditions: '{validConditions}'");
+            string.Format(StubResources.FormConditionFailed, formConditions.Length, validConditions));
     }
 }

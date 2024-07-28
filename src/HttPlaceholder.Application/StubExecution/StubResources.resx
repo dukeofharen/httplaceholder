@@ -27,4 +27,55 @@
     <data name="BasicAuthFailed" xml:space="preserve">
         <value>Basic authentication condition failed for stub '{0}'. Expected '{1}' but found '{2}'.</value>
     </data>
+    <data name="BodyConditionFailed" xml:space="preserve">
+        <value>Body condition '{0}' failed.</value>
+    </data>
+    <data name="FormValueNotFound" xml:space="preserve">
+        <value>No form value with key '{0}' found.</value>
+    </data>
+    <data name="FormConditionFailed" xml:space="preserve">
+        <value>Number of configured form conditions: '{0}'; number of passed form conditions: '{1}'</value>
+    </data>
+    <data name="FullPathConditionFailed" xml:space="preserve">
+        <value>Condition '{0}' did not pass for request.</value>
+    </data>
+    <data name="HeaderConditionFailed" xml:space="preserve">
+        <value>Header condition '{0}: {1}' failed.</value>
+    </data>
+    <data name="JsonTypeNotSupported" xml:space="preserve">
+        <value>Type for input '{0}' ({1}) is not supported.</value>
+    </data>
+    <data name="JsonPassedItemObjectExpected" xml:space="preserve">
+        <value>Passed item is of type '{0}', but Object was expected.</value>
+    </data>
+    <data name="JsonNumberOfItemsTooSmall" xml:space="preserve">
+        <value>Number of elements in posted object ({0}) is smaller than the number of configured properties in the stub ({1}).</value>
+    </data>
+    <data name="JsonPropertyNotFound" xml:space="preserve">
+        <value>No JSON property found for value '{0}'.</value>
+    </data>
+    <data name="JsonPassedItemArrayExpected" xml:space="preserve">
+        <value>Passed item is of type '{0}', but Array was expected.</value>
+    </data>
+    <data name="JsonNumberOfItemsDoesntMatch" xml:space="preserve">
+        <value>Number of passed condition in posted list ({0}) doesn't match number of configured items in stub ({1}).</value>
+    </data>
+    <data name="JsonInputDoesntCorrespondWithRegexOrSubstring" xml:space="preserve">
+        <value>Input '{0}' did not correspond with regex/substring '{1}'.</value>
+    </data>
+    <data name="JsonValueInvalidBoolean" xml:space="preserve">
+        <value>Value '{0}' not recognized as valid boolean.</value>
+    </data>
+    <data name="JsonValueInvalidFloat" xml:space="preserve">
+        <value>Value '{0}' not recognized as valid float.</value>
+    </data>
+    <data name="JsonValueInvalidInt" xml:space="preserve">
+        <value>Value '{0}' not recognized as valid int.</value>
+    </data>
+    <data name="JsonValueInvalidDateTime" xml:space="preserve">
+        <value>Value '{0}' not recognized as valid date/time.</value>
+    </data>
+    <data name="JsonTokenTypeNotSupported" xml:space="preserve">
+        <value>JSON token type '{0}' not supported!</value>
+    </data>
 </root>
