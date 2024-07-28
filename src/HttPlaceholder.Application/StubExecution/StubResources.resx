@@ -78,4 +78,43 @@
     <data name="JsonTokenTypeNotSupported" xml:space="preserve">
         <value>JSON token type '{0}' not supported!</value>
     </data>
+    <data name="JsonPathNoSuitableJsonResultsFoundQuery" xml:space="preserve">
+        <value>No suitable JSON results found with JSONPath query '{0}'.</value>
+    </data>
+    <data name="JsonPathNoSuitableJsobResultsFound" xml:space="preserve">
+        <value>No suitable JSON results found.</value>
+    </data>
+    <data name="JsonPathCantDetermineType" xml:space="preserve">
+        <value>Can't determine the type of the JSONPath condition for stub with ID '{0}'.</value>
+    </data>
+    <data name="JsonpathQueryNotSet" xml:space="preserve">
+        <value>Value 'query' not set for JSONPath condition for stub with ID '{0}'.</value>
+    </data>
+    <data name="MethodConditionFailed" xml:space="preserve">
+        <value>Condition '{0}' did not pass for request.</value>
+    </data>
+    <data name="PathConditionFailed" xml:space="preserve">
+        <value>Condition '{0}' did not pass for request.</value>
+    </data>
+    <data name="QueryStringConditionFailed" xml:space="preserve">
+        <value>Query string condition '{0}: {1}' failed.</value>
+    </data>
+    <data name="ScenarioNoHitCountFound" xml:space="preserve">
+        <value>No hit count could be found.</value>
+    </data>
+    <data name="ScenarioExactHitCountConditionFailed" xml:space="preserve">
+        <value>Scenario '{0}' should have exactly '{exactHits1' hits, but '{2}' hits were counted.</value>
+    </data>
+    <data name="ScenarioMaxHitCountConditionFailed" xml:space="preserve">
+        <value>Scenario '{0}' should have less than '{1}' hits, but '{2}' hits were counted.</value>
+    </data>
+    <data name="ScenarioMinHitCountConditionFailed" xml:space="preserve">
+        <value>Scenario '{0}' should have at least '{1}' hits, but only '{2}' hits were counted.</value>
+    </data>
+    <data name="ScenarioStateConditionFailed" xml:space="preserve">
+        <value>Scenario '{0}' is in state '{1}', but '{2}' was expected.</value>
+    </data>
+    <data name="XPathConditionFailed" xml:space="preserve">
+        <value>No suitable XML results found with XPath query {0}.</value>
+    </data>
 </root>

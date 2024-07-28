@@ -37,6 +37,6 @@ public class MethodConditionChecker(IHttpContextService httpContextService) : Ba
             return ValidAsync();
         }
 
-        return InvalidAsync($"Condition '{condition}' did not pass for request.");
+        return InvalidAsync(string.Format(StubResources.MethodConditionFailed, condition));
     }
 }

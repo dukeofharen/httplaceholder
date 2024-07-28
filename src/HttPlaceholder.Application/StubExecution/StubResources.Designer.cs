@@ -164,5 +164,83 @@ namespace HttPlaceholder.Application.StubExecution {
                 return ResourceManager.GetString("JsonTokenTypeNotSupported", resourceCulture);
             }
         }
+        
+        internal static string JsonPathNoSuitableJsonResultsFoundQuery {
+            get {
+                return ResourceManager.GetString("JsonPathNoSuitableJsonResultsFoundQuery", resourceCulture);
+            }
+        }
+        
+        internal static string JsonPathNoSuitableJsobResultsFound {
+            get {
+                return ResourceManager.GetString("JsonPathNoSuitableJsobResultsFound", resourceCulture);
+            }
+        }
+        
+        internal static string JsonPathCantDetermineType {
+            get {
+                return ResourceManager.GetString("JsonPathCantDetermineType", resourceCulture);
+            }
+        }
+        
+        internal static string JsonpathQueryNotSet {
+            get {
+                return ResourceManager.GetString("JsonpathQueryNotSet", resourceCulture);
+            }
+        }
+        
+        internal static string MethodConditionFailed {
+            get {
+                return ResourceManager.GetString("MethodConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string PathConditionFailed {
+            get {
+                return ResourceManager.GetString("PathConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string QueryStringConditionFailed {
+            get {
+                return ResourceManager.GetString("QueryStringConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioNoHitCountFound {
+            get {
+                return ResourceManager.GetString("ScenarioNoHitCountFound", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioExactHitCountConditionFailed {
+            get {
+                return ResourceManager.GetString("ScenarioExactHitCountConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioMaxHitCountConditionFailed {
+            get {
+                return ResourceManager.GetString("ScenarioMaxHitCountConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioMinHitCountConditionFailed {
+            get {
+                return ResourceManager.GetString("ScenarioMinHitCountConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioStateConditionFailed {
+            get {
+                return ResourceManager.GetString("ScenarioStateConditionFailed", resourceCulture);
+            }
+        }
+        
+        internal static string XPathConditionFailed {
+            get {
+                return ResourceManager.GetString("XPathConditionFailed", resourceCulture);
+            }
+        }
     }
 }
