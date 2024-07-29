@@ -242,5 +242,137 @@ namespace HttPlaceholder.Application.StubExecution {
                 return ResourceManager.GetString("XPathConditionFailed", resourceCulture);
             }
         }
+        
+        internal static string NoStubFound {
+            get {
+                return ResourceManager.GetString("NoStubFound", resourceCulture);
+            }
+        }
+        
+        internal static string ExceptionWhenParsingHar {
+            get {
+                return ResourceManager.GetString("ExceptionWhenParsingHar", resourceCulture);
+            }
+        }
+        
+        internal static string MethodStubDescription {
+            get {
+                return ResourceManager.GetString("MethodStubDescription", resourceCulture);
+            }
+        }
+        
+        internal static string HarInvalid {
+            get {
+                return ResourceManager.GetString("HarInvalid", resourceCulture);
+            }
+        }
+        
+        internal static string HarLogInvalid {
+            get {
+                return ResourceManager.GetString("HarLogInvalid", resourceCulture);
+            }
+        }
+        
+        internal static string HarEmpty {
+            get {
+                return ResourceManager.GetString("HarEmpty", resourceCulture);
+            }
+        }
+        
+        internal static string OpenApiExceptionOccurred {
+            get {
+                return ResourceManager.GetString("OpenApiExceptionOccurred", resourceCulture);
+            }
+        }
+        
+        internal static string StubConflict {
+            get {
+                return ResourceManager.GetString("StubConflict", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationExtraDurationTemplate {
+            get {
+                return ResourceManager.GetString("StubValidationExtraDurationTemplate", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationMinInvalid {
+            get {
+                return ResourceManager.GetString("StubValidationMinInvalid", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationMinMaxHitsCantBeEqual {
+            get {
+                return ResourceManager.GetString("StubValidationMinMaxHitsCantBeEqual", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationMaxHitsCantBeLowerThanMinHits {
+            get {
+                return ResourceManager.GetString("StubValidationMaxHitsCantBeLowerThanMinHits", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationExactCantBeSet {
+            get {
+                return ResourceManager.GetString("StubValidationExactCantBeSet", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationStateInvalid {
+            get {
+                return ResourceManager.GetString("StubValidationStateInvalid", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationScenarioNotProvided {
+            get {
+                return ResourceManager.GetString("StubValidationScenarioNotProvided", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidation204WithBody {
+            get {
+                return ResourceManager.GetString("StubValidation204WithBody", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationMultipleResponseBodyFieldsSet {
+            get {
+                return ResourceManager.GetString("StubValidationMultipleResponseBodyFieldsSet", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationHeaderCantBeUsedAsResponseHeader {
+            get {
+                return ResourceManager.GetString("StubValidationHeaderCantBeUsedAsResponseHeader", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationStringReplaceMultipleSet {
+            get {
+                return ResourceManager.GetString("StubValidationStringReplaceMultipleSet", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationStringReplaceNoneSet {
+            get {
+                return ResourceManager.GetString("StubValidationStringReplaceNoneSet", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationStringReplaceIgnoreCase {
+            get {
+                return ResourceManager.GetString("StubValidationStringReplaceIgnoreCase", resourceCulture);
+            }
+        }
+        
+        internal static string StubValidationReplaceWithNotSet {
+            get {
+                return ResourceManager.GetString("StubValidationReplaceWithNotSet", resourceCulture);
+            }
+        }
     }
 }

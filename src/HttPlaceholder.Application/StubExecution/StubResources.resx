@@ -3,7 +3,7 @@
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -103,7 +103,7 @@
         <value>No hit count could be found.</value>
     </data>
     <data name="ScenarioExactHitCountConditionFailed" xml:space="preserve">
-        <value>Scenario '{0}' should have exactly '{exactHits1' hits, but '{2}' hits were counted.</value>
+        <value>Scenario '{0}' should have exactly '{1}' hits, but '{2}' hits were counted.</value>
     </data>
     <data name="ScenarioMaxHitCountConditionFailed" xml:space="preserve">
         <value>Scenario '{0}' should have less than '{1}' hits, but '{2}' hits were counted.</value>
@@ -116,5 +116,71 @@
     </data>
     <data name="XPathConditionFailed" xml:space="preserve">
         <value>No suitable XML results found with XPath query {0}.</value>
+    </data>
+    <data name="NoStubFound" xml:space="preserve">
+        <value>No stub found.</value>
+    </data>
+    <data name="ExceptionWhenParsingHar" xml:space="preserve">
+        <value>Exception occurred while trying to parse HTTP Archive: {0}</value>
+    </data>
+    <data name="MethodStubDescription" xml:space="preserve">
+        <value>{0} request to path {1}</value>
+    </data>
+    <data name="HarInvalid" xml:space="preserve">
+        <value>The HAR was invalid.</value>
+    </data>
+    <data name="HarLogInvalid" xml:space="preserve">
+        <value>har.log is not set.</value>
+    </data>
+    <data name="HarEmpty" xml:space="preserve">
+        <value>No entries set in HAR.</value>
+    </data>
+    <data name="OpenApiExceptionOccurred" xml:space="preserve">
+        <value>Exception occurred while trying to parse OpenAPI definition: {0}</value>
+    </data>
+    <data name="StubConflict" xml:space="preserve">
+        <value>Stub with ID '{0}'.</value>
+    </data>
+    <data name="StubValidationExtraDurationTemplate" xml:space="preserve">
+        <value>Value for '{0}' cannot be higher than '{1}'.</value>
+    </data>
+    <data name="StubValidationMinInvalid" xml:space="preserve">
+        <value>ExtraDuration.Min should be lower than or equal to ExtraDuration.Max.</value>
+    </data>
+    <data name="StubValidationMinMaxHitsCantBeEqual" xml:space="preserve">
+        <value>minHits and maxHits can not be equal.</value>
+    </data>
+    <data name="StubValidationMaxHitsCantBeLowerThanMinHits" xml:space="preserve">
+        <value>maxHits can not be lower than minHits.</value>
+    </data>
+    <data name="StubValidationExactCantBeSet" xml:space="preserve">
+        <value>exactHits can not be set if minHits and maxHits are set.</value>
+    </data>
+    <data name="StubValidationStateInvalid" xml:space="preserve">
+        <value>setScenarioState and clearState can not both be set at the same time.</value>
+    </data>
+    <data name="StubValidationScenarioNotProvided" xml:space="preserve">
+        <value>Scenario condition checkers and response writers can not be set if no 'scenario' is provided.</value>
+    </data>
+    <data name="StubValidation204WithBody" xml:space="preserve">
+        <value>When HTTP status code is 204, no response body can be set.</value>
+    </data>
+    <data name="StubValidationMultipleResponseBodyFieldsSet" xml:space="preserve">
+        <value>Only one of the response body fields (text, json, xml, html, base64, file) can be set.</value>
+    </data>
+    <data name="StubValidationHeaderCantBeUsedAsResponseHeader" xml:space="preserve">
+        <value>Header '{0}' can't be used as response header.</value>
+    </data>
+    <data name="StubValidationStringReplaceMultipleSet" xml:space="preserve">
+        <value>Replace [{0}]: set either 'text', 'regex' or 'jsonReplace'.</value>
+    </data>
+    <data name="StubValidationStringReplaceNoneSet" xml:space="preserve">
+        <value>Replace [{0}]: either 'text', 'regex' or 'jsonReplace' needs to be set.</value>
+    </data>
+    <data name="StubValidationStringReplaceIgnoreCase" xml:space="preserve">
+        <value>Replace [{0}]: 'ignoreCase' can only be used with 'text'.</value>
+    </data>
+    <data name="StubValidationReplaceWithNotSet" xml:space="preserve">
+        <value>Replace [{0}]: 'replaceWith' should be set.</value>
     </data>
 </root>
