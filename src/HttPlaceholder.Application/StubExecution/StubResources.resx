@@ -183,4 +183,7 @@
     <data name="StubValidationReplaceWithNotSet" xml:space="preserve">
         <value>Replace [{0}]: 'replaceWith' should be set.</value>
     </data>
+    <data name="StubValidationError" xml:space="preserve">
+        <value>The '{0}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.</value>
+    </data>
 </root>

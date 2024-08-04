@@ -374,5 +374,11 @@ namespace HttPlaceholder.Application.StubExecution {
                 return ResourceManager.GetString("StubValidationReplaceWithNotSet", resourceCulture);
             }
         }
+        
+        internal static string StubValidationError {
+            get {
+                return ResourceManager.GetString("StubValidationError", resourceCulture);
+            }
+        }
     }
 }
