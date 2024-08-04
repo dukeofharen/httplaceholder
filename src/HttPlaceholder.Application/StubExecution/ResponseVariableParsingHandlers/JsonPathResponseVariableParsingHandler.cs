@@ -32,7 +32,7 @@ internal class JsonPathResponseVariableParsingHandler(
     public override string[] Examples => [$"(({Name}:$.values[1].title))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.JsonPath;
+    public override string GetDescription() => ResponseVariableParsingResources.JsonPathDescription;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

@@ -29,7 +29,7 @@ internal class UtcNowResponseVariableParsingHandler(IDateTime dateTime)
     public override string[] Examples => [$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.UtcNow;
+    public override string GetDescription() => ResponseVariableParsingResources.UtcNowDescription;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

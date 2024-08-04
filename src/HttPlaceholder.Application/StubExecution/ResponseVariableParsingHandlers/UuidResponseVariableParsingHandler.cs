@@ -25,7 +25,7 @@ internal class UuidResponseVariableParsingHandler : BaseVariableParsingHandler, 
     public override string[] Examples => [$"(({Name}))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.Uuid;
+    public override string GetDescription() => ResponseVariableParsingResources.UuidDescription;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

@@ -26,7 +26,7 @@ internal class QueryStringResponseVariableParsingHandler(IHttpContextService htt
     public override string[] Examples => [$"(({Name}:query_string_key))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.Query;
+    public override string GetDescription() => ResponseVariableParsingResources.QueryDescription;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

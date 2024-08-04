@@ -28,7 +28,7 @@ internal class ScenarioStateVariableParsingHandler(
     public override string[] Examples => [$"(({Name}))", $"(({Name}:scenario name))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.ScenarioState;
+    public override string GetDescription() => ResponseVariableParsingResources.ScenarioStateDescription;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

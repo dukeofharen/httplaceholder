@@ -29,7 +29,7 @@ internal class RequestBodyResponseVariableParsingHandler(
     public override string[] Examples => [$"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.RequestBody;
+    public override string GetDescription() => ResponseVariableParsingResources.RequestBodyDescription;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

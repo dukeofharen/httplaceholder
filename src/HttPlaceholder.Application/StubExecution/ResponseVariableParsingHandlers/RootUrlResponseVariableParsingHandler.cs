@@ -27,7 +27,7 @@ internal class RootUrlResponseVariableParsingHandler(IUrlResolver urlResolver)
     public override string[] Examples => [$"(({Name}))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.RootUrl;
+    public override string GetDescription() => ResponseVariableParsingResources.RootUrlDescription;
 
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,
         CancellationToken cancellationToken) =>

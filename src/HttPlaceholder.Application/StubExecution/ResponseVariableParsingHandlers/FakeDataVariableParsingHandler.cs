@@ -109,7 +109,7 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
     }
 
     private string InitializeDescription() =>
-        ResponseVariableParsingResources.FakeData
+        ResponseVariableParsingResources.FakeDataDescription
             .Replace("[LOCALES]",
                 string.Join(", ", _fakerService.GetLocales().Select(l => $"_{l}_")));
 }

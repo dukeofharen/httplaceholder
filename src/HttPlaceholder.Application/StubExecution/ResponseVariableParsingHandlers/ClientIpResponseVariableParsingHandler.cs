@@ -26,7 +26,7 @@ internal class ClientIpResponseVariableParsingHandler(IClientDataResolver client
     public override string[] Examples => [$"(({Name}))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.ClientIp;
+    public override string GetDescription() => ResponseVariableParsingResources.ClientIpDescription;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

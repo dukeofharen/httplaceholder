@@ -46,93 +46,93 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
             }
         }
         
-        internal static string ClientIp {
+        internal static string ClientIpDescription {
             get {
-                return ResourceManager.GetString("ClientIp", resourceCulture);
+                return ResourceManager.GetString("ClientIpDescription", resourceCulture);
             }
         }
         
-        internal static string DisplayUrl {
+        internal static string DisplayUrlDescription {
             get {
-                return ResourceManager.GetString("DisplayUrl", resourceCulture);
+                return ResourceManager.GetString("DisplayUrlDescription", resourceCulture);
             }
         }
         
-        internal static string FakeData {
+        internal static string FakeDataDescription {
             get {
-                return ResourceManager.GetString("FakeData", resourceCulture);
+                return ResourceManager.GetString("FakeDataDescription", resourceCulture);
             }
         }
         
-        internal static string FormPost {
+        internal static string FormPostDescription {
             get {
-                return ResourceManager.GetString("FormPost", resourceCulture);
+                return ResourceManager.GetString("FormPostDescription", resourceCulture);
             }
         }
         
-        internal static string JsonPath {
+        internal static string JsonPathDescription {
             get {
-                return ResourceManager.GetString("JsonPath", resourceCulture);
+                return ResourceManager.GetString("JsonPathDescription", resourceCulture);
             }
         }
         
-        internal static string LocalNow {
+        internal static string LocalNowDescription {
             get {
-                return ResourceManager.GetString("LocalNow", resourceCulture);
+                return ResourceManager.GetString("LocalNowDescription", resourceCulture);
             }
         }
         
-        internal static string Query {
+        internal static string QueryDescription {
             get {
-                return ResourceManager.GetString("Query", resourceCulture);
+                return ResourceManager.GetString("QueryDescription", resourceCulture);
             }
         }
         
-        internal static string QueryEncoded {
+        internal static string QueryEncodedDescription {
             get {
-                return ResourceManager.GetString("QueryEncoded", resourceCulture);
+                return ResourceManager.GetString("QueryEncodedDescription", resourceCulture);
             }
         }
         
-        internal static string RequestBody {
+        internal static string RequestBodyDescription {
             get {
-                return ResourceManager.GetString("RequestBody", resourceCulture);
+                return ResourceManager.GetString("RequestBodyDescription", resourceCulture);
             }
         }
         
-        internal static string RequestHeader {
+        internal static string RequestHeaderDescription {
             get {
-                return ResourceManager.GetString("RequestHeader", resourceCulture);
+                return ResourceManager.GetString("RequestHeaderDescription", resourceCulture);
             }
         }
         
-        internal static string RootUrl {
+        internal static string RootUrlDescription {
             get {
-                return ResourceManager.GetString("RootUrl", resourceCulture);
+                return ResourceManager.GetString("RootUrlDescription", resourceCulture);
             }
         }
         
-        internal static string ScenarioHitcount {
+        internal static string ScenarioHitcountDescription {
             get {
-                return ResourceManager.GetString("ScenarioHitcount", resourceCulture);
+                return ResourceManager.GetString("ScenarioHitcountDescription", resourceCulture);
             }
         }
         
-        internal static string ScenarioState {
+        internal static string ScenarioStateDescription {
             get {
-                return ResourceManager.GetString("ScenarioState", resourceCulture);
+                return ResourceManager.GetString("ScenarioStateDescription", resourceCulture);
             }
         }
         
-        internal static string UtcNow {
+        internal static string UtcNowDescription {
             get {
-                return ResourceManager.GetString("UtcNow", resourceCulture);
+                return ResourceManager.GetString("UtcNowDescription", resourceCulture);
             }
         }
         
-        internal static string Uuid {
+        internal static string UuidDescription {
             get {
-                return ResourceManager.GetString("Uuid", resourceCulture);
+                return ResourceManager.GetString("UuidDescription", resourceCulture);
             }
         }
     }
