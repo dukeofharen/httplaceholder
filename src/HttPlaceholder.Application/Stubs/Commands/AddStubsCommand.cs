@@ -34,7 +34,7 @@ public class AddStubsCommandHandler(IStubContext stubContext, IStubModelValidato
     {
         if (request.Stubs == null || !request.Stubs.Any())
         {
-            throw new ArgumentException("No stubs posted.");
+            throw new ArgumentException(StubResources.NoStubsPosted);
         }
 
         // Validate posted stubs.
@@ -56,8 +56,8 @@ public class AddStubsCommandHandler(IStubContext stubContext, IStubModelValidato
             .ToArray();
         if (duplicateIds.Length != 0)
         {
-            throw new ArgumentException(
-                $"The following stub IDs are posted more than once: {string.Join(", ", duplicateIds)}");
+            throw new ArgumentException(string.Format(StubResources.DuplicatePostedStubIds,
+                string.Join(", ", duplicateIds)));
         }
 
         // Validated that no stubs with the same ID exist in readonly stub sources.
@@ -66,7 +66,8 @@ public class AddStubsCommandHandler(IStubContext stubContext, IStubModelValidato
             stubsToAdd.Any(s => string.Equals(s.Id, r.Stub.Id, StringComparison.OrdinalIgnoreCase))).ToArray();
         if (duplicateStubs.Length != 0)
         {
-            throw new ValidationException(duplicateStubs.Select(s => $"Stub with ID already exists: {s.Stub.Id}"));
+            throw new ValidationException(duplicateStubs.Select(s =>
+                string.Format(StubResources.StubWithIdExists, s.Stub.Id)));
         }
 
         // Add the stubs.

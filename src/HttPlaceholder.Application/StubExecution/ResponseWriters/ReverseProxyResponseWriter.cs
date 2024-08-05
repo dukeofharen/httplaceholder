@@ -65,7 +65,7 @@ internal class ReverseProxyResponseWriter(
         var method = new HttpMethod(httpContextService.Method);
         var request = new HttpRequestMessage(method, proxyUrl);
         var log = new StringBuilder();
-        log.AppendLine($"Performing {method} request to URL {proxyUrl}");
+        log.AppendLine(string.Format(StubResources.ReverseProxyPerformingRequest, method, proxyUrl));
         var originalHeaders = httpContextService.GetHeaders();
         var headers = CleanHeaders(originalHeaders);
         foreach (var header in headers)
@@ -109,8 +109,8 @@ internal class ReverseProxyResponseWriter(
         catch (Exception ex)
         {
             logger.LogInformation(ex, "Exception occurred while calling URL {ProxyUrl}.", proxyUrl);
-            log.AppendLine($"Exception occurred while calling URL {proxyUrl}: {ex.Message}");
-            response.Body = "502 Bad Gateway"u8.ToArray();
+            log.AppendLine(string.Format(StubResources.ReverseProxyException, proxyUrl, ex.Message));
+            response.Body = Encoding.UTF8.GetBytes(StubResources.ReverseProxyBadGateway);
             response.StatusCode = (int)HttpStatusCode.BadGateway;
             response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
             response.BodyIsBinary = false;

@@ -20,7 +20,7 @@ internal class QueryStringResponseVariableParsingHandler(IHttpContextService htt
     public override string Name => "query";
 
     /// <inheritdoc />
-    public override string FullName => "Query string";
+    public override string FullName => ResponseVariableParsingResources.Query;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:query_string_key))"];

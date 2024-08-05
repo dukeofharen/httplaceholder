@@ -30,7 +30,7 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
     public override string Name => "fake_data";
 
     /// <inheritdoc />
-    public override string FullName => "Fake data";
+    public override string FullName => ResponseVariableParsingResources.FakeData;
 
     /// <inheritdoc />
     public override string[] Examples => _exampleLazy.Value;

@@ -21,7 +21,7 @@ internal class EncodedQueryStringResponseVariableParsingHandler(IHttpContextServ
     public override string Name => "query_encoded";
 
     /// <inheritdoc />
-    public override string FullName => "URL encoded query string";
+    public override string FullName => ResponseVariableParsingResources.QueryEncoded;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:query_string_key))"];

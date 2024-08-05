@@ -23,7 +23,7 @@ internal class UtcNowResponseVariableParsingHandler(IDateTime dateTime)
     public override string Name => "utcnow";
 
     /// <inheritdoc />
-    public override string FullName => "UTC date / time";
+    public override string FullName => ResponseVariableParsingResources.UtcNow;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"];

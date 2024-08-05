@@ -380,5 +380,71 @@ namespace HttPlaceholder.Application.StubExecution {
                 return ResourceManager.GetString("StubValidationError", resourceCulture);
             }
         }
+        
+        internal static string FileStubSecurityWarning {
+            get {
+                return ResourceManager.GetString("FileStubSecurityWarning", resourceCulture);
+            }
+        }
+        
+        internal static string LineEndingBodyIsBinary {
+            get {
+                return ResourceManager.GetString("LineEndingBodyIsBinary", resourceCulture);
+            }
+        }
+        
+        internal static string LineEndingNotSupported {
+            get {
+                return ResourceManager.GetString("LineEndingNotSupported", resourceCulture);
+            }
+        }
+        
+        internal static string ReverseProxyPerformingRequest {
+            get {
+                return ResourceManager.GetString("ReverseProxyPerformingRequest", resourceCulture);
+            }
+        }
+        
+        internal static string ReverseProxyException {
+            get {
+                return ResourceManager.GetString("ReverseProxyException", resourceCulture);
+            }
+        }
+        
+        internal static string ReverseProxyBadGateway {
+            get {
+                return ResourceManager.GetString("ReverseProxyBadGateway", resourceCulture);
+            }
+        }
+        
+        internal static string ObjectNotSupportedForSerializing {
+            get {
+                return ResourceManager.GetString("ObjectNotSupportedForSerializing", resourceCulture);
+            }
+        }
+        
+        internal static string NoStubsPosted {
+            get {
+                return ResourceManager.GetString("NoStubsPosted", resourceCulture);
+            }
+        }
+        
+        internal static string DuplicatePostedStubIds {
+            get {
+                return ResourceManager.GetString("DuplicatePostedStubIds", resourceCulture);
+            }
+        }
+        
+        internal static string StubWithIdExists {
+            get {
+                return ResourceManager.GetString("StubWithIdExists", resourceCulture);
+            }
+        }
+        
+        internal static string StubIsReadonly {
+            get {
+                return ResourceManager.GetString("StubIsReadonly", resourceCulture);
+            }
+        }
     }
 }

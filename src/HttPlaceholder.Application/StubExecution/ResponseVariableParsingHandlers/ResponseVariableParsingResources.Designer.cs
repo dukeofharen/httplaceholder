@@ -135,5 +135,95 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
                 return ResourceManager.GetString("UuidDescription", resourceCulture);
             }
         }
+        
+        internal static string ClientIp {
+            get {
+                return ResourceManager.GetString("ClientIp", resourceCulture);
+            }
+        }
+        
+        internal static string DisplayUrl {
+            get {
+                return ResourceManager.GetString("DisplayUrl", resourceCulture);
+            }
+        }
+        
+        internal static string QueryEncoded {
+            get {
+                return ResourceManager.GetString("QueryEncoded", resourceCulture);
+            }
+        }
+        
+        internal static string FakeData {
+            get {
+                return ResourceManager.GetString("FakeData", resourceCulture);
+            }
+        }
+        
+        internal static string FormPost {
+            get {
+                return ResourceManager.GetString("FormPost", resourceCulture);
+            }
+        }
+        
+        internal static string JsonPath {
+            get {
+                return ResourceManager.GetString("JsonPath", resourceCulture);
+            }
+        }
+        
+        internal static string LocalNow {
+            get {
+                return ResourceManager.GetString("LocalNow", resourceCulture);
+            }
+        }
+        
+        internal static string Query {
+            get {
+                return ResourceManager.GetString("Query", resourceCulture);
+            }
+        }
+        
+        internal static string RequestBody {
+            get {
+                return ResourceManager.GetString("RequestBody", resourceCulture);
+            }
+        }
+        
+        internal static string RequestHeader {
+            get {
+                return ResourceManager.GetString("RequestHeader", resourceCulture);
+            }
+        }
+        
+        internal static string RootUrl {
+            get {
+                return ResourceManager.GetString("RootUrl", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioHitcount {
+            get {
+                return ResourceManager.GetString("ScenarioHitcount", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioState {
+            get {
+                return ResourceManager.GetString("ScenarioState", resourceCulture);
+            }
+        }
+        
+        internal static string UtcNow {
+            get {
+                return ResourceManager.GetString("UtcNow", resourceCulture);
+            }
+        }
+        
+        internal static string Uuid {
+            get {
+                return ResourceManager.GetString("Uuid", resourceCulture);
+            }
+        }
     }
 }

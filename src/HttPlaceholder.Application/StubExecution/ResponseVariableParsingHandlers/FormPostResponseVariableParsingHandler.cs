@@ -19,7 +19,7 @@ internal class FormPostResponseVariableParsingHandler(IHttpContextService httpCo
     public override string Name => "form_post";
 
     /// <inheritdoc />
-    public override string FullName => "Form post";
+    public override string FullName => ResponseVariableParsingResources.FormPost;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:form_key))"];

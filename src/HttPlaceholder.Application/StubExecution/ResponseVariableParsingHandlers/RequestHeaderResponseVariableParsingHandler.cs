@@ -20,7 +20,7 @@ internal class RequestHeaderResponseVariableParsingHandler(IHttpContextService h
     public override string Name => "request_header";
 
     /// <inheritdoc />
-    public override string FullName => "Request header";
+    public override string FullName => ResponseVariableParsingResources.RequestHeader;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:X-Api-Key))"];

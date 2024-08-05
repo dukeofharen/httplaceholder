@@ -22,7 +22,7 @@ internal class ScenarioStateVariableParsingHandler(
     public override string Name => "scenario_state";
 
     /// <inheritdoc />
-    public override string FullName => "Scenario state";
+    public override string FullName => ResponseVariableParsingResources.ScenarioState;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $"(({Name}:scenario name))"];

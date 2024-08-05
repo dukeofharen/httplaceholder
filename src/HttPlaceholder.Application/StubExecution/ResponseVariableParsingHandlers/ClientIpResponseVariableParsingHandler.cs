@@ -20,7 +20,7 @@ internal class ClientIpResponseVariableParsingHandler(IClientDataResolver client
     public override string Name => "client_ip";
 
     /// <inheritdoc />
-    public override string FullName => "Client IP";
+    public override string FullName => ResponseVariableParsingResources.ClientIp;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))"];

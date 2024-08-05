@@ -21,7 +21,7 @@ internal class RootUrlResponseVariableParsingHandler(IUrlResolver urlResolver)
     public override string Name => "root_url";
 
     /// <inheritdoc />
-    public override string FullName => "Root URL";
+    public override string FullName => ResponseVariableParsingResources.RootUrl;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))"];

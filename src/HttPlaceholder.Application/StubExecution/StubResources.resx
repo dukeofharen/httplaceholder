@@ -186,4 +186,37 @@
     <data name="StubValidationError" xml:space="preserve">
         <value>The '{0}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.</value>
     </data>
+    <data name="FileStubSecurityWarning" xml:space="preserve">
+        <value>Path '{0}' found, but can't be used because setting '{1}' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.</value>
+    </data>
+    <data name="LineEndingBodyIsBinary" xml:space="preserve">
+        <value>The response body is binary; cannot replace line endings.</value>
+    </data>
+    <data name="LineEndingNotSupported" xml:space="preserve">
+        <value>Line ending type '{0}' is not supported. Options are: {1}</value>
+    </data>
+    <data name="ReverseProxyPerformingRequest" xml:space="preserve">
+        <value>Performing {0} request to URL {1}</value>
+    </data>
+    <data name="ReverseProxyException" xml:space="preserve">
+        <value>Exception occurred while calling URL {0}: {1}</value>
+    </data>
+    <data name="ReverseProxyBadGateway" xml:space="preserve">
+        <value>502 Bad Gateway</value>
+    </data>
+    <data name="ObjectNotSupportedForSerializing" xml:space="preserve">
+        <value>Object of type '{0}' not supported for serializing to '{1}'.</value>
+    </data>
+    <data name="NoStubsPosted" xml:space="preserve">
+        <value>No stubs posted.</value>
+    </data>
+    <data name="DuplicatePostedStubIds" xml:space="preserve">
+        <value>The following stub IDs are posted more than once: {0}</value>
+    </data>
+    <data name="StubWithIdExists" xml:space="preserve">
+        <value>Stub with ID already exists: {0}</value>
+    </data>
+    <data name="StubIsReadonly" xml:space="preserve">
+        <value>Stub with ID '{0}' is read-only; it can not be updated through the API.</value>
+    </data>
 </root>

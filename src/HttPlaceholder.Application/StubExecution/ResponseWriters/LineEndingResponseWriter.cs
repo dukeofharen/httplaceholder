@@ -26,8 +26,7 @@ internal class LineEndingResponseWriter : IResponseWriter, ISingletonService
 
         if (response.BodyIsBinary)
         {
-            return IsNotExecuted(GetType().Name,
-                "The response body is binary; cannot replace line endings.").AsTask();
+            return IsNotExecuted(GetType().Name, StubResources.LineEndingBodyIsBinary).AsTask();
         }
 
         switch (lineEndings)
@@ -40,7 +39,8 @@ internal class LineEndingResponseWriter : IResponseWriter, ISingletonService
                 break;
             default:
                 return IsNotExecuted(GetType().Name,
-                        $"Line ending type '{lineEndings}' is not supported. Options are '{LineEndingType.Unix}' and '{LineEndingType.Windows}'.")
+                        string.Format(StubResources.LineEndingNotSupported, lineEndings,
+                            string.Join(',', new[] { LineEndingType.Unix, LineEndingType.Windows })))
                     .AsTask();
         }
 

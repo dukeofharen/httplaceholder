@@ -88,4 +88,49 @@ This handler can be inserted in the following ways:
     <data name="UuidDescription" xml:space="preserve">
         <value>The UUID parser makes it possible to insert a random UUID to the response.</value>
     </data>
+    <data name="ClientIp" xml:space="preserve">
+        <value>Client IP</value>
+    </data>
+    <data name="DisplayUrl" xml:space="preserve">
+        <value>Display URL</value>
+    </data>
+    <data name="QueryEncoded" xml:space="preserve">
+        <value>URL encoded query string</value>
+    </data>
+    <data name="FakeData" xml:space="preserve">
+        <value>Fake data</value>
+    </data>
+    <data name="FormPost" xml:space="preserve">
+        <value>Form post</value>
+    </data>
+    <data name="JsonPath" xml:space="preserve">
+        <value>JSONPath</value>
+    </data>
+    <data name="LocalNow" xml:space="preserve">
+        <value>Local date / time</value>
+    </data>
+    <data name="Query" xml:space="preserve">
+        <value>Query string</value>
+    </data>
+    <data name="RequestBody" xml:space="preserve">
+        <value>Request body</value>
+    </data>
+    <data name="RequestHeader" xml:space="preserve">
+        <value>Request header</value>
+    </data>
+    <data name="RootUrl" xml:space="preserve">
+        <value>Root URL</value>
+    </data>
+    <data name="ScenarioHitcount" xml:space="preserve">
+        <value>Scenario hit count</value>
+    </data>
+    <data name="ScenarioState" xml:space="preserve">
+        <value>Scenario state</value>
+    </data>
+    <data name="UtcNow" xml:space="preserve">
+        <value>UTC date / time</value>
+    </data>
+    <data name="Uuid" xml:space="preserve">
+        <value>UUID</value>
+    </data>
 </root>

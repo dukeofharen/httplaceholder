@@ -41,18 +41,17 @@ public class UpdateStubCommandHandler(IStubContext stubContext, IStubModelValida
         }
 
         // Check that the stub is not read-only.
-        const string exceptionFormat = "Stub with ID '{0}' is read-only; it can not be updated through the API.";
         var oldStub = await stubContext.GetStubAsync(request.StubId, cancellationToken)
             .IfNullAsync(() => throw new NotFoundException(nameof(StubModel), request.StubId));
         if (oldStub.Metadata?.ReadOnly == true)
         {
-            throw new ValidationException(string.Format(exceptionFormat, request.StubId));
+            throw new ValidationException(string.Format(StubResources.StubIsReadonly, request.StubId));
         }
 
         var newStub = await stubContext.GetStubAsync(request.Stub.Id, cancellationToken);
         if (newStub?.Metadata?.ReadOnly == true)
         {
-            throw new ValidationException(string.Format(exceptionFormat, request.Stub.Id));
+            throw new ValidationException(string.Format(StubResources.StubIsReadonly, request.Stub.Id));
         }
 
         await stubContext.DeleteStubAsync(request.StubId, cancellationToken);

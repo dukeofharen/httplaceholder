@@ -19,7 +19,7 @@ internal class UuidResponseVariableParsingHandler : BaseVariableParsingHandler, 
     public override string Name => "uuid";
 
     /// <inheritdoc />
-    public override string FullName => "UUID";
+    public override string FullName => ResponseVariableParsingResources.Uuid;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))"];
