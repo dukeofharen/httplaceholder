@@ -3,7 +3,7 @@
 <root>
     <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
         <xsd:element name="root" msdata:IsDataSet="true">
-            
+
         </xsd:element>
     </xsd:schema>
     <resheader name="resmimetype">
@@ -28,7 +28,7 @@
         <value>Postgres connection string not found.</value>
     </data>
     <data name="MigratorCouldntFindFile" xml:space="preserve">
-        <value>Could not find file {checkFilePath}</value>
+        <value>Could not find file {0}</value>
     </data>
     <data name="MigratorCouldntDetermineFolder" xml:space="preserve">
         <value>Could not determine migrations folder for relational DB.</value>

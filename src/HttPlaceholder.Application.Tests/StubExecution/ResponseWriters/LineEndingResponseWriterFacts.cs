@@ -71,7 +71,7 @@ public class LineEndingResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.IsNull(response.Body);
-        Assert.AreEqual("Line ending type '5' is not supported. Options are 'Unix' and 'Windows'.",
+        Assert.AreEqual("Line ending type '5' is not supported. Options are: Unix,Windows",
             result.Log);
     }
 
