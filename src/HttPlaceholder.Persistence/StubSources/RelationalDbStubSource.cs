@@ -124,7 +124,8 @@ internal class RelationalDbStubSource(
         var existingScenario = await GetScenarioInternalAsync(ctx, scenario, distributionKey, cancellationToken);
         if (existingScenario != null)
         {
-            throw new InvalidOperationException($"Scenario state with key '{scenario}' already exists.");
+            throw new InvalidOperationException(string.Format(PersistenceResources.ScenarioWithKeyAlreadyExists,
+                scenario));
         }
 
         await ctx.ExecuteAsync(queryStore.AddScenarioQuery, cancellationToken,
@@ -147,7 +148,7 @@ internal class RelationalDbStubSource(
         var existingScenario = await GetScenarioInternalAsync(ctx, scenario, distributionKey, cancellationToken);
         if (existingScenario == null)
         {
-            throw new InvalidOperationException($"Scenario state with key '{scenario}' not found.");
+            throw new InvalidOperationException(string.Format(PersistenceResources.ScenarioWithKeyNotFound, scenario));
         }
 
         await ctx.ExecuteAsync(queryStore.UpdateScenarioQuery, cancellationToken,

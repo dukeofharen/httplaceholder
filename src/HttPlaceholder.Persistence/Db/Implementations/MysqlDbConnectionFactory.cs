@@ -16,7 +16,7 @@ internal class MysqlDbConnectionFactory(IConfiguration configuration) : IDbConne
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
         new MySqlConnection(configuration.GetConnectionString(ConnectionStringKey) ??
-                            throw new InvalidOperationException("MySQL connection string not found."));
+                            throw new InvalidOperationException(PersistenceResources.MysqlStringNotFound));
 
     /// <inheritdoc />
     public DbDataSource GetDataSource() => null;

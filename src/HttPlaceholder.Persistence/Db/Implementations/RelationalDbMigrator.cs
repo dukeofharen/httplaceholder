@@ -35,7 +35,7 @@ internal class RelationalDbMigrator(
             var checkFilePath = Path.Combine(migrationsRootFolder, checkFileName);
             if (!await fileService.FileExistsAsync(checkFilePath, cancellationToken))
             {
-                throw new InvalidOperationException($"Could not find file {checkFilePath}");
+                throw new InvalidOperationException(string.Format(PersistenceResources.MigratorCouldntFindFile, checkFileName));
             }
 
             await ExecuteMigrationAsync(ctx, checkFilePath, checkFileName, file, cancellationToken);
@@ -68,7 +68,7 @@ internal class RelationalDbMigrator(
             return "postgres";
         }
 
-        throw new InvalidOperationException("Could not determine migrations folder for relational DB.");
+        throw new InvalidOperationException(PersistenceResources.MigratorCouldntDetermineFolder);
     }
 
     private async Task ExecuteMigrationAsync(

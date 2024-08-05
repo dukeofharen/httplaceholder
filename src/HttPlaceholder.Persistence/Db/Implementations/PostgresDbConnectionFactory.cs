@@ -18,5 +18,5 @@ internal class PostgresDbConnectionFactory(IConfiguration configuration) : IDbCo
 
     public DbDataSource GetDataSource() =>
         NpgsqlDataSource.Create(configuration.GetConnectionString(ConnectionStringKey) ??
-                                throw new InvalidOperationException("Postgres connection string not found."));
+                                throw new InvalidOperationException(PersistenceResources.PostgresStringNotFound));
 }

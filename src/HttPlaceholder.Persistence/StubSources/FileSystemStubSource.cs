@@ -244,7 +244,7 @@ internal class FileSystemStubSource(
         var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
         if (await fileService.FileExistsAsync(scenarioPath, cancellationToken))
         {
-            throw new InvalidOperationException($"Scenario state with key '{scenario}' already exists.");
+            throw new InvalidOperationException(string.Format(PersistenceResources.ScenarioWithKeyAlreadyExists, scenario));
         }
 
         await fileService.WriteAllTextAsync(scenarioPath, JsonConvert.SerializeObject(scenarioStateModel),
@@ -261,7 +261,7 @@ internal class FileSystemStubSource(
         var scenarioPath = Path.Combine(path, ConstructScenarioFilename(scenario));
         if (!await fileService.FileExistsAsync(scenarioPath, cancellationToken))
         {
-            throw new InvalidOperationException($"Scenario state with key '{scenario}' not found.");
+            throw new InvalidOperationException(string.Format(PersistenceResources.ScenarioWithKeyNotFound, scenario));
         }
 
         await fileService.WriteAllTextAsync(scenarioPath, JsonConvert.SerializeObject(scenarioStateModel),
@@ -354,7 +354,7 @@ internal class FileSystemStubSource(
         var folder = options.CurrentValue.Storage?.FileStorageLocation;
         if (string.IsNullOrWhiteSpace(folder))
         {
-            throw new InvalidOperationException("File storage location unexpectedly not set.");
+            throw new InvalidOperationException(PersistenceResources.FileStorageUnexpectedlyNull);
         }
 
         return folder;

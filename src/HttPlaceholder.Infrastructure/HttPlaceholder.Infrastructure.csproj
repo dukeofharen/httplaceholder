@@ -25,4 +25,19 @@
         <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="InfraResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>InfraResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="InfraResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>InfraResources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
