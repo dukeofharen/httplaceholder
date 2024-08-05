@@ -31,12 +31,21 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>WebResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Resources\WebSharedResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>WebSharedResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Resources\WebResources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>WebResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\WebSharedResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>WebSharedResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 </Project>

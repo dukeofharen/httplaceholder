@@ -2,6 +2,7 @@
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Implementations;
+using HttPlaceholder.Web.Shared.Resources;
 
 namespace HttPlaceholder.Web.Shared.Utilities.Implementations;
 
@@ -77,7 +78,7 @@ public class ProgramUtility(
         {
             if (!int.TryParse(port, out var parsedPort) || parsedPort is < 1 or > 65535)
             {
-                throw new ArgumentException($"Port '{port}' is invalid.");
+                throw new ArgumentException(string.Format(WebSharedResources.PortInvalid, port));
             }
 
             result.Add(parsedPort);
@@ -91,7 +92,7 @@ public class ProgramUtility(
         var portsTaken = ports.Where(tcpService.PortIsTaken).ToArray();
         if (portsTaken.Length != 0)
         {
-            throw new ArgumentException($"The following ports are already taken: {string.Join(", ", portsTaken)}");
+            throw new ArgumentException(string.Format(WebSharedResources.PortsAlreadyTaken, string.Join(", ", portsTaken)));
         }
     }
 }

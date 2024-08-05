@@ -17,6 +17,9 @@ namespace HttPlaceholder.Controllers.v1;
 [ApiAuthorization]
 public class RequestController : BaseApiController
 {
+    private const string FromIdentifierKey = "x-from-identifier";
+    private const string ItemsPerPageKey = "x-items-per-page";
+
     /// <summary>
     ///     Get all Requests.
     /// </summary>
@@ -29,9 +32,9 @@ public class RequestController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetAll(
-        [FromHeader(Name = "x-from-identifier")]
+        [FromHeader(Name = FromIdentifierKey)]
         string fromIdentifier,
-        [FromHeader(Name = "x-items-per-page")]
+        [FromHeader(Name = ItemsPerPageKey)]
         int? itemsPerPage) =>
         Ok(Map<IEnumerable<RequestResultDto>>(await Send(
             new GetAllRequestsQuery(fromIdentifier, itemsPerPage))));
@@ -48,9 +51,9 @@ public class RequestController : BaseApiController
     [HttpGet("overview")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<RequestOverviewDto>>> GetOverview(
-        [FromHeader(Name = "x-from-identifier")]
+        [FromHeader(Name = FromIdentifierKey)]
         string fromIdentifier,
-        [FromHeader(Name = "x-items-per-page")]
+        [FromHeader(Name = ItemsPerPageKey)]
         int? itemsPerPage) =>
         Ok(Map<IEnumerable<RequestOverviewDto>>(await Send(
             new GetRequestsOverviewQuery(fromIdentifier, itemsPerPage))));

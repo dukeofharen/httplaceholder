@@ -53,7 +53,7 @@ public static class ProgramUtilities
         var version = AssemblyHelper.GetAssemblyVersion();
         HandleArgument(() => Console.WriteLine(version), args, CliArgs.VersionArgs);
 
-        Console.WriteLine(StringResources.VersionHeader, version, DateTime.Now.Year);
+        Console.WriteLine(WebSharedResources.VersionHeader, version, DateTime.Now.Year);
         HandleArgument(() => Console.WriteLine(GetManPage()), args, CliArgs.HelpArgs);
     }
 
@@ -64,6 +64,7 @@ public static class ProgramUtilities
     /// <returns>The web host.</returns>
     public static IHost BuildWebHost<TStartup>(string[] args) where TStartup : class
     {
+        Console.WriteLine(WebSharedResources.ExplanationHeader);
         var configParser = new ConfigurationParser();
         var argsDictionary = configParser.ParseConfiguration(args);
         var settings = DeserializeSettings(argsDictionary);
@@ -101,8 +102,7 @@ public static class ProgramUtilities
     private static string GetVerbosePage(IDictionary<string, string> argsDictionary, string[] args)
     {
         var builder = new StringBuilder();
-        builder.AppendLine($"Provided command line arguments: {string.Join(" ", args)}");
-        builder.AppendLine("Configuration that will be used by HttPlaceholder:");
+        builder.AppendLine(string.Format(WebSharedResources.VerboseHeader, string.Join(" ", args)));
         foreach (var (key, value) in argsDictionary)
         {
             builder.AppendLine($"--{key}: {value}");
@@ -162,7 +162,7 @@ public static class ProgramUtilities
     private static string GetManPage()
     {
         var builder = new StringBuilder();
-        builder.AppendLine(StringResources.ExplanationHeader);
+        builder.AppendLine(WebSharedResources.ExplanationHeader);
         builder.AppendLine();
 
         var metadata = ConfigKeys.GetConfigMetadata();
@@ -183,7 +183,7 @@ public static class ProgramUtilities
             builder.AppendLine();
         }
 
-        builder.AppendLine(StringResources.CmdExample);
+        builder.AppendLine(WebSharedResources.CmdExample);
 
         return builder.ToString();
     }
