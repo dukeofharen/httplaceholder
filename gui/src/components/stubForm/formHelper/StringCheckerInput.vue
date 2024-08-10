@@ -66,7 +66,7 @@ import { onMounted, ref } from "vue";
 import {
   getStringCheckingKeywords,
   keywords,
-} from "@/constants/string-checking-keywords";
+} from "@/domain/string-checking-keywords";
 import { useStubFormStore } from "@/store/stubForm";
 
 const props = defineProps({
