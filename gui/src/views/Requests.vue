@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Requests</h1>
+    <h1>{{ $translate("requests.requests") }}</h1>
     <div class="col-md-12 mb-3">
       <button
         type="button"
