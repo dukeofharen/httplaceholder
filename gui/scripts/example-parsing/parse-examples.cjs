@@ -23,6 +23,6 @@ const parsedExamples = examples
 
 const exampleResultPath = join(
   __dirname,
-  "../../src/constants/stub-examples.json",
+  "../../src/assets/stub-examples.json",
 );
 writeFileSync(exampleResultPath, JSON.stringify(parsedExamples));
