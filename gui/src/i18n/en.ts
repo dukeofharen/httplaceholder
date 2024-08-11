@@ -71,4 +71,15 @@ export const translations = {
     version: "Version",
     runtime: "Runtime",
   },
+  stubForm: {
+    description:
+      'Fill in the stub below in YAML format and click on "Save". For examples, <a href="%s" target="_blank" class="break-word">read the docs</a>.',
+    advancedEditor: "Advanced editor",
+    advancedEditorDescription:
+      "Use advanced editor for editing the stub. The editor has code highlighting but is not suited for updating large stubs.",
+    simpleEditor: "Simple editor",
+    simpleEditorDescription:
+      "Use simple editor for editing the stub. The editor has no code highlighting but is suited for updating large stubs.",
+    stubNotFound: "Stub with ID %s was not found.",
+  },
 };
