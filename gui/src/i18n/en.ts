@@ -8,6 +8,8 @@ export const translations = {
     required: "required",
     optional: "optional",
     save: "Save",
+    update: "Update",
+    delete: "Delete",
   },
   requests: {
     reloadAllRequests: "Load all requests",
@@ -38,5 +40,18 @@ export const translations = {
     scenarioHitCount: "Scenario hit count",
     addScenario: "Add scenario",
     updateScenario: "Update scenario",
+  },
+  scenarios: {
+    scenarios: "Scenarios",
+    description:
+      'Scenarios can be used to make stubs stateful. On this page, you can manage the scenarios in HttPlaceholder. To read more about scenarios, go to <a href="%s" target="_blank">the documentation</a>.',
+    addScenario: "Add scenario",
+    clearAllScenarios: "Clear all scenarios",
+    clearAllScenariosQuestion: "Clear all scenarios?",
+    scenariosCantBeRecovered: "The scenarios can't be recovered.",
+    state: "State",
+    hitCount: "Hit count",
+    scenariosDeletedSuccessfully: "The scenarios were deleted successfully.",
+    scenarioDeletedSuccessfully: "The scenario was deleted successfully.",
   },
 };
