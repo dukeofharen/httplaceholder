@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { getSettings, setSettings } from "@/utils/session";
 import { browserUsesDarkTheme } from "@/utils/theme";
 import type { SettingsModel } from "@/domain/settings-model";
-import { requestsPerPage } from "@/constants/technical";
+import { defaultLanguage, requestsPerPage } from "@/constants/technical";
 
 type GeneralState = {
   settings: SettingsModel;
@@ -22,6 +22,10 @@ const settings: SettingsModel = {
     savedSettings?.requestPageSize !== undefined
       ? savedSettings.requestPageSize
       : requestsPerPage,
+  language:
+    savedSettings?.language !== undefined
+      ? savedSettings.language
+      : defaultLanguage,
 };
 export const useSettingsStore = defineStore({
   id: "settings",
@@ -31,6 +35,7 @@ export const useSettingsStore = defineStore({
         darkTheme: settings.darkTheme,
         saveSearchFilters: settings.saveSearchFilters,
         requestPageSize: settings.requestPageSize,
+        language: settings.language,
       },
     }) as GeneralState,
   getters: {
@@ -38,6 +43,7 @@ export const useSettingsStore = defineStore({
     getDarkTheme: (state): boolean => state.settings.darkTheme,
     getSaveSearchFilters: (state): boolean => state.settings.saveSearchFilters,
     getRequestsPageSize: (state): number => state.settings.requestPageSize,
+    getLanguage: (state): string => state.settings.language,
   },
   actions: {
     storeSettings(settings: SettingsModel): void {

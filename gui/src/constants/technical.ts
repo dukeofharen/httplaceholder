@@ -21,3 +21,4 @@ export const pdfMimeType = "application/pdf";
 
 // UI constants
 export const requestsPerPage = 15;
+export const defaultLanguage = "en";
