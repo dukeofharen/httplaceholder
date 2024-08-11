@@ -54,4 +54,21 @@ export const translations = {
     scenariosDeletedSuccessfully: "The scenarios were deleted successfully.",
     scenarioDeletedSuccessfully: "The scenario was deleted successfully.",
   },
+  settings: {
+    settings: "Settings",
+    features: "Features",
+    darkTheme: "Dark theme",
+    persistSearchFilters: "Persist search filters on stubs and request screens",
+    storeResponseForRequest: "Store response for request",
+    storeResponseForRequestDescription:
+      '<strong>Note</strong>: this setting will be reset to its original value after restarting HttPlaceholder. To persist the setting, take a look at <a href="%s" target="_blank">the documentation</a>.',
+    defaultNumberOfRequests:
+      "Default number of requests on the request page (set to 0 to disable request paging)",
+    httplaceholderConfiguration: "HttPlaceholder configuration",
+    httplaceholderConfigurationDescription:
+      "HttPlaceholder was started with the following settings. The settings are read-only and can only be set when starting the application.",
+    metadata: "Metadata",
+    version: "Version",
+    runtime: "Runtime",
+  },
 };
