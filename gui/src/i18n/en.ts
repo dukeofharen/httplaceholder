@@ -5,6 +5,9 @@ export const translations = {
     reset: "Reset",
     tenant: "Tenant",
     selectStubTenantCategory: "Select stub tenant / category name...",
+    required: "required",
+    optional: "optional",
+    save: "Save",
   },
   requests: {
     reloadAllRequests: "Load all requests",
@@ -28,5 +31,12 @@ export const translations = {
     logIn: "Log in",
     username: "Username",
     password: "Password",
+  },
+  scenarioForm: {
+    scenarioName: "Scenario name",
+    scenarioState: "Scenario state",
+    scenarioHitCount: "Scenario hit count",
+    addScenario: "Add scenario",
+    updateScenario: "Update scenario",
   },
 };

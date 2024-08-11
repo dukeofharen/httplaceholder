@@ -8,7 +8,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Scenario name (required)"
+            :placeholder="`${$translate('scenarioForm.scenarioName')} (${$translate('general.required')})`"
             v-model="scenarioForm.scenario"
           />
         </div>
@@ -18,7 +18,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Scenario state (optional)"
+            :placeholder="`${$translate('scenarioForm.scenarioState')} (${$translate('general.optional')})`"
             v-model="scenarioForm.state"
           />
         </div>
@@ -28,14 +28,14 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Scenario hit count (optional)"
+            :placeholder="`${$translate('scenarioForm.scenarioHitCount')} (${$translate('general.optional')})`"
             v-model="scenarioForm.hitCount"
           />
         </div>
       </div>
       <div class="col-md-12 mb-2">
         <button class="btn btn-success" @click="save" :disabled="saveDisabled">
-          Save
+          {{ $translate("general.save") }}
         </button>
       </div>
     </div>
@@ -51,6 +51,7 @@ import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
 import { type ScenarioInputModel, useScenariosStore } from "@/store/scenarios";
 import { defineComponent } from "vue";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "ScenarioForm",
@@ -70,7 +71,9 @@ export default defineComponent({
     const scenarioName = computed(() => route.params.scenario as string);
     const newScenario = computed(() => !scenarioName.value);
     const title = computed(() =>
-      newScenario.value ? "Add scenario" : "Update scenario",
+      newScenario.value
+        ? translate("scenarioForm.addScenario")
+        : translate("scenarioForm.updateScenario"),
     );
     const saveDisabled = computed(() => !scenarioForm.value.scenario);
 
