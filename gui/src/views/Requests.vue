@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h1>{{ $translate("requests.requests") }}</h1>
+    <h1>{{ $translate("general.requests") }}</h1>
     <div class="col-md-12 mb-3">
       <button
         type="button"
         class="btn btn-success me-2 btn-mobile full-width"
         @click="refresh"
       >
-        Refresh
+        {{ $translate("general.refresh") }}
       </button>
       <button
         v-if="shouldShowLoadAllRequestsButton"
@@ -15,18 +15,18 @@
         class="btn btn-success me-2 btn-mobile full-width"
         @click="loadAllRequests"
       >
-        Load all requests
+        {{ $translate("requests.reloadAllRequests") }}
       </button>
       <button
         type="button"
         class="btn btn-danger btn-mobile full-width"
         @click="showDeleteAllRequestsModal = true"
       >
-        Delete all requests
+        {{ $translate("requests.deleteAllRequests") }}
       </button>
       <modal
-        title="Delete all requests?"
-        bodyText="The requests can't be recovered."
+        :title="$translate('requests.deleteAllRequestsQuestion')"
+        :bodyText="$translate('requests.requestsCantBeRecovered')"
         :yes-click-function="deleteAllRequests"
         :show-modal="showDeleteAllRequestsModal"
         @close="showDeleteAllRequestsModal = false"
@@ -37,13 +37,13 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Filter on stub ID, request ID or URL..."
+          :placeholder="$translate('requests.filterPlaceholder')"
           v-model="filter.urlStubIdFilter"
         />
         <button
           class="btn btn-danger fw-bold"
           type="button"
-          title="Reset"
+          :title="$translate('general.reset')"
           @click="filter.urlStubIdFilter = ''"
         >
           <em class="bi-x"></em>
@@ -52,14 +52,14 @@
       <div v-if="tenants.length" class="input-group">
         <select class="form-select" v-model="filter.selectedTenantName">
           <option value="" selected>
-            Select stub tenant / category name...
+            {{ $translate("general.selectStubTenantCategory") }}
           </option>
           <option v-for="tenant of tenants" :key="tenant">{{ tenant }}</option>
         </select>
         <button
           class="btn btn-danger fw-bold"
           type="button"
-          title="Reset"
+          :title="$translate('general.reset')"
           @click="filter.selectedTenantName = ''"
         >
           <em class="bi-x"></em>
@@ -71,14 +71,15 @@
         class="badge bg-secondary clear-filter me-2"
         v-if="filter.urlStubIdFilter"
         @click="filter.urlStubIdFilter = ''"
-        >Stub ID / req.ID / URL:
+        >{{ $translate("requests.filterLabel") }}:
         <strong>{{ filter.urlStubIdFilter }} &times;</strong></span
       >
       <span
         class="badge bg-secondary clear-filter me-2"
         v-if="filter.selectedTenantName"
         @click="filter.selectedTenantName = ''"
-        >Tenant: <strong>{{ filter.selectedTenantName }} &times;</strong></span
+        >{{ $translate("general.tenant") }}:
+        <strong>{{ filter.selectedTenantName }} &times;</strong></span
       >
     </div>
     <accordion v-if="requests.length">
@@ -93,12 +94,13 @@
         :opened="false"
         @buttonClicked="loadMoreRequests"
       >
-        <template v-slot:button-text>Load more requests</template>
+        <template v-slot:button-text>{{
+          $translate("requests.loadMoreRequests")
+        }}</template>
       </accordion-item>
     </accordion>
     <div v-else>
-      No requests have been made to HttPlaceholder yet. Perform HTTP requests
-      and you will see the requests appearing on this page.
+      {{ $translate("requests.noRequestsYet") }}
     </div>
   </div>
 </template>
@@ -121,6 +123,7 @@ import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-mode
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 import { getRootUrl } from "@/utils/config";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Requests",

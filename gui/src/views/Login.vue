@@ -1,13 +1,13 @@
 <template>
   <div @keyup.enter="logIn">
-    <h1>Log in</h1>
+    <h1>{{ $translate("logIn.logIn") }}</h1>
 
     <div class="row">
       <div class="col-md-12 input-group">
         <input
           type="text"
           class="form-control"
-          placeholder="Username"
+          :placeholder="$translate('logIn.username')"
           v-model="username"
         />
       </div>
@@ -18,7 +18,7 @@
         <input
           type="password"
           class="form-control"
-          placeholder="Password"
+          :placeholder="$translate('logIn.password')"
           v-model="password"
         />
       </div>
@@ -31,7 +31,7 @@
           @click="logIn"
           :disabled="!buttonEnabled"
         >
-          Log in
+          {{ $translate("logIn.logIn") }}
         </button>
       </div>
     </div>
