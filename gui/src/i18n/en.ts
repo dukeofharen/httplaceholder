@@ -4,6 +4,7 @@ export const translations = {
     refresh: "Refresh",
     reset: "Reset",
     tenant: "Tenant",
+    stubId: "Stub ID",
     selectStubTenantCategory: "Select stub tenant / category name...",
     required: "required",
     optional: "optional",
@@ -81,5 +82,37 @@ export const translations = {
     simpleEditorDescription:
       "Use simple editor for editing the stub. The editor has no code highlighting but is suited for updating large stubs.",
     stubNotFound: "Stub with ID %s was not found.",
+    addStub: "Add stub",
+    updateStub: "Update stub",
+  },
+  stubs: {
+    stubs: "Stubs",
+    addStubs: "Add stubs",
+    downloadStubs: "Download stubs as YAML",
+    downloadStubsDescription: "Download the (filtered) stubs as YAML file.",
+    importStubs: "Import stubs",
+    deleteAllStubs: "Delete all stubs",
+    deleteAllStubsQuestion: "Delete all stubs?",
+    stubsCantBeRecovered: "The stubs can't be recovered.",
+    disableStubs: "Disable stubs",
+    disableStubsDescription: "Disable the current selection of stubs",
+    disableStubsQuestion: "Disable the current filtered stubs?",
+    disableStubsModalBody:
+      "Only the stubs currently visible in the list will be disabled.",
+    enableStubs: "Enable stubs",
+    enableStubsQuestion: "Enable the current filtered stubs?",
+    enableStubsModalBody:
+      "Only the stubs currently visible in the list will be enabled.",
+    deleteSelectedStubs: "Delete stubs",
+    deleteSelectedStubsQuestion: "Delete the current filtered stubs?",
+    deleteSelectedStubsModalBody:
+      "The stubs can't be recovered. Only the stubs currently visible in the list will be deleted.",
+    filterPlaceholder: "Filter on stub ID...",
+    stubsDeletedSuccessfully: "All stubs deleted successfully.",
+    stubEnabledSuccessfully: "Stub with ID '%s' was enabled successfully.",
+    stubDisabledSuccessfully: "Stub with ID '%s' was disabled successfully.",
+    filteredStubsDeletedSuccessfully: "Stubs were deleted successfully.",
+    downloadStubsHeader:
+      "# This .yml file was created with HttPlaceholder. For more information, go to http://httplaceholder.com.",
   },
 };

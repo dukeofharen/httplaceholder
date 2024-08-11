@@ -98,7 +98,11 @@ export default defineComponent({
     // Computed
     const stubId = computed(() => route.params.stubId as string);
     const newStub = computed(() => !route.params.stubId);
-    const title = computed(() => (newStub.value ? "Add stub" : "Update stub"));
+    const title = computed(() =>
+      newStub.value
+        ? translate("stubForm.addStub")
+        : translate("stubForm.updateStub"),
+    );
     const input = computed({
       get: () => stubFormStore.getInput,
       set: (value) => stubFormStore.setInput(value),

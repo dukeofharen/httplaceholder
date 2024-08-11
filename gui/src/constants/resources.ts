@@ -8,13 +8,8 @@ export const resources = {
   requestsDeletedSuccessfully: "The requests were deleted successfully.",
   requestDeletedSuccessfully: "The request was deleted successfully.",
   stubDeletedSuccessfully: "Stub was deleted successfully.",
-  stubsDeletedSuccessfully: "All stubs deleted successfully.",
   stubsAddedSuccessfully: "Stubs were added successfully.",
   stubUpdatedSuccessfully: "Stub was updated successfully.",
-  stubEnabledSuccessfully: "Stub with ID '%s' was enabled successfully.",
-  stubDisabledSuccessfully: "Stub with ID '%s' was disabled successfully.",
-  filteredStubsDeletedSuccessfully: "Stubs were deleted successfully.",
-
   stubsInFileAddedSuccessfully: "Stubs in file '%s' were added successfully.",
   scenarioSetSuccessfully: "The scenario values were set successfully.",
   noCurlStubsFound:
@@ -31,8 +26,7 @@ conditions:
   method: GET
 response:
   text: OK!`,
-  downloadStubsHeader:
-    "# This .yml file was created with HttPlaceholder. For more information, go to http://httplaceholder.com.",
+
   exampleCurlInput: curl,
   exampleHarInput: har,
   exampleOpenApiInput: openapi,
