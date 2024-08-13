@@ -177,7 +177,6 @@ import {
   watch,
 } from "vue";
 import Stub from "@/components/stub/Stub.vue";
-import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
 import { downloadBlob } from "@/utils/download";

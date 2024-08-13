@@ -123,7 +123,6 @@ import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-mode
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 import { getRootUrl } from "@/utils/config";
-import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Requests",
