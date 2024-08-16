@@ -128,6 +128,7 @@ public class FileWatcherYamlFileStubSourceFacts
         builderMock.Verify(m => m.SetOnDeleted(It.IsAny<Action<object, FileSystemEventArgs>>()));
         builderMock.Verify(m => m.SetOnRenamed(It.IsAny<Action<object, RenamedEventArgs>>()));
         builderMock.Verify(m => m.SetOnError(It.IsAny<Action<object, ErrorEventArgs>>()));
+        builderMock.Verify(m => m.SetEnableRaisingEvents(true));
     }
 
     [TestMethod]
@@ -408,6 +409,10 @@ public class FileWatcherYamlFileStubSourceFacts
 
         builderMock
             .Setup(m => m.SetOnError(It.IsAny<Action<object, ErrorEventArgs>>()))
+            .Returns(builderMock.Object);
+
+        builderMock
+            .Setup(m => m.SetEnableRaisingEvents(true))
             .Returns(builderMock.Object);
 
         builderMock

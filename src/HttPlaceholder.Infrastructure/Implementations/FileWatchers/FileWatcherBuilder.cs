@@ -8,7 +8,7 @@ namespace HttPlaceholder.Infrastructure.Implementations.FileWatchers;
 
 internal class FileWatcherBuilder(IFileService fileService) : IFileWatcherBuilder
 {
-    private readonly FileSystemWatcher _watcher = new() { EnableRaisingEvents = true };
+    private readonly FileSystemWatcher _watcher = new();
 
     public IFileWatcherBuilder SetNotifyFilters(NotifyFilters filters)
     {
@@ -34,6 +34,12 @@ internal class FileWatcherBuilder(IFileService fileService) : IFileWatcherBuilde
             }
         }
 
+        return this;
+    }
+
+    public IFileWatcherBuilder SetEnableRaisingEvents(bool enableRaisingEvents)
+    {
+        _watcher.EnableRaisingEvents = enableRaisingEvents;
         return this;
     }
 
