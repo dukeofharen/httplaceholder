@@ -1,6 +1,8 @@
 <template>
   <accordion-item>
-    <template v-slot:button-text>Stub execution results</template>
+    <template v-slot:button-text>{{
+      $translate("request.stubExecutionResults")
+    }}</template>
     <template v-slot:accordion-body>
       <div class="accordion">
         <StubExecutionResult

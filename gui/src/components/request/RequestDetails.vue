@@ -2,34 +2,38 @@
   <div>
     <div class="row">
       <div class="col-md-12 mb-3">
-        <label>URL</label>
+        <label>{{ $translate("request.url") }}</label>
         <pre class="request-url"><code>{{ requestParams?.url }}</code></pre>
       </div>
       <div class="col-md-12 mb-3">
-        <label>Client IP</label>
+        <label>{{ $translate("request.clientIp") }}</label>
         <span>{{ requestParams?.clientIp }}</span>
       </div>
       <div class="col-md-12 mb-3">
-        <label>Correlation ID</label>
+        <label>{{ $translate("request.correlationId") }}</label>
         <span>{{ request?.correlationId }}</span>
       </div>
       <div class="col-md-12 mb-3">
-        <label>Executed stub</label>
+        <label>{{ $translate("request.executedStub") }}</label>
         <router-link
           :to="{ name: 'Stubs', query: { filter: request?.executingStubId } }"
           >{{ request?.executingStubId }}
         </router-link>
       </div>
       <div class="col-md-12 mb-3">
-        <label>Stub tenant (category)</label>
+        <label>{{ $translate("request.stubTenant") }}</label>
         <router-link
           :to="{ name: 'Stubs', query: { tenant: request?.stubTenant } }"
           >{{ request?.stubTenant }}
         </router-link>
       </div>
       <div class="col-md-12 mb-3">
-        <label>Request time</label>
-        <span>{{ requestTime }} (it took {{ duration }} ms)</span>
+        <label>{{ $translate("request.requestTime") }}</label>
+        <span
+          >{{ requestTime }} ({{
+            $vsprintf($translate("request.itTookMs"), [duration])
+          }})</span
+        >
       </div>
       <div class="col-md-12 mb-3">
         <div class="accordion">
@@ -39,7 +43,7 @@
         </div>
       </div>
       <div class="col-md-12 mb-3" v-if="showRequestBody">
-        <label>Request body</label>
+        <label>{{ $translate("request.requestBody") }}</label>
         <RequestResponseBody :render-model="bodyRenderModel" />
       </div>
       <div v-if="showResults" class="col-md-12">
