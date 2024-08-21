@@ -1,62 +1,48 @@
 <template>
-  <div class="mb-2 col-md-6">
-    Using this form, you can create stubs based on cURL commands. You can either
-    use a cURL command you have lying around or you can copy/paste a cURL
-    command from the developer console from your browser.
-  </div>
+  <div class="mb-2 col-md-6">{{ $translate("importCurl.intro") }}</div>
   <div v-if="!stubsPreviewOpened">
     <div class="mb-2">
       <button
         class="btn btn-outline-primary btn-sm"
         @click="howToOpen = !howToOpen"
       >
-        How to
+        {{ $translate("importStubs.howTo") }}
       </button>
     </div>
     <div v-if="howToOpen">
       <div class="row">
         <div class="col-md-12">
-          <p>
-            You can copy/paste a cURL command from your browser. In most popular
-            web browsers, you can do this by going to the developer tools, going
-            to the "Network" tab and selecting the request where you would like
-            to have the cURL request for.
-          </p>
-          <p>
-            When copying cURL requests from a browser on Windows, make sure you
-            select "Copy as cURL (bash)" or "Copy all as cURL (bash)" on Chrome
-            or "Copy as cURL (POSIX)" in Firefox. The Windows formatting of cURL
-            commands is currently not supported in HttPlaceholder.
-          </p>
+          <p>{{ $translate("importCurl.howToLine1") }}</p>
+          <p>{{ $translate("importCurl.howToLine2") }}</p>
         </div>
       </div>
       <div class="row mb-2">
         <div class="col-md-4">
           <img src="@/assets/curl_copy_firefox.png" />
-          <em>Example in Firefox</em>
+          <em>{{ $translate("importCurl.howToImage1") }}</em>
         </div>
         <div class="col-md-4">
           <img src="@/assets/curl_copy_chrome.png" />
-          <em
-            >Example in Chrome. In Chrome, you can either select "Copy as cURL"
-            or "Copy all as cURL".
-          </em>
+          <em>{{ $translate("importCurl.howToImage2") }}</em>
         </div>
         <div class="col-md-12 mb-2 mt-2">
           <button class="btn btn-outline-primary btn-sm" @click="insertExample">
-            Insert example
+            {{ $translate("importStubs.insertExample") }}
           </button>
         </div>
       </div>
     </div>
     <div class="mb-2">
-      <upload-button button-text="Upload file" @uploaded="onUploaded" />
+      <upload-button
+        :button-text="$translate('importStubs.uploadFile')"
+        @uploaded="onUploaded"
+      />
     </div>
     <div class="mb-2">
       <input
         type="text"
         class="form-control"
-        placeholder="Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)"
+        :placeholder="$translate('importStubs.tenantPlaceholder')"
         v-model="tenant"
       />
     </div>
@@ -64,7 +50,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Fill in a stub ID prefix here if desired... (every stub ID will be prefixed with this text)"
+        :placeholder="$translate('importStubs.stubIdPrefixPlaceholder')"
         v-model="stubIdPrefix"
       />
     </div>
@@ -77,20 +63,24 @@
         @click="importCommands"
         :disabled="!importButtonEnabled"
       >
-        Import cURL command(s)
+        {{ $translate("importCurl.importCurlCommands") }}
       </button>
     </div>
   </div>
   <div v-else>
-    <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
+    <div v-if="stubsYaml" class="mb-2">
+      {{ $translate("importStubs.stubsWillBeAdded") }}
+    </div>
     <div v-if="stubsYaml" class="mb-2">
       <button class="btn btn-success me-2" @click="saveStubs">
-        Save stubs
+        {{ $translate("importStubs.saveStubs") }}
       </button>
       <button class="btn btn-success me-2" @click="editBeforeSaving">
-        Edit stubs before saving
+        {{ $translate("importStubs.editStubsBeforeSaving") }}
       </button>
-      <button class="btn btn-danger me-2" @click="reset">Reset</button>
+      <button class="btn btn-danger me-2" @click="reset">
+        {{ $translate("general.reset") }}
+      </button>
     </div>
     <div v-if="stubsYaml" class="mb-2">
       <code-highlight language="yaml" :code="stubsYaml" />
@@ -102,7 +92,6 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
-import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { useRouter } from "vue-router";
@@ -110,6 +99,7 @@ import { error, success } from "@/utils/toast";
 import { type ImportInputModel, useImportStore } from "@/store/import";
 import { defineComponent } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "ImportCurl",
@@ -144,7 +134,7 @@ export default defineComponent({
         const importInput: ImportInputModel = buildInputModel(true);
         const result = await importStore.importCurlCommands(importInput);
         if (!result.length) {
-          error(resources.noCurlStubsFound);
+          error(translate("importCurl.noCurlStubsFound"));
           return;
         }
 
@@ -158,7 +148,7 @@ export default defineComponent({
       try {
         const importInput = buildInputModel(false);
         await importStore.importCurlCommands(importInput);
-        success(resources.stubsAddedSuccessfully);
+        success(translate("importStubs.stubsAddedSuccessfully"));
         await router.push({ name: "Stubs" });
       } catch (e) {
         handleHttpError(e);

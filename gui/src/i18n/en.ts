@@ -11,6 +11,8 @@ export const translations = {
     save: "Save",
     update: "Update",
     delete: "Delete",
+    yes: "Yes",
+    no: "No",
   },
   requests: {
     reloadAllRequests: "Load all requests",
@@ -29,6 +31,31 @@ export const translations = {
     importCurlCommands: "Import cURL command(s)",
     importHar: "Import HTTP archive (HAR)",
     importOpenApi: "Import OpenAPI definition",
+    howTo: "How to",
+    insertExample: "Insert example",
+    uploadFile: "Upload file",
+    tenantPlaceholder:
+      "Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)",
+    stubIdPrefixPlaceholder:
+      "Fill in a stub ID prefix here if desired... (every stub ID will be prefixed with this text)",
+    stubsWillBeAdded: "The following stubs will be added.",
+    saveStubs: "Save stubs",
+    editStubsBeforeSaving: "Edit stubs before saving",
+    stubsAddedSuccessfully: "Stubs were added successfully.",
+  },
+  importCurl: {
+    intro:
+      "Using this form, you can create stubs based on cURL commands. You can either use a cURL command you have lying around or you can copy/paste a cURL command from the developer console from your browser.",
+    howToLine1:
+      'You can copy/paste a cURL command from your browser. In most popular web browsers, you can do this by going to the developer tools, going to the "Network" tab and selecting the request where you would like to have the cURL request for.',
+    howToLine2:
+      'When copying cURL requests from a browser on Windows, make sure you select "Copy as cURL (bash)" or "Copy all as cURL (bash)" on Chrome or "Copy as cURL (POSIX)" in Firefox. The Windows formatting of cURL commands is currently not supported in HttPlaceholder.',
+    howToImage1: "Example in Firefox",
+    howToImage2:
+      'Example in Chrome. In Chrome, you can either select "Copy as cURL" or "Copy all as cURL".',
+    importCurlCommands: "Import cURL command(s)",
+    noCurlStubsFound:
+      "No stubs could be determined from the cURL command(s). This might mean that you did not provide valid input.",
   },
   logIn: {
     logIn: "Log in",
