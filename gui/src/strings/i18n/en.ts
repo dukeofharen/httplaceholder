@@ -1,4 +1,5 @@
 export const translations = {
+  dayJsLocale: "en",
   general: {
     requests: "Requests",
     refresh: "Refresh",
@@ -13,6 +14,7 @@ export const translations = {
     delete: "Delete",
     yes: "Yes",
     no: "No",
+    download: "Download",
   },
   requests: {
     reloadAllRequests: "Load all requests",
@@ -24,6 +26,22 @@ export const translations = {
     loadMoreRequests: "Load more requests",
     noRequestsYet:
       "No requests have been made to HttPlaceholder yet. Perform HTTP requests and you will see the requests appearing on this page.",
+  },
+  request: {
+    raw: "Raw",
+    xml: "XML",
+    json: "JSON",
+    form: "Form",
+    queryParameters: "Query parameters",
+    executedStub: "Executed stub",
+    createRequestStub: "Create stub",
+    createRequestStubTitle:
+      "Create a stub based on the request parameters of this request",
+    exportRequest: "Export",
+    exportRequestTitle: "Export the stub in a specific format",
+    deleteRequest: "Delete",
+    deleteRequestTitle: "Delete this request",
+    requestDeletedSuccessfully: "The request was deleted successfully.",
   },
   importStubs: {
     importStubs: "Import stubs",

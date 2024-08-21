@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12" v-if="bodyType">
           <button class="btn btn-sm btn-primary me-2" @click="download">
-            Download
+            {{ $translate("general.download") }}
           </button>
           <button
             class="btn btn-sm me-2"
@@ -24,7 +24,7 @@
             }"
             @click="viewRawBody"
           >
-            Raw
+            {{ $translate("request.raw") }}
           </button>
         </div>
       </div>
@@ -68,11 +68,12 @@ import { requestBodyLineLimit } from "@/constants/technical";
 import mime from "mime-types";
 import { downloadBlob } from "@/utils/download";
 import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
+import { translate } from "@/utils/translate";
 
 const bodyTypes = {
-  xml: "XML",
-  json: "JSON",
-  form: "Form",
+  xml: translate("request.xml"),
+  json: translate("request.json"),
+  form: translate("request.form"),
 };
 
 export default defineComponent({

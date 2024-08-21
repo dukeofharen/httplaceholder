@@ -3,7 +3,7 @@ import { getUiRootUrl } from "@/utils/config";
 export const resources = {
   somethingWentWrongServer: "Something went wrong while contacting the server.",
   requestsDeletedSuccessfully: "The requests were deleted successfully.",
-  requestDeletedSuccessfully: "The request was deleted successfully.",
+
   stubDeletedSuccessfully: "Stub was deleted successfully.",
   stubUpdatedSuccessfully: "Stub was updated successfully.",
   scenarioSetSuccessfully: "The scenario values were set successfully.",
