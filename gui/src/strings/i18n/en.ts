@@ -71,6 +71,11 @@ export const translations = {
     howToImage2: "Example in Chrome.",
     importHar: "Import HTTP archive",
   },
+  importOpenApi: {
+    intro:
+      "Using this form, you can create stubs based on an OpenAPI (or Swagger) definition. This definition can be provided in both JSON and YAML format. Many APIs are accompanied by an OpenAPI definition, so this is a great way to create stubs for the API.",
+    importOpenApiDefinition: "Import OpenAPI definition",
+  },
   logIn: {
     logIn: "Log in",
     username: "Username",
