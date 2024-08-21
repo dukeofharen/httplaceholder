@@ -76,6 +76,10 @@ export const translations = {
       "Using this form, you can create stubs based on an OpenAPI (or Swagger) definition. This definition can be provided in both JSON and YAML format. Many APIs are accompanied by an OpenAPI definition, so this is a great way to create stubs for the API.",
     importOpenApiDefinition: "Import OpenAPI definition",
   },
+  uploadStubs: {
+    intro: "Press the button below to upload a YAML file with stubs.",
+    stubsInFileAddedSuccessfully: "Stubs in file '%s' were added successfully.",
+  },
   logIn: {
     logIn: "Log in",
     username: "Username",
