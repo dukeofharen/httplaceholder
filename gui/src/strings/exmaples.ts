@@ -1,4 +1,21 @@
-export const har = `{
+export const exampleCurlInput = `curl 'https://api.site.com/api/v1/users' \\
+  -X 'PUT' \\
+  -H 'authority: api.site.com' \\
+  -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"' \\
+  -H 'accept: application/json, text/plain, */*' \\
+  -H 'content-type: application/json;charset=UTF-8' \\
+  -H 'authorization: Bearer VERYLONGSTRING \\
+  -H 'sec-ch-ua-mobile: ?0' \\
+  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \\
+  -H 'sec-ch-ua-platform: "Linux"' \\
+  -H 'origin: https://site.com' \\
+  -H 'sec-fetch-site: same-site' \\
+  -H 'sec-fetch-mode: cors' \\
+  -H 'sec-fetch-dest: empty' \\
+  -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \\
+  --data-raw $'{"id":1,"created":"2015-10-21T14:39:55","updated":"2021-11-26T22:10:52","userName":"d","firstName":"d\\'","lastName":"h","street":"Road","number":"6","postalCode":"1234AB","city":"Amsterdam","phone":"0612345678","email":"info@example.com","placeId":1,"newsletter":false,"driversLicenseNumber":"112233","emailRepeat":"info@example.com"}' \\
+  --compressed`;
+export const exampleHarInput = `{
   "log": {
     "version": "1.2",
     "creator": {
@@ -294,3 +311,126 @@ export const har = `{
     ]
   }
 }`;
+export const exampleOpenApiInput = `openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  license:
+    name: MIT
+servers:
+  - url: http://petstore.swagger.io/v1
+paths:
+  /pets:
+    get:
+      summary: List all pets
+      operationId: listPets
+      tags:
+        - pets
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: X-Api-Key
+          in: header
+          description: API key.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A paged array of pets
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pets"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create a pet
+      operationId: createPets
+      tags:
+        - pets
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /pets/{petId}:
+    get:
+      summary: Info for a specific pet
+      operationId: showPetById
+      tags:
+        - pets
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          description: The id of the pet to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pet"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Pet:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tag:
+          type: string
+    Pets:
+      type: array
+      items:
+        $ref: "#/components/schemas/Pet"
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+`;
+export const defaultStub = `id: unique-stub-id
+description: A description for the stub.
+conditions:
+  method: GET
+response:
+  text: OK!`;

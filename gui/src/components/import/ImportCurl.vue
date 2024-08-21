@@ -100,6 +100,7 @@ import { type ImportInputModel, useImportStore } from "@/store/import";
 import { defineComponent } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { translate } from "@/utils/translate";
+import { exampleCurlInput } from "@/strings/exmaples";
 
 export default defineComponent({
   name: "ImportCurl",
@@ -164,7 +165,7 @@ export default defineComponent({
       tenant.value = "";
     };
     const insertExample = () => {
-      input.value = resources.exampleCurlInput;
+      input.value = exampleCurlInput;
       howToOpen.value = false;
     };
     const onUploaded = (file: FileUploadedModel) => {

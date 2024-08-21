@@ -1,6 +1,3 @@
-import { curl } from "./examples/curl";
-import { har } from "./examples/har";
-import { openapi } from "./examples/openapi";
 import { getUiRootUrl } from "@/utils/config";
 
 export const resources = {
@@ -17,15 +14,6 @@ export const resources = {
   uploadInvalidFiles:
     "These files you are trying to upload have an incorrect extension: %s. The following extensions are allowed: %s",
   credentialsIncorrect: "The credentials are incorrect.",
-  defaultStub: `id: unique-stub-id
-description: A description for the stub.
-conditions:
-  method: GET
-response:
-  text: OK!`,
-  exampleCurlInput: curl,
-  exampleHarInput: har,
-  exampleOpenApiInput: openapi,
 };
 
 export function renderDocLink(hashTag?: string) {

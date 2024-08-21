@@ -1,7 +1,7 @@
 import { useSettingsStore } from "@/store/settings";
 import { defaultLanguage } from "@/constants/technical";
-import { translations as en } from "@/i18n/en";
-import { translations as nl } from "@/i18n/nl";
+import { translations as en } from "@/strings/i18n/en";
+import { translations as nl } from "@/strings/i18n/nl";
 
 const langMapping: Record<string, any> = {
   en: en,
