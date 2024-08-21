@@ -57,6 +57,20 @@ export const translations = {
     noCurlStubsFound:
       "No stubs could be determined from the cURL command(s). This might mean that you did not provide valid input.",
   },
+  importHar: {
+    intro:
+      "Using this form, you can create stubs based on an HTTP archive (or HAR). Most modern browsers allow you to download a HAR file with the request and response definitions of the recently made requests.",
+    howToLine1:
+      'To get the HTTP archive of the requests from your browser, you need to open the developer tools and open the "Network" tab.',
+    howToLine2:
+      'In Firefox, you can right click on the request in the "Network" tab and select "Copy all as HAR".',
+    howToLine3:
+      'In Chrome, you can also click "Copy all as HAR", but this does not copy the response contents. To get the full responses, you need to click "Save all as HAR with content" to get the full HAR.',
+    howToLine4: "You can copy the full HAR file below.",
+    howToImage1: "Example in Firefox",
+    howToImage2: "Example in Chrome.",
+    importHar: "Import HTTP archive",
+  },
   logIn: {
     logIn: "Log in",
     username: "Username",

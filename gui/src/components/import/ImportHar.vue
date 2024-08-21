@@ -1,61 +1,50 @@
 <template>
-  <div class="mb-2 col-md-6">
-    Using this form, you can create stubs based on an HTTP archive (or HAR).
-    Most modern browsers allow you to download a HAR file with the request and
-    response definitions of the recently made requests.
-  </div>
+  <div class="mb-2 col-md-6">{{ $translate("importHar.intro") }}</div>
   <div v-if="!stubsPreviewOpened">
     <div class="mb-2">
       <button
         class="btn btn-outline-primary btn-sm"
         @click="howToOpen = !howToOpen"
       >
-        How to
+        {{ $translate("importStubs.howTo") }}
       </button>
     </div>
     <div v-if="howToOpen">
       <div class="row">
         <div class="col-md-12">
-          <p>
-            To get the HTTP archive of the requests from your browser, you need
-            to open the developer tools and open the "Network" tab.
-          </p>
-          <p>
-            In Firefox, you can right click on the request in the "Network" tab
-            and select "Copy all as HAR".
-          </p>
-          <p>
-            In Chrome, you can also click "Copy all as HAR", but this does not
-            copy the response contents. To get the full responses, you need to
-            click "Save all as HAR with content" to get the full HAR.
-          </p>
-          <p>You can copy the full HAR file below.</p>
+          <p>{{ $translate("importHar.howToLine1") }}</p>
+          <p>{{ $translate("importHar.howToLine2") }}</p>
+          <p>{{ $translate("importHar.howToLine3") }}</p>
+          <p>{{ $translate("importHar.howToLine4") }}</p>
         </div>
       </div>
       <div class="row mb-2">
         <div class="col-md-4">
           <img src="@/assets/har_copy_firefox.png" />
-          <em>Example in Firefox</em>
+          <em>{{ $translate("importHar.howToImage1") }}</em>
         </div>
         <div class="col-md-4">
           <img src="@/assets/har_copy_chrome.png" />
-          <em>Example in Chrome. </em>
+          <em>{{ $translate("importHar.howToImage2") }}</em>
         </div>
         <div class="col-md-12 mb-2 mt-2">
           <button class="btn btn-outline-primary btn-sm" @click="insertExample">
-            Insert example
+            {{ $translate("importStubs.insertExample") }}
           </button>
         </div>
       </div>
     </div>
     <div class="mb-2">
-      <upload-button button-text="Upload file" @uploaded="onUploaded" />
+      <upload-button
+        :button-text="$translate('importStubs.uploadFile')"
+        @uploaded="onUploaded"
+      />
     </div>
     <div class="mb-2">
       <input
         type="text"
         class="form-control"
-        placeholder="Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)"
+        :placeholder="$translate('importStubs.tenantPlaceholder')"
         v-model="tenant"
       />
     </div>
@@ -63,7 +52,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Fill in a stub ID prefix here if desired... (every stub ID will be prefixed with this text)"
+        :placeholder="$translate('importStubs.stubIdPrefixPlaceholder')"
         v-model="stubIdPrefix"
       />
     </div>
@@ -76,20 +65,22 @@
         @click="importHar"
         :disabled="!importButtonEnabled"
       >
-        Import HTTP archive
+        {{ $translate("importHar.importHar") }}
       </button>
     </div>
   </div>
   <div v-else>
-    <div class="mb-2">The following stubs will be added.</div>
+    <div class="mb-2">{{ $translate("importStubs.stubsWillBeAdded") }}</div>
     <div class="mb-2">
       <button class="btn btn-success me-2" @click="saveStubs">
-        Save stubs
+        {{ $translate("importStubs.saveStubs") }}
       </button>
       <button class="btn btn-success me-2" @click="editBeforeSaving">
-        Edit stubs before saving
+        {{ $translate("importStubs.editStubsBeforeSaving") }}
       </button>
-      <button class="btn btn-danger me-2" @click="reset">Reset</button>
+      <button class="btn btn-danger me-2" @click="reset">
+        {{ $translate("general.reset") }}
+      </button>
     </div>
     <div class="mb-2">
       <code-highlight language="yaml" :code="stubsYaml" />
@@ -101,7 +92,6 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
-import { resources } from "@/constants/resources";
 import { useRouter } from "vue-router";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
@@ -109,6 +99,8 @@ import { success } from "@/utils/toast";
 import { type ImportInputModel, useImportStore } from "@/store/import";
 import { defineComponent } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
+import { exampleHarInput } from "@/strings/exmaples";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "ImportHar",
@@ -139,7 +131,7 @@ export default defineComponent({
 
     // Methods
     const insertExample = () => {
-      input.value = resources.exampleHarInput;
+      input.value = exampleHarInput;
       howToOpen.value = false;
     };
     const importHar = async () => {
@@ -157,7 +149,7 @@ export default defineComponent({
       try {
         const importInput = buildInputModel(false);
         await importStore.importHar(importInput);
-        success(resources.stubsAddedSuccessfully);
+        success(translate("importStubs.stubsAddedSuccessfully"));
         await router.push({ name: "Stubs" });
       } catch (e) {
         handleHttpError(e);
