@@ -1,3 +1,4 @@
+// TODO dit bestand "constants.ts" in root noemen of zo iets.
 // Date constants.
 export const dateTimeFormat = "YYYY-MM-DD HH:mm:ss";
 
@@ -20,3 +21,5 @@ export const pdfMimeType = "application/pdf";
 
 // UI constants
 export const requestsPerPage = 15;
+export const defaultLanguage = "en";
+export const refreshRequestTimesInterval = 60000;

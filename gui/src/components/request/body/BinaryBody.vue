@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <button class="btn btn-sm btn-primary" @click="download">
-            Download
+            {{ $translate("general.download") }}
           </button>
           <div v-if="bodyType != bodyTypes.other" class="mt-2">
             <div v-if="bodyType === bodyTypes.image">

@@ -23,12 +23,12 @@ internal class ScenarioHitCountVariableParsingHandler(
     public override string Name => "scenario_hitcount";
 
     /// <inheritdoc />
-    public override string FullName => "Scenario hit count";
+    public override string FullName => ResponseVariableParsingResources.ScenarioHitcount;
 
     public override string[] Examples => [$"(({Name}))", $"(({Name}:scenario name))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.ScenarioHitcount;
+    public override string GetDescription() => ResponseVariableParsingResources.ScenarioHitcountDescription;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

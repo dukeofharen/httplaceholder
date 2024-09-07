@@ -20,13 +20,13 @@ internal class ClientIpResponseVariableParsingHandler(IClientDataResolver client
     public override string Name => "client_ip";
 
     /// <inheritdoc />
-    public override string FullName => "Client IP";
+    public override string FullName => ResponseVariableParsingResources.ClientIp;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.ClientIp;
+    public override string GetDescription() => ResponseVariableParsingResources.ClientIpDescription;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

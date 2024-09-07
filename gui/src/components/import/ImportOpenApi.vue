@@ -1,24 +1,24 @@
 <template>
   <div class="mb-2 col-md-6">
-    Using this form, you can create stubs based on an OpenAPI (or Swagger)
-    definition. This definition can be provided in both JSON and YAML format.
-    Many APIs are accompanied by an OpenAPI definition, so this is a great way
-    to create stubs for the API.
+    {{ $translate("importOpenApi.importOpenApi") }}
   </div>
   <div v-if="!stubsPreviewOpened">
     <div class="mb-2">
       <button class="btn btn-outline-primary btn-sm" @click="insertExample">
-        Insert example
+        {{ $translate("importStubs.insertExample") }}
       </button>
     </div>
     <div class="mb-2">
-      <upload-button button-text="Upload file" @uploaded="onUploaded" />
+      <upload-button
+        :button-text="$translate('importStubs.uploadFile')"
+        @uploaded="onUploaded"
+      />
     </div>
     <div class="mb-2">
       <input
         type="text"
         class="form-control"
-        placeholder="Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)"
+        :placeholder="$translate('importStubs.tenantPlaceholder')"
         v-model="tenant"
       />
     </div>
@@ -26,7 +26,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Fill in a stub ID prefix here if desired... (every stub ID will be prefixed with this text)"
+        :placeholder="$translate('importStubs.stubIdPrefixPlaceholder')"
         v-model="stubIdPrefix"
       />
     </div>
@@ -39,20 +39,22 @@
         @click="importOpenApi"
         :disabled="!importButtonEnabled"
       >
-        Import OpenAPI definition
+        {{ $translate("importOpenApi.importOpenApiDefinition") }}
       </button>
     </div>
   </div>
   <div v-else>
-    <div class="mb-2">The following stubs will be added.</div>
+    <div class="mb-2">{{ $translate("importStubs.stubsWillBeAdded") }}</div>
     <div class="mb-2">
       <button class="btn btn-success me-2" @click="saveStubs">
-        Save stubs
+        {{ $translate("importStubs.saveStubs") }}
       </button>
       <button class="btn btn-success me-2" @click="editBeforeSaving">
-        Edit stubs before saving
+        {{ $translate("importStubs.editStubsBeforeSaving") }}
       </button>
-      <button class="btn btn-danger me-2" @click="reset">Reset</button>
+      <button class="btn btn-danger me-2" @click="reset">
+        {{ $translate("general.reset") }}
+      </button>
     </div>
     <div class="mb-2">
       <code-highlight language="yaml" :code="stubsYaml" />
@@ -63,7 +65,6 @@
 <script lang="ts">
 import { useRouter } from "vue-router";
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
@@ -72,6 +73,8 @@ import { success } from "@/utils/toast";
 import { type ImportInputModel, useImportStore } from "@/store/import";
 import { defineComponent } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
+import { exampleOpenApiInput } from "@/strings/exmaples";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "ImportOpenApi",
@@ -101,7 +104,7 @@ export default defineComponent({
 
     // Methods
     const insertExample = () => {
-      input.value = resources.exampleOpenApiInput;
+      input.value = exampleOpenApiInput;
     };
     const importOpenApi = async () => {
       try {
@@ -121,7 +124,7 @@ export default defineComponent({
       try {
         const importInput = buildInputModel(false);
         await importStore.importOpenApi(importInput);
-        success(resources.stubsAddedSuccessfully);
+        success(translate("importStubs.stubsAddedSuccessfully"));
         await router.push({ name: "Stubs" });
       } catch (e) {
         handleHttpError(e);

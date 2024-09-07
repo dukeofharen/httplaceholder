@@ -109,6 +109,63 @@ public class StringReplaceResponseWriterFacts
     }
 
     [TestMethod]
+    public async Task WriteToResponseAsync_ResponseBodyIsNotAscii_ShouldReturnNotExecuted()
+    {
+        // Arrange
+        _stub.Response.Replace = new[] { new StubResponseReplaceModel() };
+        _response.Body = "👾🙇💁🙅🙆🙋🙎🙍"u8.ToArray();
+
+        // Act
+        var result = await WriteToResponseAsync(_stub, _response);
+
+        // Assert
+        Assert.IsFalse(result.Executed);
+    }
+
+    [TestMethod]
+    public async Task WriteToResponseAsync_ResponseBodyIsNotAscii_ContentTypeHeaderIsNotText_ShouldReturnNotExecuted()
+    {
+        // Arrange
+        _stub.Response.Replace = new[] { new StubResponseReplaceModel() };
+        _response.Body = "👾🙇💁🙅🙆🙋🙎🙍"u8.ToArray();
+        _stub.Response.ContentType = "application/pdf";
+
+        // Act
+        var result = await WriteToResponseAsync(_stub, _response);
+
+        // Assert
+        Assert.IsFalse(result.Executed);
+    }
+
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task WriteToResponseAsync_StringReplace_TextReplaceWithNonAsciiString(
+        bool addHeaderInHeadersDictionary)
+    {
+        // Arrange
+        const string contentType = "text/plain";
+        _stub.Response.Replace = new[] { GetModel("🐵", "🙊", true) };
+        if (addHeaderInHeadersDictionary)
+        {
+            _stub.Response.Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, contentType } };
+        }
+        else
+        {
+            _stub.Response.ContentType = contentType;
+        }
+
+        _response.Body = "Test 🐵"u8.ToArray();
+
+        // Act
+        var result = await WriteToResponseAsync(_stub, _response);
+
+        // Assert
+        Assert.IsTrue(result.Executed);
+        Assert.AreEqual("Test 🙊", Encoding.UTF8.GetString(_response.Body));
+    }
+
+    [TestMethod]
     [DynamicData(nameof(ProvideStringReplaceData))]
     public async Task WriteToResponseAsync_StringReplace_HappyFlow(
         IEnumerable<StubResponseReplaceModel> models,

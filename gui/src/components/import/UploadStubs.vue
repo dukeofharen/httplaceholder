@@ -1,10 +1,8 @@
 <template>
-  <div class="mb-2 col-md-6">
-    Press the button below to upload a YAML file with stubs.
-  </div>
+  <div class="mb-2 col-md-6">{{ $translate("uploadStubs.intro") }}</div>
   <span>
     <upload-button
-      button-text="Upload stubs"
+      :button-text="$translate('importStubs.uploadStubs')"
       :multiple="true"
       @all-uploaded="onAllUploaded"
       @before-upload="beforeUpload"
@@ -14,7 +12,6 @@
 </template>
 
 <script lang="ts">
-import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { success } from "@/utils/toast";
@@ -23,6 +20,7 @@ import { defineComponent } from "vue";
 import { vsprintf } from "sprintf-js";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { useGeneralStore } from "@/store/general";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "UploadStubs",
@@ -41,7 +39,9 @@ export default defineComponent({
         try {
           await stubStore.addStubs(file.result);
           success(
-            vsprintf(resources.stubsInFileAddedSuccessfully, [file.filename]),
+            vsprintf(translate("uploadStubs.stubsInFileAddedSuccessfully"), [
+              file.filename,
+            ]),
           );
         } catch (e) {
           handleHttpError(e);

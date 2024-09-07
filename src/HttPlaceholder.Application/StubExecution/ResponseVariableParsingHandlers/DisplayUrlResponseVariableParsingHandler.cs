@@ -24,13 +24,13 @@ internal class DisplayUrlResponseVariableParsingHandler(
     public override string Name => "display_url";
 
     /// <inheritdoc />
-    public override string FullName => "Display URL";
+    public override string FullName => ResponseVariableParsingResources.DisplayUrl;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $@"(({Name}:'\/users\/([0-9]{3})\/orders'))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.DisplayUrl;
+    public override string GetDescription() => ResponseVariableParsingResources.DisplayUrlDescription;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

@@ -39,7 +39,7 @@ internal class OpenApiStubGenerator(
         catch (Exception ex)
         {
             logger.LogWarning(ex, "Exception occurred while trying to create stubs based on OpenAPI definition.");
-            throw new ValidationException($"Exception occurred while trying to parse OpenAPI definition: {ex.Message}");
+            throw new ValidationException(string.Format(StubResources.OpenApiExceptionOccurred, ex.Message));
         }
     }
 

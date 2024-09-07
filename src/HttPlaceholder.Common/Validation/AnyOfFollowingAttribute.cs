@@ -23,6 +23,6 @@ public class AnyOfFollowingAttribute : ValidationAttribute
     public override bool IsValid(object value) => value == null || _objectsToCheck.Contains(value);
 
     /// <inheritdoc />
-    public override string FormatErrorMessage(string name) =>
-        $"Value for '{name}' should be any of the following values: {string.Join(", ", _objectsToCheck)}.";
+    public override string FormatErrorMessage(string name) => string.Format(CommonResources.AnyOfFollowingIncorrect,
+        name, string.Join(", ", _objectsToCheck));
 }

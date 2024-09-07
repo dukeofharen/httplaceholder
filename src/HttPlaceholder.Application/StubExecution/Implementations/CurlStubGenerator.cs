@@ -29,7 +29,7 @@ internal class CurlStubGenerator(
             var stub = new StubModel
             {
                 Tenant = tenant,
-                Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
+                Description = string.Format(StubResources.MethodStubDescription, conditions.Method, conditions.Url?.Path),
                 Conditions = conditions,
                 Response = { Text = "OK!" }
             };

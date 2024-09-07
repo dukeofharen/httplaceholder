@@ -27,5 +27,6 @@ public class GetScenarioQueryHandler(IStubContext stubContext) : IRequestHandler
     /// <inheritdoc />
     public async Task<ScenarioStateModel> Handle(GetScenarioQuery request, CancellationToken cancellationToken) =>
         await stubContext.GetScenarioAsync(request.Scenario, cancellationToken)
-            .IfNullAsync(() => throw new NotFoundException($"Scenario with name '{request.Scenario}'."));
+            .IfNullAsync(() =>
+                throw new NotFoundException(string.Format(ApplicationResources.ScenarioNotFound, request.Scenario)));
 }

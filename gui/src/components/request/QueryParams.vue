@@ -1,6 +1,8 @@
 <template>
   <accordion-item>
-    <template v-slot:button-text>Query parameters</template>
+    <template v-slot:button-text>{{
+      $translate("request.queryParameters")
+    }}</template>
     <template v-slot:accordion-body>
       <table class="table" v-if="queryParameters">
         <tbody>

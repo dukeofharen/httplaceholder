@@ -29,13 +29,13 @@ public class ScenarioExactHitCounterConditionChecker(IStubContext stubContext) :
             1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
         if (actualHitCount == null)
         {
-            return await InvalidAsync("No hit count could be found.");
+            return await InvalidAsync(StubResources.ScenarioNoHitCountFound);
         }
 
         if (actualHitCount != exactHits)
         {
-            return await InvalidAsync(
-                $"Scenario '{scenario}' should have exactly '{exactHits}' hits, but '{actualHitCount}' hits were counted.");
+            return await InvalidAsync(string.Format(StubResources.ScenarioExactHitCountConditionFailed, scenario,
+                exactHits, actualHitCount));
         }
 
         return await ValidAsync();

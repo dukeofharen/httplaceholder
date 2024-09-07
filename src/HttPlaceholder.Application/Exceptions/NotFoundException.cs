@@ -13,7 +13,7 @@ public class NotFoundException : Exception
     /// <param name="name">The name of the item.</param>
     /// <param name="key">The key of the item.</param>
     public NotFoundException(string name, object key)
-        : base($"Entity \"{name}\" ({key}) was not found.")
+        : base(string.Format(ApplicationResources.EntityNotFound, name, key))
     {
     }
 

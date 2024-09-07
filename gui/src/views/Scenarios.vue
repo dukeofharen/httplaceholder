@@ -1,28 +1,27 @@
 <template>
   <div>
-    <h1>Scenarios</h1>
+    <h1>{{ $translate("scenarios.scenarios") }}</h1>
 
-    <div class="col-md-12 mb-3">
-      Scenarios can be used to make stubs stateful. On this page, you can manage
-      the scenarios in HttPlaceholder. To read more about scenarios, go to
-      <a :href="docsUrl" target="_blank">the documentation</a>.
-    </div>
+    <div
+      class="col-md-12 mb-3"
+      v-html="$vsprintf($translate('scenarios.description'), [docsUrl])"
+    />
 
     <div class="col-md-12 mb-3">
       <router-link
         class="btn btn-success me-2 btn-mobile full-width"
         :to="{ name: 'ScenarioForm' }"
-        >Add scenario
+        >{{ $translate("scenarios.addScenario") }}
       </router-link>
       <button
         class="btn btn-danger btn-mobile full-width"
         @click="clearAllScenariosModal = true"
       >
-        Clear all scenarios
+        {{ $translate("scenarios.clearAllScenarios") }}
       </button>
       <modal
-        title="Clear all scenarios?"
-        bodyText="The scenarios can't be recovered."
+        :title="$translate('scenarios.clearAllScenariosQuestion')"
+        :bodyText="$translate('scenarios.scenariosCantBeRecovered')"
         :yes-click-function="clearAllScenarios"
         :show-modal="clearAllScenariosModal"
         @close="clearAllScenariosModal = false"
@@ -39,8 +38,8 @@
           <div>
             <span class="fw-bold">{{ scenario.scenario }}</span
             ><br />
-            State: {{ scenario.state }}<br />
-            Hit count: {{ scenario.hitCount }}
+            {{ $translate("scenarios.state") }}: {{ scenario.state }}<br />
+            {{ $translate("scenarios.hitCount") }}: {{ scenario.hitCount }}
           </div>
           <div>
             <router-link
@@ -50,13 +49,13 @@
                 params: { scenario: scenario.scenario },
               }"
             >
-              Update
+              {{ $translate("general.update") }}
             </router-link>
             <button
               class="btn btn-danger btn-sm"
               @click="deleteScenario(scenario.scenario)"
             >
-              Delete
+              {{ $translate("general.delete") }}
             </button>
           </div>
         </li>
@@ -68,13 +67,14 @@
 <script lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
-import { renderDocLink, resources } from "@/constants/resources";
+import { renderDocLink } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { useScenariosStore } from "@/store/scenarios";
 import { defineComponent } from "vue";
 import type { ScenarioModel } from "@/domain/scenario/scenario-model";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { getRootUrl } from "@/utils/config";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Scenarios",
@@ -143,7 +143,7 @@ export default defineComponent({
     const clearAllScenarios = async () => {
       try {
         await scenarioStore.deleteAllScenarios();
-        success(resources.scenariosDeletedSuccessfully);
+        success(translate("scenarios.scenariosDeletedSuccessfully"));
         await loadScenarios();
       } catch (e) {
         handleHttpError(e);
@@ -152,7 +152,7 @@ export default defineComponent({
     const deleteScenario = async (scenario: string) => {
       try {
         await scenarioStore.deleteScenario(scenario);
-        success(resources.scenarioDeletedSuccessfully);
+        success(translate("scenarios.scenarioDeletedSuccessfully"));
         await loadScenarios();
       } catch (e) {
         handleHttpError(e);

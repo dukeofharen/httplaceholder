@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
+using HttPlaceholder.Web.Shared.Resources;
 using Microsoft.Extensions.Logging;
 using BackgroundService = HttPlaceholder.Application.ScheduledJobs.BackgroundService;
 
@@ -29,7 +30,7 @@ public sealed class CleanOldRequestsJob : BackgroundService
     public override string Key => "CleanOldRequestsJob";
 
     /// <inheritdoc />
-    public override string Description => "A job for cleaning old requests.";
+    public override string Description => WebSharedResources.JobCleanOldRequestsDescription;
 
     /// <inheritdoc />
     public override async Task ProcessAsync(CancellationToken cancellationToken)

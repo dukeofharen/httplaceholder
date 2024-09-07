@@ -23,13 +23,13 @@
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="ClientIp" xml:space="preserve">
+    <data name="ClientIpDescription" xml:space="preserve">
         <value>The client IP body parser makes it possible to write the IP address of the requester to the response.</value>
     </data>
-    <data name="DisplayUrl" xml:space="preserve">
+    <data name="DisplayUrlDescription" xml:space="preserve">
         <value>The display URL body parser makes it possible to write the complete URL to the response. You can also use a regular expression to insert a part of the display URL in the response body.</value>
     </data>
-    <data name="FakeData" xml:space="preserve">
+    <data name="FakeDataDescription" xml:space="preserve">
         <value><![CDATA[The fake data makes it possible to insert random data to the response. The fake data is generated using <a href="https://github.com/bchavez/Bogus" target="_blank">Bogus</a>. You can insert the following data:
 
 - Address: zipcode, city, street_address, city_prefix, city_suffix, street_name, building_number, street_suffix, secondary_address, county, country, full_address, country_code, state, state_abbreviation, direction, cardinal_direction, ordinal_direction
@@ -52,40 +52,85 @@ This handler can be inserted in the following ways:
 - `((fake_data:en_US:past:yyyy-MM-dd HH:mm:ss))` (specify locale, generator and formatting string, if applicable).
 ]]></value>
     </data>
-    <data name="FormPost" xml:space="preserve">
+    <data name="FormPostDescription" xml:space="preserve">
         <value>The form post parser makes it possible to write posted form values to the response.</value>
     </data>
-    <data name="JsonPath" xml:space="preserve">
+    <data name="JsonPathDescription" xml:space="preserve">
         <value>This body parser can be used to query a value from the posted JSON using JSONPath and insert it in the response body or headers.</value>
     </data>
-    <data name="LocalNow" xml:space="preserve">
+    <data name="LocalNowDescription" xml:space="preserve">
         <value>This body parsers can insert the current local date &amp; time in the response body or headers.</value>
     </data>
-    <data name="Query" xml:space="preserve">
+    <data name="QueryDescription" xml:space="preserve">
         <value>The query string parser makes it possible to write request query string parameters to the response, in unencoded form.</value>
     </data>
-    <data name="QueryEncoded" xml:space="preserve">
+    <data name="QueryEncodedDescription" xml:space="preserve">
         <value>The query string parser makes it possible to write request query string parameters to the response, in URL encoded form.</value>
     </data>
-    <data name="RequestBody" xml:space="preserve">
+    <data name="RequestBodyDescription" xml:space="preserve">
         <value>The request body parser makes it possible to write the complete posted body to the response. You can also use a regular expression to insert a part of the request body in the response body.</value>
     </data>
-    <data name="RequestHeader" xml:space="preserve">
+    <data name="RequestHeaderDescription" xml:space="preserve">
         <value>The request headers parser makes it possible to write request header values to the response.</value>
     </data>
-    <data name="RootUrl" xml:space="preserve">
+    <data name="RootUrlDescription" xml:space="preserve">
         <value>The root URL body parser makes it possible to write the root URL (so URL without path + query string) to the response.</value>
     </data>
-    <data name="ScenarioHitcount" xml:space="preserve">
+    <data name="ScenarioHitcountDescription" xml:space="preserve">
         <value>This body parsers can be used to insert the scenario hit count in the response. By default, when you insert any of the body parsers, the hit count of the scenario the stub is in will be looked up. You can pass the scenario name of another scenario to fetch the values for that scenario.</value>
     </data>
-    <data name="ScenarioState" xml:space="preserve">
+    <data name="ScenarioStateDescription" xml:space="preserve">
         <value>This body parsers can be used to insert the scenario hit count in the response. By default, when you insert any of the body parsers, the hit count of the scenario the stub is in will be looked up. You can pass the scenario name of another scenario to fetch the values for that scenario.</value>
     </data>
-    <data name="UtcNow" xml:space="preserve">
+    <data name="UtcNowDescription" xml:space="preserve">
         <value>This body parsers can insert the current UTC date &amp; time in the response body or headers.</value>
     </data>
-    <data name="Uuid" xml:space="preserve">
+    <data name="UuidDescription" xml:space="preserve">
         <value>The UUID parser makes it possible to insert a random UUID to the response.</value>
+    </data>
+    <data name="ClientIp" xml:space="preserve">
+        <value>Client IP</value>
+    </data>
+    <data name="DisplayUrl" xml:space="preserve">
+        <value>Display URL</value>
+    </data>
+    <data name="QueryEncoded" xml:space="preserve">
+        <value>URL encoded query string</value>
+    </data>
+    <data name="FakeData" xml:space="preserve">
+        <value>Fake data</value>
+    </data>
+    <data name="FormPost" xml:space="preserve">
+        <value>Form post</value>
+    </data>
+    <data name="JsonPath" xml:space="preserve">
+        <value>JSONPath</value>
+    </data>
+    <data name="LocalNow" xml:space="preserve">
+        <value>Local date / time</value>
+    </data>
+    <data name="Query" xml:space="preserve">
+        <value>Query string</value>
+    </data>
+    <data name="RequestBody" xml:space="preserve">
+        <value>Request body</value>
+    </data>
+    <data name="RequestHeader" xml:space="preserve">
+        <value>Request header</value>
+    </data>
+    <data name="RootUrl" xml:space="preserve">
+        <value>Root URL</value>
+    </data>
+    <data name="ScenarioHitcount" xml:space="preserve">
+        <value>Scenario hit count</value>
+    </data>
+    <data name="ScenarioState" xml:space="preserve">
+        <value>Scenario state</value>
+    </data>
+    <data name="UtcNow" xml:space="preserve">
+        <value>UTC date / time</value>
+    </data>
+    <data name="Uuid" xml:space="preserve">
+        <value>UUID</value>
     </data>
 </root>

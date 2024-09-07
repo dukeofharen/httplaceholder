@@ -134,7 +134,7 @@ internal class FileSystemStubCache(
     private string GetMetadataPath()
     {
         var rootPath = options.CurrentValue.Storage?.FileStorageLocation ??
-                       throw new InvalidOperationException("FileStorageLocation unexpectedly null.");
+                       throw new InvalidOperationException(PersistenceResources.FileStorageUnexpectedlyNull);
         var path = Path.Combine(rootPath, FileNames.MetadataFileName);
         return path;
     }

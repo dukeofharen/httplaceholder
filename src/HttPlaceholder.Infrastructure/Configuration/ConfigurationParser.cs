@@ -85,10 +85,10 @@ public class ConfigurationParser(
         // Read the settings from a given file if the correct config key is set.
         if (!fileService.FileExists(configJsonPath))
         {
-            throw new FileNotFoundException($"File '{configJsonPath}' not found.");
+            throw new FileNotFoundException(string.Format(InfraResources.ConfigParserFileNotFound, configJsonPath));
         }
 
-        Console.WriteLine($"Reading configuration from '{configJsonPath}'.");
+        Console.WriteLine(InfraResources.ConfigParserReadingJson, configJsonPath);
         var config = fileService.ReadAllText(configJsonPath);
         return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
     }

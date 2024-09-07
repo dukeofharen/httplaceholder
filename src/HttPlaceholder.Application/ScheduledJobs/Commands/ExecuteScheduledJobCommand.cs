@@ -34,7 +34,8 @@ public class ExecuteScheduledJobCommandHandler(IEnumerable<ICustomHostedService>
     {
         var job = hostedServices.FirstOrDefault(s =>
                 string.Equals(request.JobName, s.Key, StringComparison.OrdinalIgnoreCase))
-            .IfNull(() => throw new NotFoundException($"Hosted service with key '{request.JobName}'."));
+            .IfNull(() =>
+                throw new NotFoundException(string.Format(ApplicationResources.HostedJobNotFound, request.JobName)));
         try
         {
             await job.ProcessAsync(cancellationToken);

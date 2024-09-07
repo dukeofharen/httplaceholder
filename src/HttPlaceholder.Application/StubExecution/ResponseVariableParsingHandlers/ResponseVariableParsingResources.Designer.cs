@@ -46,6 +46,96 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
             }
         }
         
+        internal static string ClientIpDescription {
+            get {
+                return ResourceManager.GetString("ClientIpDescription", resourceCulture);
+            }
+        }
+        
+        internal static string DisplayUrlDescription {
+            get {
+                return ResourceManager.GetString("DisplayUrlDescription", resourceCulture);
+            }
+        }
+        
+        internal static string FakeDataDescription {
+            get {
+                return ResourceManager.GetString("FakeDataDescription", resourceCulture);
+            }
+        }
+        
+        internal static string FormPostDescription {
+            get {
+                return ResourceManager.GetString("FormPostDescription", resourceCulture);
+            }
+        }
+        
+        internal static string JsonPathDescription {
+            get {
+                return ResourceManager.GetString("JsonPathDescription", resourceCulture);
+            }
+        }
+        
+        internal static string LocalNowDescription {
+            get {
+                return ResourceManager.GetString("LocalNowDescription", resourceCulture);
+            }
+        }
+        
+        internal static string QueryDescription {
+            get {
+                return ResourceManager.GetString("QueryDescription", resourceCulture);
+            }
+        }
+        
+        internal static string QueryEncodedDescription {
+            get {
+                return ResourceManager.GetString("QueryEncodedDescription", resourceCulture);
+            }
+        }
+        
+        internal static string RequestBodyDescription {
+            get {
+                return ResourceManager.GetString("RequestBodyDescription", resourceCulture);
+            }
+        }
+        
+        internal static string RequestHeaderDescription {
+            get {
+                return ResourceManager.GetString("RequestHeaderDescription", resourceCulture);
+            }
+        }
+        
+        internal static string RootUrlDescription {
+            get {
+                return ResourceManager.GetString("RootUrlDescription", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioHitcountDescription {
+            get {
+                return ResourceManager.GetString("ScenarioHitcountDescription", resourceCulture);
+            }
+        }
+        
+        internal static string ScenarioStateDescription {
+            get {
+                return ResourceManager.GetString("ScenarioStateDescription", resourceCulture);
+            }
+        }
+        
+        internal static string UtcNowDescription {
+            get {
+                return ResourceManager.GetString("UtcNowDescription", resourceCulture);
+            }
+        }
+        
+        internal static string UuidDescription {
+            get {
+                return ResourceManager.GetString("UuidDescription", resourceCulture);
+            }
+        }
+        
         internal static string ClientIp {
             get {
                 return ResourceManager.GetString("ClientIp", resourceCulture);
@@ -55,6 +145,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
         internal static string DisplayUrl {
             get {
                 return ResourceManager.GetString("DisplayUrl", resourceCulture);
+            }
+        }
+        
+        internal static string QueryEncoded {
+            get {
+                return ResourceManager.GetString("QueryEncoded", resourceCulture);
             }
         }
         
@@ -85,12 +181,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
         internal static string Query {
             get {
                 return ResourceManager.GetString("Query", resourceCulture);
-            }
-        }
-        
-        internal static string QueryEncoded {
-            get {
-                return ResourceManager.GetString("QueryEncoded", resourceCulture);
             }
         }
         

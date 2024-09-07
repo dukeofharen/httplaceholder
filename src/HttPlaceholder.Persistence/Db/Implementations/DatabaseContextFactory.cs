@@ -20,7 +20,7 @@ internal class DatabaseContextFactory(IDbConnectionFactory dbConnectionFactory) 
             return new DatabaseContext(connection);
         }
 
-        throw new InvalidOperationException(
-            $"No data source and no connection set for DB connection factory of type {dbConnectionFactory.GetType()}.");
+        throw new InvalidOperationException(string.Format(PersistenceResources.NoDataSourceOrConnection,
+            dbConnectionFactory.GetType()));
     }
 }

@@ -23,13 +23,13 @@ internal class LocalNowResponseVariableParsingHandler(IDateTime dateTime)
     public override string Name => "localnow";
 
     /// <inheritdoc />
-    public override string FullName => "Local date / time";
+    public override string FullName => ResponseVariableParsingResources.LocalNow;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.LocalNow;
+    public override string GetDescription() => ResponseVariableParsingResources.LocalNowDescription;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

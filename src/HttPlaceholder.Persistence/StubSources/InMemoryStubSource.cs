@@ -250,7 +250,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
         var item = GetCollection(distributionKey);
         if (!item.Scenarios.TryAdd(lookupKey, scenarioToAdd))
         {
-            throw new InvalidOperationException($"Scenario state with key '{lookupKey}' already exists.");
+            throw new InvalidOperationException(string.Format(PersistenceResources.ScenarioWithKeyAlreadyExists, lookupKey));
         }
 
         return scenarioToAdd.AsTask();
@@ -271,8 +271,7 @@ internal class InMemoryStubSource(IOptionsMonitor<SettingsModel> options) : Base
         var newScenarioState = scenarioStateModel.Copy();
         if (!item.Scenarios.TryUpdate(lookupKey, newScenarioState, value))
         {
-            throw new InvalidOperationException(
-                $"Something went wrong with updating scenario with key '{lookupKey}'.");
+            throw new InvalidOperationException(string.Format(PersistenceResources.ScenarioStateNotUpdated, lookupKey));
         }
 
         return Task.CompletedTask;

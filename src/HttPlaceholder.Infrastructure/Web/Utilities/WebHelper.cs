@@ -16,5 +16,5 @@ public static class WebHelper
     /// <returns>The <see cref="HttpContext" />.</returns>
     public static HttpContext GetHttpContext(this IHttpContextAccessor httpContextAccessor) =>
         ThrowHelper.ThrowIfNull<HttpContext, InvalidOperationException>(httpContextAccessor?.HttpContext,
-            "HttpContext not set.");
+            InfraResources.HttpContextNotSet);
 }

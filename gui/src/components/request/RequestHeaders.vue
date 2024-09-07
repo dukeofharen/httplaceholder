@@ -1,6 +1,8 @@
 <template>
   <accordion-item>
-    <template v-slot:button-text>Request headers</template>
+    <template v-slot:button-text>{{
+      $translate("request.requestHeaders")
+    }}</template>
     <template v-slot:accordion-body>
       <table class="table" v-if="requestParams.headers">
         <tbody>

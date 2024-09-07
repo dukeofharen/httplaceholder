@@ -70,14 +70,14 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
     private static ConfigMetadataModel GetConfigMetadata(string key) =>
         ConfigKeys.GetConfigMetadata().FirstOrDefault(m =>
                 m.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
-            .IfNull(() => throw new NotFoundException($"Configuration value with key '{key}'."));
+            .IfNull(() => throw new NotFoundException(string.Format(ApplicationResources.ConfigValueNotFound, key)));
 
     private static void EnsureCanBeMutated(ConfigMetadataModel metadata)
     {
         if (metadata.CanBeMutated != true)
         {
-            throw new InvalidOperationException(
-                $"Configuration value with key '{metadata.Key}' can not be mutated at this moment.");
+            throw new InvalidOperationException(string.Format(ApplicationResources.ConfigValueCantBeMutated,
+                metadata.Key));
         }
     }
 
@@ -86,8 +86,7 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
         if (metadata.IsBoolValue == true &&
             !_expectedBoolValues.Any(v => string.Equals(v, newValue, StringComparison.OrdinalIgnoreCase)))
         {
-            throw new ArgumentException(
-                $"Configuration value with key '{metadata.Key}' is of type boolean, but no boolean value was passed.");
+            throw new ArgumentException(string.Format(ApplicationResources.ConfigValueIncorrectBoolean, metadata.Key));
         }
     }
 
@@ -95,7 +94,8 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
     {
         var type = typeof(MemoryConfigurationProvider);
         return (MemoryConfigurationProvider)_configuration.Providers.FirstOrDefault(p => p.GetType() == type)
-            .IfNull(() => throw new InvalidOperationException(
-                $"Configuration provider with type '{type.Name}' unexpectedly not found."));
+            .IfNull(() =>
+                throw new InvalidOperationException(string.Format(ApplicationResources.ConfigProviderNotFound,
+                    type.Name)));
     }
 }

@@ -1,6 +1,8 @@
 <template>
   <accordion-item>
-    <template v-slot:button-text>Response writer results</template>
+    <template v-slot:button-text>{{
+      $translate("request.responseWriterResults")
+    }}</template>
     <template v-slot:accordion-body>
       <ul class="list-group">
         <li

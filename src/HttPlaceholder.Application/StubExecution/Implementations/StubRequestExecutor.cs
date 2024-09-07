@@ -77,8 +77,7 @@ internal class StubRequestExecutor(
         if (foundStubs.Count == 0)
         {
             // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
-            throw new RequestValidationException(
-                $"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
+            throw new RequestValidationException(string.Format(StubResources.StubValidationError, nameof(foundStubs)));
         }
 
         var finalStub = finalStubDeterminer.DetermineFinalStub(foundStubs);

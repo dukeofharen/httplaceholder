@@ -37,6 +37,18 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ResponseVariableParsingResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="ApplicationResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Configuration\ConfigKeysResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ConfigKeysResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="StubExecution\StubResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>StubResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -44,6 +56,21 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>ResponseVariableParsingResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="ApplicationResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ApplicationResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Configuration\ConfigKeysResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ConfigKeysResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="StubExecution\StubResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>StubResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

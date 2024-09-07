@@ -56,8 +56,8 @@ public class ExportRequestQueryHandler(
                 NotFoundException.ThrowIfNull(response, "response", request.CorrelationId);
                 return requestToHarService.Convert(requestResult, response);
             default:
-                throw new NotImplementedException(
-                    $"Converting of request to {request.RequestExportType} not supported.");
+                throw new NotImplementedException(string.Format(ApplicationResources.RequestConvertionNotSupported,
+                    request.RequestExportType));
         }
     }
 }

@@ -38,8 +38,7 @@ public class XPathConditionChecker(IHttpContextService httpContextService) : Bas
             if (elements is { Count: 0 })
             {
                 // No suitable XML results found.
-                return await InvalidAsync(
-                    $"No suitable XML results found with XPath query {condition.QueryString}.");
+                return await InvalidAsync(string.Format(StubResources.XPathConditionFailed, condition.QueryString));
             }
 
             validXpaths++;

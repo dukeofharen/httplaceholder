@@ -29,13 +29,13 @@ public class ScenarioMaxHitCounterConditionChecker(IStubContext stubContext) : B
             1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
         if (actualHitCount == null)
         {
-            return await InvalidAsync("No hit count could be found.");
+            return await InvalidAsync(StubResources.ScenarioNoHitCountFound);
         }
 
         if (actualHitCount >= maxHits)
         {
-            return await InvalidAsync(
-                $"Scenario '{scenario}' should have less than '{maxHits}' hits, but '{actualHitCount}' hits were counted.");
+            return await InvalidAsync(string.Format(StubResources.ScenarioMaxHitCountConditionFailed, scenario, maxHits,
+                actualHitCount));
         }
 
         return await ValidAsync();

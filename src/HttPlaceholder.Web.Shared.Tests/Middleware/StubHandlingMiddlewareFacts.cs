@@ -304,7 +304,7 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m =>
             m.WriteAsync(It.Is<string>(b => b.Contains("HttPlaceholder - no stub found")),
                 It.IsAny<CancellationToken>()));
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown."));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown"));
     }
 
     [TestMethod]
@@ -349,7 +349,7 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m =>
             m.WriteAsync(It.Is<string>(b => b == """{"status":"501 Not implemented"}"""),
                 It.IsAny<CancellationToken>()));
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown."));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown"));
     }
 
     [TestMethod]

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Application.Utilities;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using static HttPlaceholder.Domain.StubResponseWriterResultModel;
@@ -27,7 +28,8 @@ internal class Base64ResponseWriter : IResponseWriter, ISingletonService
         }
 
         response.Body = Convert.FromBase64String(stub.Response.Base64);
-        response.BodyIsBinary = true;
+        var contentType = stub.GetContentType();
+        response.BodyIsBinary = !response.Body.IsValidText(contentType);
         return IsExecuted(GetType().Name).AsTask();
     }
 }

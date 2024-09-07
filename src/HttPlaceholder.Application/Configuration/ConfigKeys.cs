@@ -159,7 +159,7 @@ public static class ConfigKeys
     [
         Create(
             ApiUsernameKey,
-            "the username for securing the REST API",
+            ConfigKeysResources.ApiUsername,
             "user",
             "Authentication:ApiUsername",
             ConfigKeyType.Authentication,
@@ -168,7 +168,7 @@ public static class ConfigKeys
             null),
         Create(
             ApiPasswordKey,
-            "the password for securing the REST API",
+            ConfigKeysResources.ApiPassword,
             "pass",
             "Authentication:ApiPassword",
             ConfigKeyType.Authentication,
@@ -177,7 +177,7 @@ public static class ConfigKeys
             null),
         Create(
             HttpsPortKey,
-            "the port HttPlaceholder should run under when HTTPS is enabled. Listen on multiple ports by separating ports with comma.",
+            ConfigKeysResources.HttpsPort,
             "5050",
             "Web:HttpsPort",
             ConfigKeyType.Web,
@@ -186,7 +186,7 @@ public static class ConfigKeys
             null),
         Create(
             InputFileKey,
-            "for input file, you can both provide a path to a .yml file (to load only that file) or provide a path to a folder containing .yml files (which will all be loaded in that case).",
+            ConfigKeysResources.InputFile,
             @"C:\path\to\stubsfolder or C:\path\to\stubsfolder,C:\path\to\file.yml for multiple paths",
             "Storage:InputFile",
             ConfigKeyType.Storage,
@@ -195,7 +195,7 @@ public static class ConfigKeys
             null),
         Create(
             DisableFileWatcher,
-            "by default, the OS file watcher will be used to keep track of the .yml stub files. If a problem occurs with the file watcher, you can enable this option to read and track the .yml stub files in the 'classic' way (default false).",
+            ConfigKeysResources.DisableFileWatcher,
             "true",
             "Storage:DisableFileWatcher",
             ConfigKeyType.Storage,
@@ -204,7 +204,7 @@ public static class ConfigKeys
             null),
         Create(
             OldRequestsQueueLengthKey,
-            "the maximum number of HTTP requests that the in memory stub source (used for the REST API) should store before truncating old records. Default: 40.",
+            ConfigKeysResources.OldRequestsQueueLength,
             "100",
             "Storage:OldRequestsQueueLength",
             ConfigKeyType.Storage,
@@ -213,7 +213,7 @@ public static class ConfigKeys
             null),
         Create(
             StoreResponses,
-            "whether the responses as returned by HttPlaceholder should be stored. Default: false",
+            ConfigKeysResources.StoreResponses,
             "true",
             "Storage:StoreResponses",
             ConfigKeyType.Storage,
@@ -222,7 +222,7 @@ public static class ConfigKeys
             true),
         Create(
             CleanOldRequestsInBackgroundJob,
-            "whether the cleaning of old requests should be done in a background job. If set to true, will delete old requests in a background job that runs once in 5 minutes. If set to false, will clean old requests every time a request is handled. Default: true.",
+            ConfigKeysResources.CleanOldRequestsInBackgroundJob,
             "true",
             "Storage:CleanOldRequestsInBackgroundJob",
             ConfigKeyType.Storage,
@@ -231,7 +231,7 @@ public static class ConfigKeys
             null),
         Create(
             PfxPasswordKey,
-            "the password for the .pfx file which should be used in the case HTTPS is enabled",
+            ConfigKeysResources.PfxPassword,
             "112233",
             "Web:PfxPassword",
             ConfigKeyType.Web,
@@ -240,7 +240,7 @@ public static class ConfigKeys
             null),
         Create(
             ReadProxyHeaders,
-            "whether the proxy headers 'X-Forwarded-For', 'X-Forwarded-Host' and 'X-Forwarded-Proto' should be taken into account when determining the IP, hostname and protocol",
+            ConfigKeysResources.ReadProxyHeaders,
             "true",
             "Web:ReadProxyHeaders",
             ConfigKeyType.Web,
@@ -249,7 +249,7 @@ public static class ConfigKeys
             null),
         Create(
             SafeProxyIps,
-            "the proxy IPs which are considered safe when reading the 'X-Forwarded-For', 'X-Forwarded-Host' and 'X-Forwarded-Proto' headers. Localhost is always permitted. Separate multiple IPs by using a comma.",
+            ConfigKeysResources.SafeProxyIps,
             "1.1.1.1,2.2.2.2",
             "Web:SafeProxyIps",
             ConfigKeyType.Web,
@@ -258,7 +258,7 @@ public static class ConfigKeys
             null),
         Create(
             PfxPathKey,
-            "the path to the .pfx file in the case HTTPS is enabled. When no path is provided, the default .pfx file is used",
+            ConfigKeysResources.PfxPath,
             @"C:\path\to\privatekey.pfx",
             "Web:PfxPath",
             ConfigKeyType.Web,
@@ -267,7 +267,7 @@ public static class ConfigKeys
             null),
         Create(
             PortKey,
-            "the HTTP port HttPlaceholder should run under. Listen on multiple ports by separating ports with comma.",
+            ConfigKeysResources.Port,
             "5000",
             "Web:HttpPort",
             ConfigKeyType.Web,
@@ -276,7 +276,7 @@ public static class ConfigKeys
             null),
         Create(
             UseHttpsKey,
-            "whether HTTPS should be enabled or not. Default: false",
+            ConfigKeysResources.UseHttps,
             "true",
             "Web:UseHttps",
             ConfigKeyType.Web,
@@ -285,7 +285,7 @@ public static class ConfigKeys
             null),
         Create(
             PublicUrl,
-            "specifies the URL on which this HttPlaceholder instance can be reached. Useful if running behind a reverse proxy.",
+            ConfigKeysResources.PublicUrl,
             "https://example.com/stubs",
             "Web:PublicUrl",
             ConfigKeyType.Web,
@@ -294,7 +294,7 @@ public static class ConfigKeys
             null),
         Create(
             EnableRequestLoggingKey,
-            "whether stub requests should be logged to the terminal window. Default: false",
+            ConfigKeysResources.EnableRequestLogging,
             "false",
             "Storage:EnableRequestLogging",
             ConfigKeyType.Storage,
@@ -303,7 +303,7 @@ public static class ConfigKeys
             null),
         Create(
             FileStorageLocationKey,
-            "a location where the stubs and requests are stored. This is enabled by default and, if you omit this property, the stubs will be saved in your user profile folder. Specify 'useInMemoryStorage' to only save stubs in memory.",
+            ConfigKeysResources.FileStorageLocation,
             @"C:\httplaceholder_storage",
             "Storage:FileStorageLocation",
             ConfigKeyType.Storage,
@@ -312,7 +312,7 @@ public static class ConfigKeys
             null),
         Create(
             UseInMemoryStorage,
-            "whether stubs should only be saved in memory. The stubs and requests will be deleted after restarting the application. Default: false",
+            ConfigKeysResources.UseInMemoryStorage,
             "false",
             "Storage:UseInMemoryStorage",
             ConfigKeyType.Storage,
@@ -321,7 +321,7 @@ public static class ConfigKeys
             null),
         Create(
             MysqlConnectionStringKey,
-            "a connection string that needs to be filled in if you want to use MySQL",
+            ConfigKeysResources.MysqlConnectionString,
             "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true",
             "ConnectionStrings:MySql",
             ConfigKeyType.Storage,
@@ -330,7 +330,7 @@ public static class ConfigKeys
             null),
         Create(
             SqliteConnectionStringKey,
-            "a connection string that needs to be filled in if you want to use SQLite",
+            ConfigKeysResources.SqliteConnectionString,
             @"Data Source=C:\tmp\httplaceholder.db",
             "ConnectionStrings:Sqlite",
             ConfigKeyType.Storage,
@@ -339,7 +339,7 @@ public static class ConfigKeys
             null),
         Create(
             SqlServerConnectionStringKey,
-            "a connection string that needs to be filled in if you want to use MSSQL",
+            ConfigKeysResources.SqlServerConnectionString,
             "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123",
             "ConnectionStrings:SqlServer",
             ConfigKeyType.Storage,
@@ -348,7 +348,7 @@ public static class ConfigKeys
             null),
         Create(
             PostgresConnectionStringKey,
-            "a connection string that needs to be filled in if you want to use Postgres",
+            ConfigKeysResources.PostrgresConnectionString,
             "Host=localhost,5432;Username=postgres;Password=postgres;Database=httplaceholder;SearchPath=public",
             "ConnectionStrings:Postgres",
             ConfigKeyType.Storage,
@@ -357,7 +357,7 @@ public static class ConfigKeys
             null),
         Create(
             EnableUserInterface,
-            "whether the user interface should be enabled or not. The user interface is, if enabled, located at http://localhost:PORT/ph-ui.",
+            ConfigKeysResources.EnableUserInterface,
             "true",
             "Gui:EnableUserInterface",
             ConfigKeyType.Gui,
@@ -366,7 +366,7 @@ public static class ConfigKeys
             null),
         Create(
             MaximumExtraDurationMillisKey,
-            "the number of milliseconds the 'extraDuration' response writer can make a request wait at most. Defaults to 1 minute (60.000 millis).",
+            ConfigKeysResources.MaximumExtraDurationMillis,
             "60000",
             "Stub:MaximumExtraDurationMillis",
             ConfigKeyType.Stub,
@@ -375,7 +375,7 @@ public static class ConfigKeys
             null),
         Create(
             HealthcheckOnRootUrl,
-            """whether the root URL of HttPlaceholder (so "/") can be configured as stub or always returns 200 OK. Defaults to false.""",
+            ConfigKeysResources.HealthcheckOnRootUrl,
             "true",
             "Stub:HealthcheckOnRootUrl",
             ConfigKeyType.Stub,
@@ -384,7 +384,7 @@ public static class ConfigKeys
             null),
         Create(
             AllowGlobalFileSearch,
-            "whether HttPlaceholder is able to accept any path for the 'file response writer'. If set to false, HttPlaceholder is only allowed to look for files relative to the .yml stub files or the file storage location. 'false' by default and not recommended to set to 'true' if you are running HttPlaceholder outside of a Docker container.",
+            ConfigKeysResources.AllowGlobalFileSearch,
             "false",
             "Stub:AllowGlobalFileSearch",
             ConfigKeyType.Stub,
@@ -393,7 +393,7 @@ public static class ConfigKeys
             null),
         Create(
             ConfigJsonLocationKey,
-            "the location of the config.json file. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.",
+            ConfigKeysResources.ConfigJsonLocation,
             @"F:\httplaceholder\config.json",
             null,
             ConfigKeyType.Configuration,

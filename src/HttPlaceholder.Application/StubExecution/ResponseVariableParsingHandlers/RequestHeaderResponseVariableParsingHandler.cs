@@ -20,13 +20,13 @@ internal class RequestHeaderResponseVariableParsingHandler(IHttpContextService h
     public override string Name => "request_header";
 
     /// <inheritdoc />
-    public override string FullName => "Request header";
+    public override string FullName => ResponseVariableParsingResources.RequestHeader;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}:X-Api-Key))"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.RequestHeader;
+    public override string GetDescription() => ResponseVariableParsingResources.RequestHeaderDescription;
 
     /// <inheritdoc />
     protected override Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

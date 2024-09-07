@@ -38,7 +38,7 @@ public class BodyConditionChecker(IHttpContextService httpContextService, IStrin
             if (!stringChecker.CheckString(body, condition, out var outputForLogging))
             {
                 // If the check failed, it means the body condition is incorrect and the condition should fail.
-                log = $"Body condition '{outputForLogging}' failed.";
+                log = string.Format(StubResources.BodyConditionFailed, outputForLogging);
                 break;
             }
 

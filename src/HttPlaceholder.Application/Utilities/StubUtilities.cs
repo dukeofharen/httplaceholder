@@ -33,4 +33,14 @@ public static class StubUtilities
     /// <param name="scenario">The scenario name.</param>
     /// <returns>The cleaned scenario name.</returns>
     public static string CleanScenarioName(string scenario) => PathUtilities.CleanPath(scenario);
+
+    /// <summary>
+    ///     Returns the set content type of the stub.
+    /// </summary>
+    /// <param name="stubModel">The stub.</param>
+    /// <returns>The content type or NULL if it was not found.</returns>
+    public static string GetContentType(this StubModel stubModel) =>
+        !string.IsNullOrWhiteSpace(stubModel.Response?.ContentType)
+            ? stubModel.Response?.ContentType
+            : stubModel.Response?.Headers?.CaseInsensitiveSearch(HeaderKeys.ContentType);
 }

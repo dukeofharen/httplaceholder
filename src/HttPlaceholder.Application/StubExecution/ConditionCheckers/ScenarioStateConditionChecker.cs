@@ -36,8 +36,8 @@ public class ScenarioStateConditionChecker(IStubContext stubContext) : BaseCondi
 
         if (!string.Equals(scenarioState.State.Trim(), state.Trim(), StringComparison.OrdinalIgnoreCase))
         {
-            return await InvalidAsync(
-                $"Scenario '{stub.Scenario}' is in state '{scenarioState.State}', but '{state}' was expected.");
+            return await InvalidAsync(string.Format(StubResources.ScenarioStateConditionFailed, stub.Scenario,
+                scenarioState.State, state));
         }
 
         return await ValidAsync();

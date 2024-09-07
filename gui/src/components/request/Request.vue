@@ -3,7 +3,11 @@
     <template v-slot:button-text>
       <span
         class="request-header"
-        :title="executed ? 'Executed stub: ' + executingStubId : ''"
+        :title="
+          executed
+            ? `${$translate('request.executedStub')}: ` + executingStubId
+            : ''
+        "
       >
         <Method
           v-if="overviewRequest.method"
@@ -29,23 +33,23 @@
           <button
             class="btn btn-success btn-sm me-2"
             @click="createStub"
-            title="Create a stub based on the request parameters of this request"
+            :title="$translate('request.createRequestStubTitle')"
           >
-            Create stub
+            {{ $translate("request.createRequestStub") }}
           </button>
           <button
             class="btn btn-success btn-sm me-2"
             @click="exportRequest"
-            title="Export the stub in a specific format"
+            :title="$translate('request.exportRequestTitle')"
           >
-            Export
+            {{ $translate("request.exportRequest") }}
           </button>
           <button
             class="btn btn-danger btn-sm"
             @click="deleteRequest"
-            title="Delete this request"
+            :title="$translate('request.deleteRequestTitle')"
           >
-            Delete
+            {{ $translate("request.deleteRequest") }}
           </button>
         </div>
       </div>
@@ -62,7 +66,6 @@ import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
 import Method from "@/components/request/Method.vue";
 import RequestDetails from "@/components/request/RequestDetails.vue";
-import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { useRouter } from "vue-router";
 import { success } from "@/utils/toast";
@@ -73,6 +76,8 @@ import type { RequestOverviewModel } from "@/domain/request/request-overview-mod
 import type { RequestResultModel } from "@/domain/request/request-result-model";
 import { getDefaultRequestResultModel } from "@/domain/request/request-result-model";
 import RequestExport from "@/components/request/RequestExport.vue";
+import { refreshRequestTimesInterval } from "@/constants/technical";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Request",
@@ -111,7 +116,7 @@ export default defineComponent({
     onMounted(() => {
       refreshTimeFromNowInterval = setInterval(() => {
         timeFromNow.value = getTimeFromNow();
-      }, 60000);
+      }, refreshRequestTimesInterval);
     });
     onUnmounted(() => {
       if (refreshTimeFromNowInterval) {
@@ -147,7 +152,7 @@ export default defineComponent({
     const deleteRequest = async () => {
       try {
         await requestStore.deleteRequest(correlationId());
-        success(resources.requestDeletedSuccessfully);
+        success(translate("request.requestDeletedSuccessfully"));
         emit("deleted", correlationId());
       } catch (e) {
         handleHttpError(e);
