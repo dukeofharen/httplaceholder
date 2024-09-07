@@ -135,6 +135,7 @@ internal class FileWatcherYamlFileStubSource(
             .SetOnDeleted(OnInputLocationUpdated)
             .SetOnRenamed(OnInputLocationUpdated)
             .SetOnError(OnError)
+            .SetEnableRaisingEvents(true)
             .Build());
 
     private void OnError(object sender, ErrorEventArgs e) =>
