@@ -27,6 +27,12 @@ public interface IFileWatcherBuilder
     IFileWatcherBuilder SetPathOrFilters(string path, IEnumerable<string> extensions = null);
 
     /// <summary>
+    ///     Enables or disables the "EnableRaisingEvents" property on the file watcher.
+    /// </summary>
+    /// <param name="enableRaisingEvents"></param>
+    IFileWatcherBuilder SetEnableRaisingEvents(bool enableRaisingEvents);
+
+    /// <summary>
     ///     Provides an action to executed when the Changed event is triggered.
     /// </summary>
     /// <param name="action">The action to execute.</param>
