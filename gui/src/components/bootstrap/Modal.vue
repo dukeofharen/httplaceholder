@@ -148,4 +148,11 @@ export default defineComponent({
     font-size: 30px;
   }
 }
+
+.modal-title {
+  max-width: 100%;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 </style>
