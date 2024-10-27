@@ -144,7 +144,12 @@ export default defineComponent({
           input.value = intermediateStub;
           clearIntermediateStub();
         } else {
-          input.value = resources.defaultStub;
+          input.value = `id: unique-stub-id
+description: A description for the stub.
+conditions:
+  method: GET
+response:
+  text: OK!`;
           stubFormStore.setFormIsDirty(false);
         }
       } else {
