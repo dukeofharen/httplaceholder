@@ -19,14 +19,14 @@
             class="btn btn-danger btn-mobile full-width"
             @click="closeFormHelperAndList"
           >
-            Close list
+            {{ $translate("stubForm.closeList") }}
           </button>
         </div>
         <div class="input-group mb-3">
           <input
             type="text"
             class="form-control"
-            placeholder="Filter form helpers (press 'Escape' to close)..."
+            :placeholder="$translate('stubForm.filterPlaceholder')"
             v-model="formHelperFilter"
             ref="formHelperFilterInput"
           />
@@ -81,6 +81,7 @@ import {
   stubFormHelpers,
 } from "@/domain/stubForm/stub-form-helpers";
 import RenderedFormHelper from "@/components/stubForm/formHelper/RenderedFormHelper.vue";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "FormHelperSelector",
@@ -95,17 +96,20 @@ export default defineComponent({
     // Data
     const showFormHelperItems = ref(false);
     const formHelperButtons = [
-      { title: "Add example", category: StubFormHelperCategory.Examples },
       {
-        title: "Add general stub info",
+        title: translate("stubForm.addExample"),
+        category: StubFormHelperCategory.Examples,
+      },
+      {
+        title: translate("stubForm.addGeneralStubInfo"),
         category: StubFormHelperCategory.GeneralInfo,
       },
       {
-        title: "Add request condition",
+        title: translate("stubForm.addRequestCondition"),
         category: StubFormHelperCategory.RequestCondition,
       },
       {
-        title: "Add response writer",
+        title: translate("stubForm.addResponseWriter"),
         category: StubFormHelperCategory.ResponseDefinition,
       },
     ];

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
+    <h1>
+      {{
+        newStub
+          ? $translate("stubForm.addStub")
+          : $translate("stubForm.updateStub")
+      }}
+    </h1>
 
     <div class="row">
       <div
@@ -56,7 +62,7 @@
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
-import { renderDocLink, resources } from "@/constants/resources";
+import { renderDocLink } from "@/constants/resources";
 import { simpleEditorThreshold } from "@/constants/technical";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
@@ -98,11 +104,6 @@ export default defineComponent({
     // Computed
     const stubId = computed(() => route.params.stubId as string);
     const newStub = computed(() => !route.params.stubId);
-    const title = computed(() =>
-      newStub.value
-        ? translate("stubForm.addStub")
-        : translate("stubForm.updateStub"),
-    );
     const input = computed({
       get: () => stubFormStore.getInput,
       set: (value) => stubFormStore.setInput(value),
@@ -179,7 +180,6 @@ response:
     return {
       stubId,
       newStub,
-      title,
       input,
       cmOptions,
       showFormHelperSelector,

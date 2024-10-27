@@ -14,6 +14,7 @@
 <script lang="ts">
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "RedirectSelector",
@@ -23,14 +24,14 @@ export default defineComponent({
     // Data
     const items = [
       {
-        name: "Temporary redirect",
+        name: translate("stubForm.redirectTemporary"),
         onSelected: () => {
           stubFormStore.setDefaultTempRedirect();
           stubFormStore.closeFormHelper();
         },
       },
       {
-        name: "Permanent redirect",
+        name: translate("stubForm.redirectPermanent"),
         onSelected: () => {
           stubFormStore.setDefaultPermanentRedirect();
           stubFormStore.closeFormHelper();

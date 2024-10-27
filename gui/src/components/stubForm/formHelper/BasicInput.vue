@@ -19,7 +19,7 @@
         ref="fieldRef"
       />
       <button class="btn btn-success mt-2" @click="insert">
-        {{ buttonText ?? "Insert into stub" }}
+        {{ buttonText ?? $translate("stubForm.insertIntoStub") }}
       </button>
     </div>
   </div>

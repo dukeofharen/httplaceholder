@@ -46,72 +46,72 @@
     v-if="currentSelectedFormHelper === FormHelperKey.Description"
     :value-getter="() => stubFormStore.getDescription"
     :value-setter="(v: string) => stubFormStore.setDescription(v)"
-    title="Description"
+    :title="$translate('stubForm.descriptionTitle')"
   />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.Priority"
     :value-getter="() => stubFormStore.getPriority"
     :value-setter="(v: string) => stubFormStore.setPriority(v)"
     input-type="numeric"
-    title="Set a stub priority (the higher the number, the higher the stub priority)"
+    :title="$translate('stubForm.priorityTitle')"
   />
   <StringCheckerInput
     v-if="currentSelectedFormHelper === FormHelperKey.Path"
     :value-getter="() => stubFormStore.getUrlPath"
     :value-setter="(input: any) => stubFormStore.setUrlPath(input)"
-    title="URL path"
+    :title="$translate('stubForm.urlPathTitle')"
     :multiple="true"
   />
   <StringCheckerInput
     v-if="currentSelectedFormHelper === FormHelperKey.FullPath"
     :value-getter="() => stubFormStore.getFullPath"
     :value-setter="(input: any) => stubFormStore.setFullPath(input)"
-    title="Full path (including query string)"
+    :title="$translate('stubForm.fullPathTitle')"
   />
   <StringCheckerInput
     v-if="currentSelectedFormHelper === FormHelperKey.Query"
     :value-getter="() => stubFormStore.getQuery"
     :value-setter="(input: any) => stubFormStore.setQuery(input)"
-    title="Query string"
+    :title="$translate('stubForm.queryStringTitle')"
     :has-multiple-keys="true"
-    key-placeholder="Query string key"
+    :key-placeholder="$translate('stubForm.queryStringKeyPlaceholder')"
     :multiple="true"
   />
   <StringCheckerInput
     v-if="currentSelectedFormHelper === FormHelperKey.Header"
     :value-getter="() => stubFormStore.getRequestHeaders"
     :value-setter="(input: any) => stubFormStore.setRequestHeaders(input)"
-    title="Request headers"
+    :title="$translate('stubForm.requestHeadersTitle')"
     :has-multiple-keys="true"
-    key-placeholder="Request header name"
+    :key-placeholder="$translate('stubForm.requestHeadersKeyPlaceholder')"
     :multiple="true"
   />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.ClientIp"
     :value-getter="() => stubFormStore.getClientIp"
     :value-setter="(v: string) => stubFormStore.setClientIp(v)"
-    title="Client IP (e.g. '127.0.0.1' or '127.0.0.0/30' to provide an IP range)"
+    :title="$translate('stubForm.clientIpTitle')"
   />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.Host"
     :value-getter="() => stubFormStore.getHostname"
     :value-setter="(v: string) => stubFormStore.setHostname(v)"
-    title="Hostname (e.g. 'httplaceholder.com')"
+    :title="$translate('stubForm.hostnameTitle')"
   />
   <StringCheckerInput
     v-if="currentSelectedFormHelper === FormHelperKey.Body"
     :value-getter="() => stubFormStore.getRequestBody"
     :value-setter="(input: any) => stubFormStore.setRequestBody(input)"
-    title="Request body"
+    :title="$translate('stubForm.requestBodyTitle')"
     :multiple="true"
   />
   <StringCheckerInput
     v-if="currentSelectedFormHelper === FormHelperKey.Form"
     :value-getter="() => stubFormStore.getForm"
     :value-setter="(input: any) => stubFormStore.setForm(input)"
-    title="Form body"
+    :title="$translate('stubForm.formBodyTitle')"
     :has-multiple-keys="true"
-    key-placeholder="Posted form value key"
+    :key-placeholder="$translate('stubForm.formBodyKeyPlaceholder')"
     :multiple="true"
   />
   <BasicInput
@@ -119,27 +119,27 @@
     :value-getter="() => stubFormStore.getScenarioMinHits"
     :value-setter="(v: string) => stubFormStore.setScenarioMinHits(v)"
     input-type="numeric"
-    title="Minimum amount of hits (inclusive) that any stub under the same scenario should be hit"
+    :title="$translate('stubForm.minHitsTitle')"
   />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.ScenarioMaxHits"
     :value-getter="() => stubFormStore.getScenarioMaxHits"
     :value-setter="(v: string) => stubFormStore.setScenarioMaxHits(v)"
     input-type="numeric"
-    title="Maximum amount of hits (exclusive) that any stub under the same scenario should be hit"
+    :title="$translate('stubForm.maxHitsTitle')"
   />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.ScenarioExactHits"
     :value-getter="() => stubFormStore.getScenarioExactHits"
     :value-setter="(v: string) => stubFormStore.setScenarioExactHits(v)"
     input-type="numeric"
-    title="Exact amount of hits that any stub under the same scenario should be hit"
+    :title="$translate('stubForm.exactHitsTitle')"
   />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.ScenarioState"
     :value-getter="() => stubFormStore.getScenarioStateCheck"
     :value-setter="(v: string) => stubFormStore.setScenarioStateCheck(v)"
-    title="State the scenario should be in"
+    :title="$translate('stubForm.scenarioStateTitle')"
   />
   <BasicAuthHelper
     v-if="currentSelectedFormHelper === FormHelperKey.BasicAuthentication"
@@ -148,14 +148,14 @@
     v-if="currentSelectedFormHelper === FormHelperKey.ResponseContentType"
     :value-getter="() => stubFormStore.getResponseContentType"
     :value-setter="(v: string) => stubFormStore.setResponseContentType(v)"
-    title="Content type of response"
+    :title="$translate('stubForm.contentTypeTitle')"
   />
   <BasicInput
     v-if="currentSelectedFormHelper === FormHelperKey.ExtraDuration"
     :value-getter="() => stubFormStore.getExtraDuration"
     :value-setter="(v: number) => stubFormStore.setExtraDuration(v)"
     input-type="numeric"
-    title="Extra duration in milliseconds"
+    :title="$translate('stubForm.extraDurationTitle')"
   />
 </template>
 
@@ -174,17 +174,11 @@ import TenantSelector from "@/components/stubForm/formHelper/TenantSelector.vue"
 import ResponseBodyHelper from "@/components/stubForm/formHelper/ResponseBodyHelper.vue";
 import SetDynamicMode from "@/components/stubForm/formHelper/SetDynamicMode.vue";
 import ExampleSelector from "@/components/stubForm/formHelper/ExampleSelector.vue";
-import { stubFormHelpers } from "@/domain/stubForm/stub-form-helpers";
 import StringCheckerInput from "@/components/stubForm/formHelper/StringCheckerInput.vue";
 import BasicAuthHelper from "@/components/stubForm/formHelper/BasicAuthHelper.vue";
 
 export default defineComponent({
   name: "RenderedFormHelper",
-  methods: {
-    stubFormHelpers() {
-      return stubFormHelpers;
-    },
-  },
   components: {
     StringCheckerInput,
     ExampleSelector,

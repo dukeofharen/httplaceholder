@@ -7,7 +7,7 @@
         <input
           type="text"
           class="form-control"
-          :placeholder="$translate('logIn.username')"
+          :placeholder="$translate('general.username')"
           v-model="username"
         />
       </div>
@@ -18,7 +18,7 @@
         <input
           type="password"
           class="form-control"
-          :placeholder="$translate('logIn.password')"
+          :placeholder="$translate('general.password')"
           v-model="password"
         />
       </div>

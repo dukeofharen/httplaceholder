@@ -4,7 +4,7 @@
       class="list-group-item list-group-item-action fw-bold"
       @click="multipleMethods"
     >
-      Multiple methods
+      {{ $translate("stubForm.multipleMethods") }}
     </button>
     <button
       v-for="(method, index) of httpMethods"
