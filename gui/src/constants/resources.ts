@@ -1,5 +1,6 @@
 import { getUiRootUrl } from "@/utils/config";
 
+// TODO dit bestand straks weg
 export const resources = {
   somethingWentWrongServer: "Something went wrong while contacting the server.",
   requestsDeletedSuccessfully: "The requests were deleted successfully.",

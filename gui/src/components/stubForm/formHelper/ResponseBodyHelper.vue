@@ -49,7 +49,9 @@
         >
       </div>
       <div v-if="showVariableParsers" class="mt-2">
-        <div class="hint mb-2">{{ elementDescriptions.dynamicMode }}</div>
+        <div class="hint mb-2">
+          {{ $translate("stubFormHelperDescriptions.dynamicMode") }}
+        </div>
         <VariableHandlerSelector
           :variable-parser-items="variableParserItems"
           @exampleSelected="insertVariableHandlerExample($event)"
@@ -104,7 +106,6 @@ import {
 } from "@/domain/stubForm/response-body-type";
 import type { MetadataModel } from "@/domain/metadata/metadata-model";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
-import { elementDescriptions } from "@/domain/stubForm/element-descriptions";
 import { UploadButtonType } from "@/domain/upload-button-type";
 import { warning } from "@/utils/toast";
 import xmlFormatter from "xml-formatter";
@@ -293,7 +294,6 @@ export default defineComponent({
       showResponseBodyTypeDropdown,
       codeEditor,
       ResponseBodyType,
-      elementDescriptions,
       UploadButtonType,
       prettifyJson,
       minifyJson,
