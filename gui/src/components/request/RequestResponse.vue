@@ -28,7 +28,9 @@
       <div v-else>
         <div
           v-html="
-            $vsprintf($translate('request.noResponseFound'), [settingsUrl])
+            $vsprintf($translateWithMarkdown('request.noResponseFound'), [
+              settingsUrl,
+            ])
           "
         />
       </div>

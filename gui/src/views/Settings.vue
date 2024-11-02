@@ -46,7 +46,9 @@
           <p
             v-html="
               $vsprintf(
-                $translate('settings.storeResponseForRequestDescription'),
+                $translateWithMarkdown(
+                  'settings.storeResponseForRequestDescription',
+                ),
                 [configDocsLink],
               )
             "

@@ -2,6 +2,7 @@ import { useSettingsStore } from "@/store/settings";
 import { defaultLanguage } from "@/constants/technical";
 import { translations as en } from "@/strings/i18n/en";
 import { translations as nl } from "@/strings/i18n/nl";
+import { marked } from "marked";
 
 const langMapping: Record<string, any> = {
   en: en,
@@ -26,4 +27,8 @@ export function translate(key: string): string {
     getTranslation(key, langMapping[defaultLanguage]) ??
     key
   );
+}
+
+export function translateWithMarkdown(key: string): string {
+  return marked.parseInline(translate(key)) as string;
 }

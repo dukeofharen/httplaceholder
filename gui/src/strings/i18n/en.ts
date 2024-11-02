@@ -18,6 +18,7 @@ export const translations = {
     username: "Username",
     password: "Password",
     insert: "Insert",
+    close: "Close",
   },
   requests: {
     reloadAllRequests: "Load all requests",
@@ -63,7 +64,7 @@ export const translations = {
     httpStatusCode: "HTTP status code",
     responseBody: "Response body",
     noResponseFound:
-      'No response found for this request. Go to <a href="%s">Settings</a> to enable "Store response for request".',
+      'No response found for this request. Go to [Settings](%s) to enable "Store response for request".',
     responseWriterResults: "Response writer results",
     passed: "passed",
     notPassed: "not passed",
@@ -139,7 +140,7 @@ export const translations = {
   scenarios: {
     scenarios: "Scenarios",
     description:
-      'Scenarios can be used to make stubs stateful. On this page, you can manage the scenarios in HttPlaceholder. To read more about scenarios, go to <a href="%s" target="_blank">the documentation</a>.',
+      "Scenarios can be used to make stubs stateful. On this page, you can manage the scenarios in HttPlaceholder. To read more about scenarios, go to [the documentation](%s).",
     addScenario: "Add scenario",
     clearAllScenarios: "Clear all scenarios",
     clearAllScenariosQuestion: "Clear all scenarios?",
@@ -156,7 +157,7 @@ export const translations = {
     persistSearchFilters: "Persist search filters on stubs and request screens",
     storeResponseForRequest: "Store response for request",
     storeResponseForRequestDescription:
-      '<strong>Note</strong>: this setting will be reset to its original value after restarting HttPlaceholder. To persist the setting, take a look at <a href="%s" target="_blank">the documentation</a>.',
+      "*Note*: this setting will be reset to its original value after restarting HttPlaceholder. To persist the setting, take a look at [the documentation](%s).",
     defaultNumberOfRequests:
       "Default number of requests on the request page (set to 0 to disable request paging)",
     httplaceholderConfiguration: "HttPlaceholder configuration",
@@ -168,7 +169,7 @@ export const translations = {
   },
   stubForm: {
     description:
-      'Fill in the stub below in YAML format and click on "Save". For examples, <a href="%s" target="_blank" class="break-word">read the docs</a>.',
+      'Fill in the stub below in YAML format and click on "Save". For examples, [read the docs](%s).',
     advancedEditor: "Advanced editor",
     advancedEditorDescription:
       "Use advanced editor for editing the stub. The editor has code highlighting but is not suited for updating large stubs.",
@@ -218,6 +219,18 @@ export const translations = {
     scenarioStateTitle: "State the scenario should be in",
     contentTypeTitle: "Content type of response",
     extraDurationTitle: "Extra duration in milliseconds",
+    responseBodyHint:
+      'Select a type of response and fill in the actual response that should be returned and press "Insert".',
+    responseBodySelectType: "Select a response type...",
+    responseBodyBase64Hint:
+      'You can upload a **file** for use in the Base64 response or click on "show text input" and insert **plain text** that will be encoded to Base64 on inserting.',
+    responseBodyUploadAFile: "Upload a file",
+    responseBodyShowTextInput: "Show text input",
+    responseBodyEnableDynamicMode: "Enable dynamic mode",
+    responseBodyPrettifyJson: "Prettify JSON",
+    responseBodyMinifyJson: "Minify JSON",
+    responseBodyPrettifyXml: "Prettify XML",
+    responseBodyMinifyXml: "Minify XML",
   },
   stubFormHelperTitles: {
     example: "Add example",
@@ -402,5 +415,9 @@ export const translations = {
     deleteStub: "Delete the stub",
     deleteStubWithId: "Delete stub '%s'?",
     stubLocation: "Stub location",
+  },
+  errors: {
+    errorFormattingJson: "Error occurred while formatting JSON: %s",
+    errorFormattingXml: "Error occurred while formatting XML: %s",
   },
 };

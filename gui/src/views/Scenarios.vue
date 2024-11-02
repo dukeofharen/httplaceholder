@@ -4,7 +4,9 @@
 
     <div
       class="col-md-12 mb-3"
-      v-html="$vsprintf($translate('scenarios.description'), [docsUrl])"
+      v-html="
+        $vsprintf($translateWithMarkdown('scenarios.description'), [docsUrl])
+      "
     />
 
     <div class="col-md-12 mb-3">

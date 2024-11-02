@@ -11,7 +11,9 @@
     <div class="row">
       <div
         class="col-md-12"
-        v-html="$vsprintf($translate('stubForm.description'), [docsUrl])"
+        v-html="
+          $vsprintf($translateWithMarkdown('stubForm.description'), [docsUrl])
+        "
       />
     </div>
 
