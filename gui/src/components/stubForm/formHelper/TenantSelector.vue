@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <strong>Insert new tenant name</strong>
+      <strong>{{ $translate("stubForm.insertNewTenantName") }}</strong>
       <input
         type="text"
         class="form-control mt-2"
@@ -9,11 +9,11 @@
         @keyup.enter="tenantSelected(tenant)"
       />
       <button class="btn btn-success mt-2" @click="tenantSelected(tenant)">
-        Add
+        {{ $translate("general.add") }}
       </button>
     </div>
     <div class="col-md-12 mt-3" v-if="tenantNames.length">
-      <strong>Select existing tenant</strong>
+      <strong>{{ $translate("stubForm.selectExistingTenant") }}</strong>
       <div class="list-group mt-2">
         <button
           v-for="(tenant, index) of tenantNames"

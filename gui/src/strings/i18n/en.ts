@@ -239,6 +239,8 @@ export const translations = {
       "To learn more about the dynamic mode, read more in [the documentation](%s).",
     stringCheckerInputAddRow: "Add another row",
     stringCheckerInputDeleteRow: "Delete row",
+    insertNewTenantName: "Insert new tenant name",
+    selectExistingTenant: "Select existing tenant",
   },
   stubFormHelperTitles: {
     example: "Add example",
