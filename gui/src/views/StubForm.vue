@@ -64,7 +64,7 @@
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
-import { simpleEditorThreshold } from "@/constants/technical";
+import { simpleEditorThreshold } from "@/constants";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";

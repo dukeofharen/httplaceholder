@@ -1,4 +1,3 @@
-// TODO dit bestand "constants.ts" in root noemen of zo iets.
 // Date constants.
 export const dateTimeFormat = "YYYY-MM-DD HH:mm:ss";
 

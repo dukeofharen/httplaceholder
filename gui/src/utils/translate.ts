@@ -1,5 +1,5 @@
 import { useSettingsStore } from "@/store/settings";
-import { defaultLanguage } from "@/constants/technical";
+import { defaultLanguage } from "@/constants";
 import { translations as en } from "@/strings/i18n/en";
 import { translations as nl } from "@/strings/i18n/nl";
 import { marked } from "marked";

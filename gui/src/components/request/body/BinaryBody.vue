@@ -24,7 +24,7 @@
 import { computed, defineComponent, type PropType } from "vue";
 import { downloadBlob } from "@/utils/download";
 import { base64ToBlob } from "@/utils/text";
-import { imageMimeTypes, pdfMimeType } from "@/constants/technical";
+import { imageMimeTypes, pdfMimeType } from "@/constants";
 import mime from "mime-types";
 import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
 import VuePdfEmbed from "vue-pdf-embed";

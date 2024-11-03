@@ -1,4 +1,4 @@
-import { dateTimeFormat } from "@/constants/technical";
+import { dateTimeFormat } from "@/constants";
 import dayjs from "dayjs";
 import { translate } from "@/utils/translate";
 

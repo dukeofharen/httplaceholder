@@ -76,7 +76,7 @@ import type { RequestOverviewModel } from "@/domain/request/request-overview-mod
 import type { RequestResultModel } from "@/domain/request/request-result-model";
 import { getDefaultRequestResultModel } from "@/domain/request/request-result-model";
 import RequestExport from "@/components/request/RequestExport.vue";
-import { refreshRequestTimesInterval } from "@/constants/technical";
+import { refreshRequestTimesInterval } from "@/constants";
 import { translate } from "@/utils/translate";
 
 export default defineComponent({

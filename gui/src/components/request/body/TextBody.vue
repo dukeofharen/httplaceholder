@@ -63,7 +63,7 @@ import { copyTextToClipboard } from "@/utils/clipboard";
 import { success } from "@/utils/toast";
 import { defineComponent } from "vue";
 import { countNewlineCharacters, fromBase64 } from "@/utils/text";
-import { requestBodyLineLimit } from "@/constants/technical";
+import { requestBodyLineLimit } from "@/constants";
 import mime from "mime-types";
 import { downloadBlob } from "@/utils/download";
 import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
