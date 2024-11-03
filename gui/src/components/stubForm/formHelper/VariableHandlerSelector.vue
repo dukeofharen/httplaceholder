@@ -1,15 +1,15 @@
 <template>
   <button class="btn btn-primary mt-2 mb-2" @click="switchHandlers">
-    Insert variable handler
+    {{ $translate("stubForm.insertVariableHandler") }}
   </button>
   <slide-up-down
     v-model="showHandlersList"
     :duration="300"
     class="list-group mt-2"
   >
-    <span class="list-group-item list-group-item-action fw-bold"
-      >Select a variable handler to insert in the response...</span
-    >
+    <span class="list-group-item list-group-item-action fw-bold">{{
+      $translate("stubForm.selectVariableHandler")
+    }}</span>
     <div class="list-group-item list-group-item-action fw-bold">
       <input
         type="text"
@@ -35,9 +35,9 @@
       v-if="selectedHandler"
       v-html="parseMarkdown(selectedHandler.description)"
     />
-    <span class="list-group-item list-group-item-action fw-bold"
-      >Select an example to insert in the response...</span
-    >
+    <span class="list-group-item list-group-item-action fw-bold">{{
+      $translate("stubForm.selectVariableHandlerExample")
+    }}</span>
     <div class="list-group-item list-group-item-action fw-bold">
       <input
         type="text"

@@ -241,6 +241,11 @@ export const translations = {
     stringCheckerInputDeleteRow: "Delete row",
     insertNewTenantName: "Insert new tenant name",
     selectExistingTenant: "Select existing tenant",
+    insertVariableHandler: "Insert variable handler",
+    selectVariableHandler:
+      "Select a variable handler to insert in the response...",
+    selectVariableHandlerExample:
+      "Select an example to insert in the response...",
   },
   stubFormHelperTitles: {
     example: "Add example",
