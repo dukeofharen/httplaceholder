@@ -22,13 +22,15 @@
           id="dynamicModeEnabled"
           v-model="dynamicModeEnabled"
         />
-        <label class="form-check-label" for="dynamicModeEnabled"
-          >Dynamic mode enabled</label
-        >
+        <label class="form-check-label" for="dynamicModeEnabled">{{
+          $translate("stubForm.dynamicModeEnabled")
+        }}</label>
       </div>
     </div>
     <div class="col-md-12 mt-3">
-      <button class="btn btn-danger" @click="close">Close</button>
+      <button class="btn btn-danger" @click="close">
+        {{ $translate("general.close") }}
+      </button>
     </div>
   </div>
 </template>

@@ -45,7 +45,7 @@
         <div class="col-md-12">
           <i
             class="bi bi-clipboard copy"
-            title="Copy request body"
+            :title="$translate('request.copyRequestBody')"
             @click="copy"
             >&nbsp;</i
           >
@@ -165,7 +165,7 @@ export default defineComponent({
         ? renderedBody.value
         : body.value;
       copyTextToClipboard(valueToCopy).then(() =>
-        success(translate("requests.requestBodyCopiedToClipboard")),
+        success(translate("request.requestBodyCopiedToClipboard")),
       );
     };
     const showMoreClick = () => {

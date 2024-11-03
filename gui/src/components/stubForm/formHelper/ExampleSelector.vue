@@ -29,6 +29,7 @@ import { computed, defineComponent, ref } from "vue";
 import { getExamples } from "@/utils/examples";
 import { useStubFormStore } from "@/store/stubForm";
 import type { ExampleModel } from "@/domain/example-model";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "ExampleSelector",
@@ -44,7 +45,7 @@ export default defineComponent({
       const examplesResult = getExamples();
       examplesResult.unshift({
         stub: "",
-        title: "Select an example...",
+        title: translate("stubForm.selectExample"),
         description: "",
         id: "",
       });

@@ -46,8 +46,6 @@ export const translations = {
     noRequestsYet:
       "No requests have been made to HttPlaceholder yet. Perform HTTP requests and you will see the requests appearing on this page.",
     requestsDeletedSuccessfully: "The requests were deleted successfully.",
-    requestBodyCopiedToClipboard:
-      "Request body successfully copied to clipboard.",
   },
   request: {
     raw: "Raw",
@@ -89,6 +87,9 @@ export const translations = {
     goToStub: "Go to stub",
     noConditionCheckersFound: "No condition checkers executed for this stub.",
     stubExecutionResults: "Stub execution results",
+    requestBodyCopiedToClipboard:
+      "Request body successfully copied to clipboard.",
+    copyRequestBody: "Copy request body",
   },
   importStubs: {
     importStubs: "Import stubs",
@@ -255,6 +256,7 @@ export const translations = {
     enableDisableDynamicMode: "Enable / disable dynamic mode",
     enableDisableDynamicModeHint:
       "To learn more about the dynamic mode, read more in [the documentation](%s).",
+    dynamicModeEnabled: "Dynamic mode enabled",
     stringCheckerInputAddRow: "Add another row",
     stringCheckerInputDeleteRow: "Delete row",
     insertNewTenantName: "Insert new tenant name",
@@ -262,10 +264,13 @@ export const translations = {
     insertVariableHandler: "Insert variable handler",
     selectVariableHandler:
       "Select a variable handler to insert in the response...",
+    filterHandlers: "Filter handlers...",
+    filterExamples: "Filter examples...",
     selectVariableHandlerExample:
       "Select an example to insert in the response...",
     saveAsNewStub: "Save as new stub",
     resetToDefaults: "Reset to defaults?",
+    selectExample: "Select an example...",
   },
   stubFormHelperTitles: {
     example: "Add example",

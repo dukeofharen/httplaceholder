@@ -14,7 +14,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Filter handlers..."
+        :placeholder="$translate('stubForm.filterHandlers')"
         v-model="handlerFilter"
         ref="handlerFilterInput"
       />
@@ -42,7 +42,7 @@
       <input
         type="text"
         class="form-control"
-        placeholder="Filter examples..."
+        :placeholder="$translate('stubForm.filterExamples')"
         v-model="exampleFilter"
         ref="exampleFilterInput"
       />
