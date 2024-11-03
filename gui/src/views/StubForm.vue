@@ -64,7 +64,6 @@
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
-import { renderDocLink } from "@/constants/resources";
 import { simpleEditorThreshold } from "@/constants/technical";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
@@ -77,6 +76,7 @@ import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
 import { vsprintf } from "sprintf-js";
 import { translate } from "@/utils/translate";
+import { renderDocLink } from "@/utils/doc";
 
 const editorTypes = {
   none: "none",

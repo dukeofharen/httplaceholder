@@ -122,8 +122,8 @@ import type { SettingsModel } from "@/domain/settings-model";
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 import { handleHttpError } from "@/utils/error";
-import { renderDocLink } from "@/constants/resources";
 import { useMetadataStore } from "@/store/metadata";
+import { renderDocLink } from "@/utils/doc";
 
 export default defineComponent({
   name: "Settings",

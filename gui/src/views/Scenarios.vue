@@ -74,7 +74,6 @@
 <script lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
-import { renderDocLink } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { useScenariosStore } from "@/store/scenarios";
 import { defineComponent } from "vue";
@@ -82,6 +81,7 @@ import type { ScenarioModel } from "@/domain/scenario/scenario-model";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { getRootUrl } from "@/utils/config";
 import { translate } from "@/utils/translate";
+import { renderDocLink } from "@/utils/doc";
 
 export default defineComponent({
   name: "Scenarios",

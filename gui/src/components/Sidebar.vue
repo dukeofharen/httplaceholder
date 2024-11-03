@@ -30,7 +30,7 @@ import { computed, defineComponent } from "vue";
 import router from "@/router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
-import { renderDocLink } from "@/constants/resources";
+import { renderDocLink } from "@/utils/doc";
 
 export default defineComponent({
   name: "Sidebar",

@@ -34,9 +34,9 @@
 </template>
 
 <script lang="ts">
-import { renderDocLink } from "@/constants/resources";
 import { useStubFormStore } from "@/store/stubForm";
 import { computed, defineComponent } from "vue";
+import { renderDocLink } from "@/utils/doc";
 
 export default defineComponent({
   name: "SetDynamicMode",
