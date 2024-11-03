@@ -237,6 +237,8 @@ export const translations = {
     enableDisableDynamicMode: "Enable / disable dynamic mode",
     enableDisableDynamicModeHint:
       "To learn more about the dynamic mode, read more in [the documentation](%s).",
+    stringCheckerInputAddRow: "Add another row",
+    stringCheckerInputDeleteRow: "Delete row",
   },
   stubFormHelperTitles: {
     example: "Add example",
@@ -377,6 +379,65 @@ export const translations = {
       "A response writer for replacing a string in the response body based on a regular expression. Can be used with the dynamic mode.",
     jsonPathReplace:
       "A response writer for replacing a value in a JSON response body based on a JSONPath expression. Can be used with the dynamic mode.",
+  },
+  stringChecking: {
+    equals: "Equals",
+    equalsDescription:
+      "checks if the input is exactly equal to this string, case sensitive",
+    equalsci: "Equals case insensitive",
+    equalsciDescription: "same as keyword above, but case insensitive",
+    notequals: "Not equals",
+    notequalsDescription:
+      "checks if the input is not equal to this string, case sensitive",
+    notequalsci: "Not equals case insensitive",
+    notequalsciDescription: "same as keyword above, but case insensitive",
+    contains: "Contains",
+    containsDescription:
+      "checks if the input contains this string, case sensitive",
+    containsci: "Contains case insensitive",
+    containsciDescription: "same as keyword above, but case insensitive",
+    notcontains: "Not contains",
+    notcontainsDescription:
+      "checks if the input does not contain this string, case sensitive",
+    notcontainsci: "Not contains case insensitive",
+    notcontainsciDescription: "same as keyword above, but case insensitive",
+    startswith: "Starts with",
+    startswithDescription:
+      "checks if the input starts with this string, case sensitive",
+    startswithci: "Starts with case insensitive",
+    startswithciDescription: "same as keyword above, but case insensitive",
+    doesnotstartwith: "Does not start with",
+    doesnotstartwithDescription:
+      "checks if the input does not start with this string, case sensitive",
+    doesnotstartwithci: "Does not start with case insensitive",
+    doesnotstartwithciDescription:
+      "same as keyword above, but case insensitive",
+    endswith: "Ends with",
+    endswithciDescription:
+      "checks if the input ends with this string, case sensitive",
+    endswithci: "Ends with case insensitive",
+    endswithDescription: "same as keyword above, but case insensitive",
+    doesnotendwith: "Does not end with",
+    doesnotendwithDescription:
+      "checks if the input does not end with this string, case sensitive",
+    doesnotendwithci: "Does not end with case insensitive",
+    doesnotendwithciDescription: "same as keyword above, but case insensitive",
+    regex: "Regular expression",
+    regexDescription: "checks if the input matches this regular expression",
+    regexnomatches: "Regular expression no matches",
+    regexnomatchesDescription:
+      "checks if the input does not match this regular expression",
+    minlength: "Minimum length",
+    minLengthDescription:
+      "checks if the input has a minimum (inclusive) length",
+    maxlength: "Maximum length",
+    maxlengthDescription:
+      "checks if the input has a maximum (inclusive) length",
+    exactlength: "Exact length",
+    exactlengthDescription: "checks if the input has an exact length",
+    present: "Present check",
+    presentDescription:
+      "checks if the given key can be found (does not check the value)",
   },
   stubs: {
     stubs: "Stubs",

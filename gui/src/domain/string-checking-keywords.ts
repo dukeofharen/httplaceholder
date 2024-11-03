@@ -1,3 +1,5 @@
+import { translate } from "@/utils/translate";
+
 export interface StringCheckingKeyword {
   key: string;
   name: string;
@@ -36,125 +38,118 @@ export function getStringCheckingKeywords(
   const result = [
     {
       key: keywords.equals,
-      name: "Equals",
-      description:
-        "checks if the input is exactly equal to this string, case sensitive",
+      name: translate("stringChecking.equals"),
+      description: translate("stringChecking.equalsDescription"),
     },
     {
       key: keywords.equalsci,
-      name: "Equals case insensitive",
-      description: "same as keyword above, but case insensitive",
+      name: translate("stringChecking.equalsci"),
+      description: translate("stringChecking.equalsciDescription"),
     },
     {
       key: keywords.notequals,
-      name: "Not equals",
-      description:
-        "checks if the input is not equal to this string, case sensitive",
+      name: translate("stringChecking.notequals"),
+      description: translate("stringChecking.notequalsDescription"),
     },
     {
       key: keywords.notequalsci,
-      name: "Not equals case insensitive",
-      description: "same as keyword above, but case insensitive",
+      name: translate("stringChecking.notequalsci"),
+      description: translate("stringChecking.notequalsciDescription"),
     },
     {
       key: keywords.contains,
-      name: "Contains",
-      description: "checks if the input contains this string, case sensitive",
+      name: translate("stringChecking.contains"),
+      description: translate("stringChecking.containsDescription"),
     },
     {
       key: keywords.containsci,
-      name: "Contains case insensitive",
-      description: "same as keyword above, but case insensitive",
+      name: translate("stringChecking.containsci"),
+      description: translate("stringChecking.containsciDescription"),
     },
     {
       key: keywords.notcontains,
-      name: "Not contains",
-      description:
-        "checks if the input does not contain this string, case sensitive",
+      name: translate("stringChecking.notcontains"),
+      description: translate("stringChecking.notcontainsDescription"),
     },
     {
       key: keywords.notcontainsci,
-      name: "Not contains case insensitive",
-      description: "same as keyword above, but case insensitive",
+      name: translate("stringChecking.notcontainsci"),
+      description: translate("stringChecking.notcontainsciDescription"),
     },
     {
       key: keywords.startswith,
-      name: "Starts with",
-      description:
-        "checks if the input starts with this string, case sensitive",
+      name: translate("stringChecking.startswith"),
+      description: translate("stringChecking.startswithDescription"),
     },
     {
       key: keywords.startswithci,
-      name: "Starts with case insensitive",
-      description: "same as keyword above, but case insensitive",
+      name: translate("stringChecking.startswithci"),
+      description: translate("stringChecking.startswithciDescription"),
     },
     {
       key: keywords.doesnotstartwith,
-      name: "Does not start with",
-      description:
-        "checks if the input does not start with this string, case sensitive",
+      name: translate("stringChecking.doesnotstartwith"),
+      description: translate("stringChecking.doesnotstartwithDescription"),
     },
     {
       key: keywords.doesnotstartwithci,
-      name: "Does not start with case insensitive",
-      description: "same as keyword above, but case insensitive",
+      name: translate("stringChecking.doesnotstartwithci"),
+      description: translate("stringChecking.doesnotstartwithciDescription"),
     },
     {
       key: keywords.endswith,
-      name: "Ends with",
-      description: "checks if the input ends with this string, case sensitive",
+      name: translate("stringChecking.endswith"),
+      description: translate("stringChecking.endswithciDescription"),
     },
     {
       key: keywords.endswithci,
-      name: "Ends with case insensitive",
-      description: "same as keyword above, but case insensitive",
+      name: translate("stringChecking.endswithci"),
+      description: translate("stringChecking.endswithDescription"),
     },
     {
       key: keywords.doesnotendwith,
-      name: "Does not end with",
-      description:
-        "checks if the input does not end with this string, case sensitive",
+      name: translate("stringChecking.doesnotendwith"),
+      description: translate("stringChecking.doesnotendwithDescription"),
     },
     {
       key: keywords.doesnotendwithci,
-      name: "Does not end with case insensitive",
-      description: "same as keyword above, but case insensitive",
+      name: translate("stringChecking.doesnotendwithci"),
+      description: translate("stringChecking.doesnotendwithciDescription"),
     },
     {
       key: keywords.regex,
-      name: "Regular expression",
-      description: "checks if the input matches this regular expression",
+      name: translate("stringChecking.regex"),
+      description: translate("stringChecking.regexDescription"),
     },
     {
       key: keywords.regexnomatches,
-      name: "Regular expression no matches",
-      description: "checks if the input does not match this regular expression",
+      name: translate("stringChecking.regexnomatches"),
+      description: translate("stringChecking.regexnomatchesDescription"),
     },
     {
       key: keywords.minlength,
-      name: "Minimum length",
-      description: "checks if the input has a minimum (inclusive) length",
+      name: translate("stringChecking.minlength"),
+      description: translate("stringChecking.minLengthDescription"),
       defaultValue: 10,
     },
     {
       key: keywords.maxlength,
-      name: "Maximum length",
-      description: "checks if the input has a maximum (inclusive) length",
+      name: translate("stringChecking.maxlength"),
+      description: translate("stringChecking.maxlengthDescription"),
       defaultValue: 10,
     },
     {
       key: keywords.exactlength,
-      name: "Exact length",
-      description: "checks if the input has an exact length",
+      name: translate("stringChecking.exactlength"),
+      description: translate("stringChecking.exactlengthDescription"),
       defaultValue: 10,
     },
   ];
   if (insertPresent) {
     result.push({
       key: keywords.present,
-      name: "Present check",
-      description:
-        "checks if the given key can be found (does not check the value)",
+      name: translate("stringChecking.present"),
+      description: translate("stringChecking.presentDescription"),
     });
   }
   return result;
