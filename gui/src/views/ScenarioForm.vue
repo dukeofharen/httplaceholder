@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @keyup.enter="save">
     <h1>{{ title }}</h1>
 
     <div class="row">
@@ -44,13 +44,19 @@
 
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from "vue";
 import { handleHttpError } from "@/utils/error";
 import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
 import { type ScenarioInputModel, useScenariosStore } from "@/store/scenarios";
-import { defineComponent } from "vue";
 import { translate } from "@/utils/translate";
 
 export default defineComponent({
@@ -80,6 +86,10 @@ export default defineComponent({
     // Methods
     const save = async () => {
       try {
+        if (saveDisabled.value) {
+          return;
+        }
+
         if (!scenarioForm.value.hitCount) {
           scenarioForm.value.hitCount = 0;
         }
@@ -92,7 +102,7 @@ export default defineComponent({
       }
     };
     const checkSave = async (e: KeyboardEvent) => {
-      if (shouldSave(e) && !saveDisabled.value) {
+      if (shouldSave(e)) {
         e.preventDefault();
         await save();
       }
