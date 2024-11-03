@@ -102,7 +102,6 @@
 <script lang="ts">
 import { computed, type PropType, ref } from "vue";
 import yaml from "js-yaml";
-import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
@@ -207,7 +206,7 @@ export default defineComponent({
     const deleteStub = async () => {
       try {
         await stubStore.deleteStub(id.value);
-        success(resources.stubDeletedSuccessfully);
+        success(translate("stubs.stubDeletedSuccessfully"));
         showDeleteModal.value = false;
         emit("deleted");
       } catch (e) {

@@ -17,8 +17,8 @@ import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { UploadButtonType } from "@/domain/upload-button-type";
 import { getExtension } from "@/utils/file";
 import { vsprintf } from "sprintf-js";
-import { resources } from "@/constants/resources";
 import { warning } from "@/utils/toast";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "UploadButton",
@@ -68,7 +68,7 @@ export default defineComponent({
         !allowedExtensions.includes(getExtension(file.name))
       ) {
         onError(
-          vsprintf(resources.uploadInvalidFiles, [
+          vsprintf(translate("general.uploadInvalidFiles"), [
             file.name,
             allowedExtensions.map((e) => `.${e}`).join(","),
           ]),

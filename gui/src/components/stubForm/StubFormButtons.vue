@@ -1,21 +1,23 @@
 <template>
-  <button class="btn btn-success me-2 btn-mobile" @click="save">Save</button>
+  <button class="btn btn-success me-2 btn-mobile" @click="save">
+    {{ $translate("general.save") }}
+  </button>
   <button
     v-if="showSaveAsNewStubButton"
     class="btn btn-success me-2 btn-mobile"
     @click="addStub"
   >
-    Save as new stub
+    {{ $translate("stubForm.saveAsNewStub") }}
   </button>
   <button
     type="button"
     class="btn btn-danger btn-mobile"
     @click="showResetModal = true"
   >
-    Reset
+    {{ $translate("general.reset") }}
   </button>
   <modal
-    title="Reset to defaults?"
+    :title="$translate('stubForm.resetToDefaults')"
     :yes-click-function="reset"
     :show-modal="showResetModal"
     @close="showResetModal = false"
@@ -23,18 +25,17 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { resources } from "@/constants/resources";
+import { computed, defineComponent, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useRoute, useRouter } from "vue-router";
 import { shouldSave } from "@/utils/event";
-import { success } from "@/utils/toast";
+import { error, success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
-import { defineComponent } from "vue";
-import { error } from "@/utils/toast";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import { vsprintf } from "sprintf-js";
+import { defaultStub } from "@/strings/exmaples";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "StubFormButtons",
@@ -66,7 +67,7 @@ export default defineComponent({
 
     // Methods
     const reset = async () => {
-      input.value = resources.defaultStub;
+      input.value = defaultStub;
       emit("update:modelValue", "");
       await router.push({ name: "StubForm" });
     };
@@ -83,10 +84,10 @@ export default defineComponent({
           }
         }
 
-        success(resources.stubsAddedSuccessfully);
+        success(translate("stubs.stubsAddedSuccessfully"));
       } catch (e) {
         if (!handleHttpError(e)) {
-          error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
+          error(vsprintf(translate("errors.errorDuringParsingOfYaml"), [e]));
         }
       }
     };
@@ -96,7 +97,7 @@ export default defineComponent({
           stubId: stubId.value,
           input: input.value,
         });
-        success(resources.stubUpdatedSuccessfully);
+        success(translate("stubs.stubUpdatedSuccessfully"));
         const currentStubId = stubFormStore.getStubId;
         if (stubId.value !== currentStubId) {
           await router.push({
@@ -106,7 +107,7 @@ export default defineComponent({
         }
       } catch (e) {
         if (!handleHttpError(e)) {
-          error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
+          error(vsprintf(translate("errors.errorDuringParsingOfYaml"), [e]));
         }
       }
     };

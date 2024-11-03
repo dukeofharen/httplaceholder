@@ -53,7 +53,6 @@ import {
   watch,
 } from "vue";
 import { handleHttpError } from "@/utils/error";
-import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
 import { type ScenarioInputModel, useScenariosStore } from "@/store/scenarios";
@@ -95,7 +94,7 @@ export default defineComponent({
         }
 
         await scenarioStore.setScenario(scenarioForm.value);
-        success(resources.scenarioSetSuccessfully);
+        success(translate("scenarioForm.scenarioSetSuccessfully"));
         await router.push({ name: "Scenarios" });
       } catch (e) {
         handleHttpError(e);

@@ -109,7 +109,6 @@
 import { useRoute } from "vue-router";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import Request from "@/components/request/Request.vue";
-import { resources } from "@/constants/resources";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { handleHttpError } from "@/utils/error";
 import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
@@ -123,6 +122,7 @@ import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-mode
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 import { getRootUrl } from "@/utils/config";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Requests",
@@ -255,7 +255,7 @@ export default defineComponent({
     const deleteAllRequests = async () => {
       try {
         await requestStore.clearRequests();
-        success(resources.requestsDeletedSuccessfully);
+        success(translate("requests.requestsDeletedSuccessfully"));
         await loadRequests();
       } catch (e) {
         handleHttpError(e);

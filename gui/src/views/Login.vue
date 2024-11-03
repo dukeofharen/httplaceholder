@@ -39,14 +39,13 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { resources } from "@/constants/resources";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { error } from "@/utils/toast";
 import { type AuthenticationInput, useUsersStore } from "@/store/users";
-import { defineComponent } from "vue";
 import { useMetadataStore } from "@/store/metadata";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Login",
@@ -76,7 +75,7 @@ export default defineComponent({
         await router.push({ name: "Requests" });
       } catch (e: any) {
         if (e.status === 401) {
-          error(resources.credentialsIncorrect);
+          error(translate("general.credentialsIncorrect"));
         } else {
           handleHttpError(e);
         }

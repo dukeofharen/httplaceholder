@@ -20,6 +20,9 @@ export const translations = {
     insert: "Insert",
     close: "Close",
     add: "Add",
+    uploadInvalidFiles:
+      "These files you are trying to upload have an incorrect extension: %s. The following extensions are allowed: %s",
+    credentialsIncorrect: "The credentials are incorrect.",
   },
   requests: {
     reloadAllRequests: "Load all requests",
@@ -31,6 +34,9 @@ export const translations = {
     loadMoreRequests: "Load more requests",
     noRequestsYet:
       "No requests have been made to HttPlaceholder yet. Perform HTTP requests and you will see the requests appearing on this page.",
+    requestsDeletedSuccessfully: "The requests were deleted successfully.",
+    requestBodyCopiedToClipboard:
+      "Request body successfully copied to clipboard.",
   },
   request: {
     raw: "Raw",
@@ -137,6 +143,7 @@ export const translations = {
     scenarioHitCount: "Scenario hit count",
     addScenario: "Add scenario",
     updateScenario: "Update scenario",
+    scenarioSetSuccessfully: "The scenario values were set successfully.",
   },
   scenarios: {
     scenarios: "Scenarios",
@@ -246,6 +253,8 @@ export const translations = {
       "Select a variable handler to insert in the response...",
     selectVariableHandlerExample:
       "Select an example to insert in the response...",
+    saveAsNewStub: "Save as new stub",
+    resetToDefaults: "Reset to defaults?",
   },
   stubFormHelperTitles: {
     example: "Add example",
@@ -486,9 +495,15 @@ export const translations = {
     deleteStub: "Delete the stub",
     deleteStubWithId: "Delete stub '%s'?",
     stubLocation: "Stub location",
+    stubsAddedSuccessfully: "Stubs were added successfully.",
+    stubUpdatedSuccessfully: "Stub was updated successfully.",
+    stubDeletedSuccessfully: "Stub was deleted successfully.",
   },
   errors: {
     errorFormattingJson: "Error occurred while formatting JSON: %s",
     errorFormattingXml: "Error occurred while formatting XML: %s",
+    errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: %s",
+    somethingWentWrongServer:
+      "Something went wrong while contacting the server.",
   },
 };

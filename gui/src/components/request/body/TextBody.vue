@@ -60,7 +60,6 @@ import { computed, onMounted, type PropType, ref } from "vue";
 import xmlFormatter from "xml-formatter";
 import { formFormat } from "@/utils/form";
 import { copyTextToClipboard } from "@/utils/clipboard";
-import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { defineComponent } from "vue";
 import { countNewlineCharacters, fromBase64 } from "@/utils/text";
@@ -166,7 +165,7 @@ export default defineComponent({
         ? renderedBody.value
         : body.value;
       copyTextToClipboard(valueToCopy).then(() =>
-        success(resources.requestBodyCopiedToClipboard),
+        success(translate("requests.requestBodyCopiedToClipboard")),
       );
     };
     const showMoreClick = () => {

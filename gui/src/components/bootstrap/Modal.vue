@@ -8,7 +8,7 @@
             type="button"
             class="btn close-button"
             data-bs-dismiss="modal"
-            aria-label="Close"
+            :aria-label="$translate('general.close')"
           >
             <i class="bi bi-x"></i>
           </button>

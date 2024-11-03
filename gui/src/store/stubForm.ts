@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import yaml from "js-yaml";
 import { error } from "@/utils/toast";
-import { resources } from "@/constants/resources";
 import { defaultValues } from "@/domain/stubForm/default-values";
 import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 import { vsprintf } from "sprintf-js";
@@ -10,6 +9,7 @@ import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import type { StubFormModel } from "@/domain/stub/stub-form-model";
 import type { StubBasicAuthenticationModel } from "@/domain/stub/stub-basic-authentication-model";
+import { translate } from "@/utils/translate";
 
 type StubFormState = {
   input: string;
@@ -29,7 +29,7 @@ const handle = (func: (parsed: StubModel) => any, input: string) => {
     const parsed = yaml.load(input) as StubModel;
     return func(parsed);
   } catch (e) {
-    error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
+    error(vsprintf(translate("errors.errorDuringParsingOfYaml"), [e]));
     return null;
   }
 };
