@@ -4,7 +4,6 @@ export interface StringCheckingKeyword {
   key: string;
   name: string;
   description: string;
-  defaultValue?: any;
 }
 
 export const keywords = {
@@ -29,12 +28,9 @@ export const keywords = {
   minlength: "minlength",
   maxlength: "maxlength",
   exactlength: "exactlength",
-  present: "present",
 };
 
-export function getStringCheckingKeywords(
-  insertPresent: boolean,
-): StringCheckingKeyword[] {
+export function getStringCheckingKeywords(): StringCheckingKeyword[] {
   const result = [
     {
       key: keywords.equals,
@@ -130,27 +126,17 @@ export function getStringCheckingKeywords(
       key: keywords.minlength,
       name: translate("stringChecking.minlength"),
       description: translate("stringChecking.minLengthDescription"),
-      defaultValue: 10,
     },
     {
       key: keywords.maxlength,
       name: translate("stringChecking.maxlength"),
       description: translate("stringChecking.maxlengthDescription"),
-      defaultValue: 10,
     },
     {
       key: keywords.exactlength,
       name: translate("stringChecking.exactlength"),
       description: translate("stringChecking.exactlengthDescription"),
-      defaultValue: 10,
     },
   ];
-  if (insertPresent) {
-    result.push({
-      key: keywords.present,
-      name: translate("stringChecking.present"),
-      description: translate("stringChecking.presentDescription"),
-    });
-  }
   return result;
 }

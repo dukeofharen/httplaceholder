@@ -429,15 +429,12 @@ export const translations = {
       "checks if the input does not match this regular expression",
     minlength: "Minimum length",
     minLengthDescription:
-      "checks if the input has a minimum (inclusive) length",
+      "checks if the input has a minimum (inclusive) string length",
     maxlength: "Maximum length",
     maxlengthDescription:
-      "checks if the input has a maximum (inclusive) length",
+      "checks if the input has a maximum (inclusive) string length",
     exactlength: "Exact length",
-    exactlengthDescription: "checks if the input has an exact length",
-    present: "Present check",
-    presentDescription:
-      "checks if the given key can be found (does not check the value)",
+    exactlengthDescription: "checks if the input has an exact string length",
   },
   stubs: {
     stubs: "Stubs",

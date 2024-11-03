@@ -93,7 +93,7 @@ interface FormData {
 }
 
 // Data
-const stringCheckingKeywords = getStringCheckingKeywords(false);
+const stringCheckingKeywords = getStringCheckingKeywords();
 const formData = ref<FormData[]>([]);
 
 // Methods
