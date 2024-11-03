@@ -29,6 +29,20 @@ export function translate(key: string): string {
   );
 }
 
-export function translateWithMarkdown(key: string): string {
-  return marked.parseInline(translate(key)) as string;
+export interface TranslateWithMarkdownOptions {
+  linkTarget?: string;
+}
+
+export function translateWithMarkdown(
+  key: string,
+  options: TranslateWithMarkdownOptions | null = null,
+): string {
+  const renderer = new marked.Renderer();
+  const linkTarget = options?.linkTarget;
+  if (linkTarget) {
+    renderer.link = (href, title, text) => {
+      return `<a href="${href}" target="${linkTarget}">${text}</a>`;
+    };
+  }
+  return marked.parseInline(translate(key), { renderer }) as string;
 }

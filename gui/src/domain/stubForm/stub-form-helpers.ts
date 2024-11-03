@@ -258,7 +258,7 @@ export const stubFormHelpers = [
     formHelperToOpen: FormHelperKey.DynamicMode,
   },
   {
-    title: translate("stubFormHelperTitles.responseDynamicMode"),
+    title: translate("stubFormHelperTitles.stringReplace"),
     subTitle: translate("stubFormHelperDescriptions.stringReplace"),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
     defaultValueMutation: (store: any) => store.setDefaultStringReplace(),

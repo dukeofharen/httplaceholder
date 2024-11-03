@@ -1,12 +1,19 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <strong>Enable / disable dynamic mode</strong>
+      <strong>{{ $translate("stubForm.enableDisableDynamicMode") }}</strong>
     </div>
-    <div class="col-md-12">
-      To learn more about the dynamic mode, read more in
-      <a :href="docUrl" target="_blank">the documentation</a>.
-    </div>
+    <div
+      class="col-md-12"
+      v-html="
+        $vsprintf(
+          $translateWithMarkdown('stubForm.enableDisableDynamicModeHint', {
+            linkTarget: '_blank',
+          }),
+          [docUrl],
+        )
+      "
+    />
     <div class="col-md-12 mt-3">
       <div class="form-check">
         <input

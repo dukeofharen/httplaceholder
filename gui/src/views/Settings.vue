@@ -48,6 +48,7 @@
               $vsprintf(
                 $translateWithMarkdown(
                   'settings.storeResponseForRequestDescription',
+                  { linkTarget: '_blank' },
                 ),
                 [configDocsLink],
               )

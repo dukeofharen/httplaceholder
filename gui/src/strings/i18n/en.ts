@@ -234,6 +234,9 @@ export const translations = {
     responseBodyMinifyXml: "Minify XML",
     insertScenarioName: "Insert new scenario name",
     selectExistingScenario: "Select existing scenario",
+    enableDisableDynamicMode: "Enable / disable dynamic mode",
+    enableDisableDynamicModeHint:
+      "To learn more about the dynamic mode, read more in [the documentation](%s).",
   },
   stubFormHelperTitles: {
     example: "Add example",

@@ -5,7 +5,12 @@
     <div
       class="col-md-12 mb-3"
       v-html="
-        $vsprintf($translateWithMarkdown('scenarios.description'), [docsUrl])
+        $vsprintf(
+          $translateWithMarkdown('scenarios.description', {
+            linkTarget: '_blank',
+          }),
+          [docsUrl],
+        )
       "
     />
 
