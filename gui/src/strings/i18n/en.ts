@@ -24,6 +24,17 @@ export const translations = {
       "These files you are trying to upload have an incorrect extension: %s. The following extensions are allowed: %s",
     credentialsIncorrect: "The credentials are incorrect.",
   },
+  sidebar: {
+    requests: "Requests",
+    stubs: "Stubs",
+    addStubs: "Add stubs",
+    importStubs: "Import stubs",
+    scenarios: "Scenarios",
+    docs: "Docs",
+    apiDocs: "API Docs",
+    settings: "Settings",
+    logOut: "Log out",
+  },
   requests: {
     reloadAllRequests: "Load all requests",
     deleteAllRequests: "Delete all requests",
