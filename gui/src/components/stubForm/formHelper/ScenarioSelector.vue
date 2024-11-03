@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-12">
-      <strong>Insert new scenario name</strong>
+      <strong>{{ $translate("stubForm.insertScenarioName") }}</strong>
       <input
         type="text"
         class="form-control mt-2"
@@ -9,11 +9,11 @@
         @keyup.enter="scenarioSelected(scenario)"
       />
       <button class="btn btn-success mt-2" @click="scenarioSelected(scenario)">
-        Add
+        {{ $translate("general.add") }}
       </button>
     </div>
     <div class="col-md-12 mt-3" v-if="scenarios.length">
-      <strong>Select existing scenario</strong>
+      <strong>{{ $translate("stubForm.selectExistingScenario") }}</strong>
       <div class="list-group mt-2">
         <button
           v-for="(scenario, index) of scenarios"

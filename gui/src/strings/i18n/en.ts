@@ -19,6 +19,7 @@ export const translations = {
     password: "Password",
     insert: "Insert",
     close: "Close",
+    add: "Add",
   },
   requests: {
     reloadAllRequests: "Load all requests",
@@ -231,6 +232,8 @@ export const translations = {
     responseBodyMinifyJson: "Minify JSON",
     responseBodyPrettifyXml: "Prettify XML",
     responseBodyMinifyXml: "Minify XML",
+    insertScenarioName: "Insert new scenario name",
+    selectExistingScenario: "Select existing scenario",
   },
   stubFormHelperTitles: {
     example: "Add example",
