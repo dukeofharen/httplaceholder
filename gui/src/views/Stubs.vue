@@ -62,7 +62,7 @@
 
       <button
         class="btn btn-outline-success btn-sm me-2 btn-mobile"
-        title="Enable the current selection of stubs"
+        :title="$translate('stubs.enableStubsDescription')"
         @click="showEnableStubsModal = true"
         :disabled="disableMutationButtons"
       >
@@ -78,7 +78,7 @@
 
       <button
         class="btn btn-outline-success btn-sm me-2 btn-mobile"
-        title="Delete the current selection of stubs"
+        :title="$translate('stubs.deleteSelectedStubsDescription')"
         @click="showDeleteStubsModal = true"
         :disabled="disableMutationButtons"
       >

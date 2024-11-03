@@ -77,6 +77,7 @@ import { useStubFormStore } from "@/store/stubForm";
 import { vsprintf } from "sprintf-js";
 import { translate } from "@/utils/translate";
 import { renderDocLink } from "@/utils/doc";
+import { defaultStub } from "@/strings/exmaples";
 
 const editorTypes = {
   none: "none",
@@ -147,12 +148,7 @@ export default defineComponent({
           input.value = intermediateStub;
           clearIntermediateStub();
         } else {
-          input.value = `id: unique-stub-id
-description: A description for the stub.
-conditions:
-  method: GET
-response:
-  text: OK!`;
+          input.value = defaultStub;
           stubFormStore.setFormIsDirty(false);
         }
       } else {

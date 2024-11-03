@@ -483,10 +483,12 @@ export const translations = {
     disableStubsModalBody:
       "Only the stubs currently visible in the list will be disabled.",
     enableStubs: "Enable stubs",
+    enableStubsDescription: "Enable the current selection of stubs",
     enableStubsQuestion: "Enable the current filtered stubs?",
     enableStubsModalBody:
       "Only the stubs currently visible in the list will be enabled.",
     deleteSelectedStubs: "Delete stubs",
+    deleteSelectedStubsDescription: "Delete the current selection of stubs",
     deleteSelectedStubsQuestion: "Delete the current filtered stubs?",
     deleteSelectedStubsModalBody:
       "The stubs can't be recovered. Only the stubs currently visible in the list will be deleted.",
