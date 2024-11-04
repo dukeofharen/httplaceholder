@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import yaml from "js-yaml";
 import { error } from "@/utils/toast";
-import { defaultValues } from "@/domain/stubForm/default-values";
 import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 import { vsprintf } from "sprintf-js";
 import type { StubModel } from "@/domain/stub/stub-model";
@@ -10,6 +9,10 @@ import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import type { StubFormModel } from "@/domain/stub/stub-form-model";
 import type { StubBasicAuthenticationModel } from "@/domain/stub/stub-basic-authentication-model";
 import { translate } from "@/utils/translate";
+import type { StubXpathModel } from "@/domain/stub/stub-xpath-model";
+import { ResponseImageType } from "@/domain/stub/enums/response-image-type";
+import type { StubResponseImageModel } from "@/domain/stub/stub-response-image-model";
+import type { StubResponseReplaceModel } from "@/domain/stub/stub-response-replace-model";
 
 type StubFormState = {
   input: string;
@@ -463,9 +466,12 @@ export const useStubFormStore = defineStore({
           parsed.conditions.jsonPath = [];
         }
 
-        parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(
-          defaultValues.jsonPath,
-        );
+        parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat([
+          {
+            query: "$.people[0].name",
+            expectedValue: "John",
+          },
+        ]);
         this.setInput(parsed);
       }, this.input);
     },
@@ -475,7 +481,11 @@ export const useStubFormStore = defineStore({
           parsed.conditions = {};
         }
 
-        parsed.conditions.json = defaultValues.jsonObject;
+        parsed.conditions.json = {
+          stringValue: "text",
+          intValue: 3,
+          array: ["value1", "value2"],
+        };
         this.setInput(parsed);
       }, this.input);
     },
@@ -485,7 +495,14 @@ export const useStubFormStore = defineStore({
           parsed.conditions = {};
         }
 
-        parsed.conditions.json = defaultValues.jsonArray;
+        parsed.conditions.json = [
+          "value1",
+          3,
+          {
+            key1: "value1",
+            key2: 1.45,
+          },
+        ];
         this.setInput(parsed);
       }, this.input);
     },
@@ -499,9 +516,18 @@ export const useStubFormStore = defineStore({
           parsed.conditions.xpath = [];
         }
 
-        parsed.conditions.xpath = parsed.conditions.xpath.concat(
-          defaultValues.xpath,
-        );
+        parsed.conditions.xpath = parsed.conditions.xpath.concat([
+          {
+            queryString: '/object/a[text() = "TEST"]',
+          },
+          {
+            queryString: '/object/b[text() = "TEST"]',
+            namespaces: {
+              soap: "http://www.w3.org/2003/05/soap-envelope",
+              m: "http://www.example.org/stock/Reddy",
+            },
+          },
+        ] as StubXpathModel[]);
         this.setInput(parsed);
       }, this.input);
     },
@@ -604,7 +630,10 @@ export const useStubFormStore = defineStore({
 
         parsed.response.headers = {
           ...parsed.response.headers,
-          ...defaultValues.responseHeaders,
+          ...{
+            Header1: "val1",
+            Header2: "val2",
+          },
         };
         this.setInput(parsed);
       }, this.input);
@@ -615,7 +644,7 @@ export const useStubFormStore = defineStore({
           parsed.response = {};
         }
 
-        parsed.response.temporaryRedirect = defaultValues.redirect;
+        parsed.response.temporaryRedirect = "https://google.com";
         this.setInput(parsed);
       }, this.input);
     },
@@ -625,7 +654,7 @@ export const useStubFormStore = defineStore({
           parsed.response = {};
         }
 
-        parsed.response.permanentRedirect = defaultValues.redirect;
+        parsed.response.permanentRedirect = "https://google.com";
         this.setInput(parsed);
       }, this.input);
     },
@@ -665,7 +694,12 @@ export const useStubFormStore = defineStore({
           parsed.response = {};
         }
 
-        parsed.response.reverseProxy = defaultValues.reverseProxy;
+        parsed.response.reverseProxy = {
+          url: "https://jsonplaceholder.typicode.com/todos",
+          appendPath: true,
+          appendQueryString: true,
+          replaceRootUrl: true,
+        };
         this.setInput(parsed);
       }, this.input);
     },
@@ -691,7 +725,15 @@ export const useStubFormStore = defineStore({
           parsed.response = {};
         }
 
-        parsed.response.image = defaultValues.image;
+        parsed.response.image = {
+          type: ResponseImageType.Png,
+          width: 1024,
+          height: 256,
+          backgroundColor: "#ffa0d3",
+          text: "Placeholder text that will be drawn in the image",
+          fontSize: 10,
+          wordWrap: false,
+        } as StubResponseImageModel;
         this.setInput(parsed);
       }, this.input);
     },
@@ -705,7 +747,7 @@ export const useStubFormStore = defineStore({
           parsed.conditions.scenario = {};
         }
 
-        parsed.conditions.scenario.scenarioState = defaultValues.scenarioState;
+        parsed.conditions.scenario.scenarioState = "new-state";
         this.setInput(parsed);
       }, this.input);
     },
@@ -719,9 +761,13 @@ export const useStubFormStore = defineStore({
           parsed.response.replace = [];
         }
 
-        parsed.response.replace = parsed.response.replace.concat(
-          defaultValues.stringReplace,
-        );
+        parsed.response.replace = parsed.response.replace.concat([
+          {
+            text: "old value",
+            ignoreCase: true,
+            replaceWith: "New value",
+          } as StubResponseReplaceModel,
+        ]);
 
         this.setInput(parsed);
       }, this.input);
@@ -736,9 +782,12 @@ export const useStubFormStore = defineStore({
           parsed.response.replace = [];
         }
 
-        parsed.response.replace = parsed.response.replace.concat(
-          defaultValues.regexReplace,
-        );
+        parsed.response.replace = parsed.response.replace.concat([
+          {
+            regex: "(ipsum|consectetur)",
+            replaceWith: "New value",
+          } as StubResponseReplaceModel,
+        ]);
 
         this.setInput(parsed);
       }, this.input);
@@ -753,9 +802,12 @@ export const useStubFormStore = defineStore({
           parsed.response.replace = [];
         }
 
-        parsed.response.replace = parsed.response.replace.concat(
-          defaultValues.jsonPathReplace,
-        );
+        parsed.response.replace = parsed.response.replace.concat([
+          {
+            jsonPath: "$.name",
+            replaceWith: "New value",
+          } as StubResponseReplaceModel,
+        ]);
 
         this.setInput(parsed);
       }, this.input);
@@ -784,8 +836,7 @@ export const useStubFormStore = defineStore({
           parsed.response.scenario = {};
         }
 
-        parsed.response.scenario.setScenarioState =
-          defaultValues.newScenarioState;
+        parsed.response.scenario.setScenarioState = "new-state";
         this.setInput(parsed);
       }, this.input);
     },

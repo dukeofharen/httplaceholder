@@ -21,7 +21,6 @@
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
 import { httpMethods } from "@/domain/stubForm/http-methods";
-import { defaultValues } from "@/domain/stubForm/default-values";
 
 export default defineComponent({
   name: "HttpMethodSelector",
@@ -34,7 +33,7 @@ export default defineComponent({
       stubFormStore.closeFormHelper();
     };
     const multipleMethods = () => {
-      stubFormStore.setMethod(defaultValues.methods);
+      stubFormStore.setMethod(["GET", "POST"]);
       stubFormStore.closeFormHelper();
     };
 
