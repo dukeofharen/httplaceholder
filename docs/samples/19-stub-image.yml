@@ -13,7 +13,7 @@
       height: 256
       backgroundColor: '#f700ff'
       text: Test image JPEG!
-      fontSize: 7
+      fontSize: 30
       jpegQuality: 80
       wordWrap: false
 
@@ -31,7 +31,7 @@
       height: 256
       backgroundColor: '#f700ff'
       text: Test image PNG!
-      fontSize: 7
+      fontSize: 30
       wordWrap: false
 
 - id: image-png-with-set-font-color
@@ -49,7 +49,7 @@
       backgroundColor: '#f700ff'
       fontColor: '#ffffff'
       text: Test image PNG!
-      fontSize: 7
+      fontSize: 30
       wordWrap: false
 
 - id: image-png-with-very-long-text
@@ -66,7 +66,7 @@
       height: 256
       backgroundColor: '#f700ff'
       text: Aenean in sollicitudin lorem. Sed id vehicula augue. Suspendisse dui orci, volutpat at nisl non, euismod laoreet nisi. Aliquam libero ex, tincidunt eu ultricies vitae, vehicula et justo. Aenean mattis porttitor accumsan. Proin aliquam nisi at volutpat facilisis. Phasellus ac quam aliquam, congue nunc at, facilisis eros. Mauris quis porta nibh. Pellentesque tincidunt dapibus vestibulum. Cras volutpat volutpat ipsum, in lobortis justo ullamcorper sit amet. Donec non ante vulputate, facilisis orci at, maximus velit. Ut iaculis nulla vel sem finibus ullamcorper. Donec luctus venenatis mollis. Quisque venenatis hendrerit augue, id facilisis diam venenatis ac. Etiam volutpat augue quis blandit convallis. In accumsan eu urna vel faucibus.
-      fontSize: 7
+      fontSize: 30
       wordWrap: true
       
 - id: image-png-transparency
@@ -83,7 +83,7 @@
       height: 256
       backgroundColor: '#f700ff00'
       text: Test image PNG!
-      fontSize: 7
+      fontSize: 30
       wordWrap: false
 
 - id: image-bmp
@@ -100,7 +100,7 @@
       height: 256
       backgroundColor: '#f700ff'
       text: Test image BMP!
-      fontSize: 7
+      fontSize: 30
       wordWrap: false
       
 - id: image-gif
@@ -117,5 +117,5 @@
       height: 256
       backgroundColor: '#f700ff'
       text: Test image GIF!
-      fontSize: 7
+      fontSize: 30
       wordWrap: false
