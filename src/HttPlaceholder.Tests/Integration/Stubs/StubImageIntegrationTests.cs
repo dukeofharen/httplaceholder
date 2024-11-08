@@ -34,8 +34,8 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
             response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
         using var image = new MagickImage(ms);
-        Assert.AreEqual(1024, image.Width);
-        Assert.AreEqual(256, image.Height);
+        Assert.AreEqual((uint)1024, image.Width);
+        Assert.AreEqual((uint)256, image.Height);
     }
 
     [TestMethod]
@@ -53,8 +53,8 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
             response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
         using var image = new MagickImage(ms);
-        Assert.AreEqual(1024, image.Width);
-        Assert.AreEqual(256, image.Height);
+        Assert.AreEqual((uint)1024, image.Width);
+        Assert.AreEqual((uint)256, image.Height);
     }
 
     [TestMethod]
@@ -72,8 +72,8 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
             response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
         using var image = new MagickImage(ms);
-        Assert.AreEqual(1024, image.Width);
-        Assert.AreEqual(256, image.Height);
+        Assert.AreEqual((uint)1024, image.Width);
+        Assert.AreEqual((uint)256, image.Height);
     }
 
     [TestMethod]
@@ -91,7 +91,7 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
             response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
         using var image = new MagickImage(ms);
-        Assert.AreEqual(1024, image.Width);
-        Assert.AreEqual(256, image.Height);
+        Assert.AreEqual((uint)1024, image.Width);
+        Assert.AreEqual((uint)256, image.Height);
     }
 }

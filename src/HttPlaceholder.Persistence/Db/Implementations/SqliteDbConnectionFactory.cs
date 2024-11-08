@@ -16,7 +16,7 @@ internal class SqliteDbConnectionFactory(IConfiguration configuration) : IDbConn
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
         new SQLiteConnection(configuration.GetConnectionString(ConnectionStringKey) ??
-                             throw new InvalidOperationException("Sqlite connection string not found."));
+                             throw new InvalidOperationException(PersistenceResources.SqliteStringNotFound));
 
     /// <inheritdoc />
     public DbDataSource GetDataSource() => null;

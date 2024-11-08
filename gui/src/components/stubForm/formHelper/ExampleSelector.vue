@@ -1,7 +1,7 @@
 <template>
   <modal
-    title="Insert this example?"
-    bodyText="You have unsaved changes."
+    :title="$translate('stubForm.insertThisExample')"
+    :bodyText="$translate('stubForm.youHaveUnsavedChanges')"
     :yes-click-function="insert"
     :show-modal="showWarningModal"
     @close="showWarningModal = false"
@@ -19,7 +19,7 @@
   </div>
   <div class="mt-3">
     <button class="btn btn-primary" @click="preInsert" :disabled="!example">
-      Insert
+      {{ $translate("general.insert") }}
     </button>
   </div>
 </template>
@@ -29,6 +29,7 @@ import { computed, defineComponent, ref } from "vue";
 import { getExamples } from "@/utils/examples";
 import { useStubFormStore } from "@/store/stubForm";
 import type { ExampleModel } from "@/domain/example-model";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "ExampleSelector",
@@ -44,7 +45,7 @@ export default defineComponent({
       const examplesResult = getExamples();
       examplesResult.unshift({
         stub: "",
-        title: "Select an example...",
+        title: translate("stubForm.selectExample"),
         description: "",
         id: "",
       });

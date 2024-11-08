@@ -55,7 +55,7 @@ internal class ApiAuthorizationService(
         catch (Exception ex)
         {
             result = false;
-            logger.LogWarning(ex, "Error while parsing basic authentication.");
+            logger.LogWarning(ex, InfraResources.ErrorParsingBasicAuth);
         }
 
         if (result)

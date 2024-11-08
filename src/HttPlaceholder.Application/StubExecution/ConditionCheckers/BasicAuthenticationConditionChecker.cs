@@ -34,14 +34,14 @@ public class BasicAuthenticationConditionChecker(IHttpContextService httpContext
         var headers = httpContextService.GetHeaders();
         if (!headers.TryGetCaseInsensitive(HeaderKeys.Authorization, out var authorization))
         {
-            return InvalidAsync("No Authorization header found in request.");
+            return InvalidAsync(StubResources.NoAuthHeaderFound);
         }
 
         var expectedBase64UsernamePassword = $"{condition.Username}:{condition.Password}".Base64Encode();
         var expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
         return expectedAuthorizationHeader == authorization
-            ? ValidAsync($"Basic authentication condition passed for stub '{stub.Id}'.")
-            : InvalidAsync(
-                $"Basic authentication condition failed for stub '{stub.Id}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.");
+            ? ValidAsync(string.Format(StubResources.BasicAuthPassed, stub.Id))
+            : InvalidAsync(string.Format(StubResources.BasicAuthFailed, stub.Id, expectedAuthorizationHeader,
+                authorization));
     }
 }

@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <button class="btn btn-sm btn-primary" @click="download">
-            Download
+            {{ $translate("general.download") }}
           </button>
           <div v-if="bodyType != bodyTypes.other" class="mt-2">
             <div v-if="bodyType === bodyTypes.image">
@@ -24,7 +24,7 @@
 import { computed, defineComponent, type PropType } from "vue";
 import { downloadBlob } from "@/utils/download";
 import { base64ToBlob } from "@/utils/text";
-import { imageMimeTypes, pdfMimeType } from "@/constants/technical";
+import { imageMimeTypes, pdfMimeType } from "@/constants";
 import mime from "mime-types";
 import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
 import VuePdfEmbed from "vue-pdf-embed";

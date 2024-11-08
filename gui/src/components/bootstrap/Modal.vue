@@ -8,7 +8,7 @@
             type="button"
             class="btn close-button"
             data-bs-dismiss="modal"
-            aria-label="Close"
+            :aria-label="$translate('general.close')"
           >
             <i class="bi bi-x"></i>
           </button>
@@ -22,14 +22,14 @@
             class="btn btn-secondary no-button"
             @click="onNoClick"
           >
-            {{ noText }}
+            {{ getNoText() }}
           </button>
           <button
             type="button"
             class="btn btn-primary yes-button"
             @click="onYesClick"
           >
-            {{ yesText }}
+            {{ getYesText() }}
           </button>
         </div>
       </div>
@@ -41,6 +41,7 @@
 import { onMounted, ref, watch } from "vue";
 import { defineComponent } from "vue";
 import { getOrCreateInstance } from "@/utils/bootstrap";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Modal",
@@ -54,11 +55,9 @@ export default defineComponent({
     },
     yesText: {
       type: String,
-      default: "Yes",
     },
     noText: {
       type: String,
-      default: "No",
     },
     showModal: {
       type: Boolean,
@@ -88,6 +87,12 @@ export default defineComponent({
         currentModal.hide();
       }
     };
+    function getYesText() {
+      return props.yesText ?? translate("general.yes");
+    }
+    function getNoText() {
+      return props.noText ?? translate("general.no");
+    }
 
     // Methods
     const onYesClick = () => {
@@ -129,7 +134,7 @@ export default defineComponent({
       }
     });
 
-    return { onYesClick, onNoClick, modal };
+    return { onYesClick, onNoClick, modal, getYesText, getNoText };
   },
 });
 </script>
@@ -142,5 +147,12 @@ export default defineComponent({
   .bi {
     font-size: 30px;
   }
+}
+
+.modal-title {
+  max-width: 100%;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 </style>

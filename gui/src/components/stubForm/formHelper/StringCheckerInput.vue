@@ -36,14 +36,14 @@
           <button
             v-if="index === formData.length - 1"
             class="btn btn-outline-success"
-            title="Add another row"
+            :title="$translate('stubForm.stringCheckerInputAddRow')"
             @click="addEmptyEntry"
           >
             <i class="bi bi-plus"></i>
           </button>
           <button
             class="btn btn-outline-danger"
-            title="Delete row"
+            :title="$translate('stubForm.stringCheckerInputDeleteRow')"
             @click="removeEntry(index)"
           >
             <i class="bi bi-x"></i>
@@ -53,7 +53,7 @@
       <div class="row">
         <div class="col-md-12">
           <button class="btn btn-success mt-2" @click="insert">
-            {{ buttonText ?? "Insert into stub" }}
+            {{ buttonText ?? $translate("stubForm.insertIntoStub") }}
           </button>
         </div>
       </div>
@@ -66,7 +66,7 @@ import { onMounted, ref } from "vue";
 import {
   getStringCheckingKeywords,
   keywords,
-} from "@/constants/string-checking-keywords";
+} from "@/domain/string-checking-keywords";
 import { useStubFormStore } from "@/store/stubForm";
 
 const props = defineProps({
@@ -93,7 +93,7 @@ interface FormData {
 }
 
 // Data
-const stringCheckingKeywords = getStringCheckingKeywords(false);
+const stringCheckingKeywords = getStringCheckingKeywords();
 const formData = ref<FormData[]>([]);
 
 // Methods

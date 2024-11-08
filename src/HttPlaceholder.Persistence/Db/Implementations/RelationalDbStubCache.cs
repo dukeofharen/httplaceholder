@@ -124,8 +124,8 @@ internal class RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalD
             {
                 StubTypes.StubJsonType => JsonConvert.DeserializeObject<StubModel>(queryResult.Stub),
                 StubTypes.StubYamlType => YamlUtilities.Parse<StubModel>(queryResult.Stub),
-                _ => throw new NotImplementedException(
-                    $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.")
+                _ => throw new NotImplementedException(string.Format(PersistenceResources.StubTypeNotSupported,
+                    queryResult.StubType, queryResult.StubId))
             })
             .ToList();
     }

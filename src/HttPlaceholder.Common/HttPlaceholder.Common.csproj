@@ -9,14 +9,29 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="13.9.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+        <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="Scrutor" Version="4.2.2" />
+        <PackageReference Include="Scrutor" Version="5.0.2" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="YamlDotNet" Version="15.3.0" />
+        <PackageReference Include="YamlDotNet" Version="16.1.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="CommonResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CommonResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="CommonResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CommonResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

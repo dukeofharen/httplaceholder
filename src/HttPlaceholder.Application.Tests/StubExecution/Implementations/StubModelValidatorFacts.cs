@@ -335,7 +335,7 @@ public class StubModelValidatorFacts
 
         // Assert
         const string errorToCheck =
-            "Only one of the response body fields (text, json, xml, html, base64, file) can be set";
+            "Only one of the response body fields (text, json, xml, html, base64, file) can be set.";
         if (shouldReturnError)
         {
             Assert.IsTrue(result.Any(r => r == errorToCheck));

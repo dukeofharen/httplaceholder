@@ -56,7 +56,8 @@ public class QueryStringConditionChecker(IHttpContextService httpContextService,
             if (!stringChecker.CheckString(queryValue, condition.Value, out var outputForLogging))
             {
                 // If the check failed, it means the query string is incorrect and the condition should fail.
-                return InvalidAsync($"Query string condition '{condition.Key}: {outputForLogging}' failed.");
+                return InvalidAsync(string.Format(StubResources.QueryStringConditionFailed, condition.Key,
+                    outputForLogging));
             }
 
             validQueryStrings++;

@@ -1,14 +1,16 @@
 <template>
   <accordion-item @opened="loadResponse">
-    <template v-slot:button-text>Sent response</template>
+    <template v-slot:button-text>{{
+      $translate("request.sentResponse")
+    }}</template>
     <template v-slot:accordion-body>
       <div v-if="hasResponse">
         <div class="col-md-12 mb-3" v-if="statusCode">
-          <label>HTTP status code</label>
+          <label>{{ $translate("request.httpStatusCode") }}</label>
           <span>{{ statusCode }}</span>
         </div>
         <div class="col-md-12 mb-3" v-if="hasHeaders">
-          <label>Response headers</label>
+          <label>{{ $translate("request.responseHeaders") }}</label>
           <table class="table">
             <tbody>
               <tr v-for="(value, key) in headers" :key="key">
@@ -19,14 +21,18 @@
           </table>
         </div>
         <div class="col-md-12 mb-3" v-if="bodyRenderModel">
-          <label>Response body</label>
+          <label>{{ $translate("request.responseBody") }}</label>
           <RequestResponseBody :render-model="bodyRenderModel" />
         </div>
       </div>
       <div v-else>
-        No response found for this request. Go to
-        <router-link :to="{ name: 'Settings' }">Settings</router-link>
-        to enable "Store response for request".
+        <div
+          v-html="
+            $vsprintf($translateWithMarkdown('request.noResponseFound'), [
+              settingsUrl,
+            ])
+          "
+        />
       </div>
     </template>
   </accordion-item>
@@ -40,6 +46,7 @@ import { useRequestsStore } from "@/store/requests";
 import type { HashMap } from "@/domain/hash-map";
 import RequestResponseBody from "@/components/request/body/RequestResponseBody.vue";
 import { type RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "RequestResponse",
@@ -52,6 +59,7 @@ export default defineComponent({
   },
   setup(props) {
     const requestStore = useRequestsStore();
+    const router = useRouter();
 
     // Data
     const response = ref<ResponseModel>({
@@ -78,6 +86,9 @@ export default defineComponent({
         headers: response.value.headers,
       };
     });
+    const settingsUrl = computed(
+      () => router.resolve({ name: "Settings" }).href,
+    );
 
     // Methods
     const loadResponse = async () => {
@@ -96,6 +107,7 @@ export default defineComponent({
       statusCode,
       hasResponse,
       bodyRenderModel,
+      settingsUrl,
     };
   },
 });

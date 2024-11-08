@@ -1,22 +1,22 @@
 <template>
   <div class="row" @keyup.enter="insert">
     <div class="col-md-12">
-      <strong>Basic authentication username and password</strong>
+      <strong>{{ $translate("stubForm.basicAuthTitle") }}</strong>
       <input
         type="text"
         class="form-control mt-2"
         v-model="username"
-        placeholder="Username"
+        :placeholder="$translate('general.username')"
         ref="usernameRef"
       />
       <input
         type="text"
         class="form-control mt-2"
         v-model="password"
-        placeholder="Password"
+        :placeholder="$translate('general.password')"
       />
       <button class="btn btn-success mt-2" @click="insert">
-        Insert into stub
+        {{ $translate("stubForm.insertIntoStub") }}
       </button>
     </div>
   </div>

@@ -69,7 +69,7 @@ internal class StubContext(
         stub.CleanStubId();
         if (stubs.Any(s => string.Equals(stub.Id, s.Stub.Id, StringComparison.OrdinalIgnoreCase)))
         {
-            throw new ConflictException($"Stub with ID '{stub.Id}'.");
+            throw new ConflictException(string.Format(StubResources.StubConflict, stub.Id));
         }
 
         var source = GetWritableStubSource();

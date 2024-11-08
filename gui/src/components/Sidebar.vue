@@ -30,7 +30,8 @@ import { computed, defineComponent } from "vue";
 import router from "@/router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
-import { renderDocLink } from "@/constants/resources";
+import { renderDocLink } from "@/utils/doc";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Sidebar",
@@ -42,57 +43,57 @@ export default defineComponent({
     // Data
     const plainMenuItems = [
       {
-        title: "Requests",
+        title: translate("sidebar.requests"),
         icon: "eye",
         routeName: "Requests",
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: "Stubs",
+        title: translate("sidebar.stubs"),
         icon: "code-slash",
         routeName: "Stubs",
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: "Add stubs",
+        title: translate("sidebar.addStubs"),
         icon: "plus",
         routeName: "StubForm",
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: "Import stubs",
+        title: translate("sidebar.importStubs"),
         icon: "arrow-up-short",
         routeName: "ImportStubs",
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: "Scenarios",
+        title: translate("sidebar.scenarios"),
         icon: "card-list",
         routeName: "Scenarios",
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: "Docs",
+        title: translate("sidebar.docs"),
         icon: "file-earmark-text",
         url: renderDocLink(),
         targetBlank: true,
         onlyShowWhenLoggedInAndAuthEnabled: false,
       },
       {
-        title: "API Docs",
+        title: translate("sidebar.apiDocs"),
         icon: "file-earmark-text",
         url: "/swagger/index.html",
         targetBlank: true,
         onlyShowWhenLoggedInAndAuthEnabled: false,
       },
       {
-        title: "Settings",
+        title: translate("sidebar.settings"),
         icon: "wrench",
         routeName: "Settings",
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: "Log out",
+        title: translate("sidebar.logOut"),
         icon: "box-arrow-left",
         onlyShowWhenLoggedInAndAuthEnabled: true,
         onClick: async () => {

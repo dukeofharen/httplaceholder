@@ -1,6 +1,6 @@
 import { error as errorToast } from "@/utils/toast";
-import { resources } from "@/constants/resources";
 import type { HttpError } from "@/utils/api";
+import { translate } from "@/utils/translate";
 
 export function handleHttpError(error: any): boolean {
   let result;
@@ -32,7 +32,7 @@ export function handleHttpError(error: any): boolean {
     errorToast(result);
   } else {
     console.log(error);
-    errorToast(resources.somethingWentWrongServer);
+    errorToast(translate("errors.somethingWentWrongServer"));
   }
 
   return true;

@@ -2,11 +2,13 @@
   <div class="mt-3 mb-3">
     <select class="form-select" v-model="exportType">
       <option :value="RequestExportType.NotSet">
-        Select an export format...
+        {{ $translate("request.selectExportFormat") }}
       </option>
-      <option :value="RequestExportType.Curl">cURL</option>
+      <option :value="RequestExportType.Curl">
+        {{ $translate("request.curl") }}
+      </option>
       <option v-if="request.hasResponse" :value="RequestExportType.Har">
-        HTTP Archive (HAR)
+        {{ $translate("request.har") }}
       </option>
     </select>
     <div v-if="showExportResult" class="code-copy-wrapper mt-2">
@@ -14,7 +16,7 @@
         <div class="icon-wrapper">
           <i
             class="bi bi-clipboard copy"
-            title="Copy command to clipboard"
+            :title="$translate('request.copyToClipboard')"
             @click="copy"
           ></i>
         </div>
@@ -28,9 +30,9 @@
         <button
           class="btn btn-success btn-sm me-2"
           @click="download"
-          title="Download the exported request"
+          :title="$translate('request.downloadExportedRequest')"
         >
-          Download
+          {{ $translate("general.download") }}
         </button>
       </template>
     </div>

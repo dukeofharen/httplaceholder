@@ -123,7 +123,7 @@ public class StubHandlingMiddleware(
 
         httpContextService.AddHeader(HeaderKeys.ContentType, contentType);
         await httpContextService.WriteAsync(body, cancellationToken);
-        logger.LogDebug(e, "Request validation exception thrown.");
+        logger.LogDebug("Request validation exception thrown: {Message}", e.Message);
     }
 
     private async Task<ResponseModel> HandleRequest(string correlation, CancellationToken cancellationToken)

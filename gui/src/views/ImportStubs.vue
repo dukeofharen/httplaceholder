@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Import stubs</h1>
+    <h1>{{ $translate("importStubs.importStubs") }}</h1>
     <div class="col-md-12 mb-3">
       <button
         v-for="tab of tabs"
@@ -43,6 +43,7 @@ import ImportOpenApi from "@/components/import/ImportOpenApi.vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { defineComponent } from "vue";
+import { translate } from "@/utils/translate";
 
 const tabs = {
   uploadStubs: "uploadStubs",
@@ -53,19 +54,19 @@ const tabs = {
 
 const tabDetails: any = {
   uploadStubs: {
-    title: "Upload stubs",
+    title: translate("importStubs.uploadStubs"),
     icon: "bi-arrow-up",
   },
   importCurl: {
-    title: "Import cURL command(s)",
+    title: translate("importStubs.importCurlCommands"),
     icon: "bi-link",
   },
   importHar: {
-    title: "Import HTTP archive (HAR)",
+    title: translate("importStubs.importHar"),
     icon: "bi-archive",
   },
   importOpenApi: {
-    title: "Import OpenAPI definition",
+    title: translate("importStubs.importOpenApi"),
     icon: "bi-cloud-upload",
   },
 };

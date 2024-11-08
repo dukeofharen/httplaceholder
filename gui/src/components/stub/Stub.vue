@@ -1,11 +1,15 @@
 <template>
   <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
     <template v-slot:button-text>
-      <span :class="{ disabled: !enabled }">
+      <span :class="{ disabled: !isEnabled }">
         {{ id }}
       </span>
-      <span v-if="!enabled" class="disabled">&nbsp;(disabled)</span>
-      <span v-if="overviewStub.metadata.readOnly" title="Stub is read-only"
+      <span v-if="!isEnabled" class="disabled"
+        >&nbsp;({{ $translate("stubs.disabled") }})</span
+      >
+      <span
+        v-if="overviewStub.metadata.readOnly"
+        :title="$translate('stubs.stubIsReadonly')"
         >&nbsp;<i class="bi-eye"></i
       ></span>
     </template>
@@ -15,62 +19,70 @@
           <div class="col-md-12">
             <router-link
               class="btn btn-success btn-sm me-2 btn-mobile"
-              title="View all requests made for this stub"
+              :title="$translate('stubs.viewAllRequests')"
               :to="{
                 name: 'Requests',
                 query: { filter: id },
               }"
-              >Requests
+              >{{ $translate("general.requests") }}
             </router-link>
             <button
               class="btn btn-success btn-sm me-2 btn-mobile"
-              title="Duplicate this stub"
+              :title="$translate('stubs.duplicateThisStub')"
               @click="duplicate"
             >
-              Duplicate
+              {{ $translate("stubs.duplicate") }}
             </button>
             <router-link
               v-if="!isReadOnly"
               class="btn btn-success btn-sm me-2 btn-mobile"
-              title="Update this stub"
+              :title="$translate('stubs.updateStub')"
               :to="{
                 name: 'StubForm',
                 params: { stubId: id },
               }"
-              >Update
+              >{{ $translate("general.update") }}
             </router-link>
             <button
               v-if="!isReadOnly"
               class="btn btn-success btn-sm me-2 btn-mobile"
-              :title="enableDisableTitle"
+              :title="
+                isEnabled
+                  ? $translate('stubs.disableStub')
+                  : $translate('stubs.enableStub')
+              "
               @click="enableOrDisable"
             >
-              {{ enableDisableText }}
+              {{
+                isEnabled
+                  ? $translate("stubs.disable")
+                  : $translate("stubs.enable")
+              }}
             </button>
             <button
               class="btn btn-success btn-sm me-2 btn-mobile"
               @click="downloadStub"
             >
-              Download
+              {{ $translate("general.download") }}
             </button>
             <router-link
               v-if="hasScenario"
               class="btn btn-success btn-sm me-2 btn-mobile"
               :to="{ name: 'ScenarioForm', params: { scenario: scenario } }"
-              >Set scenario
+              >{{ $translate("stubs.setScenario") }}
             </router-link>
             <button
               v-if="!isReadOnly"
               class="btn btn-danger btn-sm me-2 btn-mobile"
-              title="Delete the stub"
+              :title="$translate('stubs.deleteStub')"
               @click="showDeleteModal = true"
             >
-              Delete
+              {{ $translate("general.delete") }}
             </button>
             <modal
               v-if="!isReadOnly"
-              :title="deleteStubTitle"
-              bodyText="The stub can't be recovered."
+              :title="$vsprintf($translate('stubs.deleteStubWithId'), [id])"
+              :bodyText="$translate('stubs.stubsCantBeRecovered')"
               :yes-click-function="deleteStub"
               :show-modal="showDeleteModal"
               @close="showDeleteModal = false"
@@ -78,7 +90,8 @@
           </div>
         </div>
         <div v-if="overviewStub.metadata.filename" class="stub-location">
-          Stub location: {{ overviewStub.metadata.filename }}
+          {{ $translate("stubs.stubLocation") }}:
+          {{ overviewStub.metadata.filename }}
         </div>
         <code-highlight language="yaml" :code="stubYaml" />
       </div>
@@ -89,7 +102,6 @@
 <script lang="ts">
 import { computed, type PropType, ref } from "vue";
 import yaml from "js-yaml";
-import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
@@ -101,6 +113,7 @@ import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-mod
 import type { FullStubModel } from "@/domain/stub/full-stub-model";
 import { downloadBlob } from "@/utils/download";
 import { vsprintf } from "sprintf-js";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Stub",
@@ -113,10 +126,6 @@ export default defineComponent({
   setup(props, { emit }) {
     const stubStore = useStubsStore();
     const router = useRouter();
-
-    // Functions
-    const getStubId = () => props.overviewStub.stub.id;
-    const isEnabled = () => props.overviewStub.stub.enabled;
 
     // Data
     const overviewStubValue = ref(props.overviewStub);
@@ -145,21 +154,14 @@ export default defineComponent({
     const isReadOnly = computed(() =>
       fullStub.value ? fullStub.value.metadata.readOnly : true,
     );
-    const enableDisableTitle = computed(
-      () => `${isEnabled() ? "Disable" : "Enable"} stub`,
-    );
-    const enableDisableText = computed(() =>
-      isEnabled() ? "Disable" : "Enable",
-    );
-    const enabled = computed(() => isEnabled());
-    const deleteStubTitle = computed(() => `Delete stub '${getStubId()}'?`);
+    const isEnabled = computed(() => props.overviewStub.stub.enabled);
     const id = computed(() => overviewStubValue.value.stub.id);
 
     // Methods
     const showDetails = async () => {
       if (!fullStub.value) {
         try {
-          fullStub.value = await stubStore.getStub(getStubId());
+          fullStub.value = await stubStore.getStub(id.value);
 
           // Sadly, when doing this without the timeout, it does the slide down incorrect.
           setTimeout(() => (accordionOpened.value = true), 1);
@@ -181,17 +183,17 @@ export default defineComponent({
     const enableOrDisable = async () => {
       if (fullStub.value) {
         try {
-          const enabled = await stubStore.flipEnabled(getStubId());
+          const enabled = await stubStore.flipEnabled(id.value);
           fullStub.value.stub.enabled = enabled;
           overviewStubValue.value.stub.enabled = enabled;
           let message;
           if (enabled) {
-            message = vsprintf(resources.stubEnabledSuccessfully, [
-              getStubId(),
+            message = vsprintf(translate("stubs.stubEnabledSuccessfully"), [
+              id.value,
             ]);
           } else {
-            message = vsprintf(resources.stubDisabledSuccessfully, [
-              getStubId(),
+            message = vsprintf(translate("stubs.stubDisabledSuccessfully"), [
+              id.value,
             ]);
           }
 
@@ -203,8 +205,8 @@ export default defineComponent({
     };
     const deleteStub = async () => {
       try {
-        await stubStore.deleteStub(getStubId());
-        success(resources.stubDeletedSuccessfully);
+        await stubStore.deleteStub(id.value);
+        success(translate("stubs.stubDeletedSuccessfully"));
         showDeleteModal.value = false;
         emit("deleted");
       } catch (e) {
@@ -213,9 +215,9 @@ export default defineComponent({
     };
     const downloadStub = async () => {
       try {
-        const fullStub = await stubStore.getStub(getStubId());
+        const fullStub = await stubStore.getStub(id.value);
         const stub = fullStub.stub;
-        const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(
+        const downloadString = `${translate("stubs.downloadStubsHeader")}\n${yaml.dump(
           stub,
         )}`;
         downloadBlob(`${stub.id}-stub.yml`, downloadString);
@@ -231,18 +233,15 @@ export default defineComponent({
       duplicate,
       isReadOnly,
       enableOrDisable,
-      enableDisableTitle,
-      enableDisableText,
       overviewStubValue,
       deleteStub,
-      deleteStubTitle,
       showDeleteModal,
       id,
-      enabled,
       accordionOpened,
       hasScenario,
       scenario,
       downloadStub,
+      isEnabled,
     };
   },
 });

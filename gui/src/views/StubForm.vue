@@ -1,12 +1,20 @@
 <template>
   <div>
-    <h1>{{ title }}</h1>
+    <h1>
+      {{
+        newStub
+          ? $translate("stubForm.addStub")
+          : $translate("stubForm.updateStub")
+      }}
+    </h1>
 
     <div class="row">
-      <div class="col-md-12">
-        Fill in the stub below in YAML format and click on "Save". For examples,
-        <a :href="docsUrl" target="_blank" class="break-word">read the docs</a>.
-      </div>
+      <div
+        class="col-md-12"
+        v-html="
+          $vsprintf($translateWithMarkdown('stubForm.description'), [docsUrl])
+        "
+      />
     </div>
 
     <FormHelperSelector v-if="showFormHelperSelector" />
@@ -19,9 +27,9 @@
             'btn-outline-success': editorType === editorTypes.codemirror,
           }"
           @click="selectedEditorType = editorTypes.codemirror"
-          title="Use advanced editor for editing the stub. The editor has code highlighting but is not suited for updating large stubs."
+          :title="$translate('stubForm.advancedEditorDescription')"
         >
-          Advanced editor
+          {{ $translate("stubForm.advancedEditor") }}
         </button>
         <button
           class="btn btn-outline btn-sm"
@@ -29,9 +37,9 @@
             'btn-outline-success': editorType === editorTypes.simple,
           }"
           @click="selectedEditorType = editorTypes.simple"
-          title="Use simple editor for editing the stub. The editor has no code highlighting but is suited for updating large stubs."
+          :title="$translate('stubForm.simpleEditorDescription')"
         >
-          Simple editor
+          {{ $translate("stubForm.simpleEditor") }}
         </button>
       </div>
     </div>
@@ -55,9 +63,8 @@
 
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { computed, onMounted, watch, ref } from "vue";
-import { renderDocLink, resources } from "@/constants/resources";
-import { simpleEditorThreshold } from "@/constants/technical";
+import { computed, defineComponent, onMounted, ref, watch } from "vue";
+import { simpleEditorThreshold } from "@/constants";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
@@ -67,8 +74,10 @@ import SimpleEditor from "@/components/simpleEditor/SimpleEditor.vue";
 import { error } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
-import { defineComponent } from "vue";
 import { vsprintf } from "sprintf-js";
+import { translate } from "@/utils/translate";
+import { renderDocLink } from "@/utils/doc";
+import { defaultStub } from "@/strings/exmaples";
 
 const editorTypes = {
   none: "none",
@@ -98,7 +107,6 @@ export default defineComponent({
     // Computed
     const stubId = computed(() => route.params.stubId as string);
     const newStub = computed(() => !route.params.stubId);
-    const title = computed(() => (newStub.value ? "Add stub" : "Update stub"));
     const input = computed({
       get: () => stubFormStore.getInput,
       set: (value) => stubFormStore.setInput(value),
@@ -140,7 +148,7 @@ export default defineComponent({
           input.value = intermediateStub;
           clearIntermediateStub();
         } else {
-          input.value = resources.defaultStub;
+          input.value = defaultStub;
           stubFormStore.setFormIsDirty(false);
         }
       } else {
@@ -150,7 +158,7 @@ export default defineComponent({
           stubFormStore.setFormIsDirty(false);
         } catch (e: any) {
           if (e.status === 404) {
-            error(vsprintf(resources.stubNotFound, [stubId.value]));
+            error(vsprintf(translate("stubForm.stubNotFound"), [stubId.value]));
             await router.push({ name: "StubForm" });
           } else {
             handleHttpError(e);
@@ -170,7 +178,6 @@ export default defineComponent({
     return {
       stubId,
       newStub,
-      title,
       input,
       cmOptions,
       showFormHelperSelector,

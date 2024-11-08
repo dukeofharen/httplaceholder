@@ -116,8 +116,8 @@ public class ImageResponseWriterFacts
         Assert.AreEqual(1, response.Headers.Count);
         await using var ms = new MemoryStream(response.Body);
         using var image = new MagickImage(ms);
-        Assert.AreEqual(stub.Response.Image.Height, image.Height);
-        Assert.AreEqual(stub.Response.Image.Width, image.Width);
+        Assert.AreEqual((uint)stub.Response.Image.Height, image.Height);
+        Assert.AreEqual((uint)stub.Response.Image.Width, image.Width);
         Assert.AreEqual(expectedContentType, response.Headers[HeaderKeys.ContentType]);
         fileServiceMock
             .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body, It.IsAny<CancellationToken>()),

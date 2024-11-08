@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>Settings</h1>
+    <h1>{{ $translate("settings.settings") }}</h1>
 
     <div class="row">
       <div class="col-md-12">
-        <h2>Features</h2>
+        <h2>{{ $translate("settings.features") }}</h2>
         <div class="form-check">
           <input
             class="form-check-input"
@@ -13,7 +13,9 @@
             v-model="settings.darkTheme"
             @change="saveSettings"
           />
-          <label class="form-check-label" for="darkTheme">Dark theme</label>
+          <label class="form-check-label" for="darkTheme">{{
+            $translate("settings.darkTheme")
+          }}</label>
         </div>
       </div>
       <div class="col-md-12">
@@ -25,9 +27,9 @@
             v-model="settings.saveSearchFilters"
             @change="saveSettings"
           />
-          <label class="form-check-label" for="saveSearchFilters"
-            >Persist search filters on stubs and request screens</label
-          >
+          <label class="form-check-label" for="saveSearchFilters">{{
+            $translate("settings.persistSearchFilters")
+          }}</label>
         </div>
       </div>
       <div class="col-md-12">
@@ -38,24 +40,28 @@
             id="storeResponses"
             v-model="storeResponses"
           />
-          <label class="form-check-label" for="storeResponses"
-            >Store response for request</label
-          >
-          <p>
-            <strong>Note</strong>: this setting will be reset to its original
-            value after restarting HttPlaceholder. To persist the setting, take
-            a look at
-            <a :href="configDocsLink" target="_blank">the documentation</a>.
-          </p>
+          <label class="form-check-label" for="storeResponses">{{
+            $translate("settings.storeResponseForRequest")
+          }}</label>
+          <p
+            v-html="
+              $vsprintf(
+                $translateWithMarkdown(
+                  'settings.storeResponseForRequestDescription',
+                  { linkTarget: '_blank' },
+                ),
+                [configDocsLink],
+              )
+            "
+          />
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <label for="requestPageSize"
-          >Default number of requests on the request page (set to 0 to disable
-          request paging)</label
-        >
+        <label for="requestPageSize">{{
+          $translate("settings.defaultNumberOfRequests")
+        }}</label>
         <input
           type="number"
           class="form-control mt-2"
@@ -68,11 +74,10 @@
 
     <div class="row mt-3">
       <div class="col-md-12">
-        <h2>HttPlaceholder configuration</h2>
+        <h2>{{ $translate("settings.httplaceholderConfiguration") }}</h2>
 
         <p>
-          HttPlaceholder was started with the following settings. The settings
-          are read-only and can only be set when starting the application.
+          {{ $translate("settings.httplaceholderConfigurationDescription") }}
         </p>
         <template v-for="item of config" :key="item.key">
           <div class="row setting">
@@ -88,16 +93,20 @@
 
     <div class="row mt-3">
       <div class="col-md-12">
-        <h2>Metadata</h2>
+        <h2>{{ $translate("settings.metadata") }}</h2>
       </div>
       <div class="row">
-        <div class="col-md-2"><strong>Version</strong></div>
+        <div class="col-md-2">
+          <strong>{{ $translate("settings.version") }}</strong>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-2">{{ metadata.version }}</div>
       </div>
       <div class="row mt-2">
-        <div class="col-md-2"><strong>Runtime</strong></div>
+        <div class="col-md-2">
+          <strong>{{ $translate("settings.runtime") }}</strong>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-2">{{ metadata.runtimeVersion }}</div>
@@ -113,8 +122,8 @@ import type { SettingsModel } from "@/domain/settings-model";
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 import { handleHttpError } from "@/utils/error";
-import { renderDocLink } from "@/constants/resources";
 import { useMetadataStore } from "@/store/metadata";
+import { renderDocLink } from "@/utils/doc";
 
 export default defineComponent({
   name: "Settings",

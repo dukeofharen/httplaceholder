@@ -17,7 +17,7 @@ internal class FinalStubDeterminer : IFinalStubDeterminer, ISingletonService
         switch (matchedStubsArray.Length)
         {
             case 0:
-                throw new ValidationException("No stub found.");
+                throw new ValidationException(StubResources.NoStubFound);
             case 1:
                 return matchedStubsArray[0].Item1;
         }

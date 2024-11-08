@@ -1,13 +1,13 @@
 <template>
   <div @keyup.enter="logIn">
-    <h1>Log in</h1>
+    <h1>{{ $translate("logIn.logIn") }}</h1>
 
     <div class="row">
       <div class="col-md-12 input-group">
         <input
           type="text"
           class="form-control"
-          placeholder="Username"
+          :placeholder="$translate('general.username')"
           v-model="username"
         />
       </div>
@@ -18,7 +18,7 @@
         <input
           type="password"
           class="form-control"
-          placeholder="Password"
+          :placeholder="$translate('general.password')"
           v-model="password"
         />
       </div>
@@ -31,7 +31,7 @@
           @click="logIn"
           :disabled="!buttonEnabled"
         >
-          Log in
+          {{ $translate("logIn.logIn") }}
         </button>
       </div>
     </div>
@@ -39,14 +39,13 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { resources } from "@/constants/resources";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { error } from "@/utils/toast";
 import { type AuthenticationInput, useUsersStore } from "@/store/users";
-import { defineComponent } from "vue";
 import { useMetadataStore } from "@/store/metadata";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Login",
@@ -76,7 +75,7 @@ export default defineComponent({
         await router.push({ name: "Requests" });
       } catch (e: any) {
         if (e.status === 401) {
-          error(resources.credentialsIncorrect);
+          error(translate("general.credentialsIncorrect"));
         } else {
           handleHttpError(e);
         }

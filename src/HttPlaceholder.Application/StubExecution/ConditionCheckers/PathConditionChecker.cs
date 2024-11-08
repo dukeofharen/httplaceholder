@@ -24,5 +24,5 @@ public class PathConditionChecker(IHttpContextService httpContextService, IStrin
         CancellationToken cancellationToken) =>
         stringChecker.CheckString(httpContextService.Path, stub.Conditions.Url.Path, out var outputForLogging)
             ? ValidAsync()
-            : InvalidAsync($"Condition '{outputForLogging}' did not pass for request.");
+            : InvalidAsync(string.Format(StubResources.PathConditionFailed, outputForLogging));
 }

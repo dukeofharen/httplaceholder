@@ -1,3 +1,11 @@
+export enum SessionKey {
+  intermediateStub = "intermediateStub",
+  settings = "settings",
+  userToken = "userToken",
+  stubsFilter = "stubsFilter",
+  requestsFilter = "requestsFilter",
+}
+
 import {
   getLocal,
   getSession,
@@ -8,7 +16,6 @@ import {
 import type { SettingsModel } from "@/domain/settings-model";
 import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
-import { SessionKey } from "@/constants/session-key";
 
 export function getIntermediateStub(): string {
   return getSession(SessionKey.intermediateStub);

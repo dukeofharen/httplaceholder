@@ -16,7 +16,7 @@ internal class SqlServerDbConnectionFactory(IConfiguration configuration) : IDbC
     /// <inheritdoc />
     public IDbConnection GetConnection() =>
         new SqlConnection(configuration.GetConnectionString(ConnectionStringKey) ??
-                          throw new InvalidOperationException("SQL Server connection string not found."));
+                          throw new InvalidOperationException(PersistenceResources.SqlserverStringNotFound));
 
 
     /// <inheritdoc />

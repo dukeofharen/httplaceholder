@@ -36,7 +36,6 @@ internal class StubModelValidator(
     private List<string> ValidateExtraDuration(StubModel stub)
     {
         var result = new List<string>();
-        const string errorTemplate = "Value for '{0}' cannot be higher than '{1}'.";
         var extraDuration = stub?.Response?.ExtraDuration;
         var allowedMillis = options.CurrentValue.Stub?.MaximumExtraDurationMillis;
         var parsedDuration = ConversionUtilities.ParseInteger(extraDuration);
@@ -44,7 +43,8 @@ internal class StubModelValidator(
         {
             if (parsedDuration.Value > 0 && parsedDuration.Value > allowedMillis)
             {
-                result.Add(string.Format(errorTemplate, "ExtraDuration", allowedMillis));
+                result.Add(string.Format(StubResources.StubValidationExtraDurationTemplate, "ExtraDuration",
+                    allowedMillis));
             }
         }
         else if (extraDuration != null)
@@ -52,18 +52,20 @@ internal class StubModelValidator(
             var extraDurationModel = ConversionUtilities.Convert<StubExtraDurationModel>(extraDuration);
             if (extraDurationModel?.Min > 0 && extraDurationModel.Min > allowedMillis)
             {
-                result.Add(string.Format(errorTemplate, "ExtraDuration.Min", allowedMillis));
+                result.Add(string.Format(StubResources.StubValidationExtraDurationTemplate, "ExtraDuration.Min",
+                    allowedMillis));
             }
 
             if (extraDurationModel?.Max > 0 && extraDurationModel.Max > allowedMillis)
             {
-                result.Add(string.Format(errorTemplate, "ExtraDuration.Max", allowedMillis));
+                result.Add(string.Format(StubResources.StubValidationExtraDurationTemplate, "ExtraDuration.Max",
+                    allowedMillis));
             }
 
             if (extraDurationModel is { Min: not null, Max: not null } &&
                 extraDurationModel.Min > extraDurationModel.Max)
             {
-                result.Add("ExtraDuration.Min should be lower than or equal to ExtraDuration.Max.");
+                result.Add(StubResources.StubValidationMinInvalid);
             }
         }
 
@@ -98,17 +100,17 @@ internal class StubModelValidator(
         var scenarioState = scenarioConditions.ScenarioState;
         if (minHits.HasValue && minHits == maxHits)
         {
-            result.Add("minHits and maxHits can not be equal.");
+            result.Add(StubResources.StubValidationMinMaxHitsCantBeEqual);
         }
 
         if (maxHits < minHits)
         {
-            result.Add("maxHits can not be lower than minHits.");
+            result.Add(StubResources.StubValidationMaxHitsCantBeLowerThanMinHits);
         }
 
         if (exactHits.HasValue && (minHits.HasValue || maxHits.HasValue))
         {
-            result.Add("exactHits can not be set if minHits and maxHits are set.");
+            result.Add(StubResources.StubValidationExactCantBeSet);
         }
 
         var scenarioResponse = stub?.Response?.Scenario ?? new StubResponseScenarioModel();
@@ -116,7 +118,7 @@ internal class StubModelValidator(
         var clearState = scenarioResponse.ClearState;
         if (!string.IsNullOrWhiteSpace(setScenarioState) && clearState == true)
         {
-            result.Add("setScenarioState and clearState can not both be set at the same time.");
+            result.Add(StubResources.StubValidationStateInvalid);
         }
 
         var scenario = stub?.Scenario ?? string.Empty;
@@ -124,8 +126,7 @@ internal class StubModelValidator(
                                                     !string.IsNullOrWhiteSpace(scenarioState) ||
                                                     !string.IsNullOrWhiteSpace(setScenarioState)))
         {
-            result.Add(
-                "Scenario condition checkers and response writers can not be set if no 'scenario' is provided.");
+            result.Add(StubResources.StubValidationScenarioNotProvided);
         }
 
         return result;
@@ -145,11 +146,10 @@ internal class StubModelValidator(
         switch (count)
         {
             case 1 when response.StatusCode == (int)HttpStatusCode.NoContent:
-                result.Add("When HTTP status code is 204, no response body can be set.");
+                result.Add(StubResources.StubValidation204WithBody);
                 break;
             case > 1:
-                result.Add(
-                    "Only one of the response body fields (text, json, xml, html, base64, file) can be set");
+                result.Add(StubResources.StubValidationMultipleResponseBodyFieldsSet);
                 break;
         }
 
@@ -167,7 +167,7 @@ internal class StubModelValidator(
 
         result.AddRange(headers
             .Where(h => _illegalHeaders.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
-            .Select(h => $"Header '${h.Key}' can't be used as response header."));
+            .Select(h => string.Format(StubResources.StubValidationHeaderCantBeUsedAsResponseHeader, h.Key)));
         return result;
     }
 
@@ -184,24 +184,23 @@ internal class StubModelValidator(
         {
             if (StringHelper.CountNumberOfNonWhitespaceStrings(replace.Text, replace.Regex, replace.JsonPath) > 1)
             {
-                result.Add($"Replace [{i}]: set either 'text', 'regex' or 'jsonReplace'.");
+                result.Add(string.Format(StubResources.StubValidationStringReplaceMultipleSet, i));
             }
 
             if (StringHelper.AllAreNullOrWhitespace(replace.Text, replace.Regex, replace.JsonPath))
             {
-                result.Add($"Replace [{i}]: either 'text', 'regex' or 'jsonReplace' needs to be set.");
+                result.Add(string.Format(StubResources.StubValidationStringReplaceNoneSet, i));
             }
 
             if (StringHelper.CountNumberOfNonWhitespaceStrings(replace.Regex, replace.JsonPath) > 0 &&
                 replace.IgnoreCase.HasValue)
             {
-                result.Add(
-                    $"Replace [{i}]: 'ignoreCase' can only be used with 'text'.");
+                result.Add(string.Format(StubResources.StubValidationStringReplaceIgnoreCase, i));
             }
 
             if (replace.ReplaceWith == null)
             {
-                result.Add($"Replace [{i}]: 'replaceWith' should be set.");
+                result.Add(string.Format(StubResources.StubValidationReplaceWithNotSet, i));
             }
 
             i++;

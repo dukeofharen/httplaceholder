@@ -10,18 +10,22 @@
           'text-success': result.passed,
           'text-danger': !result.passed,
         }"
-        >{{ result.passed ? "passed" : "not passed" }}</span
+        >{{
+          result.passed
+            ? $translate("request.passed")
+            : $translate("request.notPassed")
+        }}</span
       >
       <span>)</span>
     </template>
     <template v-slot:accordion-body>
       <span
         ><button class="btn btn-success btn-sm" @click="goToStub">
-          Go to stub
+          {{ $translate("request.goToStub") }}
         </button></span
       >
       <div v-if="!result.conditions.length">
-        No condition checkers executed for this stub.
+        {{ $translate("request.noConditionCheckersFound") }}
       </div>
       <div
         v-else
@@ -39,8 +43,8 @@
         >
           {{
             condition.conditionValidation === ConditionValidationType.Valid
-              ? "passed"
-              : "not passed"
+              ? $translate("request.passed")
+              : $translate("request.notPassed")
           }}
         </div>
         <div v-if="condition.log">{{ condition.log }}</div>

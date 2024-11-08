@@ -8,22 +8,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Bogus" Version="35.5.1" />
-        <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
+        <PackageReference Include="Bogus" Version="35.6.1" />
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.70" />
         <PackageReference Include="IPAddressRange" Version="6.0.0" />
-        <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="13.9.1" />
-        <PackageReference Include="MediatR" Version="12.3.0" />
+        <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.0.0" />
+        <PackageReference Include="MediatR" Version="12.4.1" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17"/>
-        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.6" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.10" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.2" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
         <PackageReference Include="Microsoft.Extensions.Primitives" Version="8.0.0" />
-        <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.15" />
+        <PackageReference Include="Microsoft.OpenApi.Readers" Version="1.6.22" />
         <PackageReference Include="NCrontab" Version="3.3.3" />
     </ItemGroup>
 
@@ -37,6 +37,18 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ResponseVariableParsingResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="ApplicationResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ApplicationResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Configuration\ConfigKeysResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ConfigKeysResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="StubExecution\StubResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>StubResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -44,6 +56,21 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>ResponseVariableParsingResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="ApplicationResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ApplicationResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Configuration\ConfigKeysResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ConfigKeysResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="StubExecution\StubResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>StubResources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

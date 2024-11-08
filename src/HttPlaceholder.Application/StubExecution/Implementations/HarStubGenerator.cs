@@ -43,7 +43,7 @@ internal class HarStubGenerator(
         }
         catch (Exception ex)
         {
-            throw new ValidationException($"Exception occurred while trying to parse HTTP Archive: {ex.Message}");
+            throw new ValidationException(string.Format(StubResources.ExceptionWhenParsingHar, ex.Message));
         }
     }
 
@@ -89,7 +89,7 @@ internal class HarStubGenerator(
         var stub = new StubModel
         {
             Tenant = tenant,
-            Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
+            Description = string.Format(StubResources.MethodStubDescription, conditions.Method, conditions.Url?.Path),
             Conditions = conditions,
             Response = response
         };
@@ -101,17 +101,17 @@ internal class HarStubGenerator(
     {
         if (har == null)
         {
-            throw new ValidationException("The HAR was invalid.");
+            throw new ValidationException(StubResources.HarInvalid);
         }
 
         if (har.Log == null)
         {
-            throw new ValidationException("har.log is not set.");
+            throw new ValidationException(StubResources.HarLogInvalid);
         }
 
         if (har.Log.Entries == null || har.Log.Entries.Length == 0)
         {
-            throw new ValidationException("No entries set in HAR.");
+            throw new ValidationException(StubResources.HarEmpty);
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @keyup.enter="save">
     <h1>{{ title }}</h1>
 
     <div class="row">
@@ -8,7 +8,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Scenario name (required)"
+            :placeholder="`${$translate('scenarioForm.scenarioName')} (${$translate('general.required')})`"
             v-model="scenarioForm.scenario"
           />
         </div>
@@ -18,7 +18,7 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Scenario state (optional)"
+            :placeholder="`${$translate('scenarioForm.scenarioState')} (${$translate('general.optional')})`"
             v-model="scenarioForm.state"
           />
         </div>
@@ -28,14 +28,14 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Scenario hit count (optional)"
+            :placeholder="`${$translate('scenarioForm.scenarioHitCount')} (${$translate('general.optional')})`"
             v-model="scenarioForm.hitCount"
           />
         </div>
       </div>
       <div class="col-md-12 mb-2">
         <button class="btn btn-success" @click="save" :disabled="saveDisabled">
-          Save
+          {{ $translate("general.save") }}
         </button>
       </div>
     </div>
@@ -44,13 +44,19 @@
 
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from "vue";
 import { handleHttpError } from "@/utils/error";
-import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
 import { type ScenarioInputModel, useScenariosStore } from "@/store/scenarios";
-import { defineComponent } from "vue";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "ScenarioForm",
@@ -70,26 +76,32 @@ export default defineComponent({
     const scenarioName = computed(() => route.params.scenario as string);
     const newScenario = computed(() => !scenarioName.value);
     const title = computed(() =>
-      newScenario.value ? "Add scenario" : "Update scenario",
+      newScenario.value
+        ? translate("scenarioForm.addScenario")
+        : translate("scenarioForm.updateScenario"),
     );
     const saveDisabled = computed(() => !scenarioForm.value.scenario);
 
     // Methods
     const save = async () => {
       try {
+        if (saveDisabled.value) {
+          return;
+        }
+
         if (!scenarioForm.value.hitCount) {
           scenarioForm.value.hitCount = 0;
         }
 
         await scenarioStore.setScenario(scenarioForm.value);
-        success(resources.scenarioSetSuccessfully);
+        success(translate("scenarioForm.scenarioSetSuccessfully"));
         await router.push({ name: "Scenarios" });
       } catch (e) {
         handleHttpError(e);
       }
     };
     const checkSave = async (e: KeyboardEvent) => {
-      if (shouldSave(e) && !saveDisabled.value) {
+      if (shouldSave(e)) {
         e.preventDefault();
         await save();
       }

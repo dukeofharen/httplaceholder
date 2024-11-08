@@ -1,5 +1,6 @@
-import { dateTimeFormat } from "@/constants/technical";
+import { dateTimeFormat } from "@/constants";
 import dayjs from "dayjs";
+import { translate } from "@/utils/translate";
 
 export function formatDateTime(input: string): string | undefined {
   if (!input) {
@@ -14,7 +15,7 @@ export function formatFromNow(input: string): string | undefined {
     return;
   }
 
-  return dayjs(input).fromNow();
+  return dayjs(input).locale(translate("dayJsLocale")).fromNow();
 }
 
 export function getDuration(

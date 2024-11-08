@@ -58,7 +58,8 @@ public class HeaderConditionChecker(IHttpContextService httpContextService, IStr
             if (!stringChecker.CheckString(headerValue, condition.Value, out var outputForLogging))
             {
                 // If the check failed, it means the header is incorrect and the condition should fail.
-                return InvalidAsync($"Header condition '{condition.Key}: {outputForLogging}' failed.");
+                return InvalidAsync(string.Format(StubResources.HeaderConditionFailed, condition.Key,
+                    outputForLogging));
             }
 
             validHeaders++;

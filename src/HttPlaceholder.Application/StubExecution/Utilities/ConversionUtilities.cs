@@ -32,8 +32,8 @@ public static class ConversionUtilities
             case T model:
                 return model;
             default:
-                throw new InvalidOperationException(
-                    $"Object of type '{input.GetType()}' not supported for serializing to '{typeof(T)}'.");
+                throw new InvalidOperationException(string.Format(StubResources.ObjectNotSupportedForSerializing,
+                    input.GetType(), typeof(T)));
         }
     }
 
@@ -48,8 +48,8 @@ public static class ConversionUtilities
         {
             JArray jArray => jArray.ToObject<T[]>(),
             IList<object> list => list.Select(i => (T)i),
-            _ => throw new InvalidOperationException(
-                $"Object of type '{input.GetType()}' not supported for serializing to '{typeof(T)}'.")
+            _ => throw new InvalidOperationException(string.Format(StubResources.ObjectNotSupportedForSerializing,
+                input.GetType(), typeof(T)))
         };
 
     /// <summary>

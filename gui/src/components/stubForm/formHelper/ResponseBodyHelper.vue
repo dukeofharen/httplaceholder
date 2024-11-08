@@ -1,14 +1,13 @@
 <template>
   <div class="response-body-form">
     <div v-if="showResponseBodyTypeDropdown">
-      <div class="hint">
-        Select a type of response and fill in the actual response that should be
-        returned and press "Insert".
-      </div>
+      <div class="hint">{{ $translate("stubForm.responseBodyHint") }}</div>
 
       <div class="mt-2">
         <select class="form-select" v-model="responseBodyType">
-          <option value="">Select a response type...</option>
+          <option value="">
+            {{ $translate("stubForm.responseBodySelectType") }}
+          </option>
           <option
             v-for="item in responseBodyTypeItems"
             :key="item"
@@ -22,17 +21,15 @@
 
     <div v-if="responseBodyType === ResponseBodyType.base64">
       <div class="hint">
-        You can upload a <strong>file</strong> for use in the Base64 response or
-        click on "show text input" and insert <strong>plain text</strong> that
-        will be encoded to Base64 on inserting.
+        <p v-html="$translateWithMarkdown('stubForm.responseBodyBase64Hint')" />
       </div>
       <upload-button
-        button-text="Upload a file"
+        :button-text="$translate('stubForm.responseBodyUploadAFile')"
         @uploaded="onUploaded"
         :result-type="UploadButtonType.Base64"
       />
       <button class="btn btn-primary" @click="showBase64TextInput = true">
-        Show text input
+        {{ $translate("stubForm.responseBodyShowTextInput") }}
       </button>
     </div>
 
@@ -44,12 +41,14 @@
           v-model="enableDynamicMode"
           id="enableDynamicMode"
         />
-        <label class="form-check-label" for="enableDynamicMode"
-          >Enable dynamic mode</label
-        >
+        <label class="form-check-label" for="enableDynamicMode">{{
+          $translate("stubForm.responseBodyEnableDynamicMode")
+        }}</label>
       </div>
       <div v-if="showVariableParsers" class="mt-2">
-        <div class="hint mb-2">{{ elementDescriptions.dynamicMode }}</div>
+        <div class="hint mb-2">
+          {{ $translate("stubFormHelperDescriptions.dynamicMode") }}
+        </div>
         <VariableHandlerSelector
           :variable-parser-items="variableParserItems"
           @exampleSelected="insertVariableHandlerExample($event)"
@@ -67,20 +66,26 @@
 
     <div v-if="responseBodyType === ResponseBodyType.json">
       <button class="btn btn-primary me-2" @click="prettifyJson">
-        Prettify JSON
+        {{ $translate("stubForm.responseBodyPrettifyJson") }}
       </button>
-      <button class="btn btn-primary" @click="minifyJson">Minify JSON</button>
+      <button class="btn btn-primary" @click="minifyJson">
+        {{ $translate("stubForm.responseBodyMinifyJson") }}
+      </button>
     </div>
 
     <div v-if="responseBodyType === ResponseBodyType.xml">
       <button class="btn btn-primary me-2" @click="prettifyXml">
-        Prettify XML
+        {{ $translate("stubForm.responseBodyPrettifyXml") }}
       </button>
-      <button class="btn btn-primary" @click="minifyXml">Minify XML</button>
+      <button class="btn btn-primary" @click="minifyXml">
+        {{ $translate("stubForm.responseBodyMinifyXml") }}
+      </button>
     </div>
 
     <div>
-      <button class="btn btn-danger" @click="close">Close</button>
+      <button class="btn btn-danger" @click="close">
+        {{ $translate("general.close") }}
+      </button>
     </div>
   </div>
 </template>
@@ -104,11 +109,12 @@ import {
 } from "@/domain/stubForm/response-body-type";
 import type { MetadataModel } from "@/domain/metadata/metadata-model";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
-import { elementDescriptions } from "@/domain/stubForm/element-descriptions";
 import { UploadButtonType } from "@/domain/upload-button-type";
 import { warning } from "@/utils/toast";
 import xmlFormatter from "xml-formatter";
 import VariableHandlerSelector from "@/components/stubForm/formHelper/VariableHandlerSelector.vue";
+import { vsprintf } from "sprintf-js";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "ResponseBodyHelper",
@@ -205,7 +211,7 @@ export default defineComponent({
           spaces,
         );
       } catch (e) {
-        warning(`Error occurred while formatting JSON: ${e}`);
+        warning(vsprintf(translate("errors.errorFormattingJson"), [e]));
       }
     };
     const prettifyJson = () => formatJson(2);
@@ -221,7 +227,7 @@ export default defineComponent({
           : {};
         responseBody.value = xmlFormatter(responseBody.value, options);
       } catch (e) {
-        warning(`Error occurred while formatting XML: ${e}`);
+        warning(vsprintf(translate("errors.errorFormattingXml"), [e]));
       }
     };
     const prettifyXml = () => formatXml(false);
@@ -293,7 +299,6 @@ export default defineComponent({
       showResponseBodyTypeDropdown,
       codeEditor,
       ResponseBodyType,
-      elementDescriptions,
       UploadButtonType,
       prettifyJson,
       minifyJson,

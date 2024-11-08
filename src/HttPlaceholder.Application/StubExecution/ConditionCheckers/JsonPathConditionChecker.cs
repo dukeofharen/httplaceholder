@@ -40,8 +40,8 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
                 if (elements == null)
                 {
                     // No suitable JSON results found.
-                    return await InvalidAsync(
-                        $"No suitable JSON results found with JSONPath query '{conditionString}'.");
+                    return await InvalidAsync(string.Format(StubResources.JsonPathNoSuitableJsonResultsFoundQuery,
+                        conditionString));
                 }
 
                 validJsonPaths++;
@@ -70,7 +70,7 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
                         foundValue,
                         jsonPathCondition.ExpectedValue))
                 {
-                    return await InvalidAsync("No suitable JSON results found.");
+                    return await InvalidAsync(StubResources.JsonPathNoSuitableJsobResultsFound);
                 }
 
                 validJsonPaths++;
@@ -90,13 +90,11 @@ public class JsonPathConditionChecker(IHttpContextService httpContextService) : 
             Dictionary<object, object> conditionDict => ParseDict(conditionDict),
             Dictionary<string, string> conditionDict => ParseDict(
                 conditionDict.ToDictionary(d => (object)d.Key, d => (object)d.Value)),
-            _ => throw new InvalidOperationException(
-                $"Can't determine the type of the JSONPath condition for stub with ID '{stubId}'.")
+            _ => throw new InvalidOperationException(string.Format(StubResources.JsonPathCantDetermineType, stubId))
         };
         if (string.IsNullOrWhiteSpace(jsonPathCondition.Query))
         {
-            throw new InvalidOperationException(
-                $"Value 'query' not set for JSONPath condition for stub with ID '{stubId}'.");
+            throw new InvalidOperationException(string.Format(StubResources.JsonpathQueryNotSet, stubId));
         }
 
         return jsonPathCondition;

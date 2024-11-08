@@ -15,6 +15,7 @@
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
 import { LineEndingType } from "@/domain/stub/enums/line-ending-type";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "LineEndingSelector",
@@ -24,15 +25,15 @@ export default defineComponent({
     // Data
     const types = [
       {
-        name: "As provided in response body",
+        name: translate("stubForm.lineEndingAsProvided"),
         value: undefined,
       },
       {
-        name: "UNIX line endings",
+        name: translate("stubForm.lineEndingUnix"),
         value: LineEndingType.Unix,
       },
       {
-        name: "Windows line endings",
+        name: translate("stubForm.lineEndingWindows"),
         value: LineEndingType.Windows,
       },
     ];

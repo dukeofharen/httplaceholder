@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -7,6 +8,7 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using ImageMagick;
+using ImageMagick.Drawing;
 using TextAlignment = ImageMagick.TextAlignment;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -63,11 +65,13 @@ internal class ImageResponseWriter(
         StubResponseImageModel stubImage)
     {
         var backgroundColor = new MagickColor(stubImage.BackgroundColor);
-        using var image = new MagickImage(backgroundColor, stubImage.Width, stubImage.Height);
+        var width = Convert.ToUInt32(stubImage.Width);
+        var height = Convert.ToUInt32(stubImage.Height);
+        using var image = new MagickImage(backgroundColor, width, height);
         var fontColor = !string.IsNullOrWhiteSpace(stubImage.FontColor)
             ? new MagickColor(stubImage.FontColor)
             : backgroundColor.InvertRgbColor();
-        const int fontSize = 30;
+        var fontSize = stubImage.FontSize > 0 ? stubImage.FontSize : 30;
         if (stubImage.WordWrap)
         {
             using var label = new MagickImage($"caption:{stubImage.Text}",
@@ -76,11 +80,12 @@ internal class ImageResponseWriter(
                     FillColor = fontColor,
                     BackgroundColor = MagickColors.Transparent,
                     FontPointsize = fontSize,
-                    Width = stubImage.Width,
+                    Width = width,
                     TextGravity = Gravity.Center,
                     Font = GetFontPath()
                 });
-            image.Composite(label, 0, (stubImage.Height - label.Height) / 2, CompositeOperator.Over);
+            var bla = (int)(height - label.Height) / 2;
+            image.Composite(label, Gravity.Center, (int)0, bla, CompositeOperator.Over);
         }
         else
         {
@@ -103,7 +108,7 @@ internal class ImageResponseWriter(
                 break;
             case ResponseImageType.Jpeg:
                 image.Format = MagickFormat.Jpeg;
-                image.Quality = stubImage.JpegQuality;
+                image.Quality = Convert.ToUInt32(stubImage.JpegQuality);
                 break;
             default:
                 image.Format = MagickFormat.Png;

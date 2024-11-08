@@ -23,13 +23,13 @@ internal class RequestBodyResponseVariableParsingHandler(
     public override string Name => "request_body";
 
     /// <inheritdoc />
-    public override string FullName => "Request body";
+    public override string FullName => ResponseVariableParsingResources.RequestBody;
 
     /// <inheritdoc />
     public override string[] Examples => [$"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'"];
 
     /// <inheritdoc />
-    public override string GetDescription() => ResponseVariableParsingResources.RequestBody;
+    public override string GetDescription() => ResponseVariableParsingResources.RequestBodyDescription;
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, IEnumerable<Match> matches, StubModel stub,

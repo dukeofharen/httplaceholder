@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12" v-if="bodyType">
           <button class="btn btn-sm btn-primary me-2" @click="download">
-            Download
+            {{ $translate("general.download") }}
           </button>
           <button
             class="btn btn-sm me-2"
@@ -24,7 +24,7 @@
             }"
             @click="viewRawBody"
           >
-            Raw
+            {{ $translate("request.raw") }}
           </button>
         </div>
       </div>
@@ -45,7 +45,7 @@
         <div class="col-md-12">
           <i
             class="bi bi-clipboard copy"
-            title="Copy request body"
+            :title="$translate('request.copyRequestBody')"
             @click="copy"
             >&nbsp;</i
           >
@@ -60,19 +60,19 @@ import { computed, onMounted, type PropType, ref } from "vue";
 import xmlFormatter from "xml-formatter";
 import { formFormat } from "@/utils/form";
 import { copyTextToClipboard } from "@/utils/clipboard";
-import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { defineComponent } from "vue";
 import { countNewlineCharacters, fromBase64 } from "@/utils/text";
-import { requestBodyLineLimit } from "@/constants/technical";
+import { requestBodyLineLimit } from "@/constants";
 import mime from "mime-types";
 import { downloadBlob } from "@/utils/download";
 import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
+import { translate } from "@/utils/translate";
 
 const bodyTypes = {
-  xml: "XML",
-  json: "JSON",
-  form: "Form",
+  xml: translate("request.xml"),
+  json: translate("request.json"),
+  form: translate("request.form"),
 };
 
 export default defineComponent({
@@ -165,7 +165,7 @@ export default defineComponent({
         ? renderedBody.value
         : body.value;
       copyTextToClipboard(valueToCopy).then(() =>
-        success(resources.requestBodyCopiedToClipboard),
+        success(translate("request.requestBodyCopiedToClipboard")),
       );
     };
     const showMoreClick = () => {

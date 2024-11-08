@@ -27,6 +27,6 @@ public class FullPathConditionChecker(IHttpContextService httpContextService, IS
         var path = httpContextService.FullPath;
         return stringChecker.CheckString(path, fullPathCondition, out var outputForLogging)
             ? ValidAsync()
-            : InvalidAsync($"Condition '{outputForLogging}' did not pass for request.");
+            : InvalidAsync(string.Format(StubResources.FullPathConditionFailed, outputForLogging));
     }
 }

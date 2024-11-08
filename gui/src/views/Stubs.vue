@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Stubs</h1>
+    <h1>{{ $translate("stubs.stubs") }}</h1>
 
     <div class="col-md-12 mb-3">
       <button
@@ -8,35 +8,35 @@
         class="btn btn-success me-2 btn-mobile full-width"
         @click="loadData"
       >
-        Refresh
+        {{ $translate("general.refresh") }}
       </button>
       <router-link
         :to="{ name: 'StubForm' }"
         class="btn btn-success me-2 btn-mobile full-width"
-        >Add stubs
+        >{{ $translate("stubs.addStubs") }}
       </router-link>
       <button
         class="btn btn-success me-2 btn-mobile full-width"
         @click="download"
-        title="Download the (filtered) stubs as YAML file."
+        :title="$translate('stubs.downloadStubsDescription')"
       >
-        Download stubs as YAML
+        {{ $translate("stubs.downloadStubs") }}
       </button>
       <router-link
         :to="{ name: 'ImportStubs' }"
         class="btn btn-success me-2 btn-mobile full-width"
-        >Import stubs
+        >{{ $translate("stubs.importStubs") }}
       </router-link>
       <button
         type="button"
         class="btn btn-danger btn-mobile full-width"
         @click="showDeleteAllStubsModal = true"
       >
-        Delete all stubs
+        {{ $translate("stubs.deleteAllStubs") }}
       </button>
       <modal
-        title="Delete all stubs?"
-        bodyText="The stubs can't be recovered."
+        :title="$translate('stubs.deleteAllStubsQuestion')"
+        :bodyText="$translate('stubs.stubsCantBeRecovered')"
         :yes-click-function="deleteAllStubs"
         :show-modal="showDeleteAllStubsModal"
         @close="showDeleteAllStubsModal = false"
@@ -46,15 +46,15 @@
     <div class="col-md-12 mb-3">
       <button
         class="btn btn-outline-success btn-sm me-2 btn-mobile"
-        title="Disable the current selection of stubs"
+        :title="$translate('stubs.disableStubsDescription')"
         @click="showDisableStubsModal = true"
         :disabled="disableMutationButtons"
       >
-        Disable stubs
+        {{ $translate("stubs.disableStubs") }}
       </button>
       <modal
-        title="Disable the current filtered stubs?"
-        bodyText="Only the stubs currently visible in the list will be disabled."
+        :title="$translate('stubs.disableStubsQuestion')"
+        :bodyText="$translate('stubs.disableStubsModalBody')"
         :yes-click-function="disableStubs"
         :show-modal="showDisableStubsModal"
         @close="showDisableStubsModal = false"
@@ -62,15 +62,15 @@
 
       <button
         class="btn btn-outline-success btn-sm me-2 btn-mobile"
-        title="Enable the current selection of stubs"
+        :title="$translate('stubs.enableStubsDescription')"
         @click="showEnableStubsModal = true"
         :disabled="disableMutationButtons"
       >
-        Enable stubs
+        {{ $translate("stubs.enableStubs") }}
       </button>
       <modal
-        title="Enable the current filtered stubs?"
-        bodyText="Only the stubs currently visible in the list will be enabled."
+        :title="$translate('stubs.enableStubsQuestion')"
+        :bodyText="$translate('stubs.enableStubsModalBody')"
         :yes-click-function="enableStubs"
         :show-modal="showEnableStubsModal"
         @close="showEnableStubsModal = false"
@@ -78,15 +78,15 @@
 
       <button
         class="btn btn-outline-success btn-sm me-2 btn-mobile"
-        title="Delete the current selection of stubs"
+        :title="$translate('stubs.deleteSelectedStubsDescription')"
         @click="showDeleteStubsModal = true"
         :disabled="disableMutationButtons"
       >
-        Delete stubs
+        {{ $translate("stubs.deleteSelectedStubs") }}
       </button>
       <modal
-        title="Delete the current filtered stubs?"
-        bodyText="The stubs can't be recovered. Only the stubs currently visible in the list will be deleted."
+        :title="$translate('stubs.deleteSelectedStubsQuestion')"
+        :bodyText="$translate('stubs.deleteSelectedStubsModalBody')"
         :yes-click-function="deleteStubs"
         :show-modal="showDeleteStubsModal"
         @close="showDeleteStubsModal = false"
@@ -98,13 +98,13 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Filter on stub ID..."
+          :placeholder="$translate('stubs.filterPlaceholder')"
           v-model="filter.stubFilter"
         />
         <button
           class="btn btn-danger fw-bold"
           type="button"
-          title="Reset"
+          :title="$translate('general.reset')"
           @click="filter.stubFilter = ''"
         >
           <em class="bi-x"></em>
@@ -113,14 +113,14 @@
       <div v-if="tenants.length" class="input-group">
         <select class="form-select" v-model="filter.selectedTenantName">
           <option value="" selected>
-            Select stub tenant / category name...
+            {{ $translate("general.selectStubTenantCategory") }}
           </option>
           <option v-for="tenant of tenants" :key="tenant">{{ tenant }}</option>
         </select>
         <button
           class="btn btn-danger fw-bold"
           type="button"
-          title="Reset"
+          :title="$translate('general.reset')"
           @click="filter.selectedTenantName = ''"
         >
           <em class="bi-x"></em>
@@ -133,13 +133,15 @@
         class="badge bg-secondary clear-filter me-2"
         v-if="filter.stubFilter"
         @click="filter.stubFilter = ''"
-        >Stub ID: <strong>{{ filter.stubFilter }} &times;</strong></span
+        >{{ $translate("general.stubId") }}:
+        <strong>{{ filter.stubFilter }} &times;</strong></span
       >
       <span
         class="badge bg-secondary clear-filter me-2"
         v-if="filter.selectedTenantName"
         @click="filter.selectedTenantName = ''"
-        >Tenant: <strong>{{ filter.selectedTenantName }} &times;</strong></span
+        >{{ $translate("general.tenant") }}:
+        <strong>{{ filter.selectedTenantName }} &times;</strong></span
       >
     </div>
 
@@ -152,11 +154,14 @@
       />
     </accordion>
     <div v-else>
-      No stubs have been added yet. Add a new stub by going to
-      <router-link :to="{ name: 'StubForm' }">Add stubs</router-link>
-      or
-      <router-link :to="{ name: 'ImportStubs' }">Import stubs</router-link>
-      <span>.</span>
+      <router-link :to="{ name: 'StubForm' }"
+        >{{ $translate("stubs.addStubs") }}
+      </router-link>
+      <span>&nbsp;</span>
+      <router-link :to="{ name: 'ImportStubs' }"
+        >{{ $translate("stubs.importStubs") }}
+      </router-link>
+      <span></span>
     </div>
   </div>
 </template>
@@ -172,7 +177,6 @@ import {
   watch,
 } from "vue";
 import Stub from "@/components/stub/Stub.vue";
-import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
 import { downloadBlob } from "@/utils/download";
@@ -187,6 +191,7 @@ import dayjs from "dayjs";
 import { vsprintf } from "sprintf-js";
 import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { getRootUrl } from "@/utils/config";
+import { translate } from "@/utils/translate";
 
 export default defineComponent({
   name: "Stubs",
@@ -317,7 +322,7 @@ export default defineComponent({
     const deleteAllStubs = async () => {
       try {
         await stubStore.deleteStubs();
-        success(resources.stubsDeletedSuccessfully);
+        success(translate("stubs.stubsDeletedSuccessfully"));
         await loadData();
       } catch (e) {
         handleHttpError(e);
@@ -334,7 +339,9 @@ export default defineComponent({
       const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
       for (const stubId of stubIds) {
         await disableStub(stubId);
-        success(vsprintf(resources.stubEnabledSuccessfully, [stubId]));
+        success(
+          vsprintf(translate("stubs.stubDisabledSuccessfully"), [stubId]),
+        );
       }
 
       await loadData();
@@ -350,7 +357,7 @@ export default defineComponent({
       const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
       for (const stubId of stubIds) {
         await enableStub(stubId);
-        success(vsprintf(resources.stubDisabledSuccessfully, [stubId]));
+        success(vsprintf(translate("stubs.stubEnabledSuccessfully"), [stubId]));
       }
 
       await loadData();
@@ -370,7 +377,7 @@ export default defineComponent({
       }
 
       await Promise.all(promises);
-      success(resources.filteredStubsDeletedSuccessfully);
+      success(translate("stubs.filteredStubsDeletedSuccessfully"));
       await loadData();
     };
     const download = async () => {
@@ -378,7 +385,7 @@ export default defineComponent({
         const stubs = filterStubs(await stubStore.getStubs()).map(
           (fs) => fs.stub,
         );
-        const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(
+        const downloadString = `${translate("stubs.downloadStubsHeader")}\n${yaml.dump(
           stubs,
         )}`;
         const dateTime = dayjs().format("YYYY-MM-DD_HH-mm");
