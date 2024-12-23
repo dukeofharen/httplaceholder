@@ -2956,6 +2956,22 @@ to specify any file on the OS for the stub to return. This should be used with c
 By default, the file response writer only looks for files relative to the path where the .yml stub files are located or
 relative to the [file storage location path](#file-store-optional).
 
+### Reverse proxy security
+
+HttPlaceholder has a basic [reverse proxy](#reverse-proxy) built in. By default, the reverse proxy is disabled as it might pose a security risk when deployed on a server. 
+
+To enable the reverse proxy entirely, set the variable `enableReverseProxy` to `true`.
+
+```bash
+httplaceholder --enableReverseProxy true
+```
+
+If you want to whitelist a few hostnames for use in the reverse proxy, you can set the `allowedHosts` property. If you set the `allowedHosts` property, you do not have to explicitly set the `enableReverseProxy` property to true. You can either use a whole hostname or use a regular expression, as seen in the example below. You can split the entries using ",".
+
+```bash
+httplaceholder --allowedHosts "^google\.com$,www.google.com"
+```
+
 ## Config JSON file
 
 If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. This JSON
