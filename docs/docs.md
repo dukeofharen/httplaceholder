@@ -2972,6 +2972,12 @@ If you want to whitelist a few hostnames for use in the reverse proxy, you can s
 httplaceholder --allowedHosts "^google\.com$,www.google.com"
 ```
 
+You can also use `disallowedHosts` to explicitly block a host for use in the reverse proxy. `allowedHosts` will be checked before `disallowedHosts`, so if you would like to block everything from a specific host, except one subdomain, that is possible.
+
+```bash
+httplaceholder --disallowedHosts "^reddit\.com$,www.reddit.com"
+```
+
 ## Config JSON file
 
 If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. This JSON
