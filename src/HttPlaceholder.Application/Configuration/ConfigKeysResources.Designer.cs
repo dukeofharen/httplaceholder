@@ -206,5 +206,29 @@ namespace HttPlaceholder.Application.Configuration {
                 return ResourceManager.GetString("ConfigJsonLocation", resourceCulture);
             }
         }
+        
+        internal static string AllowedHosts {
+            get {
+                return ResourceManager.GetString("AllowedHosts", resourceCulture);
+            }
+        }
+        
+        internal static string DisallowedHosts {
+            get {
+                return ResourceManager.GetString("DisallowedHosts", resourceCulture);
+            }
+        }
+        
+        internal static string EnableReverseProxy {
+            get {
+                return ResourceManager.GetString("EnableReverseProxy", resourceCulture);
+            }
+        }
+        
+        internal static string Dev {
+            get {
+                return ResourceManager.GetString("Dev", resourceCulture);
+            }
+        }
     }
 }

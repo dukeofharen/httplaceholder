@@ -33,5 +33,10 @@ public enum ConfigKeyType
     /// <summary>
     ///     Configuration type.
     /// </summary>
-    Configuration
+    Configuration,
+
+    /// <summary>
+    ///     Development type.
+    /// </summary>
+    Development
 }

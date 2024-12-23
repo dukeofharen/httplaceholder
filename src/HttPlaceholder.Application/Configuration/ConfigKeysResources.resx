@@ -99,4 +99,16 @@
     <data name="ConfigJsonLocation" xml:space="preserve">
         <value>the location of the config.json file. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.</value>
     </data>
+    <data name="AllowedHosts" xml:space="preserve">
+        <value>configures the hostnames that are allowed in the reverse proxy response writer. Full strings and regular expressions are allowed.</value>
+    </data>
+    <data name="DisallowedHosts" xml:space="preserve">
+        <value>configures the hostnames that are NOT allowed in the reverse proxy response writer. Full strings and regular expressions are allowed.</value>
+    </data>
+    <data name="EnableReverseProxy" xml:space="preserve">
+        <value>whether to enable the reverse proxy response writer.</value>
+    </data>
+    <data name="Dev" xml:space="preserve">
+        <value>enables "dev" mode, which is used specifically for running HttPlaceholder on your dev machine. It disables some security related features which are nice for local development. Do NOT enable this on a test / production server as it might pose a security risk.</value>
+    </data>
 </root>

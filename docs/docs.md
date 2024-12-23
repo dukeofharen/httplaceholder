@@ -320,7 +320,8 @@ or `https://localhost:4430`.
 #### Troubleshooting
 
 - If you get an error something
-  like `An unhandled exception was thrown by the application. code = ReadOnly (8), message = System.Data.SQLite.SQLiteException (0x800017FF): attempt to write a readonly database`,
+  like
+  `An unhandled exception was thrown by the application. code = ReadOnly (8), message = System.Data.SQLite.SQLiteException (0x800017FF): attempt to write a readonly database`,
   it means your SQLite database is not writable. Make sure the IIS user can write to this file.
 
 ### Windows Service
@@ -1585,7 +1586,10 @@ string in the whole JSON body but want to replace a specific value using JSONPat
 By calling the URL `http://localhost:5000/jsonpath-replace?q1=New+York`, the following JSON will be returned:
 
 ```json
-{"name": "Henk", "city": "New York"}
+{
+  "name": "Henk",
+  "city": "New York"
+}
 ```
 
 ## Files
@@ -1952,7 +1956,8 @@ The query string parser makes it possible to write request query string paramete
 ```
 
 Let's say you make the
-request `http://localhost:5000/dynamic-query.txt?response_text=RESPONSE!&response_header=HEADER!`. `((query:response_header))`
+request `http://localhost:5000/dynamic-query.txt?response_text=RESPONSE!&response_header=HEADER!`.
+`((query:response_header))`
 will be replaced with `RESPONSE!` and `((query:response_text))` will be replaced with `HEADER!`. If no matching query
 parameter was found, the variable will be filled with an empty string.
 
@@ -2666,7 +2671,9 @@ httplaceholder --help
 
 ### Enable dev mode
 
-When running HttPlaceholder as a dev tool on you local development machine, you can probably safely enable the "dev" mode. This way, several checks which are enabled by default (e.g. for safety reasons), are disabled. These settings are disabled when running HttPlaceholder with `httplaceholder --dev`.
+When running HttPlaceholder as a dev tool on you local development machine, you can probably safely enable the "dev"
+mode. This way, several checks which are enabled by default (e.g. for safety reasons), are disabled. These settings are
+disabled when running HttPlaceholder with `httplaceholder --dev`.
 
 - [The reverse proxy](#reverse-proxy-security) is enabled by default.
 
@@ -2964,7 +2971,8 @@ relative to the [file storage location path](#file-store-optional).
 
 ### Reverse proxy security
 
-HttPlaceholder has a basic [reverse proxy](#reverse-proxy) built in. By default, the reverse proxy is disabled as it might pose a security risk when deployed on a server. 
+HttPlaceholder has a basic [reverse proxy](#reverse-proxy) built in. By default, the reverse proxy is disabled as it
+might pose a security risk when deployed on a server.
 
 To enable the reverse proxy entirely, set the variable `enableReverseProxy` to `true`.
 
@@ -2972,13 +2980,20 @@ To enable the reverse proxy entirely, set the variable `enableReverseProxy` to `
 httplaceholder --enableReverseProxy true
 ```
 
-If you want to whitelist a few hostnames for use in the reverse proxy, you can set the `allowedHosts` property. If you set the `allowedHosts` property, you do not have to explicitly set the `enableReverseProxy` property to true. You can either use a whole hostname or use a regular expression, as seen in the example below. You can split the entries using ",".
+If you want to whitelist a few hostnames for use in the reverse proxy, you can set the `allowedHosts` property. If you
+set the `allowedHosts` property, you do not have to explicitly set the `enableReverseProxy` property to true. You can
+either use a whole hostname / IP address (range) or use a regular expression, as seen in the example below. You can
+split the entries
+using ",".
 
 ```bash
 httplaceholder --allowedHosts "^google\.com$,www.google.com"
 ```
 
-You can also use `disallowedHosts` to explicitly block a host for use in the reverse proxy. `allowedHosts` will be checked before `disallowedHosts`, so if you would like to block everything from a specific host, except one subdomain, that is possible.
+You can also use `disallowedHosts` to explicitly block a host for use in the reverse proxy. `allowedHosts` will be
+checked before `disallowedHosts`, so if you would like to block everything from a specific host / IP address (range),
+except one subdomain,
+that is possible.
 
 ```bash
 httplaceholder --disallowedHosts "^reddit\.com$,www.reddit.com"
