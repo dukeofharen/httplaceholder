@@ -2664,6 +2664,12 @@ If you want to see all possible configuration parameters, append `-h`, `-?` or `
 httplaceholder --help
 ```
 
+### Enable dev mode
+
+When running HttPlaceholder as a dev tool on you local development machine, you can probably safely enable the "dev" mode. This way, several checks which are enabled by default (e.g. for safety reasons), are disabled. These settings are disabled when running HttPlaceholder with `httplaceholder --dev`.
+
+- [The reverse proxy](#reverse-proxy-security) is enabled by default.
+
 ## Web
 
 ### Use HTTPS (optional)
