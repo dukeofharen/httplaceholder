@@ -10,7 +10,7 @@ namespace HttPlaceholder.Infrastructure.Tests.Configuration;
 public class ConfigurationParserFacts
 {
     private const string ExampleArgs =
-        "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --configJsonLocation /var/httpl_config.json";
+        "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --dev --configJsonLocation /var/httpl_config.json";
 
     private const string ExampleConfigJson = """
 
@@ -72,7 +72,7 @@ public class ConfigurationParserFacts
         var result = _parser.ParseConfiguration(args);
 
         // Assert
-        Assert.AreEqual(13, result.Count);
+        Assert.AreEqual(14, result.Count);
         Assert.AreEqual("true", result["Web:UseHttps"]);
         Assert.AreEqual("8080", result["Web:HttpPort"]);
         Assert.AreEqual("4430", result["Web:HttpsPort"]);
@@ -81,6 +81,8 @@ public class ConfigurationParserFacts
         Assert.AreEqual("true", result["Gui:EnableUserInterface"]);
         Assert.AreEqual("false", result["Storage:StoreResponses"]);
         Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
+        Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
+        Assert.AreEqual("true", result["Development:DevModeEnabled"]);
     }
 
     [TestMethod]

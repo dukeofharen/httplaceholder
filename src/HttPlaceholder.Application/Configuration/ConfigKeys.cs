@@ -184,7 +184,7 @@ public static class ConfigKeys
             "user",
             "Development:DevModeEnabled",
             ConfigKeyType.Development,
-            null,
+            true,
             null,
             null),
         Create(
