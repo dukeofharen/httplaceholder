@@ -31,17 +31,12 @@ internal class HostnameValidator(IOptionsMonitor<SettingsModel> options) : IHost
             return true;
         }
 
-        if (HostIsValid(allowedHosts, hostname))
+        if (allowedHosts.Length > 0)
         {
-            return true;
+            return HostIsValid(allowedHosts, hostname);
         }
 
-        if (HostIsValid(disallowedHosts, hostname))
-        {
-            return false;
-        }
-
-        return true;
+        return !HostIsValid(disallowedHosts, hostname);
     }
 
     private static string[] FormatHosts(string input) => string.IsNullOrWhiteSpace(input)
