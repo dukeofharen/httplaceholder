@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Configuration.Models;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain.Enums;
@@ -14,8 +15,6 @@ public class StubModelValidatorFacts
     private readonly AutoMocker _mocker = new();
     private readonly IModelValidator _modelValidator = new ModelValidator();
     private readonly SettingsModel _settings = new() { Stub = new StubSettingsModel() };
-
-    // private StubModelValidator _validator;
 
     [TestInitialize]
     public void Initialize()
@@ -472,5 +471,61 @@ public class StubModelValidatorFacts
             Assert.AreEqual(1, result.Count(r => r.Equals(expectedError)),
                 $"Expected error: {expectedError}. Actual errors: {string.Join(',', result)}");
         }
+    }
+
+    [TestMethod]
+    public void ValidateReverseProxy_HostNotAllowed_ShouldContainError()
+    {
+        // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
+        var hostnameValidatorMock = _mocker.GetMock<IHostnameValidator>();
+        var model = new StubModel
+        {
+            Response = new StubResponseModel
+            {
+                ReverseProxy = new StubResponseReverseProxyModel
+                {
+                    Url = "https://httplaceholder.org/destination"
+                }
+            }
+        };
+
+        hostnameValidatorMock
+            .Setup(m => m.HostnameIsValid("httplaceholder.org"))
+            .Returns(false);
+
+        // Act
+        var result = validator.ValidateStubModel(model);
+
+        // Assert
+        Assert.IsTrue(result.Any(r => r == "Hostname 'httplaceholder.org' is invalid for use with the reverse proxy response writer. Consult the documentation on how to enable the reverse proxy or how to enable the \"dev mode\"."));
+    }
+
+    [TestMethod]
+    public void ValidateReverseProxy_HostAllowed_ShouldNotContainError()
+    {
+        // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
+        var hostnameValidatorMock = _mocker.GetMock<IHostnameValidator>();
+        var model = new StubModel
+        {
+            Response = new StubResponseModel
+            {
+                ReverseProxy = new StubResponseReverseProxyModel
+                {
+                    Url = "https://httplaceholder.org/destination"
+                }
+            }
+        };
+
+        hostnameValidatorMock
+            .Setup(m => m.HostnameIsValid("httplaceholder.org"))
+            .Returns(true);
+
+        // Act
+        var result = validator.ValidateStubModel(model);
+
+        // Assert
+        Assert.IsFalse(result.Any(r => r.Contains("is invalid for use with the reverse proxy response writer")));
     }
 }

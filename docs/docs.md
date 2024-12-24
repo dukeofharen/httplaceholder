@@ -2497,6 +2497,9 @@ to [samples](#samples)).
 
 ## Reverse proxy
 
+Note: by default, the reverse proxy response writer is disabled because of security concerns. Read more about how to
+enable the proxy [here](#reverse-proxy-security) or enable the [dev mode](#enable-dev-mode).
+
 HttPlaceholder contains a very simple reverse proxy as response option. In short, if you want to route some requests (or
 any request that doesn't match any other stub) to an external web service, you can do this with the reverse proxy
 response writer. Here are some examples that you can use.

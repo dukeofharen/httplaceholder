@@ -16,6 +16,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class StubModelValidator(
     IModelValidator modelValidator,
+    IHostnameValidator hostnameValidator,
     IOptionsMonitor<SettingsModel> options)
     : IStubModelValidator, ISingletonService
 {
@@ -31,7 +32,8 @@ internal class StubModelValidator(
             .Concat(ValidateScenarioVariables(stub))
             .Concat(ValidateResponseBody(stub))
             .Concat(ValidateResponseHeaders(stub))
-            .Concat(ValidateStringRegexReplace(stub));
+            .Concat(ValidateStringRegexReplace(stub))
+            .Concat(ValidateReverseProxy(stub));
 
     private List<string> ValidateExtraDuration(StubModel stub)
     {
@@ -204,6 +206,25 @@ internal class StubModelValidator(
             }
 
             i++;
+        }
+
+        return result;
+    }
+
+    private List<string> ValidateReverseProxy(StubModel stub)
+    {
+        var result = new List<string>();
+        var proxyUrl = stub?.Response?.ReverseProxy?.Url;
+        if (string.IsNullOrWhiteSpace(proxyUrl))
+        {
+            return result;
+        }
+
+        var uri = new Uri(proxyUrl);
+        var host = uri.Host;
+        if (!hostnameValidator.HostnameIsValid(uri.Host))
+        {
+            result.Add(string.Format(StubResources.ReverseProxyHostValidationFailed, host));
         }
 
         return result;

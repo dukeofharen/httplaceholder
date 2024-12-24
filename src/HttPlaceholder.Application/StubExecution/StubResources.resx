@@ -219,4 +219,7 @@
     <data name="StubIsReadonly" xml:space="preserve">
         <value>Stub with ID '{0}' is read-only; it can not be updated through the API.</value>
     </data>
+    <data name="ReverseProxyHostValidationFailed" xml:space="preserve">
+        <value>Hostname '{0}' is invalid for use with the reverse proxy response writer. Consult the documentation on how to enable the reverse proxy or how to enable the "dev mode".</value>
+    </data>
 </root>
