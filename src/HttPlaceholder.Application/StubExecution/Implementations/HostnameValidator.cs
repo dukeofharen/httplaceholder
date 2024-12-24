@@ -52,12 +52,14 @@ internal class HostnameValidator(IOptionsMonitor<SettingsModel> options) : IHost
             // Input is IP address, so check if IP is whitelisted based on the input.
             foreach (var hostToCheck in hostsToCheck)
             {
-                if (IPAddressRange.TryParse(hostToCheck, out var range))
+                if (!IPAddressRange.TryParse(hostToCheck, out var range))
                 {
-                    if (range.Contains(parsedIp))
-                    {
-                        return true;
-                    }
+                    continue;
+                }
+
+                if (range.Contains(parsedIp))
+                {
+                    return true;
                 }
             }
         }

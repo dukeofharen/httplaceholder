@@ -55,6 +55,7 @@ public class HostnameValidatorFacts
     [DataRow("httplaceholder.org", "", "httplaceholder.com", true)]
     [DataRow("httplaceholder.org", "httplaceholder.org", "httplaceholder.org", true)]
     [DataRow("httplaceholder.org", "httplaceholder.com", "httplaceholder.org", false)]
+    [DataRow("httplaceholder.org", "httplaceholder.com", "httplaceholder.org", false)]
     [DataRow("httplaceholder.org", "reddit.com,^httpl(.*)\\.org$", "", true)]
     [DataRow("httplaceholder.org", "reddit.com,^https(.*)\\.org$", "", false)]
     [DataRow("127.0.0.1", "127.0.0.1", "", true)]
