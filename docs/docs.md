@@ -3008,6 +3008,7 @@ an update is installed.
 
 ```json
 {
+  "dev": false,
   "apiUsername": null,
   "apiPassword": null,
   "httpsPort": "5050",
