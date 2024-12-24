@@ -2982,9 +2982,8 @@ httplaceholder --enableReverseProxy true
 
 If you want to whitelist a few hostnames for use in the reverse proxy, you can set the `allowedHosts` property. If you
 set the `allowedHosts` property, you do not have to explicitly set the `enableReverseProxy` property to true. You can
-either use a whole hostname / IP address (range) or use a regular expression, as seen in the example below. You can
-split the entries
-using ",".
+either use a whole hostname / IP address (range) or use a regular expression (only usable for hostnames), as seen in the
+example below. You can split the entries using ",".
 
 ```bash
 httplaceholder --allowedHosts "^google\.com$,www.google.com"
@@ -2992,8 +2991,7 @@ httplaceholder --allowedHosts "^google\.com$,www.google.com"
 
 You can also use `disallowedHosts` to explicitly block a host for use in the reverse proxy. `allowedHosts` will be
 checked before `disallowedHosts`, so if you would like to block everything from a specific host / IP address (range),
-except one subdomain,
-that is possible.
+except one subdomain, that is possible.
 
 ```bash
 httplaceholder --disallowedHosts "^reddit\.com$,www.reddit.com"
