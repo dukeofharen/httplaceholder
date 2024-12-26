@@ -50,6 +50,31 @@ public class ReverseProxyResponseWriterFacts
         Assert.IsFalse(result.Executed);
     }
 
+    [TestMethod]
+    public async Task WriteToResponseAsync_ProxyDisabled_ShouldReturnExecutedButWithBadGateway()
+    {
+        // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
+        const string proxyUrl = "http://example.com";
+        var stub = new StubModel
+        {
+            Response = new StubResponseModel { ReverseProxy = new StubResponseReverseProxyModel { Url = proxyUrl } }
+        };
+        var responseModel = new ResponseModel();
+        SetupHostnameIsValid(proxyUrl, false);
+
+        // Act
+        var result = await writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
+
+        // Assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsTrue(result.Log.Contains("Hostname 'example.com' is invalid for use with the reverse proxy response writer. Consult the documentation on how to enable the reverse proxy or how to enable the \"dev mode\"."));
+        Assert.AreEqual((int)HttpStatusCode.BadGateway, responseModel.StatusCode);
+        Assert.AreEqual("502 Bad Gateway", Encoding.UTF8.GetString(responseModel.Body));
+        Assert.AreEqual(MimeTypes.TextMime, responseModel.Headers["Content-Type"]);
+        Assert.IsFalse(responseModel.BodyIsBinary);
+    }
+
     [DataTestMethod]
     [DataRow(
         "https://todo.com",
