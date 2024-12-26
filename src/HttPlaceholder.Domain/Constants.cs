@@ -109,6 +109,11 @@ public static class DefaultConfiguration
     public const bool AllowGlobalFileSearch = false;
 
     /// <summary>
+    ///     Whether the reverse proxy is enabled in dev mode.
+    /// </summary>
+    public const bool EnableReverseProxyDev = true;
+
+    /// <summary>
     ///     Whether HTTPS is enabled by default.
     /// </summary>
     public const bool UseHttps = true;

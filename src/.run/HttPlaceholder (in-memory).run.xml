@@ -1,12 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HttPlaceholder (in-memory)" type="DotNetProject" factoryName=".NET Project">
     <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net8.0/HttPlaceholder" />
-    <option name="PROGRAM_PARAMETERS" value="-V --useInMemoryStorage --storeresponses --port &quot;5000,5002&quot; --httpsPort &quot;5050,5056&quot;" />
+    <option name="PROGRAM_PARAMETERS" value="-V --useInMemoryStorage --storeresponses --port &quot;5000,5002&quot; --httpsPort &quot;5050,5056&quot; --dev" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
       <env name="ASPNETCORE_ENVIRONMENT" value="Development" />
-      <env name="enableReverseProxy" value="true" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />
