@@ -10,7 +10,7 @@ namespace HttPlaceholder.Infrastructure.Tests.Configuration;
 public class ConfigurationParserFacts
 {
     private const string ExampleArgs =
-        "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --dev --configJsonLocation /var/httpl_config.json";
+        "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --healthcheckOnRootUrl --configJsonLocation /var/httpl_config.json";
 
     private const string ExampleConfigJson = """
 
@@ -82,7 +82,7 @@ public class ConfigurationParserFacts
         Assert.AreEqual("false", result["Storage:StoreResponses"]);
         Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
         Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
-        Assert.AreEqual("true", result["Development:DevModeEnabled"]);
+        Assert.AreEqual("true", result["Stub:HealthcheckOnRootUrl"]);
     }
 
     [TestMethod]
@@ -105,6 +105,59 @@ public class ConfigurationParserFacts
         Assert.AreEqual("False", result["Storage:StoreResponses"]);
         Assert.AreEqual("True", result["Web:ReadProxyHeaders"]);
         Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
+    }
+
+    [TestMethod]
+    public void DefaultValues_InDevMode_Flag_ShouldBeSetCorrectly()
+    {
+        // Act
+        var result = _parser.ParseConfiguration(["--dev"]);
+
+        // Assert
+        Assert.AreEqual(14, result.Count);
+        Assert.AreEqual("5000", result["Web:HttpPort"]);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(result["Web:PfxPath"]));
+        Assert.AreEqual("1234", result["Web:PfxPassword"]);
+        Assert.AreEqual("5050", result["Web:HttpsPort"]);
+        Assert.AreEqual("True", result["Web:UseHttps"]);
+        Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
+        Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
+        Assert.AreEqual("60000", result["Stub:MaximumExtraDurationMillis"]);
+        Assert.AreEqual("True", result["Storage:CleanOldRequestsInBackgroundJob"]);
+        Assert.AreEqual("False", result["Storage:StoreResponses"]);
+        Assert.AreEqual("True", result["Web:ReadProxyHeaders"]);
+        Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
+        Assert.AreEqual("true", result["Development:DevModeEnabled"]);
+        Assert.AreEqual("True", result["Stub:EnableReverseProxy"]);
+    }
+
+    [TestMethod]
+    public void DefaultValues_InDevMode_EnvVar_ShouldBeSetCorrectly()
+    {
+        // Arrange
+        _envServiceMock
+            .Setup(m => m.IsDevelopment())
+            .Returns(true);
+
+        // Act
+        var result = _parser.ParseConfiguration(Array.Empty<string>());
+
+        // Assert
+        Assert.AreEqual(14, result.Count);
+        Assert.AreEqual("5000", result["Web:HttpPort"]);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(result["Web:PfxPath"]));
+        Assert.AreEqual("1234", result["Web:PfxPassword"]);
+        Assert.AreEqual("5050", result["Web:HttpsPort"]);
+        Assert.AreEqual("True", result["Web:UseHttps"]);
+        Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
+        Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
+        Assert.AreEqual("60000", result["Stub:MaximumExtraDurationMillis"]);
+        Assert.AreEqual("True", result["Storage:CleanOldRequestsInBackgroundJob"]);
+        Assert.AreEqual("False", result["Storage:StoreResponses"]);
+        Assert.AreEqual("True", result["Web:ReadProxyHeaders"]);
+        Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
+        Assert.AreEqual("True", result["Development:DevModeEnabled"]);
+        Assert.AreEqual("True", result["Stub:EnableReverseProxy"]);
     }
 
     [DataTestMethod]

@@ -7,6 +7,7 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 using static HttPlaceholder.Domain.DefaultConfiguration;
@@ -164,6 +165,7 @@ public class ConfigurationParser(
         {
             // Either the "dev" flag was set or the ASPNETCORE_ENVIRONMENT env var was set to "Development"
             // which ensures we can disable some security related settings for local development.
+            configDictionary.EnsureEntryExists(ConfigKeys.Dev, true);
             configDictionary.EnsureEntryExists(ConfigKeys.EnableReverseProxy, EnableReverseProxyDev);
         }
 
