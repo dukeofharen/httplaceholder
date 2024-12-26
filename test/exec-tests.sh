@@ -24,7 +24,7 @@ docker compose -f "$DEVENV_SCRIPT_PATH" up -d
 # Run HttPlaceholder tests for in memory configuration.
 echo "Testing HttPlaceholder with in memory configuration"
 dotnet run --project $HTTPL_ROOT_DIR --useInMemoryStorage --storeResponses --dev > $DIR/logs/httplaceholder-in-memory.txt 2>&1 &
-sleep 5
+sleep 10
 bash ./run.sh > $DIR/logs/test-in-memory.txt
 assert-test-ok
 sudo killall HttPlaceholder
