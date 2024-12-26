@@ -50,6 +50,7 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
 
         ClientDataResolverMock = new Mock<IClientDataResolver>();
         Settings.Storage.InputFile = InputFilePath;
+        Settings.Stub.EnableReverseProxy = true;
 
         _stubSource = new YamlFileStubSource(
             FileServiceMock.Object,
