@@ -220,9 +220,8 @@ internal class StubModelValidator(
             return result;
         }
 
-        var uri = new Uri(proxyUrl);
-        var host = uri.Host;
-        if (!hostnameValidator.HostnameIsValid(uri.Host))
+        var host = UrlHelper.GetHostname(proxyUrl);
+        if (!hostnameValidator.HostnameIsValid(host))
         {
             result.Add(string.Format(StubResources.ReverseProxyHostValidationFailed, host));
         }

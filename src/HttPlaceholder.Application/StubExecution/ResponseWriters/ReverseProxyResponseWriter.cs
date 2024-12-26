@@ -23,7 +23,8 @@ internal class ReverseProxyResponseWriter(
     IHttpClientFactory httpClientFactory,
     IHttpContextService httpContextService,
     ILogger<ReverseProxyResponseWriter> logger,
-    IUrlResolver urlResolver)
+    IUrlResolver urlResolver,
+    IHostnameValidator hostnameValidator)
     : IResponseWriter, ISingletonService
 {
     private static readonly string[] _excludedRequestHeaderNames =
@@ -51,6 +52,15 @@ internal class ReverseProxyResponseWriter(
         }
 
         var proxyUrl = stub.Response.ReverseProxy.Url;
+        var host = UrlHelper.GetHostname(proxyUrl);
+        if (!hostnameValidator.HostnameIsValid(host))
+        {
+            // The hostname is not allowed, so write an error response.
+            var logMessage = string.Format(StubResources.ReverseProxyHostValidationFailed, host);
+            WriteBadGatewayResponse(response);
+            return IsExecuted(GetType().Name, logMessage);
+        }
+
         var appendPath = stub.Response.ReverseProxy.AppendPath == true;
         if (appendPath)
         {
@@ -110,13 +120,18 @@ internal class ReverseProxyResponseWriter(
         {
             logger.LogInformation(ex, "Exception occurred while calling URL {ProxyUrl}.", proxyUrl);
             log.AppendLine(string.Format(StubResources.ReverseProxyException, proxyUrl, ex.Message));
-            response.Body = Encoding.UTF8.GetBytes(StubResources.ReverseProxyBadGateway);
-            response.StatusCode = (int)HttpStatusCode.BadGateway;
-            response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
-            response.BodyIsBinary = false;
+            WriteBadGatewayResponse(response);
         }
 
         return IsExecuted(GetType().Name, log.ToString());
+    }
+
+    private static void WriteBadGatewayResponse(ResponseModel response)
+    {
+        response.Body = Encoding.UTF8.GetBytes(StubResources.ReverseProxyBadGateway);
+        response.StatusCode = (int)HttpStatusCode.BadGateway;
+        response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
+        response.BodyIsBinary = false;
     }
 
     private static Dictionary<string, string> GetResponseHeaders(HttpResponseMessage responseMessage,
