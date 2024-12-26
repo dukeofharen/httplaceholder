@@ -4,7 +4,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
+using HttPlaceholder.Common.Utilities;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
@@ -50,29 +52,29 @@ public class ReverseProxyResponseWriterFacts
 
     [DataTestMethod]
     [DataRow(
-        "https://jsonplaceholder.typicode.com",
+        "https://todo.com",
         "/todoitems",
         "?key=val",
         "/todoitems/todos/1",
         false,
         true,
-        "https://jsonplaceholder.typicode.com/todos/1")]
+        "https://todo.com/todos/1")]
     [DataRow(
-        "https://jsonplaceholder.typicode.com/todos/1",
+        "https://todo.com/todos/1",
         "",
         "?key=val",
         "/todos/1",
         false,
         false,
-        "https://jsonplaceholder.typicode.com/todos/1")]
+        "https://todo.com/todos/1")]
     [DataRow(
-        "https://jsonplaceholder.typicode.com/todos/1",
+        "https://todo.com/todos/1",
         "",
         "?key=val",
         "/todos/1",
         true,
         false,
-        "https://jsonplaceholder.typicode.com/todos/1?key=val")]
+        "https://todo.com/todos/1?key=val")]
     [DataRow(
         "https://ducode.org/",
         "/ducode",
@@ -126,6 +128,8 @@ public class ReverseProxyResponseWriterFacts
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
 
+        SetupHostnameIsValid(proxyUrl, true);
+
         var responseModel = new ResponseModel();
 
         // Act
@@ -144,13 +148,14 @@ public class ReverseProxyResponseWriterFacts
         var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
+        const string proxyUrl = "http://example.com";
         var stub = new StubModel
         {
             Response = new StubResponseModel
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = false, AppendQueryString = false, Url = "http://example.com"
+                    AppendPath = false, AppendQueryString = false, Url = proxyUrl
                 }
             }
         };
@@ -175,7 +180,7 @@ public class ReverseProxyResponseWriterFacts
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp
-            .When("http://example.com")
+            .When(proxyUrl)
             .With(r =>
             {
                 var proxyHeaders = r.Headers.ToDictionary(h => h.Key, h => h.Value.First());
@@ -187,6 +192,8 @@ public class ReverseProxyResponseWriterFacts
         mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
+
+        SetupHostnameIsValid(proxyUrl, true);
 
         var responseModel = new ResponseModel();
 
@@ -206,13 +213,14 @@ public class ReverseProxyResponseWriterFacts
         var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
+        const string proxyUrl = "http://example.com";
         var stub = new StubModel
         {
             Response = new StubResponseModel
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = false, AppendQueryString = false, Url = "http://example.com"
+                    AppendPath = false, AppendQueryString = false, Url = proxyUrl
                 }
             }
         };
@@ -234,7 +242,7 @@ public class ReverseProxyResponseWriterFacts
             { HeaderKeys.TransferEncoding, "chunked" }
         };
         mockHttp
-            .When("http://example.com")
+            .When(proxyUrl)
             .Respond(_ =>
             {
                 var msg = new HttpResponseMessage(HttpStatusCode.OK)
@@ -251,6 +259,7 @@ public class ReverseProxyResponseWriterFacts
         mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
+        SetupHostnameIsValid(proxyUrl, true);
 
         var responseModel = new ResponseModel();
         responseModel.Headers.Add("Some-Date", "2020-08-11");
@@ -276,16 +285,18 @@ public class ReverseProxyResponseWriterFacts
         var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
+        const string proxyUrl = "http://example.com";
         var stub = new StubModel
         {
             Response = new StubResponseModel
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = false, AppendQueryString = false, Url = "http://example.com"
+                    AppendPath = false, AppendQueryString = false, Url = proxyUrl
                 }
             }
         };
+        SetupHostnameIsValid(proxyUrl, true);
         mockHttpContextService
             .Setup(m => m.Method)
             .Returns("POST");
@@ -301,7 +312,7 @@ public class ReverseProxyResponseWriterFacts
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp
-            .When(HttpMethod.Post, "http://example.com")
+            .When(HttpMethod.Post, proxyUrl)
             .With(r =>
             {
                 var contentHeaders = r.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First());
@@ -331,13 +342,14 @@ public class ReverseProxyResponseWriterFacts
         var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
+        const string proxyUrl = "http://example.com";
         var stub = new StubModel
         {
             Response = new StubResponseModel
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = false, AppendQueryString = false, Url = "http://example.com"
+                    AppendPath = false, AppendQueryString = false, Url = proxyUrl
                 }
             }
         };
@@ -356,7 +368,7 @@ public class ReverseProxyResponseWriterFacts
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp
-            .When(HttpMethod.Post, "http://example.com")
+            .When(HttpMethod.Post, proxyUrl)
             .With(r =>
             {
                 var contentHeaders = r.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First());
@@ -367,6 +379,7 @@ public class ReverseProxyResponseWriterFacts
         mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
+        SetupHostnameIsValid(proxyUrl, true);
 
         var responseModel = new ResponseModel();
 
@@ -382,13 +395,13 @@ public class ReverseProxyResponseWriterFacts
 
     [DataTestMethod]
     [DataRow(
-        "https://jsonplaceholder.typicode.com",
+        "https://todo.com",
         "/todoitems",
         "/todoitems/todos/1",
         true,
         "http://localhost:5000/todoitems")]
     [DataRow(
-        "https://jsonplaceholder.typicode.com",
+        "https://todo.com",
         "/todoitems",
         "/todoitems/todos/1",
         false,
@@ -445,6 +458,8 @@ public class ReverseProxyResponseWriterFacts
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
 
+        SetupHostnameIsValid(proxyUrl, true);
+
         var responseModel = new ResponseModel();
 
         // Act
@@ -491,6 +506,7 @@ public class ReverseProxyResponseWriterFacts
         urlResolverMock
             .Setup(m => m.GetRootUrl())
             .Returns("http://localhost:5000");
+        SetupHostnameIsValid(proxyUrl, true);
 
         var client = new HttpClient(new ErrorHttpMessageHandler());
         mockHttpClientFactory
@@ -608,6 +624,14 @@ public class ReverseProxyResponseWriterFacts
 
         // Assert
         Assert.AreEqual("/path", result);
+    }
+
+    private void SetupHostnameIsValid(string url, bool isValid)
+    {
+        var host = UrlHelper.GetHostname(url);
+        _mocker.GetMock<IHostnameValidator>()
+            .Setup(m => m.HostnameIsValid(host))
+            .Returns(isValid);
     }
 
     private class ErrorHttpMessageHandler : HttpMessageHandler
