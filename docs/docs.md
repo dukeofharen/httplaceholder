@@ -2989,7 +2989,7 @@ either use a whole hostname / IP address (range) or use a regular expression (on
 example below. You can split the entries using ",".
 
 ```bash
-httplaceholder --allowedHosts "^google\.com$,www.google.com,127.0.0.1,127.0.0.0/26"
+httplaceholder --allowedHosts ^google\.com$,www.google.com,127.0.0.1,127.0.0.0/26
 ```
 
 You can also use `disallowedHosts` to explicitly block a host for use in the reverse proxy. `allowedHosts` will be
@@ -2997,7 +2997,7 @@ checked before `disallowedHosts`, so if you would like to block everything from 
 except one subdomain, that is possible.
 
 ```bash
-httplaceholder --allowedHosts "www.reddit.com" --disallowedHosts "^reddit\.com$,127.0.0.1,127.0.0.0/26"
+httplaceholder --allowedHosts www.reddit.com --disallowedHosts ^reddit\.com$,127.0.0.1,127.0.0.0/26
 ```
 
 ## Config JSON file
