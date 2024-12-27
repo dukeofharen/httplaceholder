@@ -320,7 +320,8 @@ or `https://localhost:4430`.
 #### Troubleshooting
 
 - If you get an error something
-  like `An unhandled exception was thrown by the application. code = ReadOnly (8), message = System.Data.SQLite.SQLiteException (0x800017FF): attempt to write a readonly database`,
+  like
+  `An unhandled exception was thrown by the application. code = ReadOnly (8), message = System.Data.SQLite.SQLiteException (0x800017FF): attempt to write a readonly database`,
   it means your SQLite database is not writable. Make sure the IIS user can write to this file.
 
 ### Windows Service
@@ -1585,7 +1586,10 @@ string in the whole JSON body but want to replace a specific value using JSONPat
 By calling the URL `http://localhost:5000/jsonpath-replace?q1=New+York`, the following JSON will be returned:
 
 ```json
-{"name": "Henk", "city": "New York"}
+{
+  "name": "Henk",
+  "city": "New York"
+}
 ```
 
 ## Files
@@ -1952,7 +1956,8 @@ The query string parser makes it possible to write request query string paramete
 ```
 
 Let's say you make the
-request `http://localhost:5000/dynamic-query.txt?response_text=RESPONSE!&response_header=HEADER!`. `((query:response_header))`
+request `http://localhost:5000/dynamic-query.txt?response_text=RESPONSE!&response_header=HEADER!`.
+`((query:response_header))`
 will be replaced with `RESPONSE!` and `((query:response_text))` will be replaced with `HEADER!`. If no matching query
 parameter was found, the variable will be filled with an empty string.
 
@@ -2492,43 +2497,43 @@ to [samples](#samples)).
 
 ## Reverse proxy
 
+Note: by default, the reverse proxy response writer is disabled because of security concerns. Read more about how to
+enable the proxy [here](#reverse-proxy-security) or enable the [dev mode](#enable-dev-mode).
+
 HttPlaceholder contains a very simple reverse proxy as response option. In short, if you want to route some requests (or
 any request that doesn't match any other stub) to an external web service, you can do this with the reverse proxy
 response writer. Here are some examples that you can use.
 
-Scenario: `https://jsonplaceholder.typicode.com/todos` is an API for testing purposes which returns a list of todo
-items. We want to configure HttPlaceholder to proxy the requests to this URL and return the response of that call to the
-client.
+Scenario: `https://catfact.ninja` is an API fetching random cat facts. We want to configure HttPlaceholder to
+proxy the requests to this URL and return the response of that call to the client.
 
 ```yml
 - id: reverse-proxy-1
   conditions:
     url:
       path:
-        equals: /todos
+        startswith: /cat-facts
   response:
     reverseProxy:
-      url: https://jsonplaceholder.typicode.com/todos
+      url: https://catfact.ninja
       appendPath: true
       appendQueryString: true
       replaceRootUrl: true
 ```
 
-When you now make a call to `http://localhost:5000/todos`, a request will be made
-to `https://jsonplaceholder.typicode.com/todos` and the response of that call will be returned to the client.
+When you now make a call to `http://localhost:5000/cat-facts/breeds`, a request will be made
+to `https://catfact.ninja/breeds` and the response of that call will be returned to the client.
 
 The variable `appendPath` is set to true (which is, by default, set to false by the way), which means that everything
-you put in your URL after `/todos` (which you've you configured in your conditions) will be appended to the proxy URL.
-So, let's say you go to `http://localhost:5000/todos/1`, HttPlaceholder will send a request
-to `https://jsonplaceholder.typicode.com/todos/1`.
+you put in your URL after `/cat-facts` (which you've you configured in your conditions) will be appended to the proxy URL.
 
 Also, the variable `appendQueryString` is set to true (which is by default false). Like the name says, it appends the
 query string of the request to HttPlaceholder to the reverse proxy request. For example, let's say you make a request
-to `http://localhost:5000/todos?key=val`, then HttPlaceholder will make a request
-to `https://jsonplaceholder.typicode.com/todos?key=val`.
+to `http://localhost:5000/cat-facts/breeds?key=val`, then HttPlaceholder will make a request
+to `https://catfact.ninja/breeds?key=val`.
 
 Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is by default false). If this is set to
-true, any reference of `https://jsonplaceholder.typicode.com` (so the **root** URL of your reverse proxy URL) will be
+true, any reference of `https://catfact.ninja` (so the **root** URL of your reverse proxy URL) will be
 replaced by the root URL of HttPlaceholder (e.g. `http://localhost:5000`). The replacing will be done in the reverse
 proxy response body and response headers.
 
@@ -2663,6 +2668,14 @@ If you want to see all possible configuration parameters, append `-h`, `-?` or `
 ```bash
 httplaceholder --help
 ```
+
+### Enable dev mode
+
+When running HttPlaceholder as a dev tool on you local development machine, you can probably safely enable the "dev"
+mode. This way, several checks which are enabled by default (e.g. for safety reasons), are disabled. These settings are
+disabled when running HttPlaceholder with `httplaceholder --dev`.
+
+- [The reverse proxy](#reverse-proxy-security) is enabled by default.
 
 ## Web
 
@@ -2956,6 +2969,34 @@ to specify any file on the OS for the stub to return. This should be used with c
 By default, the file response writer only looks for files relative to the path where the .yml stub files are located or
 relative to the [file storage location path](#file-store-optional).
 
+### Reverse proxy security
+
+HttPlaceholder has a basic [reverse proxy](#reverse-proxy) built in. By default, the reverse proxy is disabled as it
+might pose a security risk when deployed on a server.
+
+To enable the reverse proxy entirely, set the variable `enableReverseProxy` to `true`.
+
+```bash
+httplaceholder --enableReverseProxy true
+```
+
+If you want to whitelist a few hostnames for use in the reverse proxy, you can set the `allowedHosts` property. If you
+set the `allowedHosts` property, you do not have to explicitly set the `enableReverseProxy` property to true. You can
+either use a whole hostname / IP address (range) or use a regular expression (only usable for hostnames), as seen in the
+example below. You can split the entries using ",".
+
+```bash
+httplaceholder --allowedHosts ^google\.com$,www.google.com,127.0.0.1,127.0.0.0/26
+```
+
+You can also use `disallowedHosts` to explicitly block a host for use in the reverse proxy. `allowedHosts` will be
+checked before `disallowedHosts`, so if you would like to block everything from a specific host / IP address (range),
+except one subdomain, that is possible.
+
+```bash
+httplaceholder --allowedHosts www.reddit.com --disallowedHosts ^reddit\.com$,127.0.0.1,127.0.0.0/26
+```
+
 ## Config JSON file
 
 If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. This JSON
@@ -2965,6 +3006,7 @@ an update is installed.
 
 ```json
 {
+  "dev": false,
   "apiUsername": null,
   "apiPassword": null,
   "httpsPort": "5050",

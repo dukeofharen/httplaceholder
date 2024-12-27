@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Configuration.Models;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Infrastructure.Implementations;
 using HttPlaceholder.TestUtilities.Options;
@@ -10,22 +12,29 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 [TestClass]
 public class StubModelValidatorFacts
 {
+    private readonly AutoMocker _mocker = new();
+    private readonly IModelValidator _modelValidator = new ModelValidator();
     private readonly SettingsModel _settings = new() { Stub = new StubSettingsModel() };
 
-    private StubModelValidator _validator;
-
     [TestInitialize]
-    public void Initialize() =>
-        _validator = new StubModelValidator(new ModelValidator(), MockSettingsFactory.GetOptionsMonitor(_settings));
+    public void Initialize()
+    {
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
+        _mocker.Use(_modelValidator);
+    }
+
+    [TestCleanup]
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void ValidateStubModel_IdNotSet_ShouldReturnError()
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel { Id = null };
 
         // Act
-        var result = _validator.ValidateStubModel(model);
+        var result = validator.ValidateStubModel(model);
 
         // Assert
         Assert.IsTrue(result.Any(r => r == "The Id field is required."));
@@ -35,10 +44,11 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ResponseNotSet_ShouldReturnError()
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel { Id = "stub-1", Response = null };
 
         // Act
-        var result = _validator.ValidateStubModel(model);
+        var result = validator.ValidateStubModel(model);
 
         // Assert
         Assert.IsTrue(result.Any(r => r == "The Response field is required."));
@@ -56,10 +66,11 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateStatusCodes(int? statusCode, bool shouldSucceed)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { StatusCode = statusCode } };
 
         // Act
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
 
         // Assert
         Assert.AreEqual(
@@ -80,11 +91,12 @@ public class StubModelValidatorFacts
         bool shouldSucceed)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         _settings.Stub.MaximumExtraDurationMillis = configuredMillis;
         var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { ExtraDuration = stubMillis } };
 
         // Act
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
 
         // Assert
         Assert.AreEqual(
@@ -102,6 +114,7 @@ public class StubModelValidatorFacts
         string expectedError)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         _settings.Stub.MaximumExtraDurationMillis = configuredMillis;
         var model = new StubModel
         {
@@ -110,7 +123,7 @@ public class StubModelValidatorFacts
         };
 
         // Act
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
 
         // Assert
         Assert.AreEqual(
@@ -128,10 +141,11 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateLineEndings(LineEndingType? lineEndingType, bool shouldSucceed)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel { Id = "stub-1", Response = new StubResponseModel { LineEndings = lineEndingType } };
 
         // Act
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
 
         // Assert
         Assert.AreEqual(
@@ -152,6 +166,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateImageBackgroundColor(string colorHexCode, bool shouldSucceed)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel
         {
             Id = "stub-1",
@@ -162,7 +177,7 @@ public class StubModelValidatorFacts
         };
 
         // Act
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
 
         // Assert
         Assert.AreEqual(
@@ -184,6 +199,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateImageFontColor(string colorHexCode, bool shouldSucceed)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel
         {
             Id = "stub-1",
@@ -191,7 +207,7 @@ public class StubModelValidatorFacts
         };
 
         // Act
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
 
         // Assert
         Assert.AreEqual(
@@ -210,6 +226,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ValidateJpegQuality(int jpegQuality, bool shouldSucceed)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel
         {
             Id = "stub-1",
@@ -217,7 +234,7 @@ public class StubModelValidatorFacts
         };
 
         // Act
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
 
         // Assert
         Assert.AreEqual(
@@ -262,6 +279,7 @@ public class StubModelValidatorFacts
         string expectedError)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel
         {
             Id = "stub-id",
@@ -286,7 +304,7 @@ public class StubModelValidatorFacts
         };
 
         // Arrange
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
         if (expectedError == null)
         {
             Assert.IsFalse(result.Length != 0,
@@ -316,6 +334,7 @@ public class StubModelValidatorFacts
         string file, bool shouldReturnError)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel
         {
             Id = "stub",
@@ -331,7 +350,7 @@ public class StubModelValidatorFacts
         };
 
         // Act
-        var result = _validator.ValidateStubModel(model);
+        var result = validator.ValidateStubModel(model);
 
         // Assert
         const string errorToCheck =
@@ -352,13 +371,14 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_ResponseValidation_ResponseSetAndStatusIs204(int statusCode, bool shouldReturnError)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel
         {
             Id = "stub", Response = new StubResponseModel { StatusCode = statusCode, Text = "Some response" }
         };
 
         // Act
-        var result = _validator.ValidateStubModel(model);
+        var result = validator.ValidateStubModel(model);
 
         // Assert
         const string errorToCheck =
@@ -385,6 +405,7 @@ public class StubModelValidatorFacts
     public void ValidateStubModel_IllegalResponseHeaders(string headers, bool shouldReturnError)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel
         {
             Id = "stub",
@@ -395,7 +416,7 @@ public class StubModelValidatorFacts
         };
 
         // Act
-        var result = _validator.ValidateStubModel(model);
+        var result = validator.ValidateStubModel(model);
 
         // Assert
         const string errorToCheck = "can't be used as response header.";
@@ -426,6 +447,7 @@ public class StubModelValidatorFacts
         string expectedError)
     {
         // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
         var dto = new StubResponseReplaceModel
         {
             Text = text,
@@ -437,7 +459,7 @@ public class StubModelValidatorFacts
         var model = new StubModel { Id = "stub", Response = new StubResponseModel { Replace = new[] { dto } } };
 
         // Act
-        var result = _validator.ValidateStubModel(model).ToArray();
+        var result = validator.ValidateStubModel(model).ToArray();
 
         // Assert
         if (expectedError == null)
@@ -449,5 +471,61 @@ public class StubModelValidatorFacts
             Assert.AreEqual(1, result.Count(r => r.Equals(expectedError)),
                 $"Expected error: {expectedError}. Actual errors: {string.Join(',', result)}");
         }
+    }
+
+    [TestMethod]
+    public void ValidateReverseProxy_HostNotAllowed_ShouldContainError()
+    {
+        // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
+        var hostnameValidatorMock = _mocker.GetMock<IHostnameValidator>();
+        var model = new StubModel
+        {
+            Response = new StubResponseModel
+            {
+                ReverseProxy = new StubResponseReverseProxyModel
+                {
+                    Url = "https://httplaceholder.org/destination"
+                }
+            }
+        };
+
+        hostnameValidatorMock
+            .Setup(m => m.HostnameIsValid("httplaceholder.org"))
+            .Returns(false);
+
+        // Act
+        var result = validator.ValidateStubModel(model);
+
+        // Assert
+        Assert.IsTrue(result.Any(r => r == "Hostname 'httplaceholder.org' is invalid for use with the reverse proxy response writer. Consult the documentation on how to enable the reverse proxy or how to enable the \"dev mode\"."));
+    }
+
+    [TestMethod]
+    public void ValidateReverseProxy_HostAllowed_ShouldNotContainError()
+    {
+        // Arrange
+        var validator = _mocker.CreateInstance<StubModelValidator>();
+        var hostnameValidatorMock = _mocker.GetMock<IHostnameValidator>();
+        var model = new StubModel
+        {
+            Response = new StubResponseModel
+            {
+                ReverseProxy = new StubResponseReverseProxyModel
+                {
+                    Url = "https://httplaceholder.org/destination"
+                }
+            }
+        };
+
+        hostnameValidatorMock
+            .Setup(m => m.HostnameIsValid("httplaceholder.org"))
+            .Returns(true);
+
+        // Act
+        var result = validator.ValidateStubModel(model);
+
+        // Assert
+        Assert.IsFalse(result.Any(r => r.Contains("is invalid for use with the reverse proxy response writer")));
     }
 }

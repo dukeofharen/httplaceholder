@@ -730,7 +730,7 @@
     headers:
       X-Header: value-from-stub
     reverseProxy:
-      url: https://jsonplaceholder.typicode.com
+      url: https://example.com
       appendPath: true
       appendQueryString: true
       replaceRootUrl: true
@@ -743,7 +743,7 @@
         startswith: /todoitems
   response:
     reverseProxy:
-      url: https://jsonplaceholder.typicode.com
+      url: https://example.com
       appendPath: true
       appendQueryString: true
       replaceRootUrl: true

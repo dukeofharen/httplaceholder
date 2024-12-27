@@ -446,5 +446,11 @@ namespace HttPlaceholder.Application.StubExecution {
                 return ResourceManager.GetString("StubIsReadonly", resourceCulture);
             }
         }
+        
+        internal static string ReverseProxyHostValidationFailed {
+            get {
+                return ResourceManager.GetString("ReverseProxyHostValidationFailed", resourceCulture);
+            }
+        }
     }
 }

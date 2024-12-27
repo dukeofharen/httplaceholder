@@ -23,8 +23,8 @@ docker compose -f "$DEVENV_SCRIPT_PATH" up -d
 
 # Run HttPlaceholder tests for in memory configuration.
 echo "Testing HttPlaceholder with in memory configuration"
-dotnet run --project $HTTPL_ROOT_DIR --useInMemoryStorage --storeResponses > $DIR/logs/httplaceholder-in-memory.txt 2>&1 &
-sleep 5
+dotnet run --project $HTTPL_ROOT_DIR --useInMemoryStorage --storeResponses --dev > $DIR/logs/httplaceholder-in-memory.txt 2>&1 &
+sleep 10
 bash ./run.sh > $DIR/logs/test-in-memory.txt
 assert-test-ok
 sudo killall HttPlaceholder
@@ -37,7 +37,7 @@ if [ ! -d "$FILE_STORAGE_PATH" ]; then
   mkdir $FILE_STORAGE_PATH
 fi
 
-dotnet run --project $HTTPL_ROOT_DIR --fileStorageLocation $FILE_STORAGE_PATH  --storeResponses > $DIR/logs/httplaceholder-file-storage.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --fileStorageLocation $FILE_STORAGE_PATH  --storeResponses --dev > $DIR/logs/httplaceholder-file-storage.txt 2>&1 &
 sleep 5
 bash ./run.sh > $DIR/logs/test-file-storage.txt
 assert-test-ok
@@ -50,7 +50,7 @@ if [ -f "$SQLITE_PATH" ]; then
   sudo rm $SQLITE_PATH
 fi
 
-dotnet run --project $HTTPL_ROOT_DIR --sqliteConnectionString "Data Source=$SQLITE_PATH;Foreign Keys=True" --storeResponses > $DIR/logs/httplaceholder-sqlite.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --sqliteConnectionString "Data Source=$SQLITE_PATH;Foreign Keys=True" --storeResponses --dev > $DIR/logs/httplaceholder-sqlite.txt 2>&1 &
 sleep 5
 bash ./run.sh > $DIR/logs/test-sqlite.txt
 assert-test-ok
@@ -58,7 +58,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in MySQL 5 configuration.
 echo "Testing HttPlaceholder with in MySQL 5 configuration"
-dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true;SSL Mode=None" --storeResponses > $DIR/logs/httplaceholder-mysql5.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true;SSL Mode=None" --storeResponses --dev > $DIR/logs/httplaceholder-mysql5.txt 2>&1 &
 sleep 5
 bash ./run.sh > $DIR/logs/test-mysql5.txt
 assert-test-ok
@@ -66,7 +66,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in MySQL 8 configuration.
 echo "Testing HttPlaceholder with in MySQL 8 configuration"
-dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Port=3307;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mysql8.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Port=3307;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses --dev > $DIR/logs/httplaceholder-mysql8.txt 2>&1 &
 sleep 5
 bash ./run.sh > $DIR/logs/test-mysql8.txt
 assert-test-ok
@@ -74,7 +74,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in MariaDB configuration.
 echo "Testing HttPlaceholder with in MariaDB configuration"
-dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Port=3308;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mariadb.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Port=3308;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses --dev > $DIR/logs/httplaceholder-mariadb.txt 2>&1 &
 sleep 5
 bash ./run.sh > $DIR/logs/test-mariadb.txt
 assert-test-ok
@@ -82,7 +82,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in MSSQL configuration.
 echo "Testing HttPlaceholder with in MSSQL configuration"
-dotnet run --project $HTTPL_ROOT_DIR --sqlServerConnectionString "Server=localhost,1433;Database=httplaceholder;User Id=sa;Password=Password123!" --storeResponses > $DIR/logs/httplaceholder-mssql.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --sqlServerConnectionString "Server=localhost,1433;Database=httplaceholder;User Id=sa;Password=Password123!" --storeResponses --dev > $DIR/logs/httplaceholder-mssql.txt 2>&1 &
 sleep 5
 bash ./run.sh > $DIR/logs/test-mssql.txt
 assert-test-ok
@@ -90,7 +90,7 @@ sudo killall HttPlaceholder
 
 # Run HttPlaceholder tests for in Postgres configuration.
 echo "Testing HttPlaceholder with in Postgres configuration"
-dotnet run --project $HTTPL_ROOT_DIR --postgresConnectionString "Host=localhost,5432;Username=postgres;Password=postgres;Database=httplaceholder;SearchPath=public" --storeResponses > $DIR/logs/httplaceholder-postgres.txt 2>&1 &
+dotnet run --project $HTTPL_ROOT_DIR --postgresConnectionString "Host=localhost,5432;Username=postgres;Password=postgres;Database=httplaceholder;SearchPath=public" --storeResponses --dev > $DIR/logs/httplaceholder-postgres.txt 2>&1 &
 sleep 5
 bash ./run.sh > $DIR/logs/test-postgres.txt
 assert-test-ok

@@ -24,7 +24,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
         var request = new HttpRequestMessage { RequestUri = new Uri(url) };
 
         MockHttp
-            .When(HttpMethod.Get, "https://jsonplaceholder.typicode.com/todos/1")
+            .When(HttpMethod.Get, "https://example.com/todos/1")
             .Respond(HttpStatusCode.OK, new Dictionary<string, string> { { "X-Header", "value-from-proxy" } },
                 MimeTypes.TextMime, "OK from Proxy");
 
@@ -45,7 +45,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
         var request = new HttpRequestMessage { RequestUri = new Uri(url) };
 
         MockHttp
-            .When(HttpMethod.Get, "https://jsonplaceholder.typicode.com/todos/1?key=val&key2=val2")
+            .When(HttpMethod.Get, "https://example.com/todos/1?key=val&key2=val2")
             .Respond(MimeTypes.TextMime, "OK from Proxy");
 
         // Act / Assert
@@ -70,7 +70,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
         };
 
         MockHttp
-            .When(HttpMethod.Post, "https://jsonplaceholder.typicode.com/todos")
+            .When(HttpMethod.Post, "https://example.com/todos")
             .WithContent(postContent)
             .Respond(MimeTypes.TextMime, "OK from Proxy");
 

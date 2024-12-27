@@ -11,6 +11,11 @@ namespace HttPlaceholder.Application.Configuration;
 public static class ConfigKeys
 {
     /// <summary>
+    ///     Constant for dev.
+    /// </summary>
+    public const string Dev = "dev";
+
+    /// <summary>
     ///     Constant for apiUsername.
     /// </summary>
     public const string ApiUsernameKey = "apiUsername";
@@ -141,6 +146,21 @@ public static class ConfigKeys
     public const string AllowGlobalFileSearch = "allowGlobalFileSearch";
 
     /// <summary>
+    ///     Constant for enableReverseProxy.
+    /// </summary>
+    public const string EnableReverseProxy = "enableReverseProxy";
+
+    /// <summary>
+    ///     Constant for allowedHosts.
+    /// </summary>
+    public const string AllowedHosts = "allowedHosts";
+
+    /// <summary>
+    ///     Constant for disallowedHosts.
+    /// </summary>
+    public const string DisallowedHosts = "disallowedHosts";
+
+    /// <summary>
     ///     Constant for configJsonLocation.
     /// </summary>
     public const string ConfigJsonLocationKey = "configJsonLocation";
@@ -152,11 +172,21 @@ public static class ConfigKeys
         { ConfigKeyType.Storage, "Storage" },
         { ConfigKeyType.Gui, "GUI" },
         { ConfigKeyType.Stub, "Stub" },
-        { ConfigKeyType.Configuration, "Configuration" }
+        { ConfigKeyType.Configuration, "Configuration" },
+        { ConfigKeyType.Development, "Development" }
     };
 
     private static readonly ConfigMetadataModel[] _configMetadata =
     [
+        Create(
+            Dev,
+            ConfigKeysResources.Dev,
+            "user",
+            "Development:DevModeEnabled",
+            ConfigKeyType.Development,
+            true,
+            null,
+            null),
         Create(
             ApiUsernameKey,
             ConfigKeysResources.ApiUsername,
@@ -387,6 +417,33 @@ public static class ConfigKeys
             ConfigKeysResources.AllowGlobalFileSearch,
             "false",
             "Stub:AllowGlobalFileSearch",
+            ConfigKeyType.Stub,
+            true,
+            null,
+            null),
+        Create(
+            EnableReverseProxy,
+            ConfigKeysResources.EnableReverseProxy,
+            "true",
+            "Stub:EnableReverseProxy",
+            ConfigKeyType.Stub,
+            true,
+            null,
+            null),
+        Create(
+            AllowedHosts,
+                ConfigKeysResources.AllowedHosts,
+            "^google\\.com$,www.google.com",
+            "Stub:AllowedHosts",
+            ConfigKeyType.Stub,
+            true,
+            null,
+            null),
+        Create(
+            DisallowedHosts,
+            ConfigKeysResources.DisallowedHosts,
+            "^reddit\\.com$,www.reddit.com",
+            "Stub:DisallowedHosts",
             ConfigKeyType.Stub,
             true,
             null,

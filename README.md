@@ -81,7 +81,8 @@ Linux, Windows and Mac are supported.
 
 ### Installation
 
-Follow these steps to install / update HttPlaceholder. If you update HttPlaceholder, make sure to read the [changelog](CHANGELOG) to see if there are no breaking changes.
+Follow these steps to install / update HttPlaceholder. If you update HttPlaceholder, make sure to read
+the [changelog](CHANGELOG) to see if there are no breaking changes.
 
 **Install on Windows**
 
@@ -105,7 +106,8 @@ curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scr
 
 HttPlaceholder has a Docker image; it can be found [here](https://hub.docker.com/r/dukeofharen/httplaceholder).
 
-Run the following command to run a basic HttPlaceholder container: `docker run -p 5000:5000 dukeofharen/httplaceholder:latest`
+Run the following command to run a basic HttPlaceholder container:
+`docker run -p 5000:5000 dukeofharen/httplaceholder:latest`
 
 **Install as .NET tool**
 
@@ -144,29 +146,34 @@ dotnet tool install --global HttPlaceholder
 - Open the terminal in the folder you've added the `stub.yaml` file and run the following command: `httplaceholder`.
   HttPlaceholder will now start and will load the stubs in the current folder.
   ![](docs/img/httplaceholder_running.png)
-  
+
 - Perform a specific HTTP call to HttPlaceholder so your provided response will be returned.
-  - For Linux / Mac (cURL needs to be installed):
+    - For Linux / Mac (cURL needs to be installed):
   ```bash
   curl "http://localhost:5000/users?id=12&filter=first_name" -D-
   ```
-  - For Windows (uses Powershell):
+    - For Windows (uses Powershell):
   ```powershell
   (Invoke-WebRequest "http://localhost:5000/users?id=12&filter=first_name").RawContent
   ```
-  
+
 - You can view and inspect the performed requests in the user interface at <http://localhost:5000/ph-ui>.
-![](docs/img/request_in_ui.png)
-  
-For more sophisticated examples, go to the [samples](docs/docs.md#samples) to view samples for all supported HTTP condition checkers and response writers. Learn more about HttPlaceholder by reading the [documentation](docs/docs.md).
+  ![](docs/img/request_in_ui.png)
+
+For more sophisticated examples, go to the [samples](docs/docs.md#samples) to view samples for all supported HTTP
+condition checkers and response writers. Learn more about HttPlaceholder by reading the [documentation](docs/docs.md).
+
+To run HttPlaceholder locally on your dev machine, you can run it with the `dev` flag like this: `httplaceholder --dev`.
+Some security features are disabled which make it easier for local development. Do NOT use this flag if you're running
+HttPlaceholder somewhere in your network. Read more [here](docs/docs.md#enable-dev-mode).
 
 ## Documentation
 
 - [Installation](docs/docs.md#installation)
-  - [Windows](docs/docs.md#windows)
-  - [Linux](docs/docs.md#linux)
-  - [Mac](docs/docs.md#mac)
-  - [Docker](docs/docs.md#docker)
+    - [Windows](docs/docs.md#windows)
+    - [Linux](docs/docs.md#linux)
+    - [Mac](docs/docs.md#mac)
+    - [Docker](docs/docs.md#docker)
 - [Getting started](docs/docs.md#getting-started)
 - [Stub samples](docs/docs.md#samples)
 - [REST API](docs/docs.md#rest-api)
@@ -176,6 +183,7 @@ For more sophisticated examples, go to the [samples](docs/docs.md#samples) to vi
 - [Management interface](docs/docs.md#management-interface)
 
 ### Tools
+
 * [HttPlaceholder REST API client for .NET](docs/docs.md#httplaceholder-rest-api-client-for-net)
 
 ## Roadmap
@@ -183,8 +191,10 @@ For more sophisticated examples, go to the [samples](docs/docs.md#samples) to vi
 See the [open issues](https://github.com/dukeofharen/httplaceholder/issues) for a list of proposed features (and known
 issues).
 
-- [Top Feature Requests](https://github.com/dukeofharen/httplaceholder/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
-- [Top Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
+- [Top Feature Requests](https://github.com/dukeofharen/httplaceholder/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (
+  Add your votes using the 👍 reaction)
+- [Top Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (
+  Add your votes using the 👍 reaction)
 - [Newest Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 
 ## Support
