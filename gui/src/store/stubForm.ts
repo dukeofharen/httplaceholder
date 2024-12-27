@@ -695,7 +695,7 @@ export const useStubFormStore = defineStore({
         }
 
         parsed.response.reverseProxy = {
-          url: "https://jsonplaceholder.typicode.com/todos",
+          url: "https://www.catfacts.net/api/",
           appendPath: true,
           appendQueryString: true,
           replaceRootUrl: true,

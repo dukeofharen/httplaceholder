@@ -2504,39 +2504,36 @@ HttPlaceholder contains a very simple reverse proxy as response option. In short
 any request that doesn't match any other stub) to an external web service, you can do this with the reverse proxy
 response writer. Here are some examples that you can use.
 
-Scenario: `https://jsonplaceholder.typicode.com/todos` is an API for testing purposes which returns a list of todo
-items. We want to configure HttPlaceholder to proxy the requests to this URL and return the response of that call to the
-client.
+Scenario: `https://catfact.ninja` is an API fetching random cat facts. We want to configure HttPlaceholder to
+proxy the requests to this URL and return the response of that call to the client.
 
 ```yml
 - id: reverse-proxy-1
   conditions:
     url:
       path:
-        equals: /todos
+        startswith: /cat-facts
   response:
     reverseProxy:
-      url: https://jsonplaceholder.typicode.com/todos
+      url: https://catfact.ninja
       appendPath: true
       appendQueryString: true
       replaceRootUrl: true
 ```
 
-When you now make a call to `http://localhost:5000/todos`, a request will be made
-to `https://jsonplaceholder.typicode.com/todos` and the response of that call will be returned to the client.
+When you now make a call to `http://localhost:5000/cat-facts/breeds`, a request will be made
+to `https://catfact.ninja/breeds` and the response of that call will be returned to the client.
 
 The variable `appendPath` is set to true (which is, by default, set to false by the way), which means that everything
-you put in your URL after `/todos` (which you've you configured in your conditions) will be appended to the proxy URL.
-So, let's say you go to `http://localhost:5000/todos/1`, HttPlaceholder will send a request
-to `https://jsonplaceholder.typicode.com/todos/1`.
+you put in your URL after `/cat-facts` (which you've you configured in your conditions) will be appended to the proxy URL.
 
 Also, the variable `appendQueryString` is set to true (which is by default false). Like the name says, it appends the
 query string of the request to HttPlaceholder to the reverse proxy request. For example, let's say you make a request
-to `http://localhost:5000/todos?key=val`, then HttPlaceholder will make a request
-to `https://jsonplaceholder.typicode.com/todos?key=val`.
+to `http://localhost:5000/cat-facts/breeds?key=val`, then HttPlaceholder will make a request
+to `https://catfact.ninja/breeds?key=val`.
 
 Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is by default false). If this is set to
-true, any reference of `https://jsonplaceholder.typicode.com` (so the **root** URL of your reverse proxy URL) will be
+true, any reference of `https://catfact.ninja` (so the **root** URL of your reverse proxy URL) will be
 replaced by the root URL of HttPlaceholder (e.g. `http://localhost:5000`). The replacing will be done in the reverse
 proxy response body and response headers.
 

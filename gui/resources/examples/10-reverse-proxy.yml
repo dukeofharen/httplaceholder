@@ -5,10 +5,10 @@ stub: |
   conditions:
     url:
       path:
-        equals: /todos
+        equals: /cat-facts
   response:
     reverseProxy:
-      url: https://jsonplaceholder.typicode.com/todos
+      url: https://www.catfacts.net/api/
       appendQueryString: true
       appendPath: true
       replaceRootUrl: true
