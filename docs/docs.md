@@ -102,7 +102,7 @@ the [changelog](../CHANGELOG) to see if there are no breaking changes.
 
 ## Dotnet global tool (cross platform)
 
-Make sure you have installed the correct .NET SDK (at least .NET 8) for your OS (
+Make sure you have installed the correct .NET SDK (at least .NET 9) for your OS (
 see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run the following command to install
 HttPlaceholder:
 
