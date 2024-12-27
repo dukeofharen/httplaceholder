@@ -22,6 +22,6 @@ public static class ScrutorUtilities
 
     private static ILifetimeSelector AddClasses<TInterfaceType>(this IImplementationTypeSelector selector) =>
         selector
-            .AddClasses(c => c.AssignableTo<TInterfaceType>())
+            .AddClasses(c => c.AssignableTo<TInterfaceType>(), false)
             .AsImplementedInterfaces(t => t != typeof(TInterfaceType));
 }
