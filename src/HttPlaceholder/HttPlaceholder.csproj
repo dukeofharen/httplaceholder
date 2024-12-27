@@ -25,6 +25,7 @@
         <PackageIcon>logo.png</PackageIcon>
         <PackageProjectUrl>https://httplaceholder.org</PackageProjectUrl>
         <NoDefaultExcludes>true</NoDefaultExcludes>
+        <NoWarn>NU1902;NU1903</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath="" />

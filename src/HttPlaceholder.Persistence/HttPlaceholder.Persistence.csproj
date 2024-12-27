@@ -5,7 +5,7 @@
         <LangVersion>latest</LangVersion>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>NU1903</NoWarn>
+        <NoWarn>NU1902;NU1903</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,9 +14,9 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
         <PackageReference Include="MySqlConnector" Version="2.4.0" />
         <PackageReference Include="Npgsql" Version="9.0.2" />
-        <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
         <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
     </ItemGroup>
     <ItemGroup>
