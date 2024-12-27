@@ -13,13 +13,13 @@ COPY . ./
 RUN cd gui && rm -rf public/docs && mv ../docs public && npm install && npm run build
 
 # Run .NET unit tests
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS test-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS test-env
 WORKDIR /app
 COPY . ./
 RUN cd src && dotnet test
 
 # Build .NET client
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS dotnet-nuget-build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS dotnet-nuget-build-env
 WORKDIR /app
 COPY . ./
 RUN VERSION=$(cat version.txt) && \
@@ -34,7 +34,7 @@ RUN VERSION=$(cat version.txt) && \
         /p:FileVersion=$VERSION
 
 # Create OpenAPI file
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS swagger-build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS swagger-build-env
 WORKDIR /app
 COPY . ./
 RUN VERSION=$(cat version.txt) && \
@@ -43,10 +43,10 @@ RUN VERSION=$(cat version.txt) && \
     mkdir $DIST_DIR && \
     cd $ROOT_DIR/src/HttPlaceholder.SwaggerGenerator && \
     dotnet run -c Release && \
-    cp bin/Release/net8.0/swagger.json $DIST_DIR
+    cp bin/Release/net9.0/swagger.json $DIST_DIR
 
 # Build for Linux
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS linux-app-build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS linux-app-build-env
 WORKDIR /app
 COPY . ./
 COPY --from=gui-build-env /app/gui/dist ./gui-dist
@@ -70,7 +70,7 @@ RUN VERSION=$(cat version.txt) && \
     cp -r $DOCS_DIR $DIST_DIR
 
 # Build for Mac OSX
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS mac-app-build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS mac-app-build-env
 WORKDIR /app
 COPY . ./
 COPY --from=gui-build-env /app/gui/dist ./gui-dist
@@ -94,7 +94,7 @@ RUN VERSION=$(cat version.txt) && \
     cp -r $DOCS_DIR $DIST_DIR
 
 # Build for Windows
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS windows-app-build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS windows-app-build-env
 WORKDIR /app
 COPY . ./
 COPY --from=gui-build-env /app/gui/dist ./gui-dist
@@ -119,7 +119,7 @@ RUN VERSION=$(cat version.txt) && \
     mv $DIST_DIR/web.config $DIST_DIR/_web.config
 
 # Build tool
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS tool-build-env
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS tool-build-env
 WORKDIR /app
 COPY . ./
 COPY --from=gui-build-env /app/gui/dist ./gui-dist
