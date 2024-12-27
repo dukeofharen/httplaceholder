@@ -16,7 +16,7 @@ shutil.copyfile(docs_md_path, docs_md_copy_path)
 
 # Copy CHANGELOG file
 changelog_path = os.path.join(dir_path, '..', '..', 'CHANGELOG')
-changelog_path_copy_path = os.path.join(mkdocs_docs_path, 'CHANGELOG')
+changelog_path_copy_path = os.path.join(mkdocs_docs_path, 'CHANGELOG.txt')
 shutil.copyfile(changelog_path, changelog_path_copy_path)
 
 # Remove table of contents from copied file.
@@ -28,6 +28,8 @@ add_line = False
 for line in lines:
     if line.startswith('# Installation'):
         add_line = True
+    if '../CHANGELOG' in line:
+        line = line.replace('../CHANGELOG', 'CHANGELOG.txt')
     if add_line:
         lines_result.append(line.rstrip('\n'))
 
