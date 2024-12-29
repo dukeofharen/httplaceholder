@@ -1,4 +1,10 @@
 [vnext]
+- Updated .NET SDK to 9 (https://github.com/dukeofharen/httplaceholder/issues/384).
+
+# BREAKING CHANGES
+- If you installed HttPlaceholder as .NET tool, you need to have the .NET 9 SDK installed on your machine. If you download the compiled version of HttPlaceholder for your OS, you do not need to have .NET installed so you will notice no changes.
+
+[2024.12.27]
 - Disallow reverse proxy response writer by default (https://github.com/dukeofharen/httplaceholder/pull/385).
 
 # BREAKING CHANGES

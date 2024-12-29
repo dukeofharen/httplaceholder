@@ -68,7 +68,7 @@ HttPlaceholder:
 
 ### Built With
 
-- [.NET 8](https://dotnet.microsoft.com/apps/aspnet)
+- [.NET 9](https://dot.net)
 - [Vue.js](https://vuejs.org/)
 - [Bootstrap](https://getbootstrap.com/)
 - [CodeMirror](https://codemirror.net/)

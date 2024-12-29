@@ -3,7 +3,7 @@
 Vagrant.configure("2") do |config|
   config.vm.synced_folder "./../..", "/httplaceholder"
   config.vm.box = "gusztavvargadr/ubuntu-server-2404-lts"
-  config.vm.box_version = "2404.0.2405"
+  config.vm.box_version = "2404.0.2409"
   config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 443, host: 4430
   config.vm.provision :shell, path: "bootstrap.sh", privileged: false

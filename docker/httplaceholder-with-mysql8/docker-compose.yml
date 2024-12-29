@@ -8,6 +8,7 @@ services:
     environment:
       mysqlConnectionString: 'Server=mysql;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true'
       verbose: 'true'
+      dev: true
     ports:
       - "5000:5000"
     restart: on-failure

@@ -58,7 +58,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-ApplicationDevelopment
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
 # Install dependencies
-& choco install dotnet-windowshosting --version=8.0.7 -y
+& choco install dotnet-windowshosting --version=9.0.0 -y
 
 # Stop HttPlaceholder IIS site if it exists.
 Stop-Website -Name $iisSite -ErrorAction SilentlyContinue

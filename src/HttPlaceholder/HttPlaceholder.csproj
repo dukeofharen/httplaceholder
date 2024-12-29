@@ -2,7 +2,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <PackageId>HttPlaceholder</PackageId>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Version>2019.8.24.1234</Version>
@@ -25,6 +25,7 @@
         <PackageIcon>logo.png</PackageIcon>
         <PackageProjectUrl>https://httplaceholder.org</PackageProjectUrl>
         <NoDefaultExcludes>true</NoDefaultExcludes>
+        <NoWarn>NU1902;NU1903</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath="" />
