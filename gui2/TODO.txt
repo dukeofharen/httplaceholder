@@ -7,3 +7,4 @@
 - Alle (deprecation) warnings oplossen
 - Checken dat "_blank" werkt in MD links
 - Logo toevoegen aan zijbalk
+- Alle TODO items verwijderen

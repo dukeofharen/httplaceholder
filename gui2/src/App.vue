@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import Navigation from '@/components/Navigation.vue'
+import NavMenu from '@/components/nav/NavMenu.vue'
 </script>
 
 <template>
-  <Navigation />
+  <NavMenu />
   <div class="p-4 sm:ml-64">
     <RouterView />
   </div>
