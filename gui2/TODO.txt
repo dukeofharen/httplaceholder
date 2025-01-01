@@ -2,3 +2,7 @@
 - Sidebar
 - Responsive layout
 - Dark / light theme
+- Alle stores in composition formaat
+- Alle components in composition formaat
+- Alle (deprecation) warnings oplossen
+- Checken dat "_blank" werkt in MD links

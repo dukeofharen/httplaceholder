@@ -1,8 +1,9 @@
-import { useSettingsStore } from "@/store/settings";
+import { useSettingsStore } from "@/stores/settings";
 import { defaultLanguage } from "@/constants";
 import { translations as en } from "@/strings/i18n/en";
 import { translations as nl } from "@/strings/i18n/nl";
-import { marked } from "marked";
+import { marked, type Tokens } from "marked";
+import { render } from 'vue'
 
 const langMapping: Record<string, any> = {
   en: en,
@@ -40,9 +41,10 @@ export function translateWithMarkdown(
   const renderer = new marked.Renderer();
   const linkTarget = options?.linkTarget;
   if (linkTarget) {
-    renderer.link = (href, title, text) => {
-      return `<a href="${href}" target="${linkTarget}">${text}</a>`;
-    };
+    function markdownLink({ href, title, tokens }: Tokens.Link): string {
+      return `<a href="${href}" title="${title || ''}" target="${linkTarget}">${tokens.map(t => t.raw).join('')}</a>`;
+    }
+    renderer.link = markdownLink;
   }
   return marked.parseInline(translate(key), { renderer }) as string;
 }
