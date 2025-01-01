@@ -89,6 +89,11 @@ const menuItems = computed<MenuItemModel[]>(() => {
       i.onlyShowWhenLoggedInAndAuthEnabled === false,
   )
 })
+
+// Functions
+function onLinkClicked() {
+  mobileMenuOpen.value = false
+}
 </script>
 
 <template>
@@ -112,10 +117,20 @@ const menuItems = computed<MenuItemModel[]>(() => {
   >
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
-        <NavItem v-for="item of menuItems" :item="item" :key="item.title" />
+        <NavItem
+          v-for="item of menuItems"
+          :item="item"
+          :key="item.title"
+          @link-clicked="onLinkClicked"
+        />
       </ul>
     </div>
   </aside>
+  <div
+    v-if="mobileMenuOpen"
+    class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30 cursor-pointer"
+    @click="mobileMenuOpen = false"
+  ></div>
 </template>
 
 <style scoped></style>

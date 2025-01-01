@@ -11,6 +11,7 @@ const props = defineProps({
     required: true,
   },
 })
+const emit = defineEmits(['linkClicked'])
 
 // Computed
 const url = computed<string | undefined>(() => {
@@ -55,6 +56,8 @@ async function linkClick(event: Event) {
     event.preventDefault()
     await props.item.onClick()
   }
+
+  emit('linkClicked')
 }
 
 function resolveRoute(routeName: string) {
