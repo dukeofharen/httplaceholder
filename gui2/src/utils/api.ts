@@ -1,7 +1,8 @@
+import { useHttpStore } from '@/stores/http.ts'
+
 type BeforeSendHandler = { (url: string, request: RequestInit): void };
 const beforeSendHandlers: BeforeSendHandler[] = [];
 let defaultRequestOptions: RequestOptions | undefined;
-import { useHttpStore } from "@/store/http";
 
 export interface RequestOptions {
   headers: object | undefined;
