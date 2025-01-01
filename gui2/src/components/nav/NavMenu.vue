@@ -16,57 +16,57 @@ const router = useRouter()
 const plainMenuItems: MenuItemModel[] = [
   {
     title: translate('sidebar.requests'),
-    icon: 'eye',
+    icon: 'EyeIcon',
     routeName: 'Requests',
     hideWhenAuthEnabledAndNotLoggedIn: true,
   },
   {
     title: translate('sidebar.stubs'),
-    icon: 'code-slash',
+    icon: 'CodeBracketIcon',
     routeName: 'Stubs',
     hideWhenAuthEnabledAndNotLoggedIn: true,
   },
   {
     title: translate('sidebar.addStubs'),
-    icon: 'plus',
+    icon: 'PlusIcon',
     routeName: 'StubForm',
     hideWhenAuthEnabledAndNotLoggedIn: true,
   },
   {
     title: translate('sidebar.importStubs'),
-    icon: 'arrow-up-short',
+    icon: 'ArrowUpIcon',
     routeName: 'ImportStubs',
     hideWhenAuthEnabledAndNotLoggedIn: true,
   },
   {
     title: translate('sidebar.scenarios'),
-    icon: 'card-list',
+    icon: 'ListBulletIcon',
     routeName: 'Scenarios',
     hideWhenAuthEnabledAndNotLoggedIn: true,
   },
   {
     title: translate('sidebar.docs'),
-    icon: 'file-earmark-text',
+    icon: 'DocumentIcon',
     url: renderDocLink(),
     targetBlank: true,
     onlyShowWhenLoggedInAndAuthEnabled: false,
   },
   {
     title: translate('sidebar.apiDocs'),
-    icon: 'file-earmark-text',
+    icon: 'DocumentIcon',
     url: '/swagger/index.html',
     targetBlank: true,
     onlyShowWhenLoggedInAndAuthEnabled: false,
   },
   {
     title: translate('sidebar.settings'),
-    icon: 'wrench',
+    icon: 'WrenchIcon',
     routeName: 'Settings',
     hideWhenAuthEnabledAndNotLoggedIn: true,
   },
   {
     title: translate('sidebar.logOut'),
-    icon: 'box-arrow-left',
+    icon: 'ArrowLeftStartOnRectangleIcon',
     onlyShowWhenLoggedInAndAuthEnabled: true,
     onClick: async () => {
       userStore.logOut()

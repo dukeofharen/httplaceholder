@@ -20,6 +20,7 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@heroicons/vue": "^2.2.0",
     "@tsconfig/node22": "^22.0.0",
     "@types/marked": "^6.0.0",
     "@types/node": "^22.10.2",
