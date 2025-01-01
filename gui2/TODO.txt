@@ -1,0 +1,4 @@
+- Loading component
+- Sidebar
+- Responsive layout
+- Dark / light theme
