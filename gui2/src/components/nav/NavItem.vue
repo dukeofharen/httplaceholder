@@ -18,9 +18,9 @@ const url = computed<string | undefined>(() => {
   }
 
   if (props.item.routeName) {
-    const resolvedRoute = router.resolve(props.item.routeName)
-    if (resolvedRoute.name && resolvedRoute.href) {
-      return resolvedRoute.href
+    const href = resolveRoute(props.item.routeName)
+    if (href) {
+      return href
     }
   }
 
@@ -31,11 +31,27 @@ const urlTarget = computed(() => {
   return props.item.targetBlank ? '_blank' : ''
 })
 
+const isActive = computed(() => {
+  if (!props.item.routeName) {
+    return false
+  }
+
+  const href = resolveRoute(props.item.routeName)
+  return href && location.href.toLowerCase().endsWith(href.toLowerCase())
+})
+
 // Functions
 async function linkClick(event: Event) {
   if (props.item.onClick) {
     event.preventDefault()
     await props.item.onClick()
+  }
+}
+
+function resolveRoute(routeName: string) {
+  const resolvedRoute = router.resolve(routeName)
+  if (resolvedRoute.name && resolvedRoute.href) {
+    return resolvedRoute.href
   }
 }
 </script>
@@ -47,6 +63,7 @@ async function linkClick(event: Event) {
       :target="urlTarget"
       @click="linkClick"
       class="flex cursor-pointer items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+      :class="{ 'bg-gray-100': isActive, 'dark:bg-gray-700': isActive }"
     >
       <svg
         class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
