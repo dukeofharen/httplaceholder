@@ -14,7 +14,7 @@ export const exampleCurlInput = `curl 'https://api.site.com/api/v1/users' \\
   -H 'sec-fetch-dest: empty' \\
   -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \\
   --data-raw $'{"id":1,"created":"2015-10-21T14:39:55","updated":"2021-11-26T22:10:52","userName":"d","firstName":"d\\'","lastName":"h","street":"Road","number":"6","postalCode":"1234AB","city":"Amsterdam","phone":"0612345678","email":"info@example.com","placeId":1,"newsletter":false,"driversLicenseNumber":"112233","emailRepeat":"info@example.com"}' \\
-  --compressed`;
+  --compressed`
 export const exampleHarInput = `{
   "log": {
     "version": "1.2",
@@ -310,7 +310,7 @@ export const exampleHarInput = `{
       }
     ]
   }
-}`;
+}`
 export const exampleOpenApiInput = `openapi: "3.0.0"
 info:
   version: 1.0.0
@@ -427,10 +427,10 @@ components:
           format: int32
         message:
           type: string
-`;
+`
 export const defaultStub = `id: unique-stub-id
 description: A description for the stub.
 conditions:
   method: GET
 response:
-  text: OK!`;
+  text: OK!`

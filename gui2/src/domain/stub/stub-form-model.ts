@@ -1,4 +1,4 @@
 export interface StubFormModel {
-  key: string;
-  value: any;
+  key: string
+  value: any
 }

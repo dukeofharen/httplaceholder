@@ -1,5 +1,5 @@
 export enum LineEndingType {
-  NotSet = "NotSet",
-  Windows = "Windows",
-  Unix = "Unix",
+  NotSet = 'NotSet',
+  Windows = 'Windows',
+  Unix = 'Unix',
 }

@@ -1,6 +1,6 @@
-import type { HashMap } from "@/domain/hash-map";
+import type { HashMap } from '@/domain/hash-map'
 
 export interface StubXpathModel {
-  queryString: string;
-  namespaces: HashMap;
+  queryString: string
+  namespaces: HashMap
 }

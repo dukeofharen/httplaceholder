@@ -1,8 +1,8 @@
-import type { App } from "vue";
-import { vsprintf } from "sprintf-js";
+import type { App } from 'vue'
+import { vsprintf } from 'sprintf-js'
 
 export default {
   install: (app: App) => {
-    app.config.globalProperties.$vsprintf = vsprintf;
+    app.config.globalProperties.$vsprintf = vsprintf
   },
-};
+}

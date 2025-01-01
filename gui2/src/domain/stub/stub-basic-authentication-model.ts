@@ -1,4 +1,4 @@
 export interface StubBasicAuthenticationModel {
-  username?: string;
-  password?: string;
+  username?: string
+  password?: string
 }

@@ -1,5 +1,5 @@
 export interface StubResponseWriterResultModel {
-  responseWriterName: string;
-  executed: boolean;
-  log: string;
+  responseWriterName: string
+  executed: boolean
+  log: string
 }

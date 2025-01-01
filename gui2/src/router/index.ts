@@ -1,28 +1,22 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  type RouteRecordRaw,
-} from "vue-router";
-import { useUsersStore } from "@/stores/users";
-import { useMetadataStore } from "@/stores/metadata";
+import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
+import { useUsersStore } from '@/stores/users'
+import { useMetadataStore } from '@/stores/metadata'
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    redirect: "/requests",
+    path: '/',
+    name: 'Home',
+    redirect: '/requests',
   },
   {
-    path: "/requests",
-    name: "Requests",
-    component: () =>
-      import(/* webpackChunkName: "requests" */ "../views/Requests.vue"),
+    path: '/requests',
+    name: 'Requests',
+    component: () => import(/* webpackChunkName: "requests" */ '../views/RequestsPage.vue'),
   },
   {
-    path: "/stubs",
-    name: "Stubs",
-    component: () =>
-      import(/* webpackChunkName: "stubs" */ "../views/Stubs.vue"),
+    path: '/stubs',
+    name: 'Stubs',
+    component: () => import(/* webpackChunkName: "stubs" */ '../views/StubsPage.vue'),
   },
   // {
   //   path: "/stubForm/:stubId?",
@@ -62,23 +56,23 @@ const routes = [
   //       /* webpackChunkName: "scenarioForm" */ "../views/ScenarioForm.vue"
   //       ),
   // },
-] as RouteRecordRaw[];
+] as RouteRecordRaw[]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-});
+})
 
 router.beforeEach((to, _, next) => {
-  const usersStore = useUsersStore();
-  const metadataStore = useMetadataStore();
-  const authEnabled = metadataStore.getAuthenticationEnabled;
-  const authenticated = usersStore.getAuthenticated;
-  if (authEnabled && !authenticated && to.name !== "Login") {
-    next({ name: "Login" });
+  const usersStore = useUsersStore()
+  const metadataStore = useMetadataStore()
+  const authEnabled = metadataStore.getAuthenticationEnabled
+  const authenticated = usersStore.getAuthenticated
+  if (authEnabled && !authenticated && to.name !== 'Login') {
+    next({ name: 'Login' })
   } else {
-    next();
+    next()
   }
-});
+})
 
-export default router;
+export default router

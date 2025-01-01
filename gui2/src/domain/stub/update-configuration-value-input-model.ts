@@ -1,4 +1,4 @@
 export interface UpdateConfigurationValueInputModel {
-  configurationKey: string;
-  newValue: string;
+  configurationKey: string
+  newValue: string
 }

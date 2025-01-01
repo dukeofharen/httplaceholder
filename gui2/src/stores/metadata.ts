@@ -49,6 +49,6 @@ export const useMetadataStore = defineStore('metadata', () => {
     getMetadataState,
     checkFeatureIsEnabled,
     checkAuthenticationIsEnabled,
-    getMetadata
+    getMetadata,
   }
 })

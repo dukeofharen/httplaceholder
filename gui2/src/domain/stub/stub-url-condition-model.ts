@@ -1,6 +1,6 @@
 export interface StubUrlConditionModel {
-  path?: any;
-  query?: any;
-  fullPath?: any;
-  isHttps?: boolean;
+  path?: any
+  query?: any
+  fullPath?: any
+  isHttps?: boolean
 }
