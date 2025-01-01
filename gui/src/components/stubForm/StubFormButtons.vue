@@ -34,7 +34,7 @@ import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import { vsprintf } from "sprintf-js";
-import { defaultStub } from "@/strings/exmaples";
+import { defaultStub } from "@/strings/examples";
 import { translate } from "@/utils/translate";
 
 export default defineComponent({

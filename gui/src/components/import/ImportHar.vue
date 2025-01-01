@@ -99,7 +99,7 @@ import { success } from "@/utils/toast";
 import { type ImportInputModel, useImportStore } from "@/store/import";
 import { defineComponent } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
-import { exampleHarInput } from "@/strings/exmaples";
+import { exampleHarInput } from "@/strings/examples";
 import { translate } from "@/utils/translate";
 
 export default defineComponent({

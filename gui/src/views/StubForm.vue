@@ -77,7 +77,7 @@ import { useStubFormStore } from "@/store/stubForm";
 import { vsprintf } from "sprintf-js";
 import { translate } from "@/utils/translate";
 import { renderDocLink } from "@/utils/doc";
-import { defaultStub } from "@/strings/exmaples";
+import { defaultStub } from "@/strings/examples";
 
 const editorTypes = {
   none: "none",

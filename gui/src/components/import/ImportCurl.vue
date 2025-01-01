@@ -100,7 +100,7 @@ import { type ImportInputModel, useImportStore } from "@/store/import";
 import { defineComponent } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { translate } from "@/utils/translate";
-import { exampleCurlInput } from "@/strings/exmaples";
+import { exampleCurlInput } from "@/strings/examples";
 
 export default defineComponent({
   name: "ImportCurl",
