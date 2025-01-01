@@ -1,47 +1,45 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
 
-type HttpState = {
-  numberOfCurrentHttpCalls: number;
-  showLoader: boolean;
-  showLoaderTimeout: any;
-};
+export const useHttpStore = defineStore('http', () => {
+  // State
+  const numberOfCurrentHttpCalls = ref(0)
+  const showLoader = ref(false)
+  const showLoaderTimeout = ref(0)
 
-export const useHttpStore = defineStore({
-  id: "http",
-  state: () =>
-    ({
-      numberOfCurrentHttpCalls: 0,
-      showLoader: false,
-    }) as HttpState,
-  getters: {
-    isExecutingHttpCalls: (state): boolean =>
-      state.showLoader && state.numberOfCurrentHttpCalls > 0,
-  },
-  actions: {
-    increaseNumberOfCurrentHttpCalls() {
-      this.numberOfCurrentHttpCalls++;
-      if (this.showLoaderTimeout) {
-        clearTimeout(this.showLoaderTimeout);
-      }
+  // Getters
+  const isExecutingHttpCalls = computed(
+    () => showLoader.value && numberOfCurrentHttpCalls.value > 0,
+  )
 
-      if (!this.showLoader) {
-        this.showLoaderTimeout = setTimeout(
-          () => (this.showLoader = true),
-          200,
-        );
-      }
-    },
-    decreaseNumberOfCurrentHttpCalls() {
-      if (this.numberOfCurrentHttpCalls !== 0) {
-        this.numberOfCurrentHttpCalls--;
-      }
+  // Actions
+  function increaseNumberOfCurrentHttpCalls() {
+    numberOfCurrentHttpCalls.value++
+    if (showLoaderTimeout.value) {
+      clearTimeout(showLoaderTimeout.value)
+    }
 
-      if (this.numberOfCurrentHttpCalls <= 0) {
-        this.showLoader = false;
-        if (this.showLoaderTimeout) {
-          clearTimeout(this.showLoaderTimeout);
-        }
+    if (!showLoader.value) {
+      showLoaderTimeout.value = setTimeout(() => (showLoader.value = true), 200)
+    }
+  }
+
+  function decreaseNumberOfCurrentHttpCalls() {
+    if (numberOfCurrentHttpCalls.value !== 0) {
+      numberOfCurrentHttpCalls.value--
+    }
+
+    if (numberOfCurrentHttpCalls.value <= 0) {
+      showLoader.value = false
+      if (showLoaderTimeout.value) {
+        clearTimeout(showLoaderTimeout.value)
       }
-    },
-  },
-});
+    }
+  }
+
+  return {
+    isExecutingHttpCalls,
+    increaseNumberOfCurrentHttpCalls,
+    decreaseNumberOfCurrentHttpCalls,
+  }
+})
