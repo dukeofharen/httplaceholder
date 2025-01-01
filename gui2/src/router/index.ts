@@ -1,17 +1,84 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHashHistory,
+  type RouteRecordRaw,
+} from "vue-router";
+import { useUsersStore } from "@/stores/users";
+import { useMetadataStore } from "@/stores/metadata";
+
+const routes = [
+  {
+    path: "/",
+    name: "Home",
+    redirect: "/requests",
+  },
+  {
+    path: "/requests",
+    name: "Requests",
+    component: () =>
+      import(/* webpackChunkName: "requests" */ "../views/Requests.vue"),
+  },
+  {
+    path: "/stubs",
+    name: "Stubs",
+    component: () =>
+      import(/* webpackChunkName: "stubs" */ "../views/Stubs.vue"),
+  },
+  // {
+  //   path: "/stubForm/:stubId?",
+  //   name: "StubForm",
+  //   component: () =>
+  //     import(/* webpackChunkName: "stubForm" */ "../views/StubForm.vue"),
+  // },
+  // {
+  //   path: "/importStubs",
+  //   name: "ImportStubs",
+  //   component: () =>
+  //     import(/* webpackChunkName: "importStubs" */ "../views/ImportStubs.vue"),
+  // },
+  // {
+  //   path: "/settings",
+  //   name: "Settings",
+  //   component: () =>
+  //     import(/* webpackChunkName: "settings" */ "../views/Settings.vue"),
+  // },
+  // {
+  //   path: "/login",
+  //   name: "Login",
+  //   component: () =>
+  //     import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+  // },
+  // {
+  //   path: "/scenarios",
+  //   name: "Scenarios",
+  //   component: () =>
+  //     import(/* webpackChunkName: "scenarios" */ "../views/Scenarios.vue"),
+  // },
+  // {
+  //   path: "/scenarioForm/:scenario?",
+  //   name: "ScenarioForm",
+  //   component: () =>
+  //     import(
+  //       /* webpackChunkName: "scenarioForm" */ "../views/ScenarioForm.vue"
+  //       ),
+  // },
+] as RouteRecordRaw[];
 
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue'),
-    },
-  ],
-})
+  history: createWebHashHistory(),
+  routes,
+});
 
-export default router
+router.beforeEach((to, _, next) => {
+  const usersStore = useUsersStore();
+  const metadataStore = useMetadataStore();
+  const authEnabled = metadataStore.getAuthenticationEnabled;
+  const authenticated = usersStore.getAuthenticated;
+  if (authEnabled && !authenticated && to.name !== "Login") {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
+});
+
+export default router;

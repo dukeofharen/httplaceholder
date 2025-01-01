@@ -1,20 +1,52 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 import type { MenuItemModel } from '@/domain/menu-item-model.ts'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const props = defineProps({
   item: {
     type: Object as PropType<MenuItemModel>,
     required: true,
   },
 })
+
+// Computed
+const url = computed<string | undefined>(() => {
+  if (props.item.url) {
+    return props.item.url
+  }
+
+  if (props.item.routeName) {
+    const resolvedRoute = router.resolve(props.item.routeName)
+    if (resolvedRoute.name && resolvedRoute.href) {
+      return resolvedRoute.href
+    }
+  }
+
+  return undefined
+})
+
+const urlTarget = computed(() => {
+  return props.item.targetBlank ? '_blank' : ''
+})
+
+// Functions
+async function linkClick(event: Event) {
+  if (props.item.onClick) {
+    event.preventDefault()
+    await props.item.onClick()
+  }
+}
 </script>
 
 <template>
   <li>
     <a
-      href="#"
-      class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+      :href="url"
+      :target="urlTarget"
+      @click="linkClick"
+      class="flex cursor-pointer items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
     >
       <svg
         class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -30,7 +62,7 @@ const props = defineProps({
           d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"
         />
       </svg>
-      <span class="ms-3">Dashboard</span>
+      <span class="ms-3">{{ props.item.title }}</span>
     </a>
   </li>
 </template>
