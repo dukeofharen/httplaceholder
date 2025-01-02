@@ -192,7 +192,11 @@ const classList = computed(() => {
 </script>
 
 <template>
-  <button type="button" class="rounded-lg text-sm" :class="classList">
+  <button
+    type="button"
+    class="rounded-lg text-sm flex justify-center gap-1.5 items-center"
+    :class="classList"
+  >
     <slot></slot>
   </button>
 </template>
