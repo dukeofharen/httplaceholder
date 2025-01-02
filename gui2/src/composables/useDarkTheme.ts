@@ -1,5 +1,5 @@
 import { useSettingsStore } from '@/stores/settings.ts'
-import { computed, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 
 /**
  * Composable for listening for dark / light theme and adjust the CSS classes accordingly.
@@ -22,4 +22,7 @@ export function useDarkTheme() {
 
   // Watch
   watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme))
+
+  // Lifecycle
+  onMounted(() => setDarkTheme(settingsStore.getDarkTheme))
 }
