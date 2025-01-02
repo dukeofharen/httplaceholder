@@ -5,8 +5,11 @@ import ButtonComponent from '@/components/html-elements/ButtonComponent.vue'
 
 <template>
   <H1Tag>{{ $translate('general.requests') }}</H1Tag>
-  <div class="flex justify-start gap-2">
-    <ButtonComponent type="dark" :outline="true">Moi eem</ButtonComponent>
+  <div class="flex justify-start gap-1">
+    <ButtonComponent :outline="true">Moi eem</ButtonComponent>
+    <ButtonComponent :outline="true">Moi eem</ButtonComponent>
+    <ButtonComponent :outline="true">Moi eem</ButtonComponent>
+    <ButtonComponent :outline="true">Moi eem</ButtonComponent>
   </div>
 </template>
 
