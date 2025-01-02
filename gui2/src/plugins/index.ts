@@ -1,4 +1,6 @@
 import './dayjs'
+import './api'
+import './highlight'
 import { createPinia } from 'pinia'
 import router from '@/router'
 import translatePlugin from './translate'
