@@ -22,3 +22,4 @@ export const pdfMimeType = 'application/pdf'
 export const requestsPerPage = 15
 export const defaultLanguage = 'en'
 export const refreshRequestTimesInterval = 60000
+export const defaultToastDuration = 10000

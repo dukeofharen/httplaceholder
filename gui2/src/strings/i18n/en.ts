@@ -25,6 +25,7 @@ export const translations = {
     credentialsIncorrect: 'The credentials are incorrect.',
     closeModal: 'Close modal',
     openSidebar: 'Open sidebar',
+    dismissPopup: 'Dismiss popup',
   },
   sidebar: {
     requests: 'Requests',

@@ -1,17 +1,17 @@
 export function success(message: string): void {
-  console.log(message)
+  alert(message)
   // toastr.success(message);
   // TODO
 }
 
 export function warning(message: string): void {
-  console.log(message)
+  alert(message)
   // toastr.warning(message);
   // TODO
 }
 
 export function error(message: string): void {
-  console.log(message)
+  alert(message)
   // toastr.error(message);
   // TODO
 }
