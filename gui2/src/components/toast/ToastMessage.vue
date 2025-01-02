@@ -43,7 +43,7 @@ onMounted(() => {
 <template>
   <div
     role="alert"
-    class="rounded-xl p-4 cursor-pointer text-white animate-spin"
+    class="rounded-xl p-4 cursor-pointer text-white"
     :class="classList"
     @click="close"
   >
