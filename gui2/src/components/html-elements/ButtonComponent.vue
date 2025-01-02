@@ -65,7 +65,6 @@ const classMapping: any = {
       'hover:border-black',
       'hover:bg-black',
       'dark:text-white',
-      'dark:bg-gray-800',
       'focus:ring-4',
       'focus:ring-gray-300',
       'focus:outline-none',
