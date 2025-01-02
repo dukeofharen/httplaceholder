@@ -5,7 +5,7 @@ import NavMenu from '@/components/nav/NavMenu.vue'
 
 <template>
   <NavMenu />
-  <div class="p-4 sm:ml-64">
+  <div class="p-4 sm:ml-52">
     <RouterView />
   </div>
 </template>
