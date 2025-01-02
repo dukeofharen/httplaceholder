@@ -13,6 +13,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  dense: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 // Data
@@ -176,12 +180,19 @@ const classMapping: any = {
 
 // Computed
 const classList = computed(() => {
-  return classMapping[props.type][props.outline ? 'outline' : 'regular']
+  let result = [...classMapping[props.type][props.outline ? 'outline' : 'regular']]
+  if (props.dense) {
+    result = ['px-3', 'py-1.5'].concat(result)
+  } else {
+    result = ['px-5', 'py-2.5'].concat(result)
+  }
+
+  return result
 })
 </script>
 
 <template>
-  <button type="button" class="rounded-lg text-sm px-5 py-2.5 me-2 mb-2" :class="classList">
+  <button type="button" class="rounded-lg text-sm" :class="classList">
     <slot></slot>
   </button>
 </template>
