@@ -1,17 +1,26 @@
+import type { ToastModel } from '@/domain/toast-model.ts'
+
+function showToast(toast: ToastModel) {
+  document.dispatchEvent(new CustomEvent('toast', { detail: toast }))
+}
+
 export function success(message: string): void {
-  alert(message)
-  // toastr.success(message);
-  // TODO
+  showToast({
+    type: 'success',
+    title: message,
+  })
 }
 
 export function warning(message: string): void {
-  alert(message)
-  // toastr.warning(message);
-  // TODO
+  showToast({
+    type: 'warning',
+    title: message,
+  })
 }
 
 export function error(message: string): void {
-  alert(message)
-  // toastr.error(message);
-  // TODO
+  showToast({
+    type: 'error',
+    title: message,
+  })
 }
