@@ -103,7 +103,7 @@ function onLinkClicked() {
     aria-controls="default-sidebar"
     type="button"
     @click="mobileMenuOpen = !mobileMenuOpen"
-    class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+    class="inline-flex items-center p-2 mt-2 ms-3 text-sm rounded-lg sm:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
   >
     <span class="sr-only">Open sidebar</span>
     <Bars3Icon class="size-6" />
@@ -115,9 +115,13 @@ function onLinkClicked() {
     :class="{ '-translate-x-full': !mobileMenuOpen, 'transform-none': mobileMenuOpen }"
     aria-label="Sidebar"
   >
-    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+    <div class="h-full px-3 py-4 overflow-y-auto bg-gray-800">
       <a href="https://httplaceholder.org" class="flex items-center ps-2.5 mb-5" target="_blank">
-        <img src="@/assets/logo.png" class="h-8 me-3 sm:h-10" alt="HttPlaceholder logo" />
+        <img
+          src="@/assets/logo-white_small.png"
+          class="h-8 me-3 sm:h-10"
+          alt="HttPlaceholder logo"
+        />
       </a>
       <ul class="space-y-2 font-medium">
         <NavItem
@@ -131,7 +135,7 @@ function onLinkClicked() {
   </aside>
   <div
     v-if="mobileMenuOpen"
-    class="bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30 cursor-pointer"
+    class="bg-gray-900/80 fixed inset-0 z-30 cursor-pointer"
     @click="mobileMenuOpen = false"
   ></div>
 </template>
