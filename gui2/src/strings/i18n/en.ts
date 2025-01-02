@@ -23,6 +23,8 @@ export const translations = {
     uploadInvalidFiles:
       'These files you are trying to upload have an incorrect extension: %s. The following extensions are allowed: %s',
     credentialsIncorrect: 'The credentials are incorrect.',
+    closeModal: 'Close modal',
+    openSidebar: 'Open sidebar',
   },
   sidebar: {
     requests: 'Requests',

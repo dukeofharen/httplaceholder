@@ -83,7 +83,7 @@ function onNoClick() {
             @click="hideModal"
           >
             <XMarkIcon class="size-6" />
-            <span class="sr-only">Close modal</span>
+            <span class="sr-only">{{ $translate('general.closeModal') }}</span>
           </button>
         </div>
         <!-- Modal body -->
