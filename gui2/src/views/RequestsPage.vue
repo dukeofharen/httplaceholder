@@ -47,7 +47,7 @@ const filter = ref<RequestSavedFilterModel>({
 })
 
 // Computed
-const shouldShowLoadMoreButton = computed(() => showLoadMoreButton.value && requestsPageSize > 0)
+// const shouldShowLoadMoreButton = computed(() => showLoadMoreButton.value && requestsPageSize > 0)
 const shouldShowLoadAllRequestsButton = computed(() => requestsPageSize > 0)
 
 // Functions
