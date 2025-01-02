@@ -63,12 +63,12 @@ function onNoClick() {
   <div
     id="default-modal"
     tabindex="-1"
-    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[70] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[70] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full cursor-pointer"
     :class="{ flex: props.showModal, hidden: !props.showModal }"
     @keyup.enter="onYesClick"
     @keyup.esc="hideModal"
   >
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full cursor-default z-[65]">
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
         <!-- Modal header -->
@@ -99,11 +99,12 @@ function onNoClick() {
         </div>
       </div>
     </div>
+    <div
+      class="bg-gray-900/80 fixed inset-0 z-[60] cursor-pointer"
+      :class="{ flex: props.showModal, hidden: !props.showModal }"
+      @click="hideModal"
+    ></div>
   </div>
-  <div
-    class="bg-gray-900/80 fixed inset-0 z-[60]"
-    :class="{ flex: props.showModal, hidden: !props.showModal }"
-  ></div>
 </template>
 
 <style scoped></style>
