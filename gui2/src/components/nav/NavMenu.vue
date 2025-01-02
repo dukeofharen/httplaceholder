@@ -111,17 +111,13 @@ function onLinkClicked() {
 
   <aside
     id="default-sidebar"
-    class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform sm:translate-x-0"
+    class="fixed top-0 left-0 z-40 w-52 h-screen transition-transform sm:translate-x-0"
     :class="{ '-translate-x-full': !mobileMenuOpen, 'transform-none': mobileMenuOpen }"
     aria-label="Sidebar"
   >
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-800">
-      <a href="https://httplaceholder.org" class="flex items-center ps-2.5 mb-5" target="_blank">
-        <img
-          src="@/assets/logo-white_small.png"
-          class="h-8 me-3 sm:h-10"
-          alt="HttPlaceholder logo"
-        />
+      <a href="https://httplaceholder.org" class="flex items-center mb-5" target="_blank">
+        <img src="@/assets/logo-white_small.png" class="h-8 sm:h-10" alt="HttPlaceholder logo" />
       </a>
       <ul class="space-y-2 font-medium">
         <NavItem
