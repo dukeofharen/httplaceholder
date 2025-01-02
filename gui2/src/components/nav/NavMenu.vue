@@ -122,17 +122,16 @@ function onLinkClicked() {
 </script>
 
 <template>
-  <button
-    data-drawer-target="default-sidebar"
-    data-drawer-toggle="default-sidebar"
-    aria-controls="default-sidebar"
-    type="button"
-    @click="mobileMenuOpen = !mobileMenuOpen"
-    class="inline-flex items-center p-2 mt-2 ms-3 text-sm rounded-lg sm:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
-  >
-    <span class="sr-only">Open sidebar</span>
-    <Bars3Icon class="size-6" />
-  </button>
+  <div class="bg-white dark:bg-gray-800">
+    <button
+      type="button"
+      @click="mobileMenuOpen = !mobileMenuOpen"
+      class="inline-flex items-center p-2 mt-2 ms-3 text-sm rounded-lg sm:hidden focus:outline-none focus:ring-2 text-gray-400"
+    >
+      <span class="sr-only">Open sidebar</span>
+      <Bars3Icon class="size-6" />
+    </button>
+  </div>
 
   <aside
     id="default-sidebar"

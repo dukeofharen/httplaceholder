@@ -52,12 +52,11 @@ const resolvedIcon = computed(() => {
 
 // Functions
 async function linkClick(event: Event) {
+  emit('linkClicked')
   if (props.item.onClick) {
     event.preventDefault()
     await props.item.onClick()
   }
-
-  emit('linkClicked')
 }
 
 function resolveRoute(routeName: string) {
