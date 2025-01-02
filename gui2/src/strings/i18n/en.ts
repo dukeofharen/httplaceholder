@@ -172,6 +172,7 @@ export const translations = {
     settings: 'Settings',
     features: 'Features',
     darkTheme: 'Dark theme',
+    lightTheme: 'Light theme',
     persistSearchFilters: 'Persist search filters on stubs and request screens',
     storeResponseForRequest: 'Store response for request',
     storeResponseForRequestDescription:

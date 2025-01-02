@@ -7,4 +7,5 @@ export interface MenuItemModel {
   hideWhenAuthEnabledAndNotLoggedIn?: boolean
   onlyShowWhenLoggedInAndAuthEnabled?: boolean
   onClick?: () => Promise<any>
+  precondition?: () => boolean
 }

@@ -8,9 +8,11 @@ import { useMetadataStore } from '@/stores/metadata.ts'
 import NavItem from '@/components/nav/NavItem.vue'
 import type { MenuItemModel } from '@/domain/menu-item-model.ts'
 import { Bars3Icon } from '@heroicons/vue/24/solid'
+import { useSettingsStore } from '@/stores/settings.ts'
 
 const userStore = useUsersStore()
 const metadataStore = useMetadataStore()
+const settingsStore = useSettingsStore()
 const router = useRouter()
 
 // Data
@@ -75,6 +77,28 @@ const plainMenuItems: MenuItemModel[] = [
       await router.push({ name: 'Login' })
     },
   },
+  {
+    title: translate('settings.darkTheme'),
+    icon: 'MoonIcon',
+    targetBlank: true,
+    onlyShowWhenLoggedInAndAuthEnabled: false,
+    precondition: () => !settingsStore.getDarkTheme,
+    onClick: () => {
+      settingsStore.enableDarkTheme()
+      return Promise.resolve(true)
+    },
+  },
+  {
+    title: translate('settings.lightTheme'),
+    icon: 'SunIcon',
+    targetBlank: true,
+    onlyShowWhenLoggedInAndAuthEnabled: false,
+    precondition: () => settingsStore.getDarkTheme,
+    onClick: () => {
+      settingsStore.disableDarkTheme()
+      return Promise.resolve(true)
+    },
+  },
 ]
 
 // Computed
@@ -83,10 +107,11 @@ const menuItems = computed<MenuItemModel[]>(() => {
   const authEnabled = metadataStore.getAuthenticationEnabled
   return plainMenuItems.filter(
     (i) =>
-      (i.onlyShowWhenLoggedInAndAuthEnabled && isAuthenticated && authEnabled) ||
-      (i.hideWhenAuthEnabledAndNotLoggedIn && authEnabled && isAuthenticated) ||
-      (i.hideWhenAuthEnabledAndNotLoggedIn && !authEnabled) ||
-      i.onlyShowWhenLoggedInAndAuthEnabled === false,
+      (!i.precondition || i.precondition()) &&
+      ((i.onlyShowWhenLoggedInAndAuthEnabled && isAuthenticated && authEnabled) ||
+        (i.hideWhenAuthEnabledAndNotLoggedIn && authEnabled && isAuthenticated) ||
+        (i.hideWhenAuthEnabledAndNotLoggedIn && !authEnabled) ||
+        i.onlyShowWhenLoggedInAndAuthEnabled === false),
   )
 })
 
@@ -117,7 +142,7 @@ function onLinkClicked() {
   >
     <div class="h-full px-3 py-4 overflow-y-auto bg-gray-800">
       <a href="https://httplaceholder.org" class="flex items-center mb-5" target="_blank">
-        <img src="@/assets/logo-white_small.png" class="h-8 sm:h-10" alt="HttPlaceholder logo" />
+        <img src="@/assets/logo-white_small.png" class="h-8 sm:h-10" alt="HttPlaceholder" />
       </a>
       <ul class="space-y-2 font-medium">
         <NavItem

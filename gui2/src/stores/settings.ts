@@ -33,6 +33,18 @@ export const useSettingsStore = defineStore('settings', () => {
     setSettings(settingsValue)
   }
 
+  function enableDarkTheme() {
+    const currentSettings = settings.value
+    currentSettings.darkTheme = true
+    storeSettings(currentSettings)
+  }
+
+  function disableDarkTheme() {
+    const currentSettings = settings.value
+    currentSettings.darkTheme = false
+    storeSettings(currentSettings)
+  }
+
   return {
     getSettings,
     getDarkTheme,
@@ -40,5 +52,7 @@ export const useSettingsStore = defineStore('settings', () => {
     getRequestsPageSize,
     getLanguage,
     storeSettings,
+    enableDarkTheme,
+    disableDarkTheme,
   }
 })
