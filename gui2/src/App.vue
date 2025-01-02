@@ -8,7 +8,9 @@ useDarkTheme()
 
 <template>
   <NavMenu />
-  <div class="p-4 sm:ml-52 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200">
+  <div
+    class="p-4 sm:ml-52 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 min-h-screen overflow-x-auto"
+  >
     <RouterView />
   </div>
 </template>
