@@ -7,13 +7,13 @@ import { useRoute } from 'vue-router'
 import { useRequestsStore } from '@/stores/requests'
 import { useTenantsStore } from '@/stores/tenants'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import type { RequestOverviewModel } from '@/domain/request/request-overview-model.ts'
+import type { RequestOverviewModel } from '@/domain/request/request-overview-model'
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
-import { handleHttpError } from '@/utils/error.ts'
-import type { RequestSavedFilterModel } from '@/domain/request-saved-filter-model.ts'
-import { getRequestFilterForm } from '@/utils/session.ts'
-import { getRootUrl } from '@/utils/config.ts'
-import { useConfiguration } from '@/composables/useConfiguration.ts'
+import { handleHttpError } from '@/utils/error'
+import type { RequestSavedFilterModel } from '@/domain/request-saved-filter-model'
+import { getRequestFilterForm } from '@/utils/session'
+import { getRootUrl } from '@/utils/config'
+import { useConfiguration } from '@/composables/useConfiguration'
 
 const tenantStore = useTenantsStore()
 const requestStore = useRequestsStore()
@@ -48,9 +48,15 @@ const shouldShowLoadMoreButton = computed(() => showLoadMoreButton.value && requ
 const shouldShowLoadAllRequestsButton = computed(() => requestsPageSize > 0)
 
 // Functions
-async function refresh() {}
+async function refresh() {
+  await loadRequests(undefined, false)
+  showLoadMoreButton.value = true
+}
 
-async function loadAllRequests() {}
+async function loadAllRequests() {
+  requests.value = await requestStore.getRequestsOverview()
+  showLoadMoreButton.value = false
+}
 
 function showDeleteAllRequestsModal() {}
 
@@ -123,6 +129,9 @@ onUnmounted(() => {
       <TrashIcon class="size-6" />
       <span>{{ $translate('requests.deleteAllRequests') }}</span>
     </ButtonComponent>
+  </div>
+  <div>
+    {{ requests }}
   </div>
 </template>
 
