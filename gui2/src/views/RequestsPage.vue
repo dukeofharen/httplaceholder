@@ -14,6 +14,9 @@ import type { RequestSavedFilterModel } from '@/domain/request-saved-filter-mode
 import { getRequestFilterForm } from '@/utils/session'
 import { getRootUrl } from '@/utils/config'
 import { useConfiguration } from '@/composables/useConfiguration'
+import ModalComponent from '@/components/modal/ModalComponent.vue'
+import { success } from '@/utils/toast.ts'
+import { translate } from '@/utils/translate.ts'
 
 const tenantStore = useTenantsStore()
 const requestStore = useRequestsStore()
@@ -58,7 +61,9 @@ async function loadAllRequests() {
   showLoadMoreButton.value = false
 }
 
-function showDeleteAllRequestsModal() {}
+function showDeleteAllRequestsModal() {
+  shouldShowDeleteAllRequestsModal.value = true
+}
 
 async function loadRequests(fromIdentifier?: string, append?: boolean) {
   try {
@@ -103,6 +108,16 @@ async function initializeSignalR() {
   }
 }
 
+async function deleteAllRequests() {
+  try {
+    await requestStore.clearRequests()
+    success(translate('requests.requestsDeletedSuccessfully'))
+    await loadRequests()
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+
 // Lifecycle
 onMounted(async () => {
   await Promise.all([loadRequests(), loadTenantNames(), initializeSignalR()])
@@ -129,6 +144,13 @@ onUnmounted(() => {
       <TrashIcon class="size-6" />
       <span>{{ $translate('requests.deleteAllRequests') }}</span>
     </ButtonComponent>
+    <ModalComponent
+      :title="$translate('requests.deleteAllRequestsQuestion')"
+      v-model:show-modal="shouldShowDeleteAllRequestsModal"
+      :yes-click-function="deleteAllRequests"
+    >
+      {{ $translate('requests.requestsCantBeRecovered') }}
+    </ModalComponent>
   </div>
   <div>
     {{ requests }}
