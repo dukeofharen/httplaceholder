@@ -2,6 +2,7 @@
 import { translate } from '@/utils/translate'
 import ButtonComponent from '@/components/html-elements/ButtonComponent.vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { useGlobalKeyPress } from '@/composables/useGlobalKeyPress.ts'
 
 const props = defineProps({
   title: {
@@ -27,6 +28,8 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['closed', 'update:showModal'])
+useGlobalKeyPress('Enter', () => onYesClick())
+useGlobalKeyPress('Escape', () => hideModal())
 
 // Functions
 function hideModal() {
@@ -65,8 +68,6 @@ function onNoClick() {
     tabindex="-1"
     class="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[70] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full cursor-pointer"
     :class="{ flex: props.showModal, hidden: !props.showModal }"
-    @keyup.enter="onYesClick"
-    @keyup.esc="hideModal"
   >
     <div class="relative p-4 w-full max-w-2xl max-h-full cursor-default z-[65]">
       <!-- Modal content -->
