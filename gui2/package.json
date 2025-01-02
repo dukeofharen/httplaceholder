@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@heroicons/vue": "^2.2.0",
+    "@microsoft/signalr": "^8.0.7",
     "@tsconfig/node22": "^22.0.0",
     "@types/marked": "^6.0.0",
     "@types/node": "^22.10.2",
