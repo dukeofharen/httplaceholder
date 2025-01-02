@@ -43,6 +43,31 @@ const classMapping: any = {
       'dark:focus:ring-blue-700',
     ],
   },
+  dark: {
+    regular: [
+      'text-white',
+      'bg-black',
+      'hover:bg-gray-800',
+      'focus:ring-4',
+      'focus:ring-gray-300',
+      'focus:outline-none',
+      'dark:focus:ring-gray-700',
+    ],
+    outline: [
+      'text-gray-900',
+      'border',
+      'border-black',
+      'hover:text-white',
+      'hover:border-black',
+      'hover:bg-black',
+      'dark:text-white',
+      'dark:bg-gray-800',
+      'focus:ring-4',
+      'focus:ring-gray-300',
+      'focus:outline-none',
+      'dark:focus:ring-gray-700',
+    ],
+  },
 }
 
 // Computed
@@ -52,11 +77,7 @@ const classList = computed(() => {
 </script>
 
 <template>
-  <button
-    type="button"
-    class="font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-    :class="classList"
-  >
+  <button type="button" class="rounded-lg text-sm px-5 py-2.5 me-2 mb-2" :class="classList">
     <slot></slot>
   </button>
 </template>
