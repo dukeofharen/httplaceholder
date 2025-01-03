@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import H1Tag from '@/components/html-elements/H1Tag.vue'
 import ButtonComponent from '@/components/html-elements/ButtonComponent.vue'
-import {
-  ArrowDownOnSquareStackIcon,
-  ArrowPathIcon,
-  TrashIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
+import { ArrowDownOnSquareStackIcon, ArrowPathIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useSettingsStore } from '@/stores/settings'
 import { useRoute } from 'vue-router'
 import { useRequestsStore } from '@/stores/requests'
@@ -47,6 +42,7 @@ if (saveSearchFilters) {
   savedFilter = getRequestFilterForm()
 }
 
+// TODO filter lostrekken als aparte composable
 const filter = ref<RequestSavedFilterModel>({
   urlStubIdFilter: (route.query.filter as string) || savedFilter?.urlStubIdFilter || '',
   selectedTenantName: (route.query.tenant as string) || savedFilter?.selectedTenantName || '',
@@ -125,6 +121,7 @@ async function loadTenantNames() {
   }
 }
 
+// TODO lostrekken als composable
 async function initializeSignalR() {
   signalrConnection = new HubConnectionBuilder().withUrl(`${getRootUrl()}/requestHub`).build()
   signalrConnection.on('RequestReceived', (request: RequestOverviewModel) => {

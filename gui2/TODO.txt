@@ -6,5 +6,9 @@
 - Alle components in composition formaat
 - Alle (deprecation) warnings oplossen
 - Checken dat "_blank" werkt in MD links
-- Logo toevoegen aan zijbalk
 - Alle TODO items verwijderen
+- Animeren (fade); geen hoge prio
+- Requests page
+
+Done:
+- Logo toevoegen aan zijbalk
