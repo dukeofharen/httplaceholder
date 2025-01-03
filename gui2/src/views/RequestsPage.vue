@@ -11,12 +11,12 @@ import { useSettingsStore } from '@/stores/settings'
 import { useRoute } from 'vue-router'
 import { useRequestsStore } from '@/stores/requests'
 import { useTenantsStore } from '@/stores/tenants'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { RequestOverviewModel } from '@/domain/request/request-overview-model'
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
 import { handleHttpError } from '@/utils/error'
 import type { RequestSavedFilterModel } from '@/domain/request-saved-filter-model'
-import { getRequestFilterForm } from '@/utils/session'
+import { getRequestFilterForm, setRequestFilterForm } from '@/utils/session'
 import { getRootUrl } from '@/utils/config'
 import { useConfiguration } from '@/composables/useConfiguration'
 import ModalComponent from '@/components/modal/ModalComponent.vue'
@@ -55,6 +55,34 @@ const filter = ref<RequestSavedFilterModel>({
 // Computed
 // const shouldShowLoadMoreButton = computed(() => showLoadMoreButton.value && requestsPageSize > 0)
 const shouldShowLoadAllRequestsButton = computed(() => requestsPageSize > 0)
+const filteredRequests = computed(() => {
+  let result = requests.value
+  if (filter.value.urlStubIdFilter) {
+    const searchTerm = filter.value.urlStubIdFilter.toLowerCase().trim()
+    result = result.filter((r) => {
+      const stubId = r.executingStubId ? r.executingStubId.toLowerCase() : ''
+      const url = r.url.toLowerCase()
+      const correlationId = (r.correlationId || '').toLowerCase()
+      return (
+        (stubId && stubId.includes(searchTerm)) ||
+        url.includes(searchTerm) ||
+        correlationId === searchTerm
+      )
+    })
+  }
+
+  if (filter.value.selectedTenantName) {
+    result = result.filter((r) => r.stubTenant === filter.value.selectedTenantName)
+  }
+
+  return result
+})
+
+const filterChanged = () => {
+  if (settingsStore.getSaveSearchFilters) {
+    setRequestFilterForm(filter.value)
+  }
+}
 
 // Functions
 async function refresh() {
@@ -124,6 +152,9 @@ async function deleteAllRequests() {
   }
 }
 
+// Watch
+watch(filter, () => filterChanged(), { deep: true })
+
 // Lifecycle
 onMounted(async () => {
   await Promise.all([loadRequests(), loadTenantNames(), initializeSignalR()])
@@ -167,7 +198,7 @@ onUnmounted(() => {
     />
   </div>
   <div>
-    {{ requests }}
+    {{ filteredRequests }}
   </div>
 </template>
 
