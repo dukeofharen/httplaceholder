@@ -1,13 +1,58 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed, useSlots } from 'vue'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
+
+const slots = useSlots()
+const props = defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+  placeholder: String,
+  supportClearing: Boolean,
+  modelValue: {
+    type: String,
+  },
+})
+const emit = defineEmits(['update:modelValue'])
+
+// Computed
+const slotHasContent = computed(() => !!slots.default && slots.default().length > 0)
+
+// Functions
+function onInputChange(event: Event) {
+  const target = event.target as HTMLInputElement
+  if (target) {
+    emit('update:modelValue', target.value)
+  }
+}
+
+function clear() {
+  if (!props.supportClearing) {
+    return
+  }
+
+  emit('update:modelValue', '')
+}
+
+function onButtonClick() {
+  if (props.supportClearing) {
+    clear()
+  }
+}
+</script>
 
 <template>
   <div class="relative">
-    <label for="Search" class="sr-only"> Search for... </label>
+    <label :for="props.id" class="sr-only">{{ props.placeholder }}</label>
 
     <input
       type="text"
-      id="Search"
-      placeholder="chad@rhcp.com"
+      :id="props.id"
+      :placeholder="props.placeholder"
+      :value="props.modelValue"
+      @input="onInputChange"
+      @keyup.esc="clear"
       class="w-full rounded-md border border-gray-500 py-2.5 ps-2.5 pe-10 shadow-sm sm:text-sm dark:border-gray-500 dark:bg-gray-800 dark:text-white"
     />
 
@@ -15,23 +60,16 @@
       <button
         type="button"
         class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+        @click="onButtonClick"
       >
-        <span class="sr-only">Search</span>
+        <span class="sr-only">{{ props.placeholder }}</span>
 
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-4"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-          />
-        </svg>
+        <template v-if="slotHasContent">
+          <slot></slot>
+        </template>
+        <template v-else-if="props.supportClearing">
+          <XMarkIcon class="size-6" />
+        </template>
       </button>
     </span>
   </div>

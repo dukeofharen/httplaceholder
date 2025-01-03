@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import H1Tag from '@/components/html-elements/H1Tag.vue'
 import ButtonComponent from '@/components/html-elements/ButtonComponent.vue'
-import { ArrowDownOnSquareStackIcon, ArrowPathIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import {
+  ArrowDownOnSquareStackIcon,
+  ArrowPathIcon,
+  TrashIcon,
+  XMarkIcon,
+} from '@heroicons/vue/24/outline'
 import { useSettingsStore } from '@/stores/settings'
 import { useRoute } from 'vue-router'
 import { useRequestsStore } from '@/stores/requests'
@@ -154,7 +159,12 @@ onUnmounted(() => {
     </ModalComponent>
   </div>
   <div>
-    <TextInput />
+    <TextInput
+      id="urlStubIdFilter"
+      :placeholder="$translate('requests.filterPlaceholder')"
+      :support-clearing="true"
+      v-model="filter.urlStubIdFilter"
+    />
   </div>
   <div>
     {{ requests }}
