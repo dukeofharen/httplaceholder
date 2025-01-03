@@ -17,6 +17,7 @@ import { useConfiguration } from '@/composables/useConfiguration'
 import ModalComponent from '@/components/modal/ModalComponent.vue'
 import { success } from '@/utils/toast.ts'
 import { translate } from '@/utils/translate.ts'
+import TextInput from '@/components/html-elements/TextInput.vue'
 
 const tenantStore = useTenantsStore()
 const requestStore = useRequestsStore()
@@ -131,7 +132,7 @@ onUnmounted(() => {
 
 <template>
   <H1Tag>{{ $translate('general.requests') }}</H1Tag>
-  <div class="flex justify-start gap-2 flex-wrap">
+  <div class="flex justify-start gap-2 flex-wrap mb-2">
     <ButtonComponent type="success" @click="refresh" :dense="true">
       <ArrowPathIcon class="size-6" />
       <span>{{ $translate('general.refresh') }}</span>
@@ -151,6 +152,9 @@ onUnmounted(() => {
     >
       {{ $translate('requests.requestsCantBeRecovered') }}
     </ModalComponent>
+  </div>
+  <div>
+    <TextInput />
   </div>
   <div>
     {{ requests }}
