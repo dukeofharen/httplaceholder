@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 import { computed, onMounted, type PropType } from 'vue'
-import type { ToastModel } from '@/domain/toast-model.ts'
+import type { ToastModel } from '@/domain/ui/toast-model.ts'
 import { defaultToastDuration } from '@/constants.ts'
 
 const props = defineProps({

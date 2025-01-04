@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { getSettings, setSettings } from '@/utils/session'
 import { browserUsesDarkTheme } from '@/utils/theme'
-import type { SettingsModel } from '@/domain/settings-model'
+import type { SettingsModel } from '@/domain/ui/settings-model.ts'
 import { defaultLanguage, requestsPerPage } from '@/constants'
 import { computed, ref } from 'vue'
 

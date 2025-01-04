@@ -1,4 +1,4 @@
-import type { HashMap } from '@/domain/hash-map'
+import type { HashMap } from '@/domain/ui/hash-map.ts'
 
 export interface StubXpathModel {
   queryString: string

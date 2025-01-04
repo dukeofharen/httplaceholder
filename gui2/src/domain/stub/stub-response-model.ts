@@ -1,4 +1,4 @@
-import type { HashMap } from '@/domain/hash-map'
+import type { HashMap } from '@/domain/ui/hash-map.ts'
 import type { StubResponseReverseProxyModel } from '@/domain/stub/stub-response-reverse-proxy-model'
 import type { LineEndingType } from '@/domain/stub/enums/line-ending-type'
 import type { StubResponseImageModel } from '@/domain/stub/stub-response-image-model'

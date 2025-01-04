@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router'
 import { computed, ref } from 'vue'
 import { useMetadataStore } from '@/stores/metadata.ts'
 import NavItem from '@/components/nav/NavItem.vue'
-import type { MenuItemModel } from '@/domain/menu-item-model.ts'
+import type { MenuItemModel } from '@/domain/ui/menu-item-model.ts'
 import { Bars3Icon } from '@heroicons/vue/24/solid'
 import { useSettingsStore } from '@/stores/settings.ts'
 

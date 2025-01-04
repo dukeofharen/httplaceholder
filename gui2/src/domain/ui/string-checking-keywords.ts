@@ -1,4 +1,4 @@
-import { translate } from '@/utils/translate'
+import { translate } from '@/utils/translate.ts'
 
 export interface StringCheckingKeyword {
   key: string

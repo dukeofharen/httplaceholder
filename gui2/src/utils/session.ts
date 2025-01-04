@@ -7,9 +7,9 @@ export enum SessionKey {
 }
 
 import { getLocal, getSession, removeSession, setLocal, setSession } from '@/utils/storage'
-import type { SettingsModel } from '@/domain/settings-model'
-import type { StubSavedFilterModel } from '@/domain/stub-saved-filter-model'
-import type { RequestSavedFilterModel } from '@/domain/request-saved-filter-model'
+import type { SettingsModel } from '@/domain/ui/settings-model.ts'
+import type { StubSavedFilterModel } from '@/domain/ui/stub-saved-filter-model.ts'
+import type { RequestSavedFilterModel } from '@/domain/ui/request-saved-filter-model.ts'
 
 export function getIntermediateStub(): string {
   return getSession(SessionKey.intermediateStub)

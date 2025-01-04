@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import type { ToastModel } from '@/domain/toast-model'
+import type { ToastModel } from '@/domain/ui/toast-model.ts'
 import ToastMessage from '@/components/toast/ToastMessage.vue'
 
 // Data

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import type { MenuItemModel } from '@/domain/menu-item-model.ts'
+import type { MenuItemModel } from '@/domain/ui/menu-item-model.ts'
 import { useRouter } from 'vue-router'
 import * as HeroIcons from '@heroicons/vue/24/solid'
 

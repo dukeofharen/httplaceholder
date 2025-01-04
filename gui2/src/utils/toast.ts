@@ -1,4 +1,4 @@
-import type { ToastModel } from '@/domain/toast-model.ts'
+import type { ToastModel } from '@/domain/ui/toast-model.ts'
 
 function showToast(toast: ToastModel) {
   document.dispatchEvent(new CustomEvent('toast', { detail: toast }))
