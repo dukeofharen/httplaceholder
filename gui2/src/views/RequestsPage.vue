@@ -3,82 +3,36 @@ import H1Tag from '@/components/html-elements/H1Tag.vue'
 import ButtonComponent from '@/components/html-elements/ButtonComponent.vue'
 import { ArrowDownOnSquareStackIcon, ArrowPathIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { useSettingsStore } from '@/stores/settings'
-import { useRoute } from 'vue-router'
 import { useRequestsStore } from '@/stores/requests'
 import { useTenantsStore } from '@/stores/tenants'
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import type { RequestOverviewModel } from '@/domain/request/request-overview-model'
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
 import { handleHttpError } from '@/utils/error'
-import type { SavedFilterModel } from '@/domain/ui/saved-filter-model.ts'
-import { getRequestFilterForm, setRequestFilterForm } from '@/utils/session'
 import { getRootUrl } from '@/utils/config'
 import { useConfiguration } from '@/composables/useConfiguration'
 import ModalComponent from '@/components/modal/ModalComponent.vue'
 import { success } from '@/utils/toast.ts'
 import { translate } from '@/utils/translate.ts'
 import TextInput from '@/components/html-elements/TextInput.vue'
+import { useFilters } from '@/composables/useFilters.ts'
 
 const tenantStore = useTenantsStore()
 const requestStore = useRequestsStore()
 const settingsStore = useSettingsStore()
-const route = useRoute()
 const { getOldRequestsQueueLength } = useConfiguration()
+const { requests, filteredRequests, filter } = useFilters()
 
 // Data
-const requests = ref<RequestOverviewModel[]>([])
 const tenants = ref<string[]>([])
 const shouldShowDeleteAllRequestsModal = ref(false)
 const requestsPageSize = settingsStore.getRequestsPageSize
 const showLoadMoreButton = ref(true)
 let signalrConnection: HubConnection
 
-const saveSearchFilters = settingsStore.getSaveSearchFilters
-let savedFilter: SavedFilterModel = {
-  filter: '',
-  selectedTenantName: '',
-}
-if (saveSearchFilters) {
-  savedFilter = getRequestFilterForm()
-}
-
-// TODO filter lostrekken als aparte composable
-const filter = ref<SavedFilterModel>({
-  filter: (route.query.filter as string) || savedFilter?.filter || '',
-  selectedTenantName: (route.query.tenant as string) || savedFilter?.selectedTenantName || '',
-})
-
 // Computed
 // const shouldShowLoadMoreButton = computed(() => showLoadMoreButton.value && requestsPageSize > 0)
 const shouldShowLoadAllRequestsButton = computed(() => requestsPageSize > 0)
-const filteredRequests = computed(() => {
-  let result = requests.value
-  if (filter.value.filter) {
-    const searchTerm = filter.value.filter.toLowerCase().trim()
-    result = result.filter((r) => {
-      const stubId = r.executingStubId ? r.executingStubId.toLowerCase() : ''
-      const url = r.url.toLowerCase()
-      const correlationId = (r.correlationId || '').toLowerCase()
-      return (
-        (stubId && stubId.includes(searchTerm)) ||
-        url.includes(searchTerm) ||
-        correlationId === searchTerm
-      )
-    })
-  }
-
-  if (filter.value.selectedTenantName) {
-    result = result.filter((r) => r.stubTenant === filter.value.selectedTenantName)
-  }
-
-  return result
-})
-
-const filterChanged = () => {
-  if (settingsStore.getSaveSearchFilters) {
-    setRequestFilterForm(filter.value)
-  }
-}
 
 // Functions
 async function refresh() {
@@ -148,9 +102,6 @@ async function deleteAllRequests() {
     handleHttpError(e)
   }
 }
-
-// Watch
-watch(filter, () => filterChanged(), { deep: true })
 
 // Lifecycle
 onMounted(async () => {
