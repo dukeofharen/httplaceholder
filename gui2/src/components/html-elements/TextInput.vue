@@ -17,7 +17,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 
 // Computed
-const slotHasContent = computed(() => !!slots.default && slots.default().length > 0)
+const slotHasContent = computed(() => !!slots.default && slots.default.length > 0)
 
 // Functions
 function onInputChange(event: Event) {
