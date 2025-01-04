@@ -15,6 +15,8 @@ import TextInput from '@/components/html-elements/TextInput.vue'
 import { useFilters } from '@/composables/useFilters.ts'
 import { useSignalR } from '@/composables/useSignalR.ts'
 import type { RequestOverviewModel } from '@/domain/request/request-overview-model.ts'
+import SelectInput from '@/components/html-elements/SelectInput.vue'
+import type { SelectListItem } from '@/domain/ui/select-list-item.ts'
 
 const tenantStore = useTenantsStore()
 const requestStore = useRequestsStore()
@@ -32,6 +34,15 @@ const showLoadMoreButton = ref(true)
 // Computed
 // const shouldShowLoadMoreButton = computed(() => showLoadMoreButton.value && requestsPageSize > 0)
 const shouldShowLoadAllRequestsButton = computed(() => requestsPageSize > 0)
+const tenantSelectItems = computed<SelectListItem[]>(() =>
+  tenants.value.map(
+    (t) =>
+      <SelectListItem>{
+        label: t,
+        value: t,
+      },
+  ),
+)
 
 // Functions
 async function refresh() {
@@ -128,6 +139,14 @@ onMounted(async () => {
       :placeholder="$translate('requests.filterPlaceholder')"
       :support-clearing="true"
       v-model="filter.filter"
+    />
+    <SelectInput
+      v-if="tenants.length"
+      :items="tenantSelectItems"
+      id="selectedTenantName"
+      :placeholder="$translate('general.selectStubTenantCategory')"
+      :support-clearing="true"
+      v-model="filter.selectedTenantName"
     />
   </div>
   <div>
