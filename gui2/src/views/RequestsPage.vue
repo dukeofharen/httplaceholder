@@ -5,30 +5,29 @@ import { ArrowDownOnSquareStackIcon, ArrowPathIcon, TrashIcon } from '@heroicons
 import { useSettingsStore } from '@/stores/settings'
 import { useRequestsStore } from '@/stores/requests'
 import { useTenantsStore } from '@/stores/tenants'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-import type { RequestOverviewModel } from '@/domain/request/request-overview-model'
-import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
+import { computed, onMounted, ref } from 'vue'
 import { handleHttpError } from '@/utils/error'
-import { getRootUrl } from '@/utils/config'
 import { useConfiguration } from '@/composables/useConfiguration'
 import ModalComponent from '@/components/modal/ModalComponent.vue'
 import { success } from '@/utils/toast.ts'
 import { translate } from '@/utils/translate.ts'
 import TextInput from '@/components/html-elements/TextInput.vue'
 import { useFilters } from '@/composables/useFilters.ts'
+import { useSignalR } from '@/composables/useSignalR.ts'
+import type { RequestOverviewModel } from '@/domain/request/request-overview-model.ts'
 
 const tenantStore = useTenantsStore()
 const requestStore = useRequestsStore()
 const settingsStore = useSettingsStore()
 const { getOldRequestsQueueLength } = useConfiguration()
 const { requests, filteredRequests, filter } = useFilters()
+useSignalR('/requestHub', 'RequestReceived', onRequestReceived)
 
 // Data
 const tenants = ref<string[]>([])
 const shouldShowDeleteAllRequestsModal = ref(false)
 const requestsPageSize = settingsStore.getRequestsPageSize
 const showLoadMoreButton = ref(true)
-let signalrConnection: HubConnection
 
 // Computed
 // const shouldShowLoadMoreButton = computed(() => showLoadMoreButton.value && requestsPageSize > 0)
@@ -75,21 +74,12 @@ async function loadTenantNames() {
   }
 }
 
-// TODO lostrekken als composable
-async function initializeSignalR() {
-  signalrConnection = new HubConnectionBuilder().withUrl(`${getRootUrl()}/requestHub`).build()
-  signalrConnection.on('RequestReceived', (request: RequestOverviewModel) => {
-    requests.value.unshift(request)
+function onRequestReceived(request: RequestOverviewModel) {
+  requests.value.unshift(request)
 
-    // Strip away "old" requests.
-    if (getOldRequestsQueueLength.value) {
-      requests.value = requests.value.slice(0, getOldRequestsQueueLength.value)
-    }
-  })
-  try {
-    await signalrConnection.start()
-  } catch (err: any) {
-    console.log(err.toString())
+  // Strip away "old" requests.
+  if (getOldRequestsQueueLength.value) {
+    requests.value = requests.value.slice(0, getOldRequestsQueueLength.value)
   }
 }
 
@@ -105,12 +95,7 @@ async function deleteAllRequests() {
 
 // Lifecycle
 onMounted(async () => {
-  await Promise.all([loadRequests(), loadTenantNames(), initializeSignalR()])
-})
-onUnmounted(() => {
-  if (signalrConnection) {
-    signalrConnection.stop()
-  }
+  await Promise.all([loadRequests(), loadTenantNames()])
 })
 </script>
 
