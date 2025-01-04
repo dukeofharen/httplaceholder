@@ -54,7 +54,7 @@ function onButtonClick() {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative w-full">
     <label :for="props.id" class="sr-only">{{ props.placeholder }}</label>
 
     <select
