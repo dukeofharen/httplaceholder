@@ -1,4 +1,4 @@
 export interface SavedFilterModel {
-  urlStubIdFilter: string
+  filter: string
   selectedTenantName: string
 }

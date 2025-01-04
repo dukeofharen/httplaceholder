@@ -35,7 +35,7 @@ let signalrConnection: HubConnection
 
 const saveSearchFilters = settingsStore.getSaveSearchFilters
 let savedFilter: SavedFilterModel = {
-  urlStubIdFilter: '',
+  filter: '',
   selectedTenantName: '',
 }
 if (saveSearchFilters) {
@@ -44,7 +44,7 @@ if (saveSearchFilters) {
 
 // TODO filter lostrekken als aparte composable
 const filter = ref<SavedFilterModel>({
-  urlStubIdFilter: (route.query.filter as string) || savedFilter?.urlStubIdFilter || '',
+  filter: (route.query.filter as string) || savedFilter?.filter || '',
   selectedTenantName: (route.query.tenant as string) || savedFilter?.selectedTenantName || '',
 })
 
@@ -53,8 +53,8 @@ const filter = ref<SavedFilterModel>({
 const shouldShowLoadAllRequestsButton = computed(() => requestsPageSize > 0)
 const filteredRequests = computed(() => {
   let result = requests.value
-  if (filter.value.urlStubIdFilter) {
-    const searchTerm = filter.value.urlStubIdFilter.toLowerCase().trim()
+  if (filter.value.filter) {
+    const searchTerm = filter.value.filter.toLowerCase().trim()
     result = result.filter((r) => {
       const stubId = r.executingStubId ? r.executingStubId.toLowerCase() : ''
       const url = r.url.toLowerCase()
@@ -191,7 +191,7 @@ onUnmounted(() => {
       id="urlStubIdFilter"
       :placeholder="$translate('requests.filterPlaceholder')"
       :support-clearing="true"
-      v-model="filter.urlStubIdFilter"
+      v-model="filter.filter"
     />
   </div>
   <div>
