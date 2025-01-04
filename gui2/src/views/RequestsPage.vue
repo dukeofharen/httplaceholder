@@ -10,7 +10,7 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { RequestOverviewModel } from '@/domain/request/request-overview-model'
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
 import { handleHttpError } from '@/utils/error'
-import type { RequestSavedFilterModel } from '@/domain/ui/request-saved-filter-model.ts'
+import type { SavedFilterModel } from '@/domain/ui/saved-filter-model.ts'
 import { getRequestFilterForm, setRequestFilterForm } from '@/utils/session'
 import { getRootUrl } from '@/utils/config'
 import { useConfiguration } from '@/composables/useConfiguration'
@@ -34,7 +34,7 @@ const showLoadMoreButton = ref(true)
 let signalrConnection: HubConnection
 
 const saveSearchFilters = settingsStore.getSaveSearchFilters
-let savedFilter: RequestSavedFilterModel = {
+let savedFilter: SavedFilterModel = {
   urlStubIdFilter: '',
   selectedTenantName: '',
 }
@@ -43,7 +43,7 @@ if (saveSearchFilters) {
 }
 
 // TODO filter lostrekken als aparte composable
-const filter = ref<RequestSavedFilterModel>({
+const filter = ref<SavedFilterModel>({
   urlStubIdFilter: (route.query.filter as string) || savedFilter?.urlStubIdFilter || '',
   selectedTenantName: (route.query.tenant as string) || savedFilter?.selectedTenantName || '',
 })

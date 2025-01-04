@@ -8,8 +8,7 @@ export enum SessionKey {
 
 import { getLocal, getSession, removeSession, setLocal, setSession } from '@/utils/storage'
 import type { SettingsModel } from '@/domain/ui/settings-model.ts'
-import type { StubSavedFilterModel } from '@/domain/ui/stub-saved-filter-model.ts'
-import type { RequestSavedFilterModel } from '@/domain/ui/request-saved-filter-model.ts'
+import type { SavedFilterModel } from '@/domain/ui/saved-filter-model.ts'
 
 export function getIntermediateStub(): string {
   return getSession(SessionKey.intermediateStub)
@@ -43,18 +42,18 @@ export function saveUserToken(token: string) {
   setSession(SessionKey.userToken, token)
 }
 
-export function setStubFilterForm(filter: StubSavedFilterModel) {
+export function setStubFilterForm(filter: SavedFilterModel) {
   setSession(SessionKey.stubsFilter, filter)
 }
 
-export function getStubFilterForm(): StubSavedFilterModel {
+export function getStubFilterForm(): SavedFilterModel {
   return getSession(SessionKey.stubsFilter)
 }
 
-export function setRequestFilterForm(filter: RequestSavedFilterModel) {
+export function setRequestFilterForm(filter: SavedFilterModel) {
   setSession(SessionKey.requestsFilter, filter)
 }
 
-export function getRequestFilterForm(): RequestSavedFilterModel {
+export function getRequestFilterForm(): SavedFilterModel {
   return getSession(SessionKey.requestsFilter)
 }
