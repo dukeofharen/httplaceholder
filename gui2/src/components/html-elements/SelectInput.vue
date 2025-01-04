@@ -24,6 +24,7 @@ const classList = computed(() => {
   const result = []
   if (!props.modelValue) {
     result.push('text-gray-500')
+    result.push('dark:text-gray-300')
   }
 
   return result
@@ -61,7 +62,7 @@ function onButtonClick() {
       :value="props.modelValue"
       @input="onInputChange"
       @keyup.esc="clear"
-      class="w-full rounded-md border border-gray-500 py-2.5 ps-2.5 pe-10 shadow-sm bg-white sm:text-sm dark:border-gray-500 dark:bg-gray-800 dark:text-white appearance-none"
+      class="w-full rounded-md border border-gray-500 py-2.5 ps-2.5 pe-10 shadow-sm bg-white sm:text-sm dark:border-gray-500 dark:bg-gray-800 appearance-none"
       :class="classList"
     >
       <option value="">{{ props.placeholder }}</option>
