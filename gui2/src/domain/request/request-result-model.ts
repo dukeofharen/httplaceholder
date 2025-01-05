@@ -13,24 +13,3 @@ export interface RequestResultModel {
   requestEndTime: string
   hasResponse: boolean
 }
-
-export function getDefaultRequestResultModel(): RequestResultModel {
-  return {
-    requestParameters: {
-      body: '',
-      bodyIsBinary: false,
-      url: '',
-      clientIp: '',
-      headers: {},
-      method: '',
-    },
-    requestEndTime: '',
-    requestBeginTime: '',
-    correlationId: '',
-    executingStubId: '',
-    stubExecutionResults: [],
-    stubResponseWriterResults: [],
-    stubTenant: '',
-    hasResponse: false,
-  }
-}

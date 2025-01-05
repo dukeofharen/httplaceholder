@@ -114,7 +114,7 @@ onMounted(async () => {
 <template>
   <H1Tag>{{ $translate('general.requests') }}</H1Tag>
   <div class="flex justify-start gap-2 flex-wrap mb-2">
-    <ButtonComponent type="success" @click="refresh" :dense="true">
+    <ButtonComponent type="success" @click="refresh">
       <ArrowPathIcon class="size-6" />
       <span>{{ $translate('general.refresh') }}</span>
     </ButtonComponent>

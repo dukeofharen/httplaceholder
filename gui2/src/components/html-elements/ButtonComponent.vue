@@ -74,7 +74,7 @@ const classMapping: any = {
   success: {
     regular: [
       'text-white',
-      'bg-green-700',
+      'bg-green-900',
       'hover:bg-green-800',
       'focus:ring-4',
       'focus:ring-green-300',
@@ -181,7 +181,7 @@ const classMapping: any = {
 const classList = computed(() => {
   let result = [...classMapping[props.type][props.outline ? 'outline' : 'regular']]
   if (props.dense) {
-    result = ['px-3', 'py-1.5'].concat(result)
+    result = ['px-2', 'py-1', 'text-xs'].concat(result)
   } else {
     result = ['px-5', 'py-2.5'].concat(result)
   }

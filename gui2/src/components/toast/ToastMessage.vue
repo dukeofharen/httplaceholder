@@ -16,7 +16,7 @@ const classList = computed(() => {
   const result = []
   switch (props.toast?.type) {
     case 'success':
-      result.push('bg-green-700')
+      result.push('bg-green-900')
       break
     case 'warning':
       result.push('bg-yellow-700')
