@@ -91,6 +91,8 @@ export const translations = {
     stubExecutionResults: 'Stub execution results',
     requestBodyCopiedToClipboard: 'Request body successfully copied to clipboard.',
     copyRequestBody: 'Copy request body',
+    executed: 'executed',
+    notExecuted: 'not executed',
   },
   importStubs: {
     importStubs: 'Import stubs',

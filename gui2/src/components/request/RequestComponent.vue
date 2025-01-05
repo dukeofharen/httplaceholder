@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import type { RequestOverviewModel } from '@/domain/request/request-overview-model.ts'
-import RequestMethod from '@/components/request/RequestMethod.vue'
+import RequestHeading from '@/components/request/RequestHeading.vue'
 
 const props = defineProps({
   overviewRequest: {
@@ -12,10 +12,8 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="border border-gray-500 p-2">
-    <div>
-      <RequestMethod :method="props.overviewRequest.method" />
-    </div>
+  <div class="border font-mono border-gray-500 p-2">
+    <RequestHeading :overview-request="props.overviewRequest" />
   </div>
 </template>
 
