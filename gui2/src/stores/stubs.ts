@@ -3,6 +3,7 @@ import { del, get, post, put } from '@/utils/api'
 import type { FullStubModel } from '@/domain/stub/full-stub-model'
 import type { FullStubOverviewModel } from '@/domain/stub/full-stub-overview-model.ts'
 import yaml from 'js-yaml'
+import { useStubFormStore } from '@/stores/stubForm.ts'
 
 export interface UpdateStubInputModel {
   input: string
@@ -14,6 +15,7 @@ export interface CreateStubBasedOnRequestInputModel {
   doNotCreateStub?: boolean
 }
 
+const stubFormStore = useStubFormStore()
 export const useStubsStore = defineStore('stubs', () => {
   // Actions
   async function getStub(stubId: string): Promise<FullStubModel> {
@@ -111,21 +113,3 @@ export const useStubsStore = defineStore('stubs', () => {
     createStubBasedOnRequest,
   }
 })
-
-// export const useStubsStore = defineStore({
-//   id: "stubs",
-//   state: () => ({}),
-//   getters: {},
-//   actions: {
-//     createStubBasedOnRequest(
-//       payload: CreateStubBasedOnRequestInputModel,
-//     ): Promise<FullStubModel> {
-//       return post(`/ph-api/requests/${payload.correlationId}/stubs`, {
-//         doNotCreateStub:
-//           payload.doNotCreateStub !== null ? payload.doNotCreateStub : false,
-//       })
-//         .then((response) => Promise.resolve(response))
-//         .catch((error) => Promise.reject(error));
-//     },
-//   },
-// });
