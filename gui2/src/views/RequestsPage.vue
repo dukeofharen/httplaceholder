@@ -17,6 +17,7 @@ import { useSignalR } from '@/composables/useSignalR.ts'
 import type { RequestOverviewModel } from '@/domain/request/request-overview-model.ts'
 import SelectInput from '@/components/html-elements/SelectInput.vue'
 import type { SelectListItem } from '@/domain/ui/select-list-item.ts'
+import RequestComponent from '@/components/request/RequestComponent.vue'
 
 const tenantStore = useTenantsStore()
 const requestStore = useRequestsStore()
@@ -133,7 +134,7 @@ onMounted(async () => {
       {{ $translate('requests.requestsCantBeRecovered') }}
     </ModalComponent>
   </div>
-  <div class="flex flex-col md:flex-row gap-2 w-full md:w-1/2">
+  <div class="flex flex-col md:flex-row gap-2 w-full md:w-1/2 mb-2">
     <TextInput
       id="urlStubIdFilter"
       :placeholder="$translate('requests.filterPlaceholder')"
@@ -150,7 +151,11 @@ onMounted(async () => {
     />
   </div>
   <div>
-    {{ filteredRequests }}
+    <RequestComponent
+      v-for="request of filteredRequests"
+      :overview-request="request"
+      :key="request.correlationId"
+    />
   </div>
 </template>
 
