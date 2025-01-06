@@ -5,6 +5,10 @@ import type { RequestResultModel } from '@/domain/request/request-result-model.t
 import { useRequestsStore } from '@/stores/requests.ts'
 import { handleHttpError } from '@/utils/error.ts'
 import ButtonComponent from '@/components/html-elements/ButtonComponent.vue'
+import { useStubsStore } from '@/stores/stubs.ts'
+import { setIntermediateStub } from '@/utils/session.ts'
+import yaml from 'js-yaml'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
   overviewRequest: {
@@ -13,12 +17,25 @@ const props = defineProps({
   },
 })
 const requestStore = useRequestsStore()
+const stubStore = useStubsStore()
+const router = useRouter()
 
 // Data
 const request = ref<RequestResultModel | undefined>()
 
 // Functions
-async function createStub() {}
+async function createStub() {
+  try {
+    const fullStub = await stubStore.createStubBasedOnRequest({
+      correlationId: props.overviewRequest.correlationId,
+      doNotCreateStub: true,
+    })
+    setIntermediateStub(yaml.dump(fullStub.stub))
+    await router.push({ name: 'StubForm' })
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
 async function exportRequest() {}
 async function deleteRequest() {}
 

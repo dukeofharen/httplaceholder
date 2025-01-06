@@ -18,12 +18,11 @@ const routes = [
     name: 'Stubs',
     component: () => import(/* webpackChunkName: "stubs" */ '../views/StubsPage.vue'),
   },
-  // {
-  //   path: "/stubForm/:stubId?",
-  //   name: "StubForm",
-  //   component: () =>
-  //     import(/* webpackChunkName: "stubForm" */ "../views/StubForm.vue"),
-  // },
+  {
+    path: '/stubForm/:stubId?',
+    name: 'StubForm',
+    component: () => import(/* webpackChunkName: "stubForm" */ '../views/StubFormPage.vue'),
+  },
   // {
   //   path: "/importStubs",
   //   name: "ImportStubs",
