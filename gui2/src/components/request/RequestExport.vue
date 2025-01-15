@@ -12,6 +12,7 @@ import { downloadBlob } from '@/utils/download.ts'
 import ButtonComponent from '@/components/html-elements/ButtonComponent.vue'
 import { ClipboardIcon } from '@heroicons/vue/24/solid'
 import { success } from '@/utils/toast.ts'
+import CodeHighlight from '@/components/highlight/CodeHighlight.vue'
 
 const props = defineProps({
   request: {
@@ -108,7 +109,7 @@ watch(exportType, async (newType) => {
     <div v-if="showExportResult" class="mt-2">
       <div v-if="showExportResultText" class="flex flex-row items-center gap-2">
         <ClipboardIcon class="size-6 cursor-pointer" @click="copy" />
-        <span>{{ exportResult }}</span>
+        <CodeHighlight :code="exportResult" :language="language" />
       </div>
       <template v-else>
         <ButtonComponent
