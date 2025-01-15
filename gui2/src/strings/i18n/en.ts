@@ -90,6 +90,7 @@ export const translations = {
     noConditionCheckersFound: 'No condition checkers executed for this stub.',
     stubExecutionResults: 'Stub execution results',
     requestBodyCopiedToClipboard: 'Request body successfully copied to clipboard.',
+    requestCopiedToClipboard: 'Request was copied to clipboard.',
     copyRequestBody: 'Copy request body',
     executed: 'executed',
     notExecuted: 'not executed',

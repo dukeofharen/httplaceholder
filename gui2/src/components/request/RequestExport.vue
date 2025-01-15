@@ -10,6 +10,8 @@ import { handleHttpError } from '@/utils/error.ts'
 import { copyTextToClipboard } from '@/utils/clipboard.ts'
 import { downloadBlob } from '@/utils/download.ts'
 import ButtonComponent from '@/components/html-elements/ButtonComponent.vue'
+import { ClipboardIcon } from '@heroicons/vue/24/solid'
+import { success } from '@/utils/toast.ts'
 
 const props = defineProps({
   request: {
@@ -84,6 +86,7 @@ const exportRequest = async () => {
 const copy = async () => {
   if (exportResult.value) {
     await copyTextToClipboard(exportResult.value)
+    success(translate('request.requestCopiedToClipboard'))
   }
 }
 const download = async () => {
@@ -103,9 +106,10 @@ watch(exportType, async (newType) => {
   <div class="flex flex-col gap-1">
     <SelectInput id="exportType" :items="selectListItems" v-model="exportType" />
     <div v-if="showExportResult" class="mt-2">
-      <template v-if="showExportResultText">
-        {{ exportResult }}
-      </template>
+      <div v-if="showExportResultText" class="flex flex-row items-center gap-2">
+        <ClipboardIcon class="size-6 cursor-pointer" @click="copy" />
+        <span>{{ exportResult }}</span>
+      </div>
       <template v-else>
         <ButtonComponent
           type="success"

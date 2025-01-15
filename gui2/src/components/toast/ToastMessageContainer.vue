@@ -26,7 +26,7 @@ onMounted(() => {
 <template>
   <div
     v-if="toastMessages.length"
-    class="fixed ms-3 right-3 top-3 flex flex-col gap-2 min-w-40 max-w-96"
+    class="fixed ms-3 right-3 top-3 flex flex-col gap-2 min-w-40 max-w-96 z-50"
   >
     <ToastMessage
       v-for="toastMessage of toastMessages"
