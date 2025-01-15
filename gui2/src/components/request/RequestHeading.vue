@@ -43,7 +43,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-row gap-2" :title="headingTitle">
+  <div class="flex flex-col md:flex-row gap-1 md:gap-2" :title="headingTitle">
     <RequestMethod :method="props.overviewRequest.method" />
     <span class="break-words">{{ props.overviewRequest.url }}</span>
     <span>
