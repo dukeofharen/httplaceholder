@@ -13,7 +13,7 @@ const props = defineProps({
   supportClearing: Boolean,
   items: Array as PropType<SelectListItem[]>,
   modelValue: {
-    type: String,
+    type: [String, Number],
   },
 })
 const emit = defineEmits(['update:modelValue'])
@@ -34,7 +34,8 @@ const classList = computed(() => {
 function onInputChange(event: Event) {
   const target = event.target as HTMLInputElement
   if (target) {
-    emit('update:modelValue', target.value)
+    const val = !isNaN(props.modelValue as any) ? parseInt(target.value) : target.value
+    emit('update:modelValue', val)
   }
 }
 
@@ -65,7 +66,7 @@ function onButtonClick() {
       class="w-full rounded-md border border-gray-500 py-2.5 ps-2.5 pe-10 shadow-sm bg-white sm:text-sm dark:border-gray-500 dark:bg-gray-800 appearance-none"
       :class="classList"
     >
-      <option value="">{{ props.placeholder }}</option>
+      <option v-if="props.placeholder" value="">{{ props.placeholder }}</option>
       <option v-for="item of items" :key="item.value" :value="item.value">{{ item.label }}</option>
     </select>
 
