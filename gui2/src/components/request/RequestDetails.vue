@@ -9,6 +9,7 @@ import { useStubsStore } from '@/stores/stubs.ts'
 import { setIntermediateStub } from '@/utils/session.ts'
 import yaml from 'js-yaml'
 import { useRouter } from 'vue-router'
+import RequestExport from '@/components/request/RequestExport.vue'
 
 const props = defineProps({
   overviewRequest: {
@@ -22,6 +23,7 @@ const router = useRouter()
 
 // Data
 const request = ref<RequestResultModel | undefined>()
+const exportRequestOpened = ref(false)
 
 // Functions
 async function createStub() {
@@ -36,7 +38,9 @@ async function createStub() {
     handleHttpError(e)
   }
 }
-async function exportRequest() {}
+async function exportRequest() {
+  return (exportRequestOpened.value = !exportRequestOpened.value)
+}
 async function deleteRequest() {}
 
 // Lifecycle
@@ -79,6 +83,8 @@ onMounted(async () => {
         {{ $translate('request.deleteRequest') }}
       </ButtonComponent>
     </div>
+
+    <RequestExport v-if="exportRequestOpened" class="mt-2" :request="request" />
   </template>
 </template>
 
