@@ -63,7 +63,7 @@ function onButtonClick() {
       :value="props.modelValue"
       @input="onInputChange"
       @keyup.esc="clear"
-      class="w-full rounded-md border border-gray-500 py-2.5 ps-2.5 pe-10 shadow-sm bg-white sm:text-sm dark:border-gray-500 dark:bg-gray-800 appearance-none"
+      class="w-full rounded-md border border-gray-500 py-2.5 ps-2.5 pe-10 shadow-xs bg-white sm:text-sm dark:border-gray-500 dark:bg-gray-800 appearance-none"
       :class="classList"
     >
       <option v-if="props.placeholder" value="">{{ props.placeholder }}</option>

@@ -53,7 +53,7 @@ function onButtonClick() {
       :value="props.modelValue"
       @input="onInputChange"
       @keyup.esc="clear"
-      class="w-full rounded-md border border-gray-500 py-2.5 ps-2.5 pe-10 shadow-sm sm:text-sm dark:border-gray-500 dark:bg-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-300"
+      class="w-full rounded-md border border-gray-500 py-2.5 ps-2.5 pe-10 shadow-xs sm:text-sm dark:border-gray-500 dark:bg-gray-800 dark:text-white placeholder-gray-500 dark:placeholder-gray-300"
     />
 
     <span class="absolute inset-y-0 end-0 grid w-10 place-content-center">
