@@ -22,7 +22,7 @@
   "devDependencies": {
     "@heroicons/vue": "^2.2.0",
     "@microsoft/signalr": "^8.0.7",
-    "@tailwindcss/postcss": "^4.0.0",
+    "@tailwindcss/vite": "^4.0.3",
     "@tsconfig/node22": "^22.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/marked": "^6.0.0",
@@ -39,7 +39,6 @@
     "js-yaml": "^4.1.0",
     "marked": "^15.0.4",
     "npm-run-all2": "^7.0.2",
-    "postcss": "^8.4.49",
     "prettier": "^3.3.3",
     "sass": "^1.83.0",
     "sprintf-js": "^1.1.3",
