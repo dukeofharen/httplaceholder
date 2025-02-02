@@ -126,7 +126,7 @@ function onLinkClicked() {
     <button
       type="button"
       @click="mobileMenuOpen = !mobileMenuOpen"
-      class="inline-flex items-center p-2 mt-2 ms-3 text-sm rounded-lg sm:hidden focus:outline-none focus:ring-2 text-gray-400"
+      class="inline-flex items-center p-2 mt-2 ms-3 text-sm rounded-lg sm:hidden focus:outline-hidden focus:ring-2 text-gray-400"
     >
       <span class="sr-only">{{ $translate('general.openSidebar') }}</span>
       <Bars3Icon class="size-6" />
