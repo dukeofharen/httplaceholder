@@ -10,6 +10,7 @@ import { setIntermediateStub } from '@/utils/session.ts'
 import yaml from 'js-yaml'
 import { useRouter } from 'vue-router'
 import RequestExport from '@/components/request/RequestExport.vue'
+import RequestData from '@/components/request/RequestData.vue'
 
 const props = defineProps({
   overviewRequest: {
@@ -38,9 +39,11 @@ async function createStub() {
     handleHttpError(e)
   }
 }
+
 async function exportRequest() {
   return (exportRequestOpened.value = !exportRequestOpened.value)
 }
+
 async function deleteRequest() {}
 
 // Lifecycle
@@ -85,6 +88,7 @@ onMounted(async () => {
     </div>
 
     <RequestExport v-if="exportRequestOpened" class="mt-2" :request="request" />
+    <RequestData :request="request" class="mt-2" />
   </template>
 </template>
 
