@@ -1,85 +1,69 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div class="container-fluid">
+    <div class="row flex-nowrap">
+      <Loading />
+      <Sidebar />
+      <div class="col-md-10 col-10 col-xl-10 col-lg-10 col-sm-9 py-3 main-body">
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </div>
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+<script lang="ts">
+import Sidebar from "@/components/Sidebar.vue";
+import Loading from "@/components/Loading.vue";
+import { computed, defineComponent, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useUsersStore } from "@/store/users";
+import { useMetadataStore } from "@/store/metadata";
+import { useSettingsStore } from "@/store/settings";
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
+export default defineComponent({
+  components: { Sidebar, Loading },
+  setup() {
+    const userStore = useUsersStore();
+    const metadataStore = useMetadataStore();
+    const settingsStore = useSettingsStore();
+    const router = useRouter();
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
+    // Functions
+    const setDarkTheme = (darkTheme: boolean) => {
+      const bodyElement = document.body;
+      const darkName = "dark-theme";
+      const lightName = "light-theme";
+      if (darkTheme) {
+        bodyElement.classList.remove(lightName);
+        bodyElement.classList.add(darkName);
+      } else {
+        bodyElement.classList.remove(darkName);
+        bodyElement.classList.add(lightName);
+      }
+    };
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
+    // Computed
+    const darkTheme = computed(() => settingsStore.getDarkTheme);
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
+    // Watch
+    watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme));
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
+    // Lifecycle
+    onMounted(async () => {
+      const darkThemeEnabled = darkTheme.value;
+      setDarkTheme(darkThemeEnabled);
+      metadataStore
+        .getMetadata()
+        .then((m) => (document.title = `HttPlaceholder - v${m.version}`));
 
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
+      const authEnabled = await metadataStore.checkAuthenticationIsEnabled();
+      if (!userStore.getAuthenticated && authEnabled) {
+        await router.push({ name: "Login" });
+      }
+    });
+  },
+});
+</script>

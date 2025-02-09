@@ -1,0 +1,89 @@
+// Required
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+.dark-theme {
+  // General
+  .main-body {
+    background-color: $gray-900;
+    color: $gray-400;
+  }
+
+  strong, label, div, p {
+    color: $gray-400;
+  }
+
+  .btn {
+    color: $gray-400;
+  }
+
+  // Forms
+  input.form-control, select.form-select, textarea.form-control {
+    background-color: $gray-900;
+    color: $gray-400;
+    border-color: $gray-700;
+  }
+
+  input.form-check-input {
+    background-color: $gray-900;
+    border-color: $gray-700;
+  }
+
+  input.form-control::placeholder {
+    color: $gray-400;
+  }
+
+  // Accordion
+  .accordion-item, .accordion-button {
+    background-color: $gray-900;
+    color: $gray-400;
+    border-color: $gray-700;
+  }
+
+  .accordion-button {
+    box-shadow: none;
+  }
+
+  // Lists
+  .list-group .list-group-item {
+    background-color: $gray-900;
+    color: $gray-400;
+    border-color: $gray-700;
+  }
+
+  // Table
+  .table {
+    color: $gray-400;
+
+    tr td {
+      color: $gray-400;
+      border-color: $gray-700;
+      background-color: $gray-900;
+    }
+  }
+
+  // Modals
+  .modal-content {
+    background-color: $gray-900;
+
+    .btn.btn-secondary {
+      color: $gray-900;
+    }
+  }
+
+  // Cards
+  .card-body {
+    background-color: $gray-900;
+  }
+
+  .card {
+    border-color: $gray-700;
+    overflow: hidden;
+  }
+
+  // Other
+  .divider {
+    border-bottom: 1px solid $gray-400;
+  }
+}

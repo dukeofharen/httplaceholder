@@ -1,14 +1,11 @@
-import './assets/main.css'
-
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import installPlugins from "@/plugins";
+import { registerGlobalComponents } from "@/plugins/global-components";
 
 import App from './App.vue'
-import router from './router'
 
 const app = createApp(App)
 
-app.use(createPinia())
-app.use(router)
-
+registerGlobalComponents(app);
+installPlugins(app);
 app.mount('#app')
