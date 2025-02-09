@@ -1,0 +1,11 @@
+title: 6. Temporary redirect
+description: A stub that performs a temporary redirect as response.
+stub: |
+  id: temp-redirect
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /temp-redirect
+  response:
+    temporaryRedirect: https://google.com

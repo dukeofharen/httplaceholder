@@ -1,0 +1,15 @@
+title: 5. Slow response
+description: A stub with a response that is purposefully made slower, to simulate a slow server or slow connection.
+stub: |
+  id: slow
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /slooooow
+  response:
+    json: |
+      {
+        "first_name": "John"
+      }
+    extraDuration: 10000
