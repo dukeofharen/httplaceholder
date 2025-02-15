@@ -14,6 +14,35 @@
         "cwd": "${workspaceFolder}/src/HttPlaceholder"
       },
       "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build-swaggergenerator",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/src/HttPlaceholder.SwaggerGenerator"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Run devenv",
+      "type":"shell",
+      "command": "cd ${workspaceFolder}/scripts/dev && docker compose up"
+    },
+    {
+      "label": "Serve mkdocs",
+      "type":"shell",
+      "command": "cd ${workspaceFolder}/docs/httpl-docs && ./serve.sh"
+    },
+    {
+      "label": "Run integration tests",
+      "type":"shell",
+      "command": "cd ${workspaceFolder}/test && ./exec-tests.sh"
     }
   ]
 }

@@ -21,12 +21,268 @@
       "cwd": "${workspaceFolder}/gui2"
     },
     {
+      "name": "HttPlaceholder: generate Swagger file",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder.SwaggerGenerator/bin/Debug/net9.0/HttPlaceholder.SwaggerGenerator.dll",
+      "args": ["--dev"],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
       "name": "HttPlaceholder: file storage",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
       "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
-      "args": ["-V", "--fileStorageLocation", "${userHome}/CodeMetadata/httplaceholder/stubsRoot"],
+      "args": [
+        "-V",
+        "--dev",
+        "--fileStorageLocation",
+        "${userHome}/CodeMetadata/httplaceholder/stubsRoot"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: file storage and load samples",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--fileStorageLocation",
+        "${userHome}/CodeMetadata/httplaceholder/stubsRoot",
+        "--inputFile",
+        "${workspaceFolder}/docs/samples"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: in-memory",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--useInMemoryStorage",
+        "--storeresponses",
+        "--port",
+        "5000,5002",
+        "--httpsPort",
+        "5050,5056"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: in-memory and load samples",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--useInMemoryStorage",
+        "--storeresponses",
+        "--port",
+        "5000,5002",
+        "--httpsPort",
+        "5050,5056",
+        "--inputFile",
+        "${workspaceFolder}/docs/samples"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: in-memory and load samples without file watcher",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--useInMemoryStorage",
+        "--storeresponses",
+        "--port",
+        "5000,5002",
+        "--httpsPort",
+        "5050,5056",
+        "--inputFile",
+        "${workspaceFolder}/docs/samples",
+        "--disableFileWatcher",
+        "true"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: authentication",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--fileStorageLocation",
+        "${userHome}/CodeMetadata/httplaceholder/stubsRoot",
+        "--apiUsername",
+        "user",
+        "--apiPassword",
+        "pass"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: MariaDB",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--mysqlConnectionString",
+        "Server=localhost;Port=3308;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: MSSQL",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--sqlServerConnectionString",
+        "Server=localhost,1433;Database=httplaceholder;User Id=sa;Password=Password123!"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: MySQL 5",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--mysqlConnectionString",
+        "Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true;SSL Mode=None"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: MySQL 8",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--mysqlConnectionString",
+        "Server=localhost;Port=3307;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: Postgres",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--postgresConnectionString",
+        "Host=localhost,5432;Username=postgres;Password=postgres;Database=httplaceholder;SearchPath=public"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: SQLite",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": [
+        "-V",
+        "--dev",
+        "--sqliteConnectionString",
+        "Data Source=${userHome}/CodeMetadata/httplaceholder/httplaceholder.db;Foreign Keys=True"
+      ],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "cwd": "${workspaceFolder}/src/HttPlaceholder",
+      "stopAtEntry": false
+    },
+    {
+      "name": "HttPlaceholder: help",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
+      "args": ["-V", "--dev", "--help"],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
       "cwd": "${workspaceFolder}/src/HttPlaceholder",
       "stopAtEntry": false
     }
