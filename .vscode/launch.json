@@ -5,12 +5,28 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "HttPlaceholder: run UI",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/gui"
+    },
+    {
+      "name": "HttPlaceholder: run new UI",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/gui2"
+    },
+    {
       "name": "HttPlaceholder: file storage",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
       "program": "${workspaceFolder}/src/HttPlaceholder/bin/Debug/net9.0/HttPlaceholder.dll",
-      "args": ["--help"],
+      "args": ["-V", "--fileStorageLocation", "${userHome}/CodeMetadata/httplaceholder/stubsRoot"],
       "cwd": "${workspaceFolder}/src/HttPlaceholder",
       "stopAtEntry": false
     }
