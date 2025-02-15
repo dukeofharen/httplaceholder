@@ -30,6 +30,11 @@
       "problemMatcher": "$msCompile"
     },
     {
+      "label": "Run and watch",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/src/HttPlaceholder && export DOTNET_ENVIRONMENT=Development && dotnet watch -V --dev"
+    },
+    {
       "label": "Run devenv",
       "type":"shell",
       "command": "cd ${workspaceFolder}/scripts/dev && docker compose up"
