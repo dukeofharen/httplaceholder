@@ -1,11 +1,12 @@
-import { createApp } from "vue";
+import { createApp } from 'vue'
 import installPlugins from "@/plugins";
 import { registerGlobalComponents } from "@/plugins/global-components";
-import App from "./App.vue";
-import "./style/style.scss";
+import "@/style/style.scss";
 
-const app = createApp(App);
+import App from './App.vue'
+
+const app = createApp(App)
 
 registerGlobalComponents(app);
 installPlugins(app);
-app.mount("#app");
+app.mount('#app')

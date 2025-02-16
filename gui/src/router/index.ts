@@ -60,7 +60,7 @@ const routes = [
     component: () =>
       import(
         /* webpackChunkName: "scenarioForm" */ "../views/ScenarioForm.vue"
-      ),
+        ),
   },
 ] as RouteRecordRaw[];
 

@@ -2,12 +2,10 @@
   "files": [],
   "references": [
     {
-      "path": "./tsconfig.vite-config.json"
+      "path": "./tsconfig.node.json"
     },
     {
       "path": "./tsconfig.app.json"
     }
-  ],
-  "compilerOptions": {
-  }
+  ]
 }
