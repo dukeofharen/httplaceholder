@@ -1,9 +1,9 @@
-import type { ConfigKeyType } from "@/domain/stub/enums/config-key-type";
+import type { ConfigKeyType } from '@/domain/stub/enums/config-key-type'
 
 export interface ConfigurationModel {
-  key: string;
-  path: string;
-  description: string;
-  configKeyType: ConfigKeyType;
-  value: string;
+  key: string
+  path: string
+  description: string
+  configKeyType: ConfigKeyType
+  value: string
 }

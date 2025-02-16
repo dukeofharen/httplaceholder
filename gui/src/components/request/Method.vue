@@ -3,11 +3,11 @@
 </template>
 
 <script lang="ts">
-import { computed } from "vue";
-import { defineComponent } from "vue";
+import { computed } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "Method",
+  name: 'Method',
   props: {
     method: {
       type: String,
@@ -18,26 +18,26 @@ export default defineComponent({
     // Computed
     const className = computed(() => {
       switch (props.method) {
-        case "GET":
-          return "method-get";
-        case "POST":
-          return "method-post";
-        case "PUT":
-          return "method-put";
-        case "DELETE":
-          return "method-delete";
-        case "OPTIONS":
-          return "method-options";
-        case "PATCH":
-          return "method-patch";
+        case 'GET':
+          return 'method-get'
+        case 'POST':
+          return 'method-post'
+        case 'PUT':
+          return 'method-put'
+        case 'DELETE':
+          return 'method-delete'
+        case 'OPTIONS':
+          return 'method-options'
+        case 'PATCH':
+          return 'method-patch'
       }
 
-      return "";
-    });
+      return ''
+    })
 
-    return { className };
+    return { className }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>

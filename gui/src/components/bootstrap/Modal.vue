@@ -17,18 +17,10 @@
           <p>{{ bodyText }}</p>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary no-button"
-            @click="onNoClick"
-          >
+          <button type="button" class="btn btn-secondary no-button" @click="onNoClick">
             {{ getNoText() }}
           </button>
-          <button
-            type="button"
-            class="btn btn-primary yes-button"
-            @click="onYesClick"
-          >
+          <button type="button" class="btn btn-primary yes-button" @click="onYesClick">
             {{ getYesText() }}
           </button>
         </div>
@@ -38,13 +30,13 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, watch } from "vue";
-import { defineComponent } from "vue";
-import { getOrCreateInstance } from "@/utils/bootstrap";
-import { translate } from "@/utils/translate";
+import { onMounted, ref, watch } from 'vue'
+import { defineComponent } from 'vue'
+import { getOrCreateInstance } from '@/utils/bootstrap'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "Modal",
+  name: 'Modal',
   props: {
     title: {
       type: String,
@@ -72,71 +64,71 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // Template refs
-    const modal = ref<HTMLElement>();
+    const modal = ref<HTMLElement>()
 
     // Functions
     const showModal = () => {
       if (modal.value) {
-        const currentModal = getOrCreateInstance(modal.value);
-        currentModal.show();
+        const currentModal = getOrCreateInstance(modal.value)
+        currentModal.show()
       }
-    };
+    }
     const hideModal = () => {
       if (modal.value) {
-        const currentModal = getOrCreateInstance(modal.value);
-        currentModal.hide();
+        const currentModal = getOrCreateInstance(modal.value)
+        currentModal.hide()
       }
-    };
+    }
     function getYesText() {
-      return props.yesText ?? translate("general.yes");
+      return props.yesText ?? translate('general.yes')
     }
     function getNoText() {
-      return props.noText ?? translate("general.no");
+      return props.noText ?? translate('general.no')
     }
 
     // Methods
     const onYesClick = () => {
       if (props.yesClickFunction) {
-        props.yesClickFunction();
+        props.yesClickFunction()
       }
 
-      hideModal();
-    };
+      hideModal()
+    }
     const onNoClick = () => {
       if (props.noClickFunction) {
-        props.noClickFunction();
+        props.noClickFunction()
       }
 
-      hideModal();
-    };
+      hideModal()
+    }
 
     // Lifecycle
     onMounted(() => {
       if (props.showModal) {
-        showModal();
+        showModal()
       } else {
-        hideModal();
+        hideModal()
       }
 
       if (modal.value) {
-        modal.value.addEventListener("hidden.bs.modal", () => {
-          emit("close");
-        });
+        modal.value.addEventListener('hidden.bs.modal', () => {
+          emit('close')
+        })
       }
-    });
+    })
 
     // Watch
     watch(props, (newProps) => {
       if (newProps.showModal) {
-        showModal();
+        showModal()
       } else {
-        hideModal();
+        hideModal()
       }
-    });
+    })
 
-    return { onYesClick, onNoClick, modal, getYesText, getNoText };
+    return { onYesClick, onNoClick, modal, getYesText, getNoText }
   },
-});
+})
 </script>
 
 <style scoped lang="scss">

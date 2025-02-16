@@ -12,41 +12,41 @@
 </template>
 
 <script lang="ts">
-import { useStubFormStore } from "@/store/stubForm";
-import { defineComponent } from "vue";
-import { LineEndingType } from "@/domain/stub/enums/line-ending-type";
-import { translate } from "@/utils/translate";
+import { useStubFormStore } from '@/store/stubForm'
+import { defineComponent } from 'vue'
+import { LineEndingType } from '@/domain/stub/enums/line-ending-type'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "LineEndingSelector",
+  name: 'LineEndingSelector',
   setup() {
-    const stubFormStore = useStubFormStore();
+    const stubFormStore = useStubFormStore()
 
     // Data
     const types = [
       {
-        name: translate("stubForm.lineEndingAsProvided"),
+        name: translate('stubForm.lineEndingAsProvided'),
         value: undefined,
       },
       {
-        name: translate("stubForm.lineEndingUnix"),
+        name: translate('stubForm.lineEndingUnix'),
         value: LineEndingType.Unix,
       },
       {
-        name: translate("stubForm.lineEndingWindows"),
+        name: translate('stubForm.lineEndingWindows'),
         value: LineEndingType.Windows,
       },
-    ];
+    ]
 
     // Methods
     const lineEndingSelected = (value: LineEndingType | undefined) => {
-      stubFormStore.setLineEndings(value);
-      stubFormStore.closeFormHelper();
-    };
+      stubFormStore.setLineEndings(value)
+      stubFormStore.closeFormHelper()
+    }
 
-    return { types, lineEndingSelected };
+    return { types, lineEndingSelected }
   },
-});
+})
 </script>
 
 <style scoped></style>

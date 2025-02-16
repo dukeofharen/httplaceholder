@@ -1,7 +1,7 @@
 // Required
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
 
 .dark-theme {
   // General
@@ -10,7 +10,10 @@
     color: $gray-400;
   }
 
-  strong, label, div, p {
+  strong,
+  label,
+  div,
+  p {
     color: $gray-400;
   }
 
@@ -19,7 +22,9 @@
   }
 
   // Forms
-  input.form-control, select.form-select, textarea.form-control {
+  input.form-control,
+  select.form-select,
+  textarea.form-control {
     background-color: $gray-900;
     color: $gray-400;
     border-color: $gray-700;
@@ -35,7 +40,8 @@
   }
 
   // Accordion
-  .accordion-item, .accordion-button {
+  .accordion-item,
+  .accordion-button {
     background-color: $gray-900;
     color: $gray-400;
     border-color: $gray-700;

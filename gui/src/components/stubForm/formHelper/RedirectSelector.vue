@@ -12,34 +12,34 @@
 </template>
 
 <script lang="ts">
-import { useStubFormStore } from "@/store/stubForm";
-import { defineComponent } from "vue";
-import { translate } from "@/utils/translate";
+import { useStubFormStore } from '@/store/stubForm'
+import { defineComponent } from 'vue'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "RedirectSelector",
+  name: 'RedirectSelector',
   setup() {
-    const stubFormStore = useStubFormStore();
+    const stubFormStore = useStubFormStore()
 
     // Data
     const items = [
       {
-        name: translate("stubForm.redirectTemporary"),
+        name: translate('stubForm.redirectTemporary'),
         onSelected: () => {
-          stubFormStore.setDefaultTempRedirect();
-          stubFormStore.closeFormHelper();
+          stubFormStore.setDefaultTempRedirect()
+          stubFormStore.closeFormHelper()
         },
       },
       {
-        name: translate("stubForm.redirectPermanent"),
+        name: translate('stubForm.redirectPermanent'),
         onSelected: () => {
-          stubFormStore.setDefaultPermanentRedirect();
-          stubFormStore.closeFormHelper();
+          stubFormStore.setDefaultPermanentRedirect()
+          stubFormStore.closeFormHelper()
         },
       },
-    ];
+    ]
 
-    return { items };
+    return { items }
   },
-});
+})
 </script>

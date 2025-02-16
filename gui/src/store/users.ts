@@ -1,24 +1,24 @@
-import { getUserToken, clearUserToken, saveUserToken } from "@/utils/session";
-import { defineStore } from "pinia";
-import { toBase64 } from "@/utils/text";
-import { get } from "@/utils/api";
+import { getUserToken, clearUserToken, saveUserToken } from '@/utils/session'
+import { defineStore } from 'pinia'
+import { toBase64 } from '@/utils/text'
+import { get } from '@/utils/api'
 
 type UserState = {
-  userToken?: string;
-};
-
-export interface AuthenticationInput {
-  username: string;
-  password: string;
+  userToken?: string
 }
 
-const token = getUserToken();
+export interface AuthenticationInput {
+  username: string
+  password: string
+}
+
+const token = getUserToken()
 
 export const useUsersStore = defineStore({
-  id: "users",
+  id: 'users',
   state: () =>
     ({
-      userToken: token || "",
+      userToken: token || '',
     }) as UserState,
   getters: {
     getAuthenticated: (state) => !!state.userToken,
@@ -26,33 +26,31 @@ export const useUsersStore = defineStore({
   },
   actions: {
     async authenticate(input: AuthenticationInput): Promise<any> {
-      const username = input.username;
-      const password = input.password;
-      const token = toBase64(`${username}:${password}`);
+      const username = input.username
+      const password = input.password
+      const token = toBase64(`${username}:${password}`)
       try {
         const response = await get(`/ph-api/users/${username}`, {
           headers: {
             Authorization: `Basic ${token}`,
           },
-        });
+        })
         if (!token) {
-          clearUserToken();
+          clearUserToken()
         } else {
-          saveUserToken(token);
+          saveUserToken(token)
         }
 
-        this.userToken = token;
-        return Promise.resolve(response);
+        this.userToken = token
+        return Promise.resolve(response)
       } catch (e) {
-        return Promise.reject(e);
+        return Promise.reject(e)
       }
     },
     logOut(): void {
-      clearUserToken();
-      this.userToken = "";
-      document.cookie = `HttPlaceholderLoggedin=;expires=${new Date(
-        0,
-      ).toUTCString()}`;
+      clearUserToken()
+      this.userToken = ''
+      document.cookie = `HttPlaceholderLoggedin=;expires=${new Date(0).toUTCString()}`
     },
   },
-});
+})

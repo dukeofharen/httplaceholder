@@ -15,55 +15,53 @@
 </template>
 
 <script lang="ts">
-import Sidebar from "@/components/Sidebar.vue";
-import Loading from "@/components/Loading.vue";
-import { computed, defineComponent, onMounted, watch } from "vue";
-import { useRouter } from "vue-router";
-import { useUsersStore } from "@/store/users";
-import { useMetadataStore } from "@/store/metadata";
-import { useSettingsStore } from "@/store/settings";
+import Sidebar from '@/components/Sidebar.vue'
+import Loading from '@/components/Loading.vue'
+import { computed, defineComponent, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUsersStore } from '@/store/users'
+import { useMetadataStore } from '@/store/metadata'
+import { useSettingsStore } from '@/store/settings'
 
 export default defineComponent({
   components: { Sidebar, Loading },
   setup() {
-    const userStore = useUsersStore();
-    const metadataStore = useMetadataStore();
-    const settingsStore = useSettingsStore();
-    const router = useRouter();
+    const userStore = useUsersStore()
+    const metadataStore = useMetadataStore()
+    const settingsStore = useSettingsStore()
+    const router = useRouter()
 
     // Functions
     const setDarkTheme = (darkTheme: boolean) => {
-      const bodyElement = document.body;
-      const darkName = "dark-theme";
-      const lightName = "light-theme";
+      const bodyElement = document.body
+      const darkName = 'dark-theme'
+      const lightName = 'light-theme'
       if (darkTheme) {
-        bodyElement.classList.remove(lightName);
-        bodyElement.classList.add(darkName);
+        bodyElement.classList.remove(lightName)
+        bodyElement.classList.add(darkName)
       } else {
-        bodyElement.classList.remove(darkName);
-        bodyElement.classList.add(lightName);
+        bodyElement.classList.remove(darkName)
+        bodyElement.classList.add(lightName)
       }
-    };
+    }
 
     // Computed
-    const darkTheme = computed(() => settingsStore.getDarkTheme);
+    const darkTheme = computed(() => settingsStore.getDarkTheme)
 
     // Watch
-    watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme));
+    watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme))
 
     // Lifecycle
     onMounted(async () => {
-      const darkThemeEnabled = darkTheme.value;
-      setDarkTheme(darkThemeEnabled);
-      metadataStore
-        .getMetadata()
-        .then((m) => (document.title = `HttPlaceholder - v${m.version}`));
+      const darkThemeEnabled = darkTheme.value
+      setDarkTheme(darkThemeEnabled)
+      metadataStore.getMetadata().then((m) => (document.title = `HttPlaceholder - v${m.version}`))
 
-      const authEnabled = await metadataStore.checkAuthenticationIsEnabled();
+      const authEnabled = await metadataStore.checkAuthenticationIsEnabled()
       if (!userStore.getAuthenticated && authEnabled) {
-        await router.push({ name: "Login" });
+        await router.push({ name: 'Login' })
       }
-    });
+    })
   },
-});
+})
 </script>

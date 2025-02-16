@@ -1,18 +1,15 @@
 <template>
   <div class="mb-2 col-md-6">
-    {{ $translate("importOpenApi.importOpenApi") }}
+    {{ $translate('importOpenApi.importOpenApi') }}
   </div>
   <div v-if="!stubsPreviewOpened">
     <div class="mb-2">
       <button class="btn btn-outline-primary btn-sm" @click="insertExample">
-        {{ $translate("importStubs.insertExample") }}
+        {{ $translate('importStubs.insertExample') }}
       </button>
     </div>
     <div class="mb-2">
-      <upload-button
-        :button-text="$translate('importStubs.uploadFile')"
-        @uploaded="onUploaded"
-      />
+      <upload-button :button-text="$translate('importStubs.uploadFile')" @uploaded="onUploaded" />
     </div>
     <div class="mb-2">
       <input
@@ -34,26 +31,22 @@
       <textarea class="form-control" v-model="input"></textarea>
     </div>
     <div class="mb-2">
-      <button
-        class="btn btn-success"
-        @click="importOpenApi"
-        :disabled="!importButtonEnabled"
-      >
-        {{ $translate("importOpenApi.importOpenApiDefinition") }}
+      <button class="btn btn-success" @click="importOpenApi" :disabled="!importButtonEnabled">
+        {{ $translate('importOpenApi.importOpenApiDefinition') }}
       </button>
     </div>
   </div>
   <div v-else>
-    <div class="mb-2">{{ $translate("importStubs.stubsWillBeAdded") }}</div>
+    <div class="mb-2">{{ $translate('importStubs.stubsWillBeAdded') }}</div>
     <div class="mb-2">
       <button class="btn btn-success me-2" @click="saveStubs">
-        {{ $translate("importStubs.saveStubs") }}
+        {{ $translate('importStubs.saveStubs') }}
       </button>
       <button class="btn btn-success me-2" @click="editBeforeSaving">
-        {{ $translate("importStubs.editStubsBeforeSaving") }}
+        {{ $translate('importStubs.editStubsBeforeSaving') }}
       </button>
       <button class="btn btn-danger me-2" @click="reset">
-        {{ $translate("general.reset") }}
+        {{ $translate('general.reset') }}
       </button>
     </div>
     <div class="mb-2">
@@ -63,34 +56,34 @@
 </template>
 
 <script lang="ts">
-import { useRouter } from "vue-router";
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import yaml from "js-yaml";
-import { handleHttpError } from "@/utils/error";
-import { setIntermediateStub } from "@/utils/session";
-import { shouldSave } from "@/utils/event";
-import { success } from "@/utils/toast";
-import { type ImportInputModel, useImportStore } from "@/store/import";
-import { defineComponent } from "vue";
-import type { FileUploadedModel } from "@/domain/file-uploaded-model";
-import { exampleOpenApiInput } from "@/strings/exmaples";
-import { translate } from "@/utils/translate";
+import { useRouter } from 'vue-router'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import yaml from 'js-yaml'
+import { handleHttpError } from '@/utils/error'
+import { setIntermediateStub } from '@/utils/session'
+import { shouldSave } from '@/utils/event'
+import { success } from '@/utils/toast'
+import { type ImportInputModel, useImportStore } from '@/store/import'
+import { defineComponent } from 'vue'
+import type { FileUploadedModel } from '@/domain/file-uploaded-model'
+import { exampleOpenApiInput } from '@/strings/exmaples'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "ImportOpenApi",
+  name: 'ImportOpenApi',
   setup() {
-    const importStore = useImportStore();
-    const router = useRouter();
+    const importStore = useImportStore()
+    const router = useRouter()
 
     // Data
-    const input = ref("");
-    const stubsYaml = ref("");
-    const tenant = ref("");
-    const stubIdPrefix = ref("");
+    const input = ref('')
+    const stubsYaml = ref('')
+    const tenant = ref('')
+    const stubIdPrefix = ref('')
 
     // Computed
-    const importButtonEnabled = computed(() => !!input.value);
-    const stubsPreviewOpened = computed(() => !!stubsYaml.value);
+    const importButtonEnabled = computed(() => !!input.value)
+    const stubsPreviewOpened = computed(() => !!stubsYaml.value)
 
     // Functions
     const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
@@ -99,64 +92,61 @@ export default defineComponent({
         tenant: tenant.value,
         input: input.value,
         stubIdPrefix: stubIdPrefix.value,
-      };
-    };
+      }
+    }
 
     // Methods
     const insertExample = () => {
-      input.value = exampleOpenApiInput;
-    };
+      input.value = exampleOpenApiInput
+    }
     const importOpenApi = async () => {
       try {
-        const importInput = buildInputModel(true);
-        const result = await importStore.importOpenApi(importInput);
+        const importInput = buildInputModel(true)
+        const result = await importStore.importOpenApi(importInput)
 
-        const filteredResult = result.map((r) => r.stub);
-        stubsYaml.value = yaml.dump(filteredResult);
+        const filteredResult = result.map((r) => r.stub)
+        stubsYaml.value = yaml.dump(filteredResult)
       } catch (e) {
-        handleHttpError(e);
+        handleHttpError(e)
       }
-    };
+    }
     const onUploaded = (file: FileUploadedModel) => {
-      input.value = file.result;
-    };
+      input.value = file.result
+    }
     const saveStubs = async () => {
       try {
-        const importInput = buildInputModel(false);
-        await importStore.importOpenApi(importInput);
-        success(translate("importStubs.stubsAddedSuccessfully"));
-        await router.push({ name: "Stubs" });
+        const importInput = buildInputModel(false)
+        await importStore.importOpenApi(importInput)
+        success(translate('importStubs.stubsAddedSuccessfully'))
+        await router.push({ name: 'Stubs' })
       } catch (e) {
-        handleHttpError(e);
+        handleHttpError(e)
       }
-    };
+    }
     const editBeforeSaving = () => {
-      setIntermediateStub(stubsYaml.value);
-      router.push({ name: "StubForm" });
-    };
+      setIntermediateStub(stubsYaml.value)
+      router.push({ name: 'StubForm' })
+    }
     const reset = () => {
-      input.value = "";
-      stubsYaml.value = "";
-      tenant.value = "";
-    };
+      input.value = ''
+      stubsYaml.value = ''
+      tenant.value = ''
+    }
 
     // Lifecycle
     const handleSave = async (e: KeyboardEvent) => {
       if (shouldSave(e)) {
-        e.preventDefault();
+        e.preventDefault()
         if (!stubsYaml.value) {
-          await importOpenApi();
+          await importOpenApi()
         } else {
-          await saveStubs();
+          await saveStubs()
         }
       }
-    };
-    const keydownEventListener = async (e: KeyboardEvent) =>
-      await handleSave(e);
-    onMounted(() => document.addEventListener("keydown", keydownEventListener));
-    onUnmounted(() =>
-      document.removeEventListener("keydown", keydownEventListener),
-    );
+    }
+    const keydownEventListener = async (e: KeyboardEvent) => await handleSave(e)
+    onMounted(() => document.addEventListener('keydown', keydownEventListener))
+    onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
 
     return {
       input,
@@ -171,9 +161,9 @@ export default defineComponent({
       tenant,
       stubsPreviewOpened,
       stubIdPrefix,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>

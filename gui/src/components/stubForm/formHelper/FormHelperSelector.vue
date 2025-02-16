@@ -15,11 +15,8 @@
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="mb-3">
-          <button
-            class="btn btn-danger btn-mobile full-width"
-            @click="closeFormHelperAndList"
-          >
-            {{ $translate("stubForm.closeList") }}
+          <button class="btn btn-danger btn-mobile full-width" @click="closeFormHelperAndList">
+            {{ $translate('stubForm.closeList') }}
           </button>
         </div>
         <div class="input-group mb-3">
@@ -32,10 +29,7 @@
           />
         </div>
         <div class="list-group stub-form-helpers">
-          <template
-            v-for="(item, index) in filteredStubFormHelpers"
-            :key="index"
-          >
+          <template v-for="(item, index) in filteredStubFormHelpers" :key="index">
             <h2 v-if="item.isHeading" class="list-group-item">
               {{ item.title }}
             </h2>
@@ -64,152 +58,134 @@
 </template>
 
 <script lang="ts">
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-} from "vue";
-import { useRoute } from "vue-router";
-import { escapePressed } from "@/utils/event";
-import { useStubFormStore } from "@/store/stubForm";
+import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { escapePressed } from '@/utils/event'
+import { useStubFormStore } from '@/store/stubForm'
 import {
   type StubFormHelper,
   StubFormHelperCategory,
   stubFormHelpers,
-} from "@/domain/stubForm/stub-form-helpers";
-import RenderedFormHelper from "@/components/stubForm/formHelper/RenderedFormHelper.vue";
-import { translate } from "@/utils/translate";
+} from '@/domain/stubForm/stub-form-helpers'
+import RenderedFormHelper from '@/components/stubForm/formHelper/RenderedFormHelper.vue'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "FormHelperSelector",
+  name: 'FormHelperSelector',
   components: { RenderedFormHelper },
   setup() {
-    const stubFormStore = useStubFormStore();
-    const route = useRoute();
+    const stubFormStore = useStubFormStore()
+    const route = useRoute()
 
     // Refs
-    const formHelperFilterInput = ref<HTMLElement>();
+    const formHelperFilterInput = ref<HTMLElement>()
 
     // Data
-    const showFormHelperItems = ref(false);
+    const showFormHelperItems = ref(false)
     const formHelperButtons = [
       {
-        title: translate("stubForm.addExample"),
+        title: translate('stubForm.addExample'),
         category: StubFormHelperCategory.Examples,
       },
       {
-        title: translate("stubForm.addGeneralStubInfo"),
+        title: translate('stubForm.addGeneralStubInfo'),
         category: StubFormHelperCategory.GeneralInfo,
       },
       {
-        title: translate("stubForm.addRequestCondition"),
+        title: translate('stubForm.addRequestCondition'),
         category: StubFormHelperCategory.RequestCondition,
       },
       {
-        title: translate("stubForm.addResponseWriter"),
+        title: translate('stubForm.addResponseWriter'),
         category: StubFormHelperCategory.ResponseDefinition,
       },
-    ];
-    const selectedFormHelperCategory = ref<StubFormHelperCategory>(
-      StubFormHelperCategory.None,
-    );
+    ]
+    const selectedFormHelperCategory = ref<StubFormHelperCategory>(StubFormHelperCategory.None)
 
     // Methods
     const onFormHelperItemClick = (item: StubFormHelper) => {
       if (item.defaultValueMutation) {
-        item.defaultValueMutation(stubFormStore);
-        stubFormStore.closeFormHelper();
+        item.defaultValueMutation(stubFormStore)
+        stubFormStore.closeFormHelper()
       } else if (item.formHelperToOpen) {
-        stubFormStore.openFormHelper(item.formHelperToOpen);
+        stubFormStore.openFormHelper(item.formHelperToOpen)
       }
 
-      showFormHelperItems.value = false;
-      formHelperFilter.value = "";
-    };
+      showFormHelperItems.value = false
+      formHelperFilter.value = ''
+    }
     const openFormHelperList = (category: StubFormHelperCategory) => {
       if (selectedFormHelperCategory.value === category) {
-        closeFormHelperAndList();
-        return;
+        closeFormHelperAndList()
+        return
       }
 
-      showFormHelperItems.value = true;
-      selectedFormHelperCategory.value = category;
-      const formHelpers = stubFormHelpers.filter(
-        (h) => h.stubFormHelperCategory === category,
-      );
+      showFormHelperItems.value = true
+      selectedFormHelperCategory.value = category
+      const formHelpers = stubFormHelpers.filter((h) => h.stubFormHelperCategory === category)
       if (formHelpers.length === 1) {
-        onFormHelperItemClick(formHelpers[0]);
+        onFormHelperItemClick(formHelpers[0])
       } else {
         setTimeout(() => {
           if (formHelperFilterInput.value) {
-            formHelperFilterInput.value.focus();
+            formHelperFilterInput.value.focus()
           }
-        }, 10);
+        }, 10)
       }
-    };
+    }
     const closeFormHelperAndList = () => {
-      formHelperFilter.value = "";
-      stubFormStore.closeFormHelper();
-      showFormHelperItems.value = false;
-      selectedFormHelperCategory.value = StubFormHelperCategory.None;
-    };
+      formHelperFilter.value = ''
+      stubFormStore.closeFormHelper()
+      showFormHelperItems.value = false
+      selectedFormHelperCategory.value = StubFormHelperCategory.None
+    }
 
     // Computed
-    const currentSelectedFormHelper = computed(
-      () => stubFormStore.getCurrentSelectedFormHelper,
-    );
+    const currentSelectedFormHelper = computed(() => stubFormStore.getCurrentSelectedFormHelper)
     const filteredStubFormHelpers = computed(() => {
-      let result = stubFormHelpers;
+      let result = stubFormHelpers
       if (selectedFormHelperCategory.value) {
-        result = result.filter(
-          (r) => r.stubFormHelperCategory === selectedFormHelperCategory.value,
-        );
+        result = result.filter((r) => r.stubFormHelperCategory === selectedFormHelperCategory.value)
       }
 
       if (!formHelperFilter.value) {
-        return result;
+        return result
       }
 
       return result.filter((h) => {
-        return (
-          !h.isHeading &&
-          h.title.toLowerCase().includes(formHelperFilter.value.toLowerCase())
-        );
-      });
-    });
+        return !h.isHeading && h.title.toLowerCase().includes(formHelperFilter.value.toLowerCase())
+      })
+    })
     const formHelperFilter = computed({
       get: () => stubFormStore.getFormHelperSelectorFilter,
       set: (value) => stubFormStore.setFormHelperSelectorFilter(value),
-    });
+    })
 
     // Watch
     watch(currentSelectedFormHelper, (formHelper) => {
       if (!formHelper) {
-        showFormHelperItems.value = false;
+        showFormHelperItems.value = false
       }
-    });
+    })
     watch(
       () => route.params,
       () => closeFormHelperAndList(),
-    );
+    )
     watch(showFormHelperItems, (newValue) => {
       if (!newValue) {
-        selectedFormHelperCategory.value = StubFormHelperCategory.None;
+        selectedFormHelperCategory.value = StubFormHelperCategory.None
       }
-    });
+    })
 
     // Lifecycle
     const escapeListener = (e: KeyboardEvent) => {
       if (escapePressed(e)) {
-        e.preventDefault();
-        closeFormHelperAndList();
+        e.preventDefault()
+        closeFormHelperAndList()
       }
-    };
-    onMounted(() => document.addEventListener("keydown", escapeListener));
-    onUnmounted(() => document.removeEventListener("keydown", escapeListener));
+    }
+    onMounted(() => document.addEventListener('keydown', escapeListener))
+    onUnmounted(() => document.removeEventListener('keydown', escapeListener))
 
     return {
       currentSelectedFormHelper,
@@ -222,13 +198,13 @@ export default defineComponent({
       closeFormHelperAndList,
       formHelperButtons,
       selectedFormHelperCategory,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped lang="scss">
-@import "@/style/bootstrap";
+@import '@/style/bootstrap';
 
 label {
   display: block;

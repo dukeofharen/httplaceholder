@@ -1,4 +1,4 @@
 export interface StubMetadataModel {
-  readOnly: boolean;
-  filename: string;
+  readOnly: boolean
+  filename: string
 }

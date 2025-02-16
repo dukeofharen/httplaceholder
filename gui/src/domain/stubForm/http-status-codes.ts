@@ -1,164 +1,164 @@
 export interface HttpStatusCode {
-  code: number;
-  name: string;
+  code: number
+  name: string
 }
 
 export const httpStatusCodes = [
   {
     code: 100,
-    name: "Continue",
+    name: 'Continue',
   },
   {
     code: 101,
-    name: "Switching Protocols",
+    name: 'Switching Protocols',
   },
   {
     code: 102,
-    name: "Processing",
+    name: 'Processing',
   },
   {
     code: 200,
-    name: "OK",
+    name: 'OK',
   },
   {
     code: 201,
-    name: "Created",
+    name: 'Created',
   },
   {
     code: 202,
-    name: "Accepted",
+    name: 'Accepted',
   },
   {
     code: 203,
-    name: "Non-authoritative Information",
+    name: 'Non-authoritative Information',
   },
   {
     code: 204,
-    name: "No Content",
+    name: 'No Content',
   },
   {
     code: 205,
-    name: "Reset Content",
+    name: 'Reset Content',
   },
   {
     code: 206,
-    name: "Partial Content",
+    name: 'Partial Content',
   },
   {
     code: 207,
-    name: "Multi-Status",
+    name: 'Multi-Status',
   },
   {
     code: 208,
-    name: "Already Reported",
+    name: 'Already Reported',
   },
   {
     code: 226,
-    name: "IM Used",
+    name: 'IM Used',
   },
   {
     code: 300,
-    name: "Multiple Choices",
+    name: 'Multiple Choices',
   },
   {
     code: 301,
-    name: "Moved Permanently",
+    name: 'Moved Permanently',
   },
   {
     code: 302,
-    name: "Found",
+    name: 'Found',
   },
   {
     code: 303,
-    name: "See Other",
+    name: 'See Other',
   },
   {
     code: 304,
-    name: "Not Modified",
+    name: 'Not Modified',
   },
   {
     code: 305,
-    name: "Use Proxy",
+    name: 'Use Proxy',
   },
   {
     code: 307,
-    name: "Temporary Redirect",
+    name: 'Temporary Redirect',
   },
   {
     code: 308,
-    name: "Permanent Redirect",
+    name: 'Permanent Redirect',
   },
   {
     code: 400,
-    name: "Bad Request",
+    name: 'Bad Request',
   },
   {
     code: 401,
-    name: "Unauthorized",
+    name: 'Unauthorized',
   },
   {
     code: 402,
-    name: "Payment Required",
+    name: 'Payment Required',
   },
   {
     code: 403,
-    name: "Forbidden",
+    name: 'Forbidden',
   },
   {
     code: 404,
-    name: "Not Found",
+    name: 'Not Found',
   },
   {
     code: 405,
-    name: "Method Not Allowed",
+    name: 'Method Not Allowed',
   },
   {
     code: 406,
-    name: "Not Acceptable",
+    name: 'Not Acceptable',
   },
   {
     code: 407,
-    name: "Proxy Authentication Required",
+    name: 'Proxy Authentication Required',
   },
   {
     code: 408,
-    name: "Request Timeout",
+    name: 'Request Timeout',
   },
   {
     code: 409,
-    name: "Conflict",
+    name: 'Conflict',
   },
   {
     code: 410,
-    name: "Gone",
+    name: 'Gone',
   },
   {
     code: 411,
-    name: "Length Required",
+    name: 'Length Required',
   },
   {
     code: 412,
-    name: "Precondition Failed",
+    name: 'Precondition Failed',
   },
   {
     code: 413,
-    name: "Payload Too Large",
+    name: 'Payload Too Large',
   },
   {
     code: 414,
-    name: "Request-URI Too Long",
+    name: 'Request-URI Too Long',
   },
   {
     code: 415,
-    name: "Unsupported Media Type",
+    name: 'Unsupported Media Type',
   },
   {
     code: 416,
-    name: "Requested range Not Satisfiable",
+    name: 'Requested range Not Satisfiable',
   },
   {
     code: 417,
-    name: "Expectation Failed",
+    name: 'Expectation Failed',
   },
   {
     code: 418,
@@ -166,94 +166,94 @@ export const httpStatusCodes = [
   },
   {
     code: 421,
-    name: "Misdirected Request",
+    name: 'Misdirected Request',
   },
   {
     code: 422,
-    name: "Unprocessable Entity",
+    name: 'Unprocessable Entity',
   },
   {
     code: 423,
-    name: "Locked",
+    name: 'Locked',
   },
   {
     code: 424,
-    name: "Failed Dependency",
+    name: 'Failed Dependency',
   },
   {
     code: 426,
-    name: "Upgrade Required",
+    name: 'Upgrade Required',
   },
   {
     code: 428,
-    name: "Precondition Required",
+    name: 'Precondition Required',
   },
   {
     code: 429,
-    name: "Too Many Requests",
+    name: 'Too Many Requests',
   },
   {
     code: 431,
-    name: "Request Header Fields Too Large",
+    name: 'Request Header Fields Too Large',
   },
   {
     code: 444,
-    name: "Connection Closed Without Response",
+    name: 'Connection Closed Without Response',
   },
   {
     code: 451,
-    name: "Unavailable For Legal Reasons",
+    name: 'Unavailable For Legal Reasons',
   },
   {
     code: 499,
-    name: "Client Closed Request",
+    name: 'Client Closed Request',
   },
   {
     code: 500,
-    name: "Internal Server Error",
+    name: 'Internal Server Error',
   },
   {
     code: 501,
-    name: "Not Implemented",
+    name: 'Not Implemented',
   },
   {
     code: 502,
-    name: "Bad Gateway",
+    name: 'Bad Gateway',
   },
   {
     code: 503,
-    name: "Service Unavailable",
+    name: 'Service Unavailable',
   },
   {
     code: 504,
-    name: "Gateway Timeout",
+    name: 'Gateway Timeout',
   },
   {
     code: 505,
-    name: "HTTP Version Not Supported",
+    name: 'HTTP Version Not Supported',
   },
   {
     code: 506,
-    name: "Variant Also Negotiates",
+    name: 'Variant Also Negotiates',
   },
   {
     code: 507,
-    name: "Insufficient Storage",
+    name: 'Insufficient Storage',
   },
   {
     code: 508,
-    name: "Loop Detected",
+    name: 'Loop Detected',
   },
   {
     code: 510,
-    name: "Not Extended",
+    name: 'Not Extended',
   },
   {
     code: 511,
-    name: "Network Authentication Required",
+    name: 'Network Authentication Required',
   },
   {
     code: 599,
-    name: "Network Connect Timeout Error",
+    name: 'Network Connect Timeout Error',
   },
-] as HttpStatusCode[];
+] as HttpStatusCode[]

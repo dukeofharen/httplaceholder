@@ -1,6 +1,6 @@
 export enum ConditionValidationType {
-  NotSet = "NotSet",
-  Valid = "Valid",
-  Invalid = "Invalid",
-  NotExecuted = "NotExecuted",
+  NotSet = 'NotSet',
+  Valid = 'Valid',
+  Invalid = 'Invalid',
+  NotExecuted = 'NotExecuted',
 }

@@ -12,27 +12,24 @@
 </template>
 
 <script lang="ts">
-import { useStubFormStore } from "@/store/stubForm";
-import { defineComponent } from "vue";
-import {
-  type HttpStatusCode,
-  httpStatusCodes,
-} from "@/domain/stubForm/http-status-codes";
+import { useStubFormStore } from '@/store/stubForm'
+import { defineComponent } from 'vue'
+import { type HttpStatusCode, httpStatusCodes } from '@/domain/stubForm/http-status-codes'
 
 export default defineComponent({
-  name: "HttpStatusCodeSelector",
+  name: 'HttpStatusCodeSelector',
   setup() {
-    const stubFormStore = useStubFormStore();
+    const stubFormStore = useStubFormStore()
 
     // Methods
     const codeSelected = (code: HttpStatusCode) => {
-      stubFormStore.setStatusCode(code.code);
-      stubFormStore.closeFormHelper();
-    };
+      stubFormStore.setStatusCode(code.code)
+      stubFormStore.closeFormHelper()
+    }
 
-    return { httpStatusCodes, codeSelected };
+    return { httpStatusCodes, codeSelected }
   },
-});
+})
 </script>
 
 <style scoped></style>

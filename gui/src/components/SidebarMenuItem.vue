@@ -30,21 +30,21 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "SidebarMenuItem",
+  name: 'SidebarMenuItem',
   props: {
     item: {
       type: Object,
       required: true,
     },
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "@/style/bootstrap";
+@import '@/style/bootstrap';
 
 .menu-item {
   cursor: pointer;

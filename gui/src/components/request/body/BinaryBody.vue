@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12">
           <button class="btn btn-sm btn-primary" @click="download">
-            {{ $translate("general.download") }}
+            {{ $translate('general.download') }}
           </button>
           <div v-if="bodyType != bodyTypes.other" class="mt-2">
             <div v-if="bodyType === bodyTypes.image">
@@ -21,22 +21,22 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, type PropType } from "vue";
-import { downloadBlob } from "@/utils/download";
-import { base64ToBlob } from "@/utils/text";
-import { imageMimeTypes, pdfMimeType } from "@/constants";
-import mime from "mime-types";
-import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
-import VuePdfEmbed from "vue-pdf-embed";
+import { computed, defineComponent, type PropType } from 'vue'
+import { downloadBlob } from '@/utils/download'
+import { base64ToBlob } from '@/utils/text'
+import { imageMimeTypes, pdfMimeType } from '@/constants'
+import mime from 'mime-types'
+import type { RequestResponseBodyRenderModel } from '@/domain/request/request-response-body-render-model'
+import VuePdfEmbed from 'vue-pdf-embed'
 
 const bodyTypes = {
-  image: "image",
-  pdf: "pdf",
-  other: "other",
-};
+  image: 'image',
+  pdf: 'pdf',
+  other: 'other',
+}
 
 export default defineComponent({
-  name: "BinaryBody",
+  name: 'BinaryBody',
   components: { VuePdfEmbed },
   props: {
     renderModel: {
@@ -47,44 +47,44 @@ export default defineComponent({
   setup(props) {
     // Computed
     const body = computed(() => {
-      return props.renderModel.body;
-    });
+      return props.renderModel.body
+    })
     const contentType = computed(() => {
-      const headers = props.renderModel.headers;
+      const headers = props.renderModel.headers
       const contentTypeHeaderKey = Object.keys(headers).find(
-        (k) => k.toLowerCase() === "content-type",
-      );
+        (k) => k.toLowerCase() === 'content-type',
+      )
       if (!contentTypeHeaderKey) {
-        return "";
+        return ''
       }
 
-      return headers[contentTypeHeaderKey].toLowerCase().split(";")[0];
-    });
+      return headers[contentTypeHeaderKey].toLowerCase().split(';')[0]
+    })
     const bodyType = computed(() => {
-      const type = contentType.value;
+      const type = contentType.value
       if (!type) {
-        return bodyTypes.other;
+        return bodyTypes.other
       }
 
       if (imageMimeTypes.find((m) => type.includes(m))) {
-        return bodyTypes.image;
+        return bodyTypes.image
       }
 
       if (type.includes(pdfMimeType)) {
-        return bodyTypes.pdf;
+        return bodyTypes.pdf
       }
 
-      return bodyTypes.other;
-    });
+      return bodyTypes.other
+    })
     const dataUrl = computed(() => {
-      return `data:${contentType.value};base64,${body.value}`;
-    });
+      return `data:${contentType.value};base64,${body.value}`
+    })
 
     // Methods
     const download = () => {
-      const extension = mime.extension(contentType.value) ?? "bin";
-      downloadBlob(`file.${extension}`, base64ToBlob(body.value));
-    };
+      const extension = mime.extension(contentType.value) ?? 'bin'
+      downloadBlob(`file.${extension}`, base64ToBlob(body.value))
+    }
 
     return {
       download,
@@ -93,26 +93,27 @@ export default defineComponent({
       contentType,
       body,
       dataUrl,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped lang="scss">
-@import "@/style/bootstrap";
+@import '@/style/bootstrap';
 img {
   max-width: 100%;
 }
 
 .pdf-viewer {
+  min-height: 500px;
+  max-height: 1000px;
+  overflow-x: scroll;
+
   @include media-breakpoint-down(lg) {
     width: 100%;
   }
   @include media-breakpoint-up(xl) {
     width: 50%;
   }
-  min-height: 500px;
-  max-height: 1000px;
-  overflow-x: scroll;
 }
 </style>

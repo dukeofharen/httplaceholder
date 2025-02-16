@@ -1,7 +1,7 @@
 <template>
   <div class="row" @keyup.enter="insert">
     <div class="col-md-12">
-      <strong>{{ $translate("stubForm.basicAuthTitle") }}</strong>
+      <strong>{{ $translate('stubForm.basicAuthTitle') }}</strong>
       <input
         type="text"
         class="form-control mt-2"
@@ -16,39 +16,39 @@
         :placeholder="$translate('general.password')"
       />
       <button class="btn btn-success mt-2" @click="insert">
-        {{ $translate("stubForm.insertIntoStub") }}
+        {{ $translate('stubForm.insertIntoStub') }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useStubFormStore } from "@/store/stubForm";
-import { onMounted, ref } from "vue";
+import { useStubFormStore } from '@/store/stubForm'
+import { onMounted, ref } from 'vue'
 
-const stubFormStore = useStubFormStore();
+const stubFormStore = useStubFormStore()
 
 // Data
-const usernameRef = ref<HTMLElement>();
-const username = ref("");
-const password = ref("");
+const usernameRef = ref<HTMLElement>()
+const username = ref('')
+const password = ref('')
 
 // Methods
 function insert() {
-  stubFormStore.setBasicAuth(username.value, password.value);
-  stubFormStore.closeFormHelper();
+  stubFormStore.setBasicAuth(username.value, password.value)
+  stubFormStore.closeFormHelper()
 }
 
 // Lifecycle
 onMounted(() => {
-  const basicAuth = stubFormStore.getBasicAuth;
+  const basicAuth = stubFormStore.getBasicAuth
   if (basicAuth) {
-    username.value = basicAuth.username ?? "";
-    password.value = basicAuth.password ?? "";
+    username.value = basicAuth.username ?? ''
+    password.value = basicAuth.password ?? ''
   }
 
-  usernameRef.value?.focus();
-});
+  usernameRef.value?.focus()
+})
 </script>
 
 <style scoped></style>

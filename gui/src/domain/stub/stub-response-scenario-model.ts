@@ -1,4 +1,4 @@
 export interface StubResponseScenarioModel {
-  setScenarioState?: string;
-  clearState?: boolean;
+  setScenarioState?: string
+  clearState?: boolean
 }

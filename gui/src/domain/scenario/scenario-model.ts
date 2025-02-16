@@ -1,5 +1,5 @@
 export interface ScenarioModel {
-  scenario: string;
-  state: string;
-  hitCount: number;
+  scenario: string
+  state: string
+  hitCount: number
 }

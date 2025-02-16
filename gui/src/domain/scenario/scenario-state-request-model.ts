@@ -1,4 +1,4 @@
 export interface ScenarioStateRequestModel {
-  state: string;
-  hitCount: number;
+  state: string
+  hitCount: number
 }

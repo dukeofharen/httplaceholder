@@ -1,8 +1,6 @@
 <template>
   <accordion-item>
-    <template v-slot:button-text>{{
-      $translate("request.stubExecutionResults")
-    }}</template>
+    <template v-slot:button-text>{{ $translate('request.stubExecutionResults') }}</template>
     <template v-slot:accordion-body>
       <div class="accordion">
         <StubExecutionResult
@@ -17,13 +15,13 @@
 </template>
 
 <script lang="ts">
-import { computed, type PropType } from "vue";
-import StubExecutionResult from "@/components/request/StubExecutionResult.vue";
-import { defineComponent } from "vue";
-import type { StubExecutionResultModel } from "@/domain/request/stub-execution-result-model";
+import { computed, type PropType } from 'vue'
+import StubExecutionResult from '@/components/request/StubExecutionResult.vue'
+import { defineComponent } from 'vue'
+import type { StubExecutionResultModel } from '@/domain/request/stub-execution-result-model'
 
 export default defineComponent({
-  name: "StubExecutionResults",
+  name: 'StubExecutionResults',
   components: { StubExecutionResult },
   props: {
     correlationId: {
@@ -37,28 +35,25 @@ export default defineComponent({
   },
   setup(props) {
     // Computed
-    const compare = (
-      a: StubExecutionResultModel,
-      b: StubExecutionResultModel,
-    ) => {
-      if (a.stubId > b.stubId) return 1;
-      if (a.stubId < b.stubId) return -1;
-      return 0;
-    };
+    const compare = (a: StubExecutionResultModel, b: StubExecutionResultModel) => {
+      if (a.stubId > b.stubId) return 1
+      if (a.stubId < b.stubId) return -1
+      return 0
+    }
     const orderedStubExecutionResults = computed(() => {
-      const allResults = props.stubExecutionResults;
-      const passedResults = allResults.filter((r) => r.passed);
-      passedResults.sort(compare);
-      const otherResults = allResults.filter((r) => !r.passed);
-      otherResults.sort(compare);
-      return passedResults.concat(otherResults);
-    });
+      const allResults = props.stubExecutionResults
+      const passedResults = allResults.filter((r) => r.passed)
+      passedResults.sort(compare)
+      const otherResults = allResults.filter((r) => !r.passed)
+      otherResults.sort(compare)
+      return passedResults.concat(otherResults)
+    })
 
     return {
       orderedStubExecutionResults,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped></style>

@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 const fsPromises = require("fs/promises");
 const { readFileSync, writeFileSync, readdirSync } = require("fs");
 const { copySync, exists, ensureDirSync, removeSync } = require("fs-extra");

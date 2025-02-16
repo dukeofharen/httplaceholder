@@ -27,6 +27,6 @@ coverage
 *.sln
 *.sw?
 
-# Other
-public/docs
-stub-examples.json
+*.tsbuildinfo
+
+src/assets/stub-examples.json

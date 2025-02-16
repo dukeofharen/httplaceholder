@@ -1,8 +1,6 @@
 <template>
   <accordion-item>
-    <template v-slot:button-text>{{
-      $translate("request.queryParameters")
-    }}</template>
+    <template v-slot:button-text>{{ $translate('request.queryParameters') }}</template>
     <template v-slot:accordion-body>
       <table class="table" v-if="queryParameters">
         <tbody>
@@ -17,12 +15,12 @@
 </template>
 
 <script lang="ts">
-import { parseUrl } from "@/utils/url";
-import { defineComponent, computed, type PropType } from "vue";
-import type { RequestResultModel } from "@/domain/request/request-result-model";
+import { parseUrl } from '@/utils/url'
+import { defineComponent, computed, type PropType } from 'vue'
+import type { RequestResultModel } from '@/domain/request/request-result-model'
 
 export default defineComponent({
-  name: "QueryParams",
+  name: 'QueryParams',
   props: {
     request: {
       type: Object as PropType<RequestResultModel>,
@@ -31,15 +29,15 @@ export default defineComponent({
   },
   setup(props) {
     // Computed
-    const requestParams = computed(() => props.request?.requestParameters);
+    const requestParams = computed(() => props.request?.requestParameters)
     const queryParameters = computed(() => {
-      const req = requestParams.value;
-      return req.url ? parseUrl(req.url) : {};
-    });
+      const req = requestParams.value
+      return req.url ? parseUrl(req.url) : {}
+    })
 
-    return { requestParams, queryParameters };
+    return { requestParams, queryParameters }
   },
-});
+})
 </script>
 
 <style scoped></style>

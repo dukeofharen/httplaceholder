@@ -1,38 +1,30 @@
 <template>
   <div>
-    <h1>{{ $translate("stubs.stubs") }}</h1>
+    <h1>{{ $translate('stubs.stubs') }}</h1>
 
     <div class="col-md-12 mb-3">
-      <button
-        type="button"
-        class="btn btn-success me-2 btn-mobile full-width"
-        @click="loadData"
-      >
-        {{ $translate("general.refresh") }}
+      <button type="button" class="btn btn-success me-2 btn-mobile full-width" @click="loadData">
+        {{ $translate('general.refresh') }}
       </button>
-      <router-link
-        :to="{ name: 'StubForm' }"
-        class="btn btn-success me-2 btn-mobile full-width"
-        >{{ $translate("stubs.addStubs") }}
+      <router-link :to="{ name: 'StubForm' }" class="btn btn-success me-2 btn-mobile full-width"
+        >{{ $translate('stubs.addStubs') }}
       </router-link>
       <button
         class="btn btn-success me-2 btn-mobile full-width"
         @click="download"
         :title="$translate('stubs.downloadStubsDescription')"
       >
-        {{ $translate("stubs.downloadStubs") }}
+        {{ $translate('stubs.downloadStubs') }}
       </button>
-      <router-link
-        :to="{ name: 'ImportStubs' }"
-        class="btn btn-success me-2 btn-mobile full-width"
-        >{{ $translate("stubs.importStubs") }}
+      <router-link :to="{ name: 'ImportStubs' }" class="btn btn-success me-2 btn-mobile full-width"
+        >{{ $translate('stubs.importStubs') }}
       </router-link>
       <button
         type="button"
         class="btn btn-danger btn-mobile full-width"
         @click="showDeleteAllStubsModal = true"
       >
-        {{ $translate("stubs.deleteAllStubs") }}
+        {{ $translate('stubs.deleteAllStubs') }}
       </button>
       <modal
         :title="$translate('stubs.deleteAllStubsQuestion')"
@@ -50,7 +42,7 @@
         @click="showDisableStubsModal = true"
         :disabled="disableMutationButtons"
       >
-        {{ $translate("stubs.disableStubs") }}
+        {{ $translate('stubs.disableStubs') }}
       </button>
       <modal
         :title="$translate('stubs.disableStubsQuestion')"
@@ -66,7 +58,7 @@
         @click="showEnableStubsModal = true"
         :disabled="disableMutationButtons"
       >
-        {{ $translate("stubs.enableStubs") }}
+        {{ $translate('stubs.enableStubs') }}
       </button>
       <modal
         :title="$translate('stubs.enableStubsQuestion')"
@@ -82,7 +74,7 @@
         @click="showDeleteStubsModal = true"
         :disabled="disableMutationButtons"
       >
-        {{ $translate("stubs.deleteSelectedStubs") }}
+        {{ $translate('stubs.deleteSelectedStubs') }}
       </button>
       <modal
         :title="$translate('stubs.deleteSelectedStubsQuestion')"
@@ -113,7 +105,7 @@
       <div v-if="tenants.length" class="input-group">
         <select class="form-select" v-model="filter.selectedTenantName">
           <option value="" selected>
-            {{ $translate("general.selectStubTenantCategory") }}
+            {{ $translate('general.selectStubTenantCategory') }}
           </option>
           <option v-for="tenant of tenants" :key="tenant">{{ tenant }}</option>
         </select>
@@ -133,14 +125,13 @@
         class="badge bg-secondary clear-filter me-2"
         v-if="filter.stubFilter"
         @click="filter.stubFilter = ''"
-        >{{ $translate("general.stubId") }}:
-        <strong>{{ filter.stubFilter }} &times;</strong></span
+        >{{ $translate('general.stubId') }}: <strong>{{ filter.stubFilter }} &times;</strong></span
       >
       <span
         class="badge bg-secondary clear-filter me-2"
         v-if="filter.selectedTenantName"
         @click="filter.selectedTenantName = ''"
-        >{{ $translate("general.tenant") }}:
+        >{{ $translate('general.tenant') }}:
         <strong>{{ filter.selectedTenantName }} &times;</strong></span
       >
     </div>
@@ -154,12 +145,10 @@
       />
     </accordion>
     <div v-else>
-      <router-link :to="{ name: 'StubForm' }"
-        >{{ $translate("stubs.addStubs") }}
-      </router-link>
+      <router-link :to="{ name: 'StubForm' }">{{ $translate('stubs.addStubs') }} </router-link>
       <span>&nbsp;</span>
       <router-link :to="{ name: 'ImportStubs' }"
-        >{{ $translate("stubs.importStubs") }}
+        >{{ $translate('stubs.importStubs') }}
       </router-link>
       <span></span>
     </div>
@@ -167,251 +156,230 @@
 </template>
 
 <script lang="ts">
-import { useRoute } from "vue-router";
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-} from "vue";
-import Stub from "@/components/stub/Stub.vue";
-import yaml from "js-yaml";
-import { handleHttpError } from "@/utils/error";
-import { downloadBlob } from "@/utils/download";
-import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
-import { success } from "@/utils/toast";
-import { useTenantsStore } from "@/store/tenants";
-import { useStubsStore } from "@/store/stubs";
-import { useSettingsStore } from "@/store/settings";
-import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
-import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
-import dayjs from "dayjs";
-import { vsprintf } from "sprintf-js";
-import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
-import { getRootUrl } from "@/utils/config";
-import { translate } from "@/utils/translate";
+import { useRoute } from 'vue-router'
+import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+import Stub from '@/components/stub/Stub.vue'
+import yaml from 'js-yaml'
+import { handleHttpError } from '@/utils/error'
+import { downloadBlob } from '@/utils/download'
+import { getStubFilterForm, setStubFilterForm } from '@/utils/session'
+import { success } from '@/utils/toast'
+import { useTenantsStore } from '@/store/tenants'
+import { useStubsStore } from '@/store/stubs'
+import { useSettingsStore } from '@/store/settings'
+import type { FullStubOverviewModel } from '@/domain/stub/full-stub-overview-model'
+import type { StubSavedFilterModel } from '@/domain/stub-saved-filter-model'
+import dayjs from 'dayjs'
+import { vsprintf } from 'sprintf-js'
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
+import { getRootUrl } from '@/utils/config'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "Stubs",
+  name: 'Stubs',
   components: { Stub },
   setup() {
-    const tenantStore = useTenantsStore();
-    const stubStore = useStubsStore();
-    const generalStore = useSettingsStore();
-    const route = useRoute();
+    const tenantStore = useTenantsStore()
+    const stubStore = useStubsStore()
+    const generalStore = useSettingsStore()
+    const route = useRoute()
 
     // Data
-    const stubs = ref<FullStubOverviewModel[]>([]);
-    const showDeleteAllStubsModal = ref(false);
-    const tenants = ref<string[]>([]);
-    const showDisableStubsModal = ref(false);
-    const showEnableStubsModal = ref(false);
-    const showDeleteStubsModal = ref(false);
-    let signalrConnection: HubConnection;
-    let reloadStubsTimeout: number;
+    const stubs = ref<FullStubOverviewModel[]>([])
+    const showDeleteAllStubsModal = ref(false)
+    const tenants = ref<string[]>([])
+    const showDisableStubsModal = ref(false)
+    const showEnableStubsModal = ref(false)
+    const showDeleteStubsModal = ref(false)
+    let signalrConnection: HubConnection
+    let reloadStubsTimeout: number
 
-    const saveSearchFilters = generalStore.getSaveSearchFilters;
+    const saveSearchFilters = generalStore.getSaveSearchFilters
     let savedFilter: StubSavedFilterModel = {
-      stubFilter: "",
-      selectedTenantName: "",
-    };
+      stubFilter: '',
+      selectedTenantName: '',
+    }
     if (saveSearchFilters) {
-      savedFilter = getStubFilterForm();
+      savedFilter = getStubFilterForm()
     }
 
     const filter = ref({
-      stubFilter:
-        (route.query.filter as string) || savedFilter?.stubFilter || "",
-      selectedTenantName:
-        (route.query.tenant as string) || savedFilter?.selectedTenantName || "",
-    });
+      stubFilter: (route.query.filter as string) || savedFilter?.stubFilter || '',
+      selectedTenantName: (route.query.tenant as string) || savedFilter?.selectedTenantName || '',
+    })
 
     // Functions
     const filterStubs = (input: FullStubOverviewModel[]) => {
-      let stubsResult = input;
+      let stubsResult = input
       const compare = (a: FullStubOverviewModel, b: FullStubOverviewModel) => {
-        if (a.stub.id < b.stub.id) return -1;
-        if (a.stub.id > b.stub.id) return 1;
-        return 0;
-      };
+        if (a.stub.id < b.stub.id) return -1
+        if (a.stub.id > b.stub.id) return 1
+        return 0
+      }
 
       if (filter.value.stubFilter) {
         stubsResult = stubsResult.filter((s) => {
-          const stubId = s.stub.id.toLowerCase();
-          return stubId && stubId.includes(filter.value.stubFilter);
-        });
+          const stubId = s.stub.id.toLowerCase()
+          return stubId && stubId.includes(filter.value.stubFilter)
+        })
       }
 
       if (filter.value.selectedTenantName) {
-        stubsResult = stubsResult.filter(
-          (s) => s.stub.tenant === filter.value.selectedTenantName,
-        );
+        stubsResult = stubsResult.filter((s) => s.stub.tenant === filter.value.selectedTenantName)
       }
 
-      stubsResult.sort(compare);
-      return stubsResult;
-    };
+      stubsResult.sort(compare)
+      return stubsResult
+    }
 
     const initializeSignalR = async () => {
-      signalrConnection = new HubConnectionBuilder()
-        .withUrl(`${getRootUrl()}/stubHub`)
-        .build();
-      signalrConnection.on("StubAdded", (stub: FullStubOverviewModel) => {
+      signalrConnection = new HubConnectionBuilder().withUrl(`${getRootUrl()}/stubHub`).build()
+      signalrConnection.on('StubAdded', (stub: FullStubOverviewModel) => {
         if (!stubs.value.find((s) => s.stub.id === stub.stub.id)) {
-          stubs.value.push(stub);
+          stubs.value.push(stub)
         }
-      });
-      signalrConnection.on("StubDeleted", (stubId: string) => {
-        const stub = stubs.value.find((s) => s.stub.id === stubId);
+      })
+      signalrConnection.on('StubDeleted', (stubId: string) => {
+        const stub = stubs.value.find((s) => s.stub.id === stubId)
         if (stub) {
-          stubs.value.splice(stubs.value.indexOf(stub), 1);
+          stubs.value.splice(stubs.value.indexOf(stub), 1)
         }
-      });
-      signalrConnection.on("ReloadStubs", () => {
+      })
+      signalrConnection.on('ReloadStubs', () => {
         if (reloadStubsTimeout) {
-          clearTimeout(reloadStubsTimeout);
+          clearTimeout(reloadStubsTimeout)
         }
 
         reloadStubsTimeout = setTimeout(async () => {
-          await loadStubs();
-        }, 700);
-      });
+          await loadStubs()
+        }, 700)
+      })
       try {
-        await signalrConnection.start();
+        await signalrConnection.start()
       } catch (err: any) {
-        console.log(err.toString());
+        console.log(err.toString())
       }
-    };
+    }
 
     // Computed
-    const filteredStubs = computed(() => filterStubs(stubs.value));
+    const filteredStubs = computed(() => filterStubs(stubs.value))
     const filteredNonReadOnlyStubs = computed(() =>
       filteredStubs.value.filter((s) => !s.metadata.readOnly),
-    );
-    const disableMutationButtons = computed(
-      () => !filteredNonReadOnlyStubs.value.length,
-    );
+    )
+    const disableMutationButtons = computed(() => !filteredNonReadOnlyStubs.value.length)
     const showFilterBadges = computed(
       () => filter.value.stubFilter || filter.value.selectedTenantName,
-    );
+    )
 
     // Methods
     const loadStubs = async () => {
       try {
-        stubs.value = [];
-        stubs.value = await stubStore.getStubsOverview();
+        stubs.value = []
+        stubs.value = await stubStore.getStubsOverview()
       } catch (e) {
-        handleHttpError(e);
+        handleHttpError(e)
       }
-    };
+    }
     const loadTenantNames = async () => {
       try {
-        tenants.value = await tenantStore.getTenantNames();
+        tenants.value = await tenantStore.getTenantNames()
         if (!tenants.value.find((t) => t === filter.value.selectedTenantName)) {
-          filter.value.selectedTenantName = "";
+          filter.value.selectedTenantName = ''
         }
       } catch (e) {
-        handleHttpError(e);
+        handleHttpError(e)
       }
-    };
+    }
     const loadData = async () => {
-      await Promise.all([loadStubs(), loadTenantNames()]);
-    };
+      await Promise.all([loadStubs(), loadTenantNames()])
+    }
     const deleteAllStubs = async () => {
       try {
-        await stubStore.deleteStubs();
-        success(translate("stubs.stubsDeletedSuccessfully"));
-        await loadData();
+        await stubStore.deleteStubs()
+        success(translate('stubs.stubsDeletedSuccessfully'))
+        await loadData()
       } catch (e) {
-        handleHttpError(e);
+        handleHttpError(e)
       }
-    };
+    }
     const disableStubs = async () => {
       const disableStub = async (stubIdToDisable: string) => {
         try {
-          await stubStore.disableStub(stubIdToDisable);
+          await stubStore.disableStub(stubIdToDisable)
         } catch (e) {
-          handleHttpError(e);
+          handleHttpError(e)
         }
-      };
-      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
+      }
+      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id)
       for (const stubId of stubIds) {
-        await disableStub(stubId);
-        success(
-          vsprintf(translate("stubs.stubDisabledSuccessfully"), [stubId]),
-        );
+        await disableStub(stubId)
+        success(vsprintf(translate('stubs.stubDisabledSuccessfully'), [stubId]))
       }
 
-      await loadData();
-    };
+      await loadData()
+    }
     const enableStubs = async () => {
       const enableStub = async (stubIdToEnable: string) => {
         try {
-          await stubStore.enableStub(stubIdToEnable);
+          await stubStore.enableStub(stubIdToEnable)
         } catch (e) {
-          handleHttpError(e);
+          handleHttpError(e)
         }
-      };
-      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
+      }
+      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id)
       for (const stubId of stubIds) {
-        await enableStub(stubId);
-        success(vsprintf(translate("stubs.stubEnabledSuccessfully"), [stubId]));
+        await enableStub(stubId)
+        success(vsprintf(translate('stubs.stubEnabledSuccessfully'), [stubId]))
       }
 
-      await loadData();
-    };
+      await loadData()
+    }
     const deleteStubs = async () => {
       const deleteStub = async (stubIdToDelete: string) => {
         try {
-          await stubStore.deleteStub(stubIdToDelete);
+          await stubStore.deleteStub(stubIdToDelete)
         } catch (e) {
-          handleHttpError(e);
+          handleHttpError(e)
         }
-      };
-      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
-      const promises = [];
+      }
+      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id)
+      const promises = []
       for (const stubId of stubIds) {
-        promises.push(deleteStub(stubId));
+        promises.push(deleteStub(stubId))
       }
 
-      await Promise.all(promises);
-      success(translate("stubs.filteredStubsDeletedSuccessfully"));
-      await loadData();
-    };
+      await Promise.all(promises)
+      success(translate('stubs.filteredStubsDeletedSuccessfully'))
+      await loadData()
+    }
     const download = async () => {
       try {
-        const stubs = filterStubs(await stubStore.getStubs()).map(
-          (fs) => fs.stub,
-        );
-        const downloadString = `${translate("stubs.downloadStubsHeader")}\n${yaml.dump(
-          stubs,
-        )}`;
-        const dateTime = dayjs().format("YYYY-MM-DD_HH-mm");
-        downloadBlob(`${dateTime}-stubs.yml`, downloadString);
+        const stubs = filterStubs(await stubStore.getStubs()).map((fs) => fs.stub)
+        const downloadString = `${translate('stubs.downloadStubsHeader')}\n${yaml.dump(stubs)}`
+        const dateTime = dayjs().format('YYYY-MM-DD_HH-mm')
+        downloadBlob(`${dateTime}-stubs.yml`, downloadString)
       } catch (e) {
-        handleHttpError(e);
+        handleHttpError(e)
       }
-    };
+    }
     const filterChanged = () => {
       if (generalStore.getSaveSearchFilters) {
-        setStubFilterForm(filter.value);
+        setStubFilterForm(filter.value)
       }
-    };
+    }
 
     // Watch
-    watch(filter, () => filterChanged(), { deep: true });
+    watch(filter, () => filterChanged(), { deep: true })
 
     // Lifecycle
     onMounted(async () => {
-      await Promise.all([loadData(), initializeSignalR()]);
-    });
+      await Promise.all([loadData(), initializeSignalR()])
+    })
     onUnmounted(() => {
       if (signalrConnection) {
-        signalrConnection.stop();
+        signalrConnection.stop()
       }
-    });
+    })
 
     return {
       stubs,
@@ -431,9 +399,9 @@ export default defineComponent({
       disableMutationButtons,
       filteredNonReadOnlyStubs,
       showFilterBadges,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>
