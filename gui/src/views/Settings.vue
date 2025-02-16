@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>{{ $translate("settings.settings") }}</h1>
+    <h1>{{ $translate('settings.settings') }}</h1>
 
     <div class="row">
       <div class="col-md-12">
-        <h2>{{ $translate("settings.features") }}</h2>
+        <h2>{{ $translate('settings.features') }}</h2>
         <div class="form-check">
           <input
             class="form-check-input"
@@ -14,7 +14,7 @@
             @change="saveSettings"
           />
           <label class="form-check-label" for="darkTheme">{{
-            $translate("settings.darkTheme")
+            $translate('settings.darkTheme')
           }}</label>
         </div>
       </div>
@@ -28,7 +28,7 @@
             @change="saveSettings"
           />
           <label class="form-check-label" for="saveSearchFilters">{{
-            $translate("settings.persistSearchFilters")
+            $translate('settings.persistSearchFilters')
           }}</label>
         </div>
       </div>
@@ -41,15 +41,14 @@
             v-model="storeResponses"
           />
           <label class="form-check-label" for="storeResponses">{{
-            $translate("settings.storeResponseForRequest")
+            $translate('settings.storeResponseForRequest')
           }}</label>
           <p
             v-html="
               $vsprintf(
-                $translateWithMarkdown(
-                  'settings.storeResponseForRequestDescription',
-                  { linkTarget: '_blank' },
-                ),
+                $translateWithMarkdown('settings.storeResponseForRequestDescription', {
+                  linkTarget: '_blank',
+                }),
                 [configDocsLink],
               )
             "
@@ -59,9 +58,7 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <label for="requestPageSize">{{
-          $translate("settings.defaultNumberOfRequests")
-        }}</label>
+        <label for="requestPageSize">{{ $translate('settings.defaultNumberOfRequests') }}</label>
         <input
           type="number"
           class="form-control mt-2"
@@ -74,10 +71,10 @@
 
     <div class="row mt-3">
       <div class="col-md-12">
-        <h2>{{ $translate("settings.httplaceholderConfiguration") }}</h2>
+        <h2>{{ $translate('settings.httplaceholderConfiguration') }}</h2>
 
         <p>
-          {{ $translate("settings.httplaceholderConfigurationDescription") }}
+          {{ $translate('settings.httplaceholderConfigurationDescription') }}
         </p>
         <template v-for="item of config" :key="item.key">
           <div class="row setting">
@@ -93,11 +90,11 @@
 
     <div class="row mt-3">
       <div class="col-md-12">
-        <h2>{{ $translate("settings.metadata") }}</h2>
+        <h2>{{ $translate('settings.metadata') }}</h2>
       </div>
       <div class="row">
         <div class="col-md-2">
-          <strong>{{ $translate("settings.version") }}</strong>
+          <strong>{{ $translate('settings.version') }}</strong>
         </div>
       </div>
       <div class="row">
@@ -105,7 +102,7 @@
       </div>
       <div class="row mt-2">
         <div class="col-md-2">
-          <strong>{{ $translate("settings.runtime") }}</strong>
+          <strong>{{ $translate('settings.runtime') }}</strong>
         </div>
       </div>
       <div class="row">
@@ -116,68 +113,66 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
-import { useSettingsStore } from "@/store/settings";
-import type { SettingsModel } from "@/domain/settings-model";
-import { useConfigurationStore } from "@/store/configuration";
-import type { ConfigurationModel } from "@/domain/stub/configuration-model";
-import { handleHttpError } from "@/utils/error";
-import { useMetadataStore } from "@/store/metadata";
-import { renderDocLink } from "@/utils/doc";
+import { computed, defineComponent, onMounted, ref } from 'vue'
+import { useSettingsStore } from '@/store/settings'
+import type { SettingsModel } from '@/domain/settings-model'
+import { useConfigurationStore } from '@/store/configuration'
+import type { ConfigurationModel } from '@/domain/stub/configuration-model'
+import { handleHttpError } from '@/utils/error'
+import { useMetadataStore } from '@/store/metadata'
+import { renderDocLink } from '@/utils/doc'
 
 export default defineComponent({
-  name: "Settings",
+  name: 'Settings',
   setup() {
-    const generalStore = useSettingsStore();
-    const configurationStore = useConfigurationStore();
-    const metadataStore = useMetadataStore();
+    const generalStore = useSettingsStore()
+    const configurationStore = useConfigurationStore()
+    const metadataStore = useMetadataStore()
 
     // Data
-    const settings = ref<SettingsModel>(generalStore.getSettings);
-    const config = ref<ConfigurationModel[]>([]);
+    const settings = ref<SettingsModel>(generalStore.getSettings)
+    const config = ref<ConfigurationModel[]>([])
 
     // Functions
     const loadConfig = async () => {
       try {
-        config.value = await configurationStore.getConfiguration();
+        config.value = await configurationStore.getConfiguration()
       } catch (e) {
-        handleHttpError(e);
+        handleHttpError(e)
       }
-    };
+    }
 
     // Methods
-    const saveSettings = () => generalStore.storeSettings(settings.value);
+    const saveSettings = () => generalStore.storeSettings(settings.value)
 
     // Computed
-    const storeResponsesKey = "storeResponses";
+    const storeResponsesKey = 'storeResponses'
     const storeResponses = computed({
       get: () => {
-        const configValue = config.value.find(
-          (c) => c.key === storeResponsesKey,
-        );
+        const configValue = config.value.find((c) => c.key === storeResponsesKey)
         if (!configValue) {
-          return false;
+          return false
         }
 
-        return configValue.value.toLowerCase() === "true";
+        return configValue.value.toLowerCase() === 'true'
       },
       set: async (value) => {
         try {
           await configurationStore.updateConfigurationValue({
             configurationKey: storeResponsesKey,
-            newValue: value ? "true" : "false",
-          });
-          await loadConfig();
+            newValue: value ? 'true' : 'false',
+          })
+          await loadConfig()
         } catch (e) {
-          handleHttpError(e);
+          handleHttpError(e)
         }
       },
-    });
-    const configDocsLink = renderDocLink("configuration");
-    const metadata = computed(() => metadataStore.getMetadataState);
+    })
+    const configDocsLink = renderDocLink('configuration')
+    const metadata = computed(() => metadataStore.getMetadataState)
 
     // Lifecycle
-    onMounted(async () => await loadConfig());
+    onMounted(async () => await loadConfig())
 
     return {
       settings,
@@ -186,9 +181,9 @@ export default defineComponent({
       storeResponses,
       configDocsLink,
       metadata,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped lang="scss">

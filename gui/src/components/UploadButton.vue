@@ -12,16 +12,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType, ref } from "vue";
-import type { FileUploadedModel } from "@/domain/file-uploaded-model";
-import { UploadButtonType } from "@/domain/upload-button-type";
-import { getExtension } from "@/utils/file";
-import { vsprintf } from "sprintf-js";
-import { warning } from "@/utils/toast";
-import { translate } from "@/utils/translate";
+import { defineComponent, type PropType, ref } from 'vue'
+import type { FileUploadedModel } from '@/domain/file-uploaded-model'
+import { UploadButtonType } from '@/domain/upload-button-type'
+import { getExtension } from '@/utils/file'
+import { vsprintf } from 'sprintf-js'
+import { warning } from '@/utils/toast'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "UploadButton",
+  name: 'UploadButton',
   props: {
     buttonText: {
       type: String,
@@ -34,7 +34,7 @@ export default defineComponent({
     },
     buttonClasses: {
       type: String,
-      default: "btn btn-primary me-2",
+      default: 'btn btn-primary me-2',
       required: false,
     },
     resultType: {
@@ -45,107 +45,100 @@ export default defineComponent({
       type: Array as PropType<string[]>,
     },
   },
-  emits: ["uploaded", "allUploaded", "beforeUpload"],
+  emits: ['uploaded', 'allUploaded', 'beforeUpload'],
   setup(props, { emit }) {
     // Refs
-    const uploadField = ref<HTMLElement>();
+    const uploadField = ref<HTMLElement>()
 
     // Methods
     const uploadClick = function () {
       if (uploadField.value) {
-        uploadField.value.click();
+        uploadField.value.click()
       }
-    };
+    }
 
     const handleSingleUploadedFile = (
       file: File,
       onUploaded: (uploadedFile: FileUploadedModel) => void,
       onError: (error: string) => void,
     ) => {
-      const allowedExtensions = props?.allowedExtensions ?? [];
-      if (
-        allowedExtensions.length > 0 &&
-        !allowedExtensions.includes(getExtension(file.name))
-      ) {
+      const allowedExtensions = props?.allowedExtensions ?? []
+      if (allowedExtensions.length > 0 && !allowedExtensions.includes(getExtension(file.name))) {
         onError(
-          vsprintf(translate("general.uploadInvalidFiles"), [
+          vsprintf(translate('general.uploadInvalidFiles'), [
             file.name,
-            allowedExtensions.map((e) => `.${e}`).join(","),
+            allowedExtensions.map((e) => `.${e}`).join(','),
           ]),
-        );
-        return;
+        )
+        return
       }
 
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (e: any) => {
         const uploadedFile: FileUploadedModel = {
           filename: file.name,
           result: e.target.result,
           success: true,
-        };
-        onUploaded(uploadedFile);
-      };
+        }
+        onUploaded(uploadedFile)
+      }
       switch (props.resultType) {
         case UploadButtonType.Text:
-          reader.readAsText(file);
-          break;
+          reader.readAsText(file)
+          break
         case UploadButtonType.Base64:
-          reader.readAsDataURL(file);
-          break;
+          reader.readAsDataURL(file)
+          break
         default:
-          onError(`Result type for upload not supported: ${props.resultType}`);
+          onError(`Result type for upload not supported: ${props.resultType}`)
       }
-    };
+    }
     const loadTextFromFile = async (ev: any) => {
-      emit("beforeUpload");
-      const files: File[] = Array.from(ev.target.files);
+      emit('beforeUpload')
+      const files: File[] = Array.from(ev.target.files)
       if (props.multiple) {
-        const promises = [];
+        const promises = []
         for (const file of files) {
           promises.push(
             new Promise((resolve) => {
               handleSingleUploadedFile(
                 file,
                 (uploadedFile) => {
-                  resolve(uploadedFile);
+                  resolve(uploadedFile)
                 },
                 (error) => {
-                  warning(error);
+                  warning(error)
                   const result: FileUploadedModel = {
                     success: false,
                     filename: file.name,
                     result: undefined,
-                  };
-                  resolve(result);
+                  }
+                  resolve(result)
                 },
-              );
+              )
             }),
-          );
+          )
         }
 
-        emit("allUploaded", await Promise.all(promises));
+        emit('allUploaded', await Promise.all(promises))
       } else {
         for (const file of files) {
-          handleSingleUploadedFile(
-            file,
-            (uploadedFile) => emit("uploaded", uploadedFile),
-            warning,
-          );
+          handleSingleUploadedFile(file, (uploadedFile) => emit('uploaded', uploadedFile), warning)
         }
       }
-    };
+    }
 
     return {
       uploadField,
       uploadClick,
       loadTextFromFile,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped>
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 </style>

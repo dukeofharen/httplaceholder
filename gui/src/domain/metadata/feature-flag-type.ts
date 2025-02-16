@@ -1,3 +1,3 @@
 export enum FeatureFlagType {
-  Authentication = "Authentication",
+  Authentication = 'Authentication',
 }

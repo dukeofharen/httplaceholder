@@ -14,121 +14,113 @@
         /></span>
       </a>
       <div class="list-group list-group-flush">
-        <SidebarMenuItem
-          v-for="item of menuItems"
-          :key="item.title"
-          :item="item"
-        />
+        <SidebarMenuItem v-for="item of menuItems" :key="item.title" :item="item" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import SidebarMenuItem from "@/components/SidebarMenuItem.vue";
-import { computed, defineComponent } from "vue";
-import router from "@/router";
-import { useUsersStore } from "@/store/users";
-import { useMetadataStore } from "@/store/metadata";
-import { renderDocLink } from "@/utils/doc";
-import { translate } from "@/utils/translate";
+import SidebarMenuItem from '@/components/SidebarMenuItem.vue'
+import { computed, defineComponent } from 'vue'
+import router from '@/router'
+import { useUsersStore } from '@/store/users'
+import { useMetadataStore } from '@/store/metadata'
+import { renderDocLink } from '@/utils/doc'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "Sidebar",
+  name: 'Sidebar',
   components: { SidebarMenuItem },
   setup() {
-    const userStore = useUsersStore();
-    const metadataStore = useMetadataStore();
+    const userStore = useUsersStore()
+    const metadataStore = useMetadataStore()
 
     // Data
     const plainMenuItems = [
       {
-        title: translate("sidebar.requests"),
-        icon: "eye",
-        routeName: "Requests",
+        title: translate('sidebar.requests'),
+        icon: 'eye',
+        routeName: 'Requests',
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: translate("sidebar.stubs"),
-        icon: "code-slash",
-        routeName: "Stubs",
+        title: translate('sidebar.stubs'),
+        icon: 'code-slash',
+        routeName: 'Stubs',
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: translate("sidebar.addStubs"),
-        icon: "plus",
-        routeName: "StubForm",
+        title: translate('sidebar.addStubs'),
+        icon: 'plus',
+        routeName: 'StubForm',
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: translate("sidebar.importStubs"),
-        icon: "arrow-up-short",
-        routeName: "ImportStubs",
+        title: translate('sidebar.importStubs'),
+        icon: 'arrow-up-short',
+        routeName: 'ImportStubs',
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: translate("sidebar.scenarios"),
-        icon: "card-list",
-        routeName: "Scenarios",
+        title: translate('sidebar.scenarios'),
+        icon: 'card-list',
+        routeName: 'Scenarios',
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: translate("sidebar.docs"),
-        icon: "file-earmark-text",
+        title: translate('sidebar.docs'),
+        icon: 'file-earmark-text',
         url: renderDocLink(),
         targetBlank: true,
         onlyShowWhenLoggedInAndAuthEnabled: false,
       },
       {
-        title: translate("sidebar.apiDocs"),
-        icon: "file-earmark-text",
-        url: "/swagger/index.html",
+        title: translate('sidebar.apiDocs'),
+        icon: 'file-earmark-text',
+        url: '/swagger/index.html',
         targetBlank: true,
         onlyShowWhenLoggedInAndAuthEnabled: false,
       },
       {
-        title: translate("sidebar.settings"),
-        icon: "wrench",
-        routeName: "Settings",
+        title: translate('sidebar.settings'),
+        icon: 'wrench',
+        routeName: 'Settings',
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
-        title: translate("sidebar.logOut"),
-        icon: "box-arrow-left",
+        title: translate('sidebar.logOut'),
+        icon: 'box-arrow-left',
         onlyShowWhenLoggedInAndAuthEnabled: true,
         onClick: async () => {
-          userStore.logOut();
-          await router.push({ name: "Login" });
+          userStore.logOut()
+          await router.push({ name: 'Login' })
         },
       },
-    ];
+    ]
 
     // Computed
     const menuItems = computed(() => {
-      const isAuthenticated = userStore.getAuthenticated;
-      const authEnabled = metadataStore.getAuthenticationEnabled;
+      const isAuthenticated = userStore.getAuthenticated
+      const authEnabled = metadataStore.getAuthenticationEnabled
       return plainMenuItems.filter(
         (i) =>
-          (i.onlyShowWhenLoggedInAndAuthEnabled &&
-            isAuthenticated &&
-            authEnabled) ||
-          (i.hideWhenAuthEnabledAndNotLoggedIn &&
-            authEnabled &&
-            isAuthenticated) ||
+          (i.onlyShowWhenLoggedInAndAuthEnabled && isAuthenticated && authEnabled) ||
+          (i.hideWhenAuthEnabledAndNotLoggedIn && authEnabled && isAuthenticated) ||
           (i.hideWhenAuthEnabledAndNotLoggedIn && !authEnabled) ||
           i.onlyShowWhenLoggedInAndAuthEnabled === false,
-      );
-    });
+      )
+    })
 
     return {
       menuItems: menuItems,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss" scoped>
-@import "@/style/bootstrap";
+@import '@/style/bootstrap';
 
 .logo img {
   max-width: 100%;

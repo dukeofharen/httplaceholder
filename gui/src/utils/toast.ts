@@ -1,13 +1,13 @@
-import toastr from "toastr";
+import toastr from 'toastr'
 
 export function success(message: string): void {
-  toastr.success(message);
+  toastr.success(message)
 }
 
 export function warning(message: string): void {
-  toastr.warning(message);
+  toastr.warning(message)
 }
 
 export function error(message: string): void {
-  toastr.error(message);
+  toastr.error(message)
 }

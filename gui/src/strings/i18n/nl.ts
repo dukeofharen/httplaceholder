@@ -1,6 +1,6 @@
 export const translations = {
-  dayJsLocale: "nl",
+  dayJsLocale: 'nl',
   requests: {
-    requests: "Requests",
+    requests: 'Requests',
   },
-};
+}

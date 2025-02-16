@@ -1,13 +1,13 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 
 type HttpState = {
-  numberOfCurrentHttpCalls: number;
-  showLoader: boolean;
-  showLoaderTimeout: any;
-};
+  numberOfCurrentHttpCalls: number
+  showLoader: boolean
+  showLoaderTimeout: any
+}
 
 export const useHttpStore = defineStore({
-  id: "http",
+  id: 'http',
   state: () =>
     ({
       numberOfCurrentHttpCalls: 0,
@@ -19,29 +19,26 @@ export const useHttpStore = defineStore({
   },
   actions: {
     increaseNumberOfCurrentHttpCalls() {
-      this.numberOfCurrentHttpCalls++;
+      this.numberOfCurrentHttpCalls++
       if (this.showLoaderTimeout) {
-        clearTimeout(this.showLoaderTimeout);
+        clearTimeout(this.showLoaderTimeout)
       }
 
       if (!this.showLoader) {
-        this.showLoaderTimeout = setTimeout(
-          () => (this.showLoader = true),
-          200,
-        );
+        this.showLoaderTimeout = setTimeout(() => (this.showLoader = true), 200)
       }
     },
     decreaseNumberOfCurrentHttpCalls() {
       if (this.numberOfCurrentHttpCalls !== 0) {
-        this.numberOfCurrentHttpCalls--;
+        this.numberOfCurrentHttpCalls--
       }
 
       if (this.numberOfCurrentHttpCalls <= 0) {
-        this.showLoader = false;
+        this.showLoader = false
         if (this.showLoaderTimeout) {
-          clearTimeout(this.showLoaderTimeout);
+          clearTimeout(this.showLoaderTimeout)
         }
       }
     },
   },
-});
+})

@@ -10,24 +10,24 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
-import { useHttpStore } from "@/store/http";
-import { useGeneralStore } from "@/store/general";
+import { computed, defineComponent } from 'vue'
+import { useHttpStore } from '@/store/http'
+import { useGeneralStore } from '@/store/general'
 
 export default defineComponent({
-  name: "Loading",
+  name: 'Loading',
   setup() {
-    const httpStore = useHttpStore();
-    const generalStore = useGeneralStore();
+    const httpStore = useHttpStore()
+    const generalStore = useGeneralStore()
 
     // Computed
     const showLoading = computed(
       () => generalStore.shouldShowLoader || httpStore.isExecutingHttpCalls,
-    );
+    )
 
-    return { showLoading };
+    return { showLoading }
   },
-});
+})
 </script>
 
 <style scoped>

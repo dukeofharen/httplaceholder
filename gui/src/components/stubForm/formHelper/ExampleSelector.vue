@@ -19,66 +19,66 @@
   </div>
   <div class="mt-3">
     <button class="btn btn-primary" @click="preInsert" :disabled="!example">
-      {{ $translate("general.insert") }}
+      {{ $translate('general.insert') }}
     </button>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import { getExamples } from "@/utils/examples";
-import { useStubFormStore } from "@/store/stubForm";
-import type { ExampleModel } from "@/domain/example-model";
-import { translate } from "@/utils/translate";
+import { computed, defineComponent, ref } from 'vue'
+import { getExamples } from '@/utils/examples'
+import { useStubFormStore } from '@/store/stubForm'
+import type { ExampleModel } from '@/domain/example-model'
+import { translate } from '@/utils/translate'
 
 export default defineComponent({
-  name: "ExampleSelector",
+  name: 'ExampleSelector',
   setup() {
-    const stubFormStore = useStubFormStore();
+    const stubFormStore = useStubFormStore()
 
     // Data
-    const selectedExample = ref("");
-    const showWarningModal = ref(false);
+    const selectedExample = ref('')
+    const showWarningModal = ref(false)
 
     // Computed
     const examples = computed(() => {
-      const examplesResult = getExamples();
+      const examplesResult = getExamples()
       examplesResult.unshift({
-        stub: "",
-        title: translate("stubForm.selectExample"),
-        description: "",
-        id: "",
-      });
-      return examplesResult;
-    });
+        stub: '',
+        title: translate('stubForm.selectExample'),
+        description: '',
+        id: '',
+      })
+      return examplesResult
+    })
     const example = computed<ExampleModel | undefined>(() => {
       if (!selectedExample.value) {
-        return undefined;
+        return undefined
       }
 
-      return examples.value.find((e) => e.id === selectedExample.value);
-    });
+      return examples.value.find((e) => e.id === selectedExample.value)
+    })
 
     // Methods
     const preInsert = () => {
       if (!example.value) {
-        return;
+        return
       }
 
       if (stubFormStore.getFormIsDirty) {
-        showWarningModal.value = true;
+        showWarningModal.value = true
       } else {
-        insert();
+        insert()
       }
-    };
+    }
     const insert = () => {
       if (!example.value) {
-        return;
+        return
       }
 
-      stubFormStore.setInput(example.value.stub);
-      stubFormStore.closeFormHelper();
-    };
+      stubFormStore.setInput(example.value.stub)
+      stubFormStore.closeFormHelper()
+    }
 
     return {
       insert,
@@ -87,9 +87,9 @@ export default defineComponent({
       selectedExample,
       example,
       showWarningModal,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped></style>

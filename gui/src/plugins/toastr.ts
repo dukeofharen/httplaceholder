@@ -1,2 +1,2 @@
-import "toastr/build/toastr.css";
-import "./toastr/style.scss";
+import 'toastr/build/toastr.css'
+import './toastr/style.scss'

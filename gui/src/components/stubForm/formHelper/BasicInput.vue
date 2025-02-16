@@ -19,15 +19,15 @@
         ref="fieldRef"
       />
       <button class="btn btn-success mt-2" @click="insert">
-        {{ buttonText ?? $translate("stubForm.insertIntoStub") }}
+        {{ buttonText ?? $translate('stubForm.insertIntoStub') }}
       </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
-import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent, onMounted, ref } from 'vue'
+import { useStubFormStore } from '@/store/stubForm'
 
 export default defineComponent({
   props: {
@@ -47,43 +47,43 @@ export default defineComponent({
     },
     inputType: {
       type: String,
-      default: "text",
+      default: 'text',
       validator(value: string) {
-        return ["text", "numeric"].includes(value);
+        return ['text', 'numeric'].includes(value)
       },
     },
   },
   setup(props) {
-    const stubFormStore = useStubFormStore();
+    const stubFormStore = useStubFormStore()
 
     // Data
-    const value = ref("");
-    const fieldRef = ref<HTMLFormElement>();
+    const value = ref('')
+    const fieldRef = ref<HTMLFormElement>()
 
     // Methods
     const insert = () => {
       if (props.valueSetter) {
-        props.valueSetter(value.value);
+        props.valueSetter(value.value)
       }
-      stubFormStore.closeFormHelper();
-    };
+      stubFormStore.closeFormHelper()
+    }
 
     // Lifecycle
     onMounted(() => {
       if (props.valueGetter) {
-        value.value = props.valueGetter();
+        value.value = props.valueGetter()
       }
 
-      fieldRef.value?.focus();
-    });
+      fieldRef.value?.focus()
+    })
 
     return {
       value,
       insert,
       fieldRef,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped></style>

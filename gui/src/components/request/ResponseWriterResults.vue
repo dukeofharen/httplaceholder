@@ -1,8 +1,6 @@
 <template>
   <accordion-item>
-    <template v-slot:button-text>{{
-      $translate("request.responseWriterResults")
-    }}</template>
+    <template v-slot:button-text>{{ $translate('request.responseWriterResults') }}</template>
     <template v-slot:accordion-body>
       <ul class="list-group">
         <li
@@ -19,11 +17,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, type PropType } from "vue";
-import type { StubResponseWriterResultModel } from "@/domain/request/stub-response-writer-result-model";
+import { defineComponent, type PropType } from 'vue'
+import type { StubResponseWriterResultModel } from '@/domain/request/stub-response-writer-result-model'
 
 export default defineComponent({
-  name: "ResponseWriterResults",
+  name: 'ResponseWriterResults',
   props: {
     correlationId: {
       type: String,
@@ -34,7 +32,7 @@ export default defineComponent({
       required: true,
     },
   },
-});
+})
 </script>
 
 <style scoped>

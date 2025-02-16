@@ -2,13 +2,13 @@
   <div class="mt-3 mb-3">
     <select class="form-select" v-model="exportType">
       <option :value="RequestExportType.NotSet">
-        {{ $translate("request.selectExportFormat") }}
+        {{ $translate('request.selectExportFormat') }}
       </option>
       <option :value="RequestExportType.Curl">
-        {{ $translate("request.curl") }}
+        {{ $translate('request.curl') }}
       </option>
       <option v-if="request.hasResponse" :value="RequestExportType.Har">
-        {{ $translate("request.har") }}
+        {{ $translate('request.har') }}
       </option>
     </select>
     <div v-if="showExportResult" class="code-copy-wrapper mt-2">
@@ -20,11 +20,7 @@
             @click="copy"
           ></i>
         </div>
-        <code-highlight
-          class="m-0"
-          :language="language"
-          :code="exportResult"
-        ></code-highlight>
+        <code-highlight class="m-0" :language="language" :code="exportResult"></code-highlight>
       </template>
       <template v-else>
         <button
@@ -32,7 +28,7 @@
           @click="download"
           :title="$translate('request.downloadExportedRequest')"
         >
-          {{ $translate("general.download") }}
+          {{ $translate('general.download') }}
         </button>
       </template>
     </div>
@@ -40,13 +36,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, type PropType, ref, watch } from "vue";
-import { RequestExportType } from "@/domain/request/enums/request-export-type";
-import { useExportStore } from "@/store/export";
-import { handleHttpError } from "@/utils/error";
-import { copyTextToClipboard } from "@/utils/clipboard";
-import { type RequestResultModel } from "@/domain/request/request-result-model";
-import { downloadBlob } from "@/utils/download";
+import { computed, defineComponent, type PropType, ref, watch } from 'vue'
+import { RequestExportType } from '@/domain/request/enums/request-export-type'
+import { useExportStore } from '@/store/export'
+import { handleHttpError } from '@/utils/error'
+import { copyTextToClipboard } from '@/utils/clipboard'
+import { type RequestResultModel } from '@/domain/request/request-result-model'
+import { downloadBlob } from '@/utils/download'
 
 export default defineComponent({
   props: {
@@ -56,42 +52,40 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const exportStore = useExportStore();
+    const exportStore = useExportStore()
 
     // Data
-    const exportType = ref(RequestExportType.NotSet);
-    const exportResult = ref("");
+    const exportType = ref(RequestExportType.NotSet)
+    const exportResult = ref('')
 
     // Computed
     const language = computed(() => {
       switch (exportType.value) {
         case RequestExportType.Curl:
-          return "bash";
+          return 'bash'
         default:
-          return "plaintext";
+          return 'plaintext'
       }
-    });
+    })
     const showExportResult = computed(() => {
-      return (
-        exportType.value !== RequestExportType.NotSet && !!exportResult.value
-      );
-    });
+      return exportType.value !== RequestExportType.NotSet && !!exportResult.value
+    })
     const showExportResultText = computed(() => {
       switch (exportType.value) {
         case RequestExportType.Curl:
-          return true;
+          return true
         default:
-          return false;
+          return false
       }
-    });
+    })
     const exportFilename = computed(() => {
       switch (exportType.value) {
         case RequestExportType.Har:
-          return `har-${props.request.correlationId}.json`;
+          return `har-${props.request.correlationId}.json`
         default:
-          return "file.bin";
+          return 'file.bin'
       }
-    });
+    })
 
     // Methods
     const exportRequest = async () => {
@@ -99,28 +93,28 @@ export default defineComponent({
         const result = await exportStore.exportRequest(
           props.request.correlationId,
           exportType.value,
-        );
-        exportResult.value = result.result;
+        )
+        exportResult.value = result.result
       } catch (e) {
-        handleHttpError(e);
+        handleHttpError(e)
       }
-    };
+    }
     const copy = async () => {
       if (exportResult.value) {
-        await copyTextToClipboard(exportResult.value);
+        await copyTextToClipboard(exportResult.value)
       }
-    };
+    }
     const download = async () => {
-      downloadBlob(exportFilename.value, exportResult.value);
-    };
+      downloadBlob(exportFilename.value, exportResult.value)
+    }
 
     // Watches
     watch(exportType, async (newType) => {
       if (newType !== RequestExportType.NotSet) {
-        exportResult.value = "";
-        await exportRequest();
+        exportResult.value = ''
+        await exportRequest()
       }
-    });
+    })
 
     return {
       RequestExportType,
@@ -131,9 +125,9 @@ export default defineComponent({
       copy,
       showExportResultText,
       download,
-    };
+    }
   },
-});
+})
 </script>
 
 <style scoped lang="scss">

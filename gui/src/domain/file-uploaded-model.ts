@@ -1,5 +1,5 @@
 export interface FileUploadedModel {
-  success: boolean;
-  filename: string;
-  result: any;
+  success: boolean
+  filename: string
+  result: any
 }

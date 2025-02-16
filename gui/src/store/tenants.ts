@@ -1,15 +1,15 @@
-import { defineStore } from "pinia";
-import { get } from "@/utils/api";
+import { defineStore } from 'pinia'
+import { get } from '@/utils/api'
 
 export const useTenantsStore = defineStore({
-  id: "tenants",
+  id: 'tenants',
   state: () => ({}),
   getters: {},
   actions: {
     getTenantNames(): Promise<string[]> {
-      return get("/ph-api/tenants")
+      return get('/ph-api/tenants')
         .then((response) => Promise.resolve(response))
-        .catch((error) => Promise.reject(error));
+        .catch((error) => Promise.reject(error))
     },
   },
-});
+})

@@ -1,5 +1,5 @@
 // Required
-@import "bootstrap/scss/functions";
+@import 'bootstrap/scss/functions';
 
 // Default variable overrides
 $body-bg: #fff;
@@ -7,20 +7,20 @@ $body-color: #111;
 $accordion-button-active-color: initial;
 
 // Required
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/mixins";
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins';
 
 // Custom color definitions
 $theme-colors: (
-        "primary":    $primary,
-        "secondary":  $gray-500,
-        "success":    $green-700,
-        "info":       $info,
-        "warning":    $warning,
-        "danger":     $red-700,
-        "light":      $light,
-        "dark":       $dark
+  'primary': $primary,
+  'secondary': $gray-500,
+  'success': $green-700,
+  'info': $info,
+  'warning': $warning,
+  'danger': $red-700,
+  'light': $light,
+  'dark': $dark,
 );
 
 // Other imports
-@import "bootstrap/scss/bootstrap";
+@import 'bootstrap/scss/bootstrap';

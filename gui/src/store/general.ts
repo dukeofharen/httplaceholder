@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia'
 
 type GeneralState = {
-  showLoader: boolean;
-};
+  showLoader: boolean
+}
 export const useGeneralStore = defineStore({
-  id: "general",
+  id: 'general',
   state: () =>
     ({
       showLoader: false,
@@ -14,10 +14,10 @@ export const useGeneralStore = defineStore({
   },
   actions: {
     doShowLoader() {
-      this.showLoader = true;
+      this.showLoader = true
     },
     doHideLoader() {
-      this.showLoader = false;
+      this.showLoader = false
     },
   },
-});
+})

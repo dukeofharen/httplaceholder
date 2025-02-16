@@ -21,11 +21,11 @@
 </template>
 
 <script lang="ts">
-import { ref, watch } from "vue";
-import { defineComponent } from "vue";
+import { ref, watch } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "AccordionItem",
+  name: 'AccordionItem',
   props: {
     opened: {
       type: null,
@@ -34,32 +34,32 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // Data
-    const openedValue = ref(props.opened);
+    const openedValue = ref(props.opened)
 
     // Methods
     const toggle = () => {
       if (props.opened !== null) {
-        emit("buttonClicked");
+        emit('buttonClicked')
       } else {
         if (openedValue.value === null) {
-          openedValue.value = true;
-          emit("opened");
+          openedValue.value = true
+          emit('opened')
         } else {
-          openedValue.value = !openedValue.value;
+          openedValue.value = !openedValue.value
           if (openedValue.value) {
-            emit("opened");
+            emit('opened')
           } else {
-            emit("closed");
+            emit('closed')
           }
         }
       }
-    };
+    }
 
-    watch(props, (newProps) => (openedValue.value = newProps.opened));
+    watch(props, (newProps) => (openedValue.value = newProps.opened))
 
-    return { openedValue, toggle };
+    return { openedValue, toggle }
   },
-});
+})
 </script>
 
 <style scoped>

@@ -1,1 +1,80 @@
-[{"title":"1. Simple GET","description":"Stub for simple GET that expects a certain path and query parameters and returns JSON.","stub":"id: simple-get\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /users\n    query:\n      id:\n        equals: 12\n      filter:\n        equals: first_name\nresponse:\n  statusCode: 200\n  json: |\n    {\n      \"first_name\": \"John\"\n    }\n","id":"01-get"},{"title":"2. Simple POST + body checking with regular expressions","description":"Stub with a simple request body check with regular expressions.","stub":"id: simple-post\nconditions:\n  method: POST\n  url:\n    path:\n      contains: users\n  body:\n    - contains: username\n    - contains: john\n  headers:\n    X-Api-Key: 123abc\n    X-Another-Secret: \\b72354deg\\b\nresponse:\n  statusCode: 200\n  text: '{\"result\": true}'\n  headers:\n    Content-Type: application/json\n","id":"02-post"},{"title":"3.1. Check JSON request body","description":"Stub for checking JSON body.","stub":"id: json-object\nconditions:\n  method: POST\n  json:\n    username: ^username$\n    subObject:\n      strValue: stringInput\n      boolValue: true\n      doubleValue: 1.23\nresponse:\n  text: JSON check successful!\n","id":"03.1-json"},{"title":"3.2. Check JSON request body with JSONPath","description":"Stub for checking JSON body with JSONPath.","stub":"id: json-object\nconditions:\n  method: POST\n  jsonPath:\n    - \"$.phoneNumbers[?(@.type=='iPhone')]\"\nresponse:\n  text: JSONPath check successful!\n","id":"03.2-jsonpath"},{"title":"4. Base64 file","description":"Stub that returns a base64 encoded file as response","stub":"id: base64\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /base64\nresponse:\n  contentType: text/plain\n  base64: UW1GelpUWTBJR052Ym5SbGJuUnpDZz09\n","id":"04-base64"},{"title":"5. Slow response","description":"A stub with a response that is purposefully made slower, to simulate a slow server or slow connection.","stub":"id: slow\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /slooooow\nresponse:\n  json: |\n    {\n      \"first_name\": \"John\"\n    }\n  extraDuration: 10000\n","id":"05-slow-response"},{"title":"6. Temporary redirect","description":"A stub that performs a temporary redirect as response.","stub":"id: temp-redirect\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /temp-redirect\nresponse:\n  temporaryRedirect: https://google.com\n","id":"06-redirect"},{"title":"7. Stub priority","description":"An example of setting priority on a stub. The higher the number, the higher the priority if multiple stubs are found.","stub":"- id: fallback\n  priority: -10\n  conditions:\n    method: GET\n  response:\n    statusCode: 200\n    text: OK-Fallback\n\n- id: not-fallback\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /not-fallback\n  response:\n    statusCode: 200\n    text: OK\n","id":"07-priority"},{"title":"8. Dynamic mode (variables in responses)","description":"An example of how you can add variables to response body and headers.","stub":"id: dynamic-mode\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode.txt\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Header: ((query:query_parameter))\n  text: |\n    Random UUID: ((uuid))\n    Current date / time: ((localnow:yyyy-MM-dd HH:mm:ss))\n","id":"08-dynamic-mode"},{"title":"9. Image","description":"An example where the stub returns a generated image in the response.","stub":"id: image-jpeg\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /stub-image.jpg\nresponse:\n  image:\n    type: jpeg\n    width: 1024\n    height: 256\n    backgroundColor: '#f700ff'\n    text: Test image JPEG!\n    fontSize: 7\n    jpegQuality: 80\n    wordWrap: false\n","id":"09-image"},{"title":"10. Reverse proxy","description":"An example where HttPlaceholder can be used as reverse proxy.","stub":"id: reverse-proxy\nconditions:\n  url:\n    path:\n      equals: /cat-facts\nresponse:\n  reverseProxy:\n    url: https://www.catfacts.net/api/\n    appendQueryString: true\n    appendPath: true\n    replaceRootUrl: true\npriority: 0\nenabled: true\n","id":"10-reverse-proxy"},{"title":"11.1. Scenarios: hit counter","description":"An example of a stub in a scenario. Everytime the stub in the scenario is hit, the scenario hit count is increased. If the scenario hit count is too high, another stub will be hit that resets the count.","stub":"- id: min-hits\n  tenant: 20.1-scenario-hit-counter\n  scenario: min\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /min-hits\n  response:\n    text: OK, number of hits increased\n\n- id: min-hits-clear\n  tenant: 20.1-scenario-hit-counter\n  scenario: min\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /min-hits\n    scenario:\n      minHits: 3\n  response:\n    text: OK, min hits reached. Clearing state.\n    scenario:\n      clearState: true\n","id":"11.1-scenario-hit-counter"},{"title":"11.2. Scenarios: state checking","description":"An example of a stub in a scenario. Stub will be put in another state on every hit. If 'scenario-state-3' is hit, state will be reset to original state.","stub":"- id: scenario-state-1\n  tenant: 20.2-state-checking\n  scenario: scenario-state\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /state-check\n    scenario:\n      scenarioState: Start\n  response:\n    text: OK, scenario is in state 'Start'\n    scenario:\n      setScenarioState: state-2\n\n- id: scenario-state-2\n  tenant: 20.2-state-checking\n  scenario: scenario-state\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /state-check\n    scenario:\n      scenarioState: state-2\n  response:\n    text: OK, scenario is in state 'state-2'\n    scenario:\n      setScenarioState: state-3\n\n- id: scenario-state-3\n  tenant: 20.2-state-checking\n  scenario: scenario-state\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /state-check\n    scenario:\n      scenarioState: state-3\n  response:\n    text: OK, scenario is in state 'state-3' and will be reset to its original values\n    scenario:\n      clearState: true\n","id":"11.2-scenario-hit-counter"}]
+[
+  {
+    "title": "1. Simple GET",
+    "description": "Stub for simple GET that expects a certain path and query parameters and returns JSON.",
+    "stub": "id: simple-get\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /users\n    query:\n      id:\n        equals: 12\n      filter:\n        equals: first_name\nresponse:\n  statusCode: 200\n  json: |\n    {\n      \"first_name\": \"John\"\n    }\n",
+    "id": "01-get"
+  },
+  {
+    "title": "2. Simple POST + body checking with regular expressions",
+    "description": "Stub with a simple request body check with regular expressions.",
+    "stub": "id: simple-post\nconditions:\n  method: POST\n  url:\n    path:\n      contains: users\n  body:\n    - contains: username\n    - contains: john\n  headers:\n    X-Api-Key: 123abc\n    X-Another-Secret: \\b72354deg\\b\nresponse:\n  statusCode: 200\n  text: '{\"result\": true}'\n  headers:\n    Content-Type: application/json\n",
+    "id": "02-post"
+  },
+  {
+    "title": "3.1. Check JSON request body",
+    "description": "Stub for checking JSON body.",
+    "stub": "id: json-object\nconditions:\n  method: POST\n  json:\n    username: ^username$\n    subObject:\n      strValue: stringInput\n      boolValue: true\n      doubleValue: 1.23\nresponse:\n  text: JSON check successful!\n",
+    "id": "03.1-json"
+  },
+  {
+    "title": "3.2. Check JSON request body with JSONPath",
+    "description": "Stub for checking JSON body with JSONPath.",
+    "stub": "id: json-object\nconditions:\n  method: POST\n  jsonPath:\n    - \"$.phoneNumbers[?(@.type=='iPhone')]\"\nresponse:\n  text: JSONPath check successful!\n",
+    "id": "03.2-jsonpath"
+  },
+  {
+    "title": "4. Base64 file",
+    "description": "Stub that returns a base64 encoded file as response",
+    "stub": "id: base64\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /base64\nresponse:\n  contentType: text/plain\n  base64: UW1GelpUWTBJR052Ym5SbGJuUnpDZz09\n",
+    "id": "04-base64"
+  },
+  {
+    "title": "5. Slow response",
+    "description": "A stub with a response that is purposefully made slower, to simulate a slow server or slow connection.",
+    "stub": "id: slow\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /slooooow\nresponse:\n  json: |\n    {\n      \"first_name\": \"John\"\n    }\n  extraDuration: 10000\n",
+    "id": "05-slow-response"
+  },
+  {
+    "title": "6. Temporary redirect",
+    "description": "A stub that performs a temporary redirect as response.",
+    "stub": "id: temp-redirect\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /temp-redirect\nresponse:\n  temporaryRedirect: https://google.com\n",
+    "id": "06-redirect"
+  },
+  {
+    "title": "7. Stub priority",
+    "description": "An example of setting priority on a stub. The higher the number, the higher the priority if multiple stubs are found.",
+    "stub": "- id: fallback\n  priority: -10\n  conditions:\n    method: GET\n  response:\n    statusCode: 200\n    text: OK-Fallback\n\n- id: not-fallback\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /not-fallback\n  response:\n    statusCode: 200\n    text: OK\n",
+    "id": "07-priority"
+  },
+  {
+    "title": "8. Dynamic mode (variables in responses)",
+    "description": "An example of how you can add variables to response body and headers.",
+    "stub": "id: dynamic-mode\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode.txt\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Header: ((query:query_parameter))\n  text: |\n    Random UUID: ((uuid))\n    Current date / time: ((localnow:yyyy-MM-dd HH:mm:ss))\n",
+    "id": "08-dynamic-mode"
+  },
+  {
+    "title": "9. Image",
+    "description": "An example where the stub returns a generated image in the response.",
+    "stub": "id: image-jpeg\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /stub-image.jpg\nresponse:\n  image:\n    type: jpeg\n    width: 1024\n    height: 256\n    backgroundColor: '#f700ff'\n    text: Test image JPEG!\n    fontSize: 7\n    jpegQuality: 80\n    wordWrap: false\n",
+    "id": "09-image"
+  },
+  {
+    "title": "10. Reverse proxy",
+    "description": "An example where HttPlaceholder can be used as reverse proxy.",
+    "stub": "id: reverse-proxy\nconditions:\n  url:\n    path:\n      equals: /cat-facts\nresponse:\n  reverseProxy:\n    url: https://www.catfacts.net/api/\n    appendQueryString: true\n    appendPath: true\n    replaceRootUrl: true\npriority: 0\nenabled: true\n",
+    "id": "10-reverse-proxy"
+  },
+  {
+    "title": "11.1. Scenarios: hit counter",
+    "description": "An example of a stub in a scenario. Everytime the stub in the scenario is hit, the scenario hit count is increased. If the scenario hit count is too high, another stub will be hit that resets the count.",
+    "stub": "- id: min-hits\n  tenant: 20.1-scenario-hit-counter\n  scenario: min\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /min-hits\n  response:\n    text: OK, number of hits increased\n\n- id: min-hits-clear\n  tenant: 20.1-scenario-hit-counter\n  scenario: min\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /min-hits\n    scenario:\n      minHits: 3\n  response:\n    text: OK, min hits reached. Clearing state.\n    scenario:\n      clearState: true\n",
+    "id": "11.1-scenario-hit-counter"
+  },
+  {
+    "title": "11.2. Scenarios: state checking",
+    "description": "An example of a stub in a scenario. Stub will be put in another state on every hit. If 'scenario-state-3' is hit, state will be reset to original state.",
+    "stub": "- id: scenario-state-1\n  tenant: 20.2-state-checking\n  scenario: scenario-state\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /state-check\n    scenario:\n      scenarioState: Start\n  response:\n    text: OK, scenario is in state 'Start'\n    scenario:\n      setScenarioState: state-2\n\n- id: scenario-state-2\n  tenant: 20.2-state-checking\n  scenario: scenario-state\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /state-check\n    scenario:\n      scenarioState: state-2\n  response:\n    text: OK, scenario is in state 'state-2'\n    scenario:\n      setScenarioState: state-3\n\n- id: scenario-state-3\n  tenant: 20.2-state-checking\n  scenario: scenario-state\n  conditions:\n    method: GET\n    url:\n      path:\n        equals: /state-check\n    scenario:\n      scenarioState: state-3\n  response:\n    text: OK, scenario is in state 'state-3' and will be reset to its original values\n    scenario:\n      clearState: true\n",
+    "id": "11.2-scenario-hit-counter"
+  }
+]

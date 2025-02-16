@@ -8,42 +8,42 @@
 </template>
 
 <script lang="ts">
-import { ref, watch } from "vue";
-import { defineComponent } from "vue";
+import { ref, watch } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: "SimpleEditor",
+  name: 'SimpleEditor',
   props: {
     modelValue: {
       type: String,
-      default: "",
+      default: '',
     },
   },
   setup(props, { emit }) {
     // Data
-    const contents = ref(props.modelValue);
+    const contents = ref(props.modelValue)
 
     // Methods
     const simpleEditorTabPress = (e: KeyboardEvent) => {
-      if (e.key === "Tab") {
-        e.preventDefault();
-        const textarea = e.target as HTMLTextAreaElement;
+      if (e.key === 'Tab') {
+        e.preventDefault()
+        const textarea = e.target as HTMLTextAreaElement
         if (textarea) {
-          const [start, end] = [textarea.selectionStart, textarea.selectionEnd];
-          textarea.setRangeText("  ", start, end, "end");
+          const [start, end] = [textarea.selectionStart, textarea.selectionEnd]
+          textarea.setRangeText('  ', start, end, 'end')
         }
       }
-    };
+    }
     const contentsChanged = () => {
-      setTimeout(() => emit("update:modelValue", contents.value), 10);
-    };
+      setTimeout(() => emit('update:modelValue', contents.value), 10)
+    }
 
     // Watch
-    watch(props, (newProps) => (contents.value = newProps.modelValue));
+    watch(props, (newProps) => (contents.value = newProps.modelValue))
 
-    return { contents, simpleEditorTabPress, contentsChanged };
+    return { contents, simpleEditorTabPress, contentsChanged }
   },
-});
+})
 </script>
 
 <style scoped>
