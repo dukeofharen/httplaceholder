@@ -105,14 +105,15 @@ img {
 }
 
 .pdf-viewer {
+  min-height: 500px;
+  max-height: 1000px;
+  overflow-x: scroll;
+
   @include media-breakpoint-down(lg) {
     width: 100%;
   }
   @include media-breakpoint-up(xl) {
     width: 50%;
   }
-  min-height: 500px;
-  max-height: 1000px;
-  overflow-x: scroll;
 }
 </style>
