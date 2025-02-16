@@ -13,14 +13,6 @@
       "cwd": "${workspaceFolder}/gui"
     },
     {
-      "name": "HttPlaceholder: run new UI",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
-      "cwd": "${workspaceFolder}/gui2"
-    },
-    {
       "name": "HttPlaceholder: generate Swagger file",
       "type": "coreclr",
       "request": "launch",
