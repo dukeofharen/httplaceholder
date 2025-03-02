@@ -15,8 +15,8 @@
 </template>
 
 <script lang="ts">
-import Sidebar from '@/components/SidebarComponent.vue'
-import Loading from '@/components/LoadingComponent.vue'
+import Sidebar from '@/components/Sidebar.vue'
+import Loading from '@/components/Loading.vue'
 import { computed, defineComponent, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUsersStore } from '@/store/users'
