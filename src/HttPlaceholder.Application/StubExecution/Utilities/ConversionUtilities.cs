@@ -23,10 +23,10 @@ public static class ConversionUtilities
         {
             // Input can be: JObject (if in cache), Dictionary<object, object> (if added just now)
             case Dictionary<object, object> dictionary:
-            {
-                var intermediateJson = JsonConvert.SerializeObject(dictionary);
-                return JsonConvert.DeserializeObject<T>(intermediateJson);
-            }
+                {
+                    var intermediateJson = JsonConvert.SerializeObject(dictionary);
+                    return JsonConvert.DeserializeObject<T>(intermediateJson);
+                }
             case JObject jObject:
                 return jObject.ToObject<T>();
             case T model:

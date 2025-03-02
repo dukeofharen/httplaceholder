@@ -54,7 +54,8 @@ internal class StubContext(
             result.AddRange((await source.GetStubsOverviewAsync(stubRequestContext.DistributionKey, cancellationToken))
                 .Select(s => new FullStubOverviewModel
                 {
-                    Stub = s.Stub, Metadata = MapMetadata(stubSourceIsReadOnly, s.Metadata)
+                    Stub = s.Stub,
+                    Metadata = MapMetadata(stubSourceIsReadOnly, s.Metadata)
                 }));
         }
 
@@ -452,7 +453,8 @@ internal class StubContext(
             var stubs = await source.GetStubsAsync(stubRequestContext.DistributionKey, cancellationToken);
             var fullStubModels = stubs.Select(s => new FullStubModel
             {
-                Stub = s.Stub, Metadata = MapMetadata(stubSourceIsReadOnly, s.Metadata)
+                Stub = s.Stub,
+                Metadata = MapMetadata(stubSourceIsReadOnly, s.Metadata)
             });
             result.AddRange(fullStubModels);
         }

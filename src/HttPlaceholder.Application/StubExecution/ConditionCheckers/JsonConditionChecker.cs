@@ -113,9 +113,9 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
         var tempListLogging = new List<string>();
         var passedConditionCount =
             (from configuredObj in list
-                from obj in objList
-                where CheckSubmittedJson(configuredObj, obj, tempListLogging)
-                select configuredObj).Count();
+             from obj in objList
+             where CheckSubmittedJson(configuredObj, obj, tempListLogging)
+             select configuredObj).Count();
         var passed = passedConditionCount == objList.Count;
         if (!passed)
         {
@@ -206,16 +206,16 @@ public class JsonConditionChecker(IHttpContextService httpContextService) : Base
                 // Input is already OK, return it directly.
                 return conditions;
             case JArray jArray:
-            {
-                var list = jArray.ToObject<List<object>>();
-                return list.Select(ConvertJsonConditions).ToList();
-            }
+                {
+                    var list = jArray.ToObject<List<object>>();
+                    return list.Select(ConvertJsonConditions).ToList();
+                }
             case JObject jObject:
-            {
-                var dict = jObject.ToObject<Dictionary<object, object>>();
-                return dict.ToDictionary<KeyValuePair<object, object>, object, object>(pair => pair.Key.ToString(),
-                    pair => ConvertJsonConditions(pair.Value));
-            }
+                {
+                    var dict = jObject.ToObject<Dictionary<object, object>>();
+                    return dict.ToDictionary<KeyValuePair<object, object>, object, object>(pair => pair.Key.ToString(),
+                        pair => ConvertJsonConditions(pair.Value));
+                }
             default:
                 return conditions.ToString();
         }

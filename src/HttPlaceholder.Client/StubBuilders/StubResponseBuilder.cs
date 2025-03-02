@@ -409,7 +409,9 @@ public sealed class StubResponseBuilder
         EnsureReplaceDtos();
         AddResponseReplaceDto(new StubResponseReplaceDto
         {
-            Text = textToLookFor, ReplaceWith = replaceWith, IgnoreCase = ignoreCase
+            Text = textToLookFor,
+            ReplaceWith = replaceWith,
+            IgnoreCase = ignoreCase
         });
         return this;
     }

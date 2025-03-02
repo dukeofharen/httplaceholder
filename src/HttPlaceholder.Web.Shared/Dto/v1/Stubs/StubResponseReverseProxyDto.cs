@@ -1,4 +1,4 @@
-using HttPlaceholder.Application.Infrastructure.AutoMapper;
+﻿using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
 

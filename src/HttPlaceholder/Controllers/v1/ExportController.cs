@@ -27,6 +27,7 @@ public class ExportController : BaseApiController
         [FromQuery] RequestExportType type) =>
         Ok(new RequestExportResultDto
         {
-            RequestExportType = type, Result = await Send(new ExportRequestQuery(requestId, type))
+            RequestExportType = type,
+            Result = await Send(new ExportRequestQuery(requestId, type))
         });
 }

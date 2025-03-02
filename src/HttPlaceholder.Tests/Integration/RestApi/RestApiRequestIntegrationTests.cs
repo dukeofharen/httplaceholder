@@ -41,7 +41,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
         {
             StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel
             {
-                CorrelationId = Guid.NewGuid().ToString(), RequestEndTime = DateTime.Now
+                CorrelationId = Guid.NewGuid().ToString(),
+                RequestEndTime = DateTime.Now
             });
         }
 
@@ -164,7 +165,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
         {
             StubSource.GetCollection(null).RequestResultModels.Add(new RequestResultModel
             {
-                CorrelationId = Guid.NewGuid().ToString(), RequestEndTime = DateTime.Now
+                CorrelationId = Guid.NewGuid().ToString(),
+                RequestEndTime = DateTime.Now
             });
         }
 

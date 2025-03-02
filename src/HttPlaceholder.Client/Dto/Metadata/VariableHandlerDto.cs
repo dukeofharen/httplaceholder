@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Client.Dto.Metadata;
+﻿namespace HttPlaceholder.Client.Dto.Metadata;
 
 /// <summary>
 ///     A model that is used for displaying what types of variable handlers are available.

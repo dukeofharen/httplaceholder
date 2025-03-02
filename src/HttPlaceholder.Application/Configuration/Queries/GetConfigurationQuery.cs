@@ -35,14 +35,14 @@ public class GetConfigurationQueryHandler : IRequestHandler<GetConfigurationQuer
         GetConfigurationQuery request,
         CancellationToken cancellationToken) =>
         (from item in ConfigKeys.GetConfigMetadata()
-            let configItem =
-                _configuration.AsEnumerable()
-                    .FirstOrDefault(i => string.Equals(item.Path, i.Key, StringComparison.OrdinalIgnoreCase))
-            where configItem.Value != null
-            select new ConfigurationModel(
-                item.Key,
-                item.Path,
-                item.Description,
-                item.ConfigKeyType,
-                item.IsSecretValue == true ? "***" : configItem.Value)).AsTask();
+         let configItem =
+             _configuration.AsEnumerable()
+                 .FirstOrDefault(i => string.Equals(item.Path, i.Key, StringComparison.OrdinalIgnoreCase))
+         where configItem.Value != null
+         select new ConfigurationModel(
+             item.Key,
+             item.Path,
+             item.Description,
+             item.ConfigKeyType,
+             item.IsSecretValue == true ? "***" : configItem.Value)).AsTask();
 }

@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Client.Dto.Stubs;
+﻿namespace HttPlaceholder.Client.Dto.Stubs;
 
 /// <summary>
 ///     A model for storing reverse proxy settings.

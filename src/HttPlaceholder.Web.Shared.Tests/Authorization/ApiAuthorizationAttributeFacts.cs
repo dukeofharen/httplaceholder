@@ -56,6 +56,7 @@ public class ApiAuthorizationAttributeFacts
             new ActionContext(httpContext, new RouteData(), new ActionDescriptor(), new ModelStateDictionary()),
             new List<IFilterMetadata>(),
             new Dictionary<string, object>(),
-            new object()) { HttpContext = httpContext };
+            new object())
+        { HttpContext = httpContext };
     }
 }

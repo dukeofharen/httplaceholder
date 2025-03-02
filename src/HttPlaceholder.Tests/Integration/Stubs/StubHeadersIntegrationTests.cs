@@ -19,7 +19,9 @@ public class StubHeadersIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}headers-presence-check";
         var request = new HttpRequestMessage
         {
-            Method = HttpMethod.Get, RequestUri = new Uri(url), Headers = { { "Header-1", "somevalue" } }
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url),
+            Headers = { { "Header-1", "somevalue" } }
         };
 
         // act / assert

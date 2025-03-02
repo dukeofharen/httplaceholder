@@ -98,7 +98,9 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}body-old-way";
         var request = new HttpRequestMessage
         {
-            Method = HttpMethod.Post, RequestUri = new Uri(url), Content = new StringContent("val1val2")
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(url),
+            Content = new StringContent("val1val2")
         };
 
         // act / assert
@@ -115,7 +117,9 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}body-old-way";
         var request = new HttpRequestMessage
         {
-            Method = HttpMethod.Post, RequestUri = new Uri(url), Content = new StringContent("val1val3")
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(url),
+            Content = new StringContent("val1val3")
         };
 
         // act / assert

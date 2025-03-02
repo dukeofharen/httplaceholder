@@ -56,7 +56,8 @@ internal static class Program
             // Create stub.
             var createdStub = await client.CreateStubAsync(new StubDto
             {
-                Id = "test-stub-123", Response = new StubResponseDto { Text = "Let's go yeah!" }
+                Id = "test-stub-123",
+                Response = new StubResponseDto { Text = "Let's go yeah!" }
             });
 
             // Create stub using a builder.

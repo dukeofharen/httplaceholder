@@ -177,7 +177,8 @@ public class HarStubGeneratorFacts
             .Setup(m => m.ConvertToConditionsAsync(It.IsAny<HttpRequestModel>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new StubConditionsModel
             {
-                Method = "GET", Url = new StubUrlConditionModel { Path = "/path1" }
+                Method = "GET",
+                Url = new StubUrlConditionModel { Path = "/path1" }
             });
 
         httpResponseToStubResponseServiceMock

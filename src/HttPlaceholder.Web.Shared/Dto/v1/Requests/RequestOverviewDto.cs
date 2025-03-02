@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Domain;
 
