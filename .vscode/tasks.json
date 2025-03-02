@@ -46,6 +46,12 @@
       "problemMatcher": []
     },
     {
+      "label": "Format UI",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/gui && npm run format",
+      "problemMatcher": []
+    },
+    {
       "label": "Run UI and API",
       "dependsOn": [
         "Run and watch API",

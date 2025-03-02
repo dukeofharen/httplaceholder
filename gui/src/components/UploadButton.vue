@@ -97,10 +97,10 @@ export default defineComponent({
           onError(`Result type for upload not supported: ${props.resultType}`)
       }
     }
-    const loadTextFromFile = async (ev: InputEvent) => {
+    const loadTextFromFile = async (ev: any) => {
       const target = ev.target as HTMLInputElement
-      if(!target?.files) {
-        return;
+      if (!target?.files) {
+        return
       }
 
       emit('beforeUpload')

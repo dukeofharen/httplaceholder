@@ -126,7 +126,7 @@ export default defineComponent({
         try {
           const json = JSON.parse(body.value)
           return JSON.stringify(json, null, 2)
-        } catch (e) {
+        } catch {
           return ''
         }
       } else if (bodyType.value === bodyTypes.form) {
