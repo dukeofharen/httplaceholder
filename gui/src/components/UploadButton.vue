@@ -74,7 +74,11 @@ export default defineComponent({
       }
 
       const reader = new FileReader()
-      reader.onload = (e: any) => {
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (!e.target) {
+          return
+        }
+
         const uploadedFile: FileUploadedModel = {
           filename: file.name,
           result: e.target.result,
@@ -93,9 +97,14 @@ export default defineComponent({
           onError(`Result type for upload not supported: ${props.resultType}`)
       }
     }
-    const loadTextFromFile = async (ev: any) => {
+    const loadTextFromFile = async (ev: InputEvent) => {
+      const target = ev.target as HTMLInputElement
+      if(!target?.files) {
+        return;
+      }
+
       emit('beforeUpload')
-      const files: File[] = Array.from(ev.target.files)
+      const files: File[] = Array.from(target.files)
       if (props.multiple) {
         const promises = []
         for (const file of files) {
