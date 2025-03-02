@@ -35,6 +35,12 @@
       "command": "cd ${workspaceFolder}/src/HttPlaceholder && export DOTNET_ENVIRONMENT=Development && dotnet watch -V --dev"
     },
     {
+      "label": "Format API",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/src && dotnet format",
+      "problemMatcher": []
+    },
+    {
       "label": "Run UI",
       "type": "shell",
       "command": "cd ${workspaceFolder}/gui && npm run dev"
