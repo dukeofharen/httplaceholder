@@ -20,46 +20,39 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, watch } from 'vue'
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  name: 'AccordionItem',
-  props: {
-    opened: {
-      type: null,
-      default: null,
-    },
-  },
-  setup(props, { emit }) {
-    // Data
-    const openedValue = ref(props.opened)
+const props = defineProps({
+  opened: null
+})
 
-    // Methods
-    const toggle = () => {
-      if (props.opened !== null) {
-        emit('buttonClicked')
+const emit = defineEmits(['buttonClicked', 'opened', 'closed'])
+
+// Data
+const openedValue = ref(props.opened)
+
+  // Methods
+  const toggle = () => {
+    if (props.opened !== null) {
+      emit('buttonClicked')
+    } else {
+      if (openedValue.value === null) {
+        openedValue.value = true
+        emit('opened')
       } else {
-        if (openedValue.value === null) {
-          openedValue.value = true
+        openedValue.value = !openedValue.value
+        if (openedValue.value) {
           emit('opened')
         } else {
-          openedValue.value = !openedValue.value
-          if (openedValue.value) {
-            emit('opened')
-          } else {
-            emit('closed')
-          }
+          emit('closed')
         }
       }
     }
+  }
 
-    watch(props, (newProps) => (openedValue.value = newProps.opened))
-
-    return { openedValue, toggle }
-  },
-})
+  // Watches
+  watch(props, (newProps) => (openedValue.value = newProps.opened))
 </script>
 
 <style scoped>
