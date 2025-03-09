@@ -78,7 +78,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { handleHttpError } from '@/utils/error'
 import yaml from 'js-yaml'
@@ -87,109 +87,87 @@ import { setIntermediateStub } from '@/utils/session'
 import { shouldSave } from '@/utils/event'
 import { success } from '@/utils/toast'
 import { type ImportInputModel, useImportStore } from '@/store/import'
-import { defineComponent } from 'vue'
 import type { FileUploadedModel } from '@/domain/file-uploaded-model'
 import { exampleHarInput } from '@/strings/exmaples'
 import { translate } from '@/utils/translate'
 
-export default defineComponent({
-  name: 'ImportHar',
-  setup() {
-    const importStore = useImportStore()
-    const router = useRouter()
+const importStore = useImportStore()
+const router = useRouter()
 
-    // Data
-    const input = ref('')
-    const howToOpen = ref(false)
-    const stubsYaml = ref('')
-    const tenant = ref('')
-    const stubIdPrefix = ref('')
+// Data
+const input = ref('')
+const howToOpen = ref(false)
+const stubsYaml = ref('')
+const tenant = ref('')
+const stubIdPrefix = ref('')
 
-    // Computed
-    const importButtonEnabled = computed(() => !!input.value)
-    const stubsPreviewOpened = computed(() => !!stubsYaml.value)
+// Computed
+const importButtonEnabled = computed(() => !!input.value)
+const stubsPreviewOpened = computed(() => !!stubsYaml.value)
 
-    // Functions
-    const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
-      return {
-        doNotCreateStub: doNotCreateStub,
-        tenant: tenant.value,
-        input: input.value,
-        stubIdPrefix: stubIdPrefix.value,
-      }
-    }
+// Functions
+const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
+  return {
+    doNotCreateStub: doNotCreateStub,
+    tenant: tenant.value,
+    input: input.value,
+    stubIdPrefix: stubIdPrefix.value,
+  }
+}
 
-    // Methods
-    const insertExample = () => {
-      input.value = exampleHarInput
-      howToOpen.value = false
-    }
-    const importHar = async () => {
-      try {
-        const importInput = buildInputModel(true)
-        const result = await importStore.importHar(importInput)
+// Methods
+const insertExample = () => {
+  input.value = exampleHarInput
+  howToOpen.value = false
+}
+const importHar = async () => {
+  try {
+    const importInput = buildInputModel(true)
+    const result = await importStore.importHar(importInput)
 
-        const filteredResult = result.map((r) => r.stub)
-        stubsYaml.value = yaml.dump(filteredResult)
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-    const saveStubs = async () => {
-      try {
-        const importInput = buildInputModel(false)
-        await importStore.importHar(importInput)
-        success(translate('importStubs.stubsAddedSuccessfully'))
-        await router.push({ name: 'Stubs' })
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-    const editBeforeSaving = () => {
-      setIntermediateStub(stubsYaml.value)
-      router.push({ name: 'StubForm' })
-    }
-    const reset = () => {
-      input.value = ''
-      stubsYaml.value = ''
-      tenant.value = ''
-    }
-    const onUploaded = (file: FileUploadedModel) => {
-      input.value = file.result
-    }
+    const filteredResult = result.map((r) => r.stub)
+    stubsYaml.value = yaml.dump(filteredResult)
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+const saveStubs = async () => {
+  try {
+    const importInput = buildInputModel(false)
+    await importStore.importHar(importInput)
+    success(translate('importStubs.stubsAddedSuccessfully'))
+    await router.push({ name: 'Stubs' })
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+const editBeforeSaving = () => {
+  setIntermediateStub(stubsYaml.value)
+  router.push({ name: 'StubForm' })
+}
+const reset = () => {
+  input.value = ''
+  stubsYaml.value = ''
+  tenant.value = ''
+}
+const onUploaded = (file: FileUploadedModel) => {
+  input.value = file.result
+}
 
-    // Lifecycle
-    const handleSave = async (e: KeyboardEvent) => {
-      if (shouldSave(e)) {
-        e.preventDefault()
-        if (!stubsYaml.value) {
-          await importHar()
-        } else {
-          await saveStubs()
-        }
-      }
+// Lifecycle
+const handleSave = async (e: KeyboardEvent) => {
+  if (shouldSave(e)) {
+    e.preventDefault()
+    if (!stubsYaml.value) {
+      await importHar()
+    } else {
+      await saveStubs()
     }
-    const keydownEventListener = async (e: KeyboardEvent) => await handleSave(e)
-    onMounted(() => document.addEventListener('keydown', keydownEventListener))
-    onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
-
-    return {
-      howToOpen,
-      insertExample,
-      stubsYaml,
-      input,
-      importHar,
-      importButtonEnabled,
-      saveStubs,
-      editBeforeSaving,
-      reset,
-      onUploaded,
-      tenant,
-      stubsPreviewOpened,
-      stubIdPrefix,
-    }
-  },
-})
+  }
+}
+const keydownEventListener = async (e: KeyboardEvent) => await handleSave(e)
+onMounted(() => document.addEventListener('keydown', keydownEventListener))
+onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
 </script>
 
 <style scoped>
