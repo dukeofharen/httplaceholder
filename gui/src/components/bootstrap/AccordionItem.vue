@@ -24,7 +24,10 @@
 import { ref, watch } from 'vue'
 
 const props = defineProps({
-  opened: null
+  opened: {
+    type: Boolean,
+    default: null
+  },
 })
 
 const emit = defineEmits(['buttonClicked', 'opened', 'closed'])
@@ -32,27 +35,27 @@ const emit = defineEmits(['buttonClicked', 'opened', 'closed'])
 // Data
 const openedValue = ref(props.opened)
 
-  // Methods
-  const toggle = () => {
-    if (props.opened !== null) {
-      emit('buttonClicked')
+// Methods
+const toggle = () => {
+  if (props.opened !== null) {
+    emit('buttonClicked')
+  } else {
+    if (openedValue.value === null) {
+      openedValue.value = true
+      emit('opened')
     } else {
-      if (openedValue.value === null) {
-        openedValue.value = true
+      openedValue.value = !openedValue.value
+      if (openedValue.value) {
         emit('opened')
       } else {
-        openedValue.value = !openedValue.value
-        if (openedValue.value) {
-          emit('opened')
-        } else {
-          emit('closed')
-        }
+        emit('closed')
       }
     }
   }
+}
 
-  // Watches
-  watch(props, (newProps) => (openedValue.value = newProps.opened))
+// Watches
+watch(props, (newProps) => (openedValue.value = newProps.opened))
 </script>
 
 <style scoped>
