@@ -41,7 +41,7 @@ const container = shallowRef<HTMLDivElement>()
 const state = shallowRef<EditorState>()
 const view = shallowRef<EditorView>()
 const code = ref(props.modelValue)
-const language = new Compartment()
+const languageCompartment = new Compartment()
 
 // Computed
 const cmLanguage = computed<Language | LanguageSupport>(() => {
@@ -61,7 +61,7 @@ const cmLanguage = computed<Language | LanguageSupport>(() => {
 const cmExtensions = computed(() => {
   const extensions = []
   if (cmLanguage.value) {
-    extensions.push(language.of(cmLanguage.value))
+    extensions.push(languageCompartment.of(cmLanguage.value))
   }
 
   if (generalStore.getDarkTheme) {
@@ -171,7 +171,7 @@ watch(
   () => {
     if (cmLanguage.value) {
       view.value?.dispatch({
-        effects: language.reconfigure(cmLanguage.value),
+        effects: languageCompartment.reconfigure(cmLanguage.value),
       })
     }
   },

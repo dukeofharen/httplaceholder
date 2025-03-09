@@ -55,14 +55,14 @@ const emit = defineEmits(['close'])
 const modal = ref<HTMLElement>()
 
 // Functions
-const showModal = () => {
+const performShowModal = () => {
   if (modal.value) {
     const currentModal = getOrCreateInstance(modal.value)
     currentModal.show()
   }
 }
 
-const hideModal = () => {
+const performHideModal = () => {
   if (modal.value) {
     const currentModal = getOrCreateInstance(modal.value)
     currentModal.hide()
@@ -74,7 +74,7 @@ const onYesClick = () => {
     props.yesClickFunction()
   }
 
-  hideModal()
+  performHideModal()
 }
 
 const onNoClick = () => {
@@ -82,7 +82,7 @@ const onNoClick = () => {
     props.noClickFunction()
   }
 
-  hideModal()
+  performHideModal()
 }
 
 function getYesText() {
@@ -96,9 +96,9 @@ function getNoText() {
 // Lifecycle
 onMounted(() => {
   if (props.showModal) {
-    showModal()
+    performShowModal()
   } else {
-    hideModal()
+    performHideModal()
   }
 
   if (modal.value) {
@@ -111,9 +111,9 @@ onMounted(() => {
 // Watch
 watch(props, (newProps) => {
   if (newProps.showModal) {
-    showModal()
+    performShowModal()
   } else {
-    hideModal()
+    performHideModal()
   }
 })
 </script>
