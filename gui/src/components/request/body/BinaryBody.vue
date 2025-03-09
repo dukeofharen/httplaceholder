@@ -20,8 +20,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, type PropType } from 'vue'
+<script setup lang="ts">
+import { computed, type PropType } from 'vue'
 import { downloadBlob } from '@/utils/download'
 import { base64ToBlob } from '@/utils/text'
 import { imageMimeTypes, pdfMimeType } from '@/constants'
@@ -35,67 +35,54 @@ const bodyTypes = {
   other: 'other',
 }
 
-export default defineComponent({
-  name: 'BinaryBody',
-  components: { VuePdfEmbed },
-  props: {
-    renderModel: {
-      type: Object as PropType<RequestResponseBodyRenderModel>,
-      required: true,
-    },
-  },
-  setup(props) {
-    // Computed
-    const body = computed(() => {
-      return props.renderModel.body
-    })
-    const contentType = computed(() => {
-      const headers = props.renderModel.headers
-      const contentTypeHeaderKey = Object.keys(headers).find(
-        (k) => k.toLowerCase() === 'content-type',
-      )
-      if (!contentTypeHeaderKey) {
-        return ''
-      }
-
-      return headers[contentTypeHeaderKey].toLowerCase().split(';')[0]
-    })
-    const bodyType = computed(() => {
-      const type = contentType.value
-      if (!type) {
-        return bodyTypes.other
-      }
-
-      if (imageMimeTypes.find((m) => type.includes(m))) {
-        return bodyTypes.image
-      }
-
-      if (type.includes(pdfMimeType)) {
-        return bodyTypes.pdf
-      }
-
-      return bodyTypes.other
-    })
-    const dataUrl = computed(() => {
-      return `data:${contentType.value};base64,${body.value}`
-    })
-
-    // Methods
-    const download = () => {
-      const extension = mime.extension(contentType.value) ?? 'bin'
-      downloadBlob(`file.${extension}`, base64ToBlob(body.value))
-    }
-
-    return {
-      download,
-      bodyType,
-      bodyTypes,
-      contentType,
-      body,
-      dataUrl,
-    }
+const props = defineProps({
+  renderModel: {
+    type: Object as PropType<RequestResponseBodyRenderModel>,
+    required: true,
   },
 })
+
+// Computed
+const body = computed(() => {
+  return props.renderModel.body
+})
+
+const contentType = computed(() => {
+  const headers = props.renderModel.headers
+  const contentTypeHeaderKey = Object.keys(headers).find((k) => k.toLowerCase() === 'content-type')
+  if (!contentTypeHeaderKey) {
+    return ''
+  }
+
+  return headers[contentTypeHeaderKey].toLowerCase().split(';')[0]
+})
+
+const bodyType = computed(() => {
+  const type = contentType.value
+  if (!type) {
+    return bodyTypes.other
+  }
+
+  if (imageMimeTypes.find((m) => type.includes(m))) {
+    return bodyTypes.image
+  }
+
+  if (type.includes(pdfMimeType)) {
+    return bodyTypes.pdf
+  }
+
+  return bodyTypes.other
+})
+
+const dataUrl = computed(() => {
+  return `data:${contentType.value};base64,${body.value}`
+})
+
+// Methods
+const download = () => {
+  const extension = mime.extension(contentType.value) ?? 'bin'
+  downloadBlob(`file.${extension}`, base64ToBlob(body.value))
+}
 </script>
 
 <style scoped lang="scss">
