@@ -78,123 +78,99 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+<script setup lang="ts">
+import { useImportStore, type ImportInputModel } from '@/store/import'
 import { handleHttpError } from '@/utils/error'
+import { error, success } from '@/utils/toast'
+import { translate } from '@/utils/translate'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import yaml from 'js-yaml'
 import { setIntermediateStub } from '@/utils/session'
-import { shouldSave } from '@/utils/event'
-import { useRouter } from 'vue-router'
-import { error, success } from '@/utils/toast'
-import { type ImportInputModel, useImportStore } from '@/store/import'
-import { defineComponent } from 'vue'
-import type { FileUploadedModel } from '@/domain/file-uploaded-model'
-import { translate } from '@/utils/translate'
 import { exampleCurlInput } from '@/strings/exmaples'
+import type { FileUploadedModel } from '@/domain/file-uploaded-model'
+import { shouldSave } from '@/utils/event'
 
-export default defineComponent({
-  name: 'ImportCurl',
-  setup() {
-    const importStore = useImportStore()
-    const router = useRouter()
+const importStore = useImportStore()
+const router = useRouter()
 
-    // Data
-    const input = ref('')
-    const stubsYaml = ref('')
-    const howToOpen = ref(false)
-    const tenant = ref('')
-    const stubIdPrefix = ref('')
+// Data
+const input = ref('')
+const stubsYaml = ref('')
+const howToOpen = ref(false)
+const tenant = ref('')
+const stubIdPrefix = ref('')
 
-    // Computed
-    const importButtonEnabled = computed(() => !!input.value)
-    const stubsPreviewOpened = computed(() => !!stubsYaml.value)
+// Computed
+const importButtonEnabled = computed(() => !!input.value)
+const stubsPreviewOpened = computed(() => !!stubsYaml.value)
 
-    // Functions
-    const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
-      return {
-        doNotCreateStub: doNotCreateStub,
-        tenant: tenant.value,
-        input: input.value,
-        stubIdPrefix: stubIdPrefix.value,
-      }
-    }
+// Functions
+const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
+  return {
+    doNotCreateStub: doNotCreateStub,
+    tenant: tenant.value,
+    input: input.value,
+    stubIdPrefix: stubIdPrefix.value,
+  }
+}
 
-    // Methods
-    const importCommands = async () => {
-      try {
-        const importInput: ImportInputModel = buildInputModel(true)
-        const result = await importStore.importCurlCommands(importInput)
-        if (!result.length) {
-          error(translate('importCurl.noCurlStubsFound'))
-          return
-        }
-
-        const filteredResult = result.map((r) => r.stub)
-        stubsYaml.value = yaml.dump(filteredResult)
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-    const saveStubs = async () => {
-      try {
-        const importInput = buildInputModel(false)
-        await importStore.importCurlCommands(importInput)
-        success(translate('importStubs.stubsAddedSuccessfully'))
-        await router.push({ name: 'Stubs' })
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-    const editBeforeSaving = () => {
-      setIntermediateStub(stubsYaml.value)
-      router.push({ name: 'StubForm' })
-    }
-    const reset = () => {
-      input.value = ''
-      stubsYaml.value = ''
-      tenant.value = ''
-    }
-    const insertExample = () => {
-      input.value = exampleCurlInput
-      howToOpen.value = false
-    }
-    const onUploaded = (file: FileUploadedModel) => {
-      input.value = file.result
+const importCommands = async () => {
+  try {
+    const importInput: ImportInputModel = buildInputModel(true)
+    const result = await importStore.importCurlCommands(importInput)
+    if (!result.length) {
+      error(translate('importCurl.noCurlStubsFound'))
+      return
     }
 
-    // Lifecycle
-    const handleSave = async (e: KeyboardEvent) => {
-      if (shouldSave(e)) {
-        e.preventDefault()
-        if (!stubsYaml.value) {
-          await importCommands()
-        } else {
-          await saveStubs()
-        }
-      }
-    }
-    const keydownEventListener = async (e: KeyboardEvent) => await handleSave(e)
-    onMounted(() => document.addEventListener('keydown', keydownEventListener))
-    onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
+    const filteredResult = result.map((r) => r.stub)
+    stubsYaml.value = yaml.dump(filteredResult)
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+const saveStubs = async () => {
+  try {
+    const importInput = buildInputModel(false)
+    await importStore.importCurlCommands(importInput)
+    success(translate('importStubs.stubsAddedSuccessfully'))
+    await router.push({ name: 'Stubs' })
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+const editBeforeSaving = () => {
+  setIntermediateStub(stubsYaml.value)
+  router.push({ name: 'StubForm' })
+}
+const reset = () => {
+  input.value = ''
+  stubsYaml.value = ''
+  tenant.value = ''
+}
+const insertExample = () => {
+  input.value = exampleCurlInput
+  howToOpen.value = false
+}
+const onUploaded = (file: FileUploadedModel) => {
+  input.value = file.result
+}
 
-    return {
-      input,
-      importCommands,
-      stubsYaml,
-      saveStubs,
-      editBeforeSaving,
-      reset,
-      handleSave,
-      importButtonEnabled,
-      howToOpen,
-      insertExample,
-      onUploaded,
-      tenant,
-      stubsPreviewOpened,
-      stubIdPrefix,
+// Lifecycle
+const handleSave = async (e: KeyboardEvent) => {
+  if (shouldSave(e)) {
+    e.preventDefault()
+    if (!stubsYaml.value) {
+      await importCommands()
+    } else {
+      await saveStubs()
     }
-  },
-})
+  }
+}
+const keydownEventListener = async (e: KeyboardEvent) => await handleSave(e)
+onMounted(() => document.addEventListener('keydown', keydownEventListener))
+onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
 </script>
 
 <style scoped>
