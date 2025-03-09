@@ -115,7 +115,6 @@ const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
   }
 }
 
-// Methods
 const insertExample = () => {
   input.value = exampleHarInput
   howToOpen.value = false

@@ -1,6 +1,6 @@
 <template>
   <div class="mb-2 col-md-6">
-    {{ $translate('importOpenApi.importOpenApi') }}
+    {{ $translate('importOpenApi.intro') }}
   </div>
   <div v-if="!stubsPreviewOpened">
     <div class="mb-2">
@@ -55,7 +55,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import yaml from 'js-yaml'
@@ -64,106 +64,85 @@ import { setIntermediateStub } from '@/utils/session'
 import { shouldSave } from '@/utils/event'
 import { success } from '@/utils/toast'
 import { type ImportInputModel, useImportStore } from '@/store/import'
-import { defineComponent } from 'vue'
 import type { FileUploadedModel } from '@/domain/file-uploaded-model'
 import { exampleOpenApiInput } from '@/strings/exmaples'
 import { translate } from '@/utils/translate'
 
-export default defineComponent({
-  name: 'ImportOpenApi',
-  setup() {
-    const importStore = useImportStore()
-    const router = useRouter()
+const importStore = useImportStore()
+const router = useRouter()
 
-    // Data
-    const input = ref('')
-    const stubsYaml = ref('')
-    const tenant = ref('')
-    const stubIdPrefix = ref('')
+// Data
+const input = ref('')
+const stubsYaml = ref('')
+const tenant = ref('')
+const stubIdPrefix = ref('')
 
-    // Computed
-    const importButtonEnabled = computed(() => !!input.value)
-    const stubsPreviewOpened = computed(() => !!stubsYaml.value)
+// Computed
+const importButtonEnabled = computed(() => !!input.value)
+const stubsPreviewOpened = computed(() => !!stubsYaml.value)
 
-    // Functions
-    const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
-      return {
-        doNotCreateStub: doNotCreateStub,
-        tenant: tenant.value,
-        input: input.value,
-        stubIdPrefix: stubIdPrefix.value,
-      }
-    }
+// Functions
+const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
+  return {
+    doNotCreateStub: doNotCreateStub,
+    tenant: tenant.value,
+    input: input.value,
+    stubIdPrefix: stubIdPrefix.value,
+  }
+}
 
-    // Methods
-    const insertExample = () => {
-      input.value = exampleOpenApiInput
-    }
-    const importOpenApi = async () => {
-      try {
-        const importInput = buildInputModel(true)
-        const result = await importStore.importOpenApi(importInput)
+// Methods
+const insertExample = () => {
+  input.value = exampleOpenApiInput
+}
+const importOpenApi = async () => {
+  try {
+    const importInput = buildInputModel(true)
+    const result = await importStore.importOpenApi(importInput)
 
-        const filteredResult = result.map((r) => r.stub)
-        stubsYaml.value = yaml.dump(filteredResult)
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-    const onUploaded = (file: FileUploadedModel) => {
-      input.value = file.result
-    }
-    const saveStubs = async () => {
-      try {
-        const importInput = buildInputModel(false)
-        await importStore.importOpenApi(importInput)
-        success(translate('importStubs.stubsAddedSuccessfully'))
-        await router.push({ name: 'Stubs' })
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-    const editBeforeSaving = () => {
-      setIntermediateStub(stubsYaml.value)
-      router.push({ name: 'StubForm' })
-    }
-    const reset = () => {
-      input.value = ''
-      stubsYaml.value = ''
-      tenant.value = ''
-    }
+    const filteredResult = result.map((r) => r.stub)
+    stubsYaml.value = yaml.dump(filteredResult)
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+const onUploaded = (file: FileUploadedModel) => {
+  input.value = file.result
+}
+const saveStubs = async () => {
+  try {
+    const importInput = buildInputModel(false)
+    await importStore.importOpenApi(importInput)
+    success(translate('importStubs.stubsAddedSuccessfully'))
+    await router.push({ name: 'Stubs' })
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+const editBeforeSaving = () => {
+  setIntermediateStub(stubsYaml.value)
+  router.push({ name: 'StubForm' })
+}
+const reset = () => {
+  input.value = ''
+  stubsYaml.value = ''
+  tenant.value = ''
+}
 
-    // Lifecycle
-    const handleSave = async (e: KeyboardEvent) => {
-      if (shouldSave(e)) {
-        e.preventDefault()
-        if (!stubsYaml.value) {
-          await importOpenApi()
-        } else {
-          await saveStubs()
-        }
-      }
+// Lifecycle
+const handleSave = async (e: KeyboardEvent) => {
+  if (shouldSave(e)) {
+    e.preventDefault()
+    if (!stubsYaml.value) {
+      await importOpenApi()
+    } else {
+      await saveStubs()
     }
-    const keydownEventListener = async (e: KeyboardEvent) => await handleSave(e)
-    onMounted(() => document.addEventListener('keydown', keydownEventListener))
-    onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
-
-    return {
-      input,
-      stubsYaml,
-      insertExample,
-      onUploaded,
-      importButtonEnabled,
-      importOpenApi,
-      saveStubs,
-      editBeforeSaving,
-      reset,
-      tenant,
-      stubsPreviewOpened,
-      stubIdPrefix,
-    }
-  },
-})
+  }
+}
+const keydownEventListener = async (e: KeyboardEvent) => await handleSave(e)
+onMounted(() => document.addEventListener('keydown', keydownEventListener))
+onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
 </script>
 
 <style scoped>
