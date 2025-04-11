@@ -79,17 +79,17 @@
 </template>
 
 <script setup lang="ts">
-import { useImportStore, type ImportInputModel } from '@/store/import'
+import { type ImportInputModel, useImportStore } from '@/store/import'
 import { handleHttpError } from '@/utils/error'
 import { error, success } from '@/utils/toast'
 import { translate } from '@/utils/translate'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import yaml from 'js-yaml'
 import { setIntermediateStub } from '@/utils/session'
 import { exampleCurlInput } from '@/strings/exmaples'
 import type { FileUploadedModel } from '@/domain/file-uploaded-model'
-import { shouldSave } from '@/utils/event'
+import { useSaveMagicKeys } from '@/composables/useSaveMagicKeys.ts'
 
 const importStore = useImportStore()
 const router = useRouter()
@@ -158,19 +158,18 @@ const onUploaded = (file: FileUploadedModel) => {
 }
 
 // Lifecycle
-const handleSave = async (e: KeyboardEvent) => {
-  if (shouldSave(e)) {
-    e.preventDefault()
-    if (!stubsYaml.value) {
-      await importCommands()
-    } else {
-      await saveStubs()
-    }
+const { registerSaveFunction } = useSaveMagicKeys()
+registerSaveFunction(async () => {
+  if (!input.value) {
+    return
   }
-}
-const keydownEventListener = async (e: KeyboardEvent) => await handleSave(e)
-onMounted(() => document.addEventListener('keydown', keydownEventListener))
-onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
+
+  if (!stubsYaml.value) {
+    await importCommands()
+  } else {
+    await saveStubs()
+  }
+})
 </script>
 
 <style scoped>

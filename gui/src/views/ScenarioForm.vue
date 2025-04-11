@@ -44,12 +44,12 @@
 
 <script lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, watch } from 'vue'
 import { handleHttpError } from '@/utils/error'
-import { shouldSave } from '@/utils/event'
 import { success } from '@/utils/toast'
 import { type ScenarioInputModel, useScenariosStore } from '@/store/scenarios'
 import { translate } from '@/utils/translate'
+import { useSaveMagicKeys } from '@/composables/useSaveMagicKeys.ts'
 
 export default defineComponent({
   name: 'ScenarioForm',
@@ -93,17 +93,12 @@ export default defineComponent({
         handleHttpError(e)
       }
     }
-    const checkSave = async (e: KeyboardEvent) => {
-      if (shouldSave(e)) {
-        e.preventDefault()
-        await save()
-      }
-    }
 
     // Lifecycle
-    const keydownEventListener = async (e: KeyboardEvent) => await checkSave(e)
+    const { registerSaveFunction } = useSaveMagicKeys()
+    registerSaveFunction(async () => await save())
+
     onMounted(async () => {
-      document.addEventListener('keydown', keydownEventListener)
       if (scenarioName.value) {
         scenarioForm.value.scenario = scenarioName.value
       }
@@ -118,7 +113,6 @@ export default defineComponent({
         }
       }
     })
-    onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
 
     // Watches
     watch(
