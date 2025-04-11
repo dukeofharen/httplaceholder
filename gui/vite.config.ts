@@ -4,10 +4,33 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import Components from 'unplugin-vue-components/vite'
+import { ComponentResolver } from 'unplugin-vue-components'
 
 // https://vite.dev/config/
+
+function CustomComponentResolver(): ComponentResolver {
+  return {
+    type: 'component',
+    resolve: (name: string) => {
+      if (name === 'Vue3SlideUpDown') {
+        return {
+          name: 'Vue3SlideUpDown',
+          from: 'vue3-slide-up-down',
+        }
+      }
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [vue(), vueDevTools(), Components()],
+  plugins: [
+    vue(),
+    vueDevTools(),
+    Components({
+      resolvers: [CustomComponentResolver()],
+      dts: './components.d.ts'
+    }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

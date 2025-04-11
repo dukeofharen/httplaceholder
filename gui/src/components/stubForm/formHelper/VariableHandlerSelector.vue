@@ -56,11 +56,9 @@ import { computed, defineComponent, type PropType, ref } from 'vue'
 import type { VariableHandlerModel } from '@/domain/metadata/variable-handler-model'
 import { marked } from 'marked'
 import { useStubFormStore } from '@/store/stubForm'
-import { Vue3SlideUpDown } from 'vue3-slide-up-down'
 
 export default defineComponent({
   name: 'VariableHandlerSelector',
-  components: { Vue3SlideUpDown },
   props: {
     variableParserItems: {
       type: Array as PropType<VariableHandlerModel[]>,

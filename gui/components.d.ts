@@ -54,5 +54,6 @@ declare module 'vue' {
     UploadButton: typeof import('./src/components/UploadButton.vue')['default']
     UploadStubs: typeof import('./src/components/import/UploadStubs.vue')['default']
     VariableHandlerSelector: typeof import('./src/components/stubForm/formHelper/VariableHandlerSelector.vue')['default']
+    Vue3SlideUpDown: typeof import('vue3-slide-up-down')['Vue3SlideUpDown']
   }
 }

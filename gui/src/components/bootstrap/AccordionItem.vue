@@ -22,7 +22,6 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { Vue3SlideUpDown } from 'vue3-slide-up-down'
 
 const props = defineProps({
   opened: {

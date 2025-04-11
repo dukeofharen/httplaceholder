@@ -69,11 +69,10 @@ import {
 } from '@/domain/stubForm/stub-form-helpers'
 import RenderedFormHelper from '@/components/stubForm/formHelper/RenderedFormHelper.vue'
 import { translate } from '@/utils/translate'
-import { Vue3SlideUpDown } from 'vue3-slide-up-down'
 
 export default defineComponent({
   name: 'FormHelperSelector',
-  components: { Vue3SlideUpDown, RenderedFormHelper },
+  components: { RenderedFormHelper },
   setup() {
     const stubFormStore = useStubFormStore()
     const route = useRoute()
