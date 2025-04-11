@@ -21,8 +21,8 @@ import type { FileUploadedModel } from '@/domain/file-uploaded-model'
 import { useGeneralStore } from '@/store/general'
 import { translate } from '@/utils/translate'
 
-const stubStore = useStubsStore()
-const generalStore = useGeneralStore()
+const { addStubs } = useStubsStore()
+const { doShowLoader, doHideLoader } = useGeneralStore()
 const router = useRouter()
 
 // Methods
@@ -33,17 +33,17 @@ const onAllUploaded = async (files: FileUploadedModel[]) => {
     }
 
     try {
-      await stubStore.addStubs(file.result)
+      await addStubs(file.result)
       success(vsprintf(translate('uploadStubs.stubsInFileAddedSuccessfully'), [file.filename]))
     } catch (e) {
       handleHttpError(e)
     }
   }
 
-  generalStore.doHideLoader()
+  doHideLoader()
   await router.push({ name: 'Stubs' })
 }
 const beforeUpload = () => {
-  generalStore.doShowLoader()
+  doShowLoader()
 }
 </script>

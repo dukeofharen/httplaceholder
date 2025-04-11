@@ -91,7 +91,7 @@ import { exampleCurlInput } from '@/strings/exmaples'
 import type { FileUploadedModel } from '@/domain/file-uploaded-model'
 import { useSaveMagicKeys } from '@/composables/useSaveMagicKeys.ts'
 
-const importStore = useImportStore()
+const { importCurlCommands } = useImportStore()
 const router = useRouter()
 
 // Data
@@ -118,7 +118,7 @@ const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
 const importCommands = async () => {
   try {
     const importInput: ImportInputModel = buildInputModel(true)
-    const result = await importStore.importCurlCommands(importInput)
+    const result = await importCurlCommands(importInput)
     if (!result.length) {
       error(translate('importCurl.noCurlStubsFound'))
       return
@@ -133,7 +133,7 @@ const importCommands = async () => {
 const saveStubs = async () => {
   try {
     const importInput = buildInputModel(false)
-    await importStore.importCurlCommands(importInput)
+    await importCurlCommands(importInput)
     success(translate('importStubs.stubsAddedSuccessfully'))
     await router.push({ name: 'Stubs' })
   } catch (e) {

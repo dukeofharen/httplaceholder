@@ -54,7 +54,7 @@
       <textarea class="form-control" v-model="input"></textarea>
     </div>
     <div class="mb-2">
-      <button class="btn btn-success" @click="importHar" :disabled="!importButtonEnabled">
+      <button class="btn btn-success" @click="doImportHar" :disabled="!importButtonEnabled">
         {{ $translate('importHar.importHar') }}
       </button>
     </div>
@@ -91,7 +91,7 @@ import { exampleHarInput } from '@/strings/exmaples'
 import { translate } from '@/utils/translate'
 import { useSaveMagicKeys } from '@/composables/useSaveMagicKeys.ts'
 
-const importStore = useImportStore()
+const {importHar} = useImportStore()
 const router = useRouter()
 
 // Data
@@ -119,10 +119,10 @@ const insertExample = () => {
   input.value = exampleHarInput
   howToOpen.value = false
 }
-const importHar = async () => {
+const doImportHar = async () => {
   try {
     const importInput = buildInputModel(true)
-    const result = await importStore.importHar(importInput)
+    const result = await importHar(importInput)
 
     const filteredResult = result.map((r) => r.stub)
     stubsYaml.value = yaml.dump(filteredResult)
@@ -133,7 +133,7 @@ const importHar = async () => {
 const saveStubs = async () => {
   try {
     const importInput = buildInputModel(false)
-    await importStore.importHar(importInput)
+    await importHar(importInput)
     success(translate('importStubs.stubsAddedSuccessfully'))
     await router.push({ name: 'Stubs' })
   } catch (e) {
@@ -157,7 +157,7 @@ const onUploaded = (file: FileUploadedModel) => {
 const { registerSaveFunction } = useSaveMagicKeys()
 registerSaveFunction(async () => {
   if (!stubsYaml.value) {
-    await importHar()
+    await doImportHar()
   } else {
     await saveStubs()
   }

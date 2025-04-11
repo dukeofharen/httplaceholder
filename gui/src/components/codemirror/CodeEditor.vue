@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<CodeEditorProps>(), {
 })
 const emit = defineEmits(['update:modelValue'])
 
-const generalStore = useSettingsStore()
+const { getDarkTheme } = useSettingsStore()
 
 // Data
 const container = shallowRef<HTMLDivElement>()
@@ -59,7 +59,7 @@ const cmExtensions = computed(() => {
     extensions.push(languageCompartment.of(cmLanguage.value))
   }
 
-  if (generalStore.getDarkTheme) {
+  if (getDarkTheme) {
     extensions.push(oneDark)
   }
 

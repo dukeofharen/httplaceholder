@@ -31,7 +31,7 @@
       <textarea class="form-control" v-model="input"></textarea>
     </div>
     <div class="mb-2">
-      <button class="btn btn-success" @click="importOpenApi" :disabled="!importButtonEnabled">
+      <button class="btn btn-success" @click="doImportOpenApi" :disabled="!importButtonEnabled">
         {{ $translate('importOpenApi.importOpenApiDefinition') }}
       </button>
     </div>
@@ -68,7 +68,7 @@ import { exampleOpenApiInput } from '@/strings/exmaples'
 import { translate } from '@/utils/translate'
 import { useSaveMagicKeys } from '@/composables/useSaveMagicKeys.ts'
 
-const importStore = useImportStore()
+const { importOpenApi } = useImportStore()
 const router = useRouter()
 
 // Data
@@ -95,10 +95,10 @@ const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
 const insertExample = () => {
   input.value = exampleOpenApiInput
 }
-const importOpenApi = async () => {
+const doImportOpenApi = async () => {
   try {
     const importInput = buildInputModel(true)
-    const result = await importStore.importOpenApi(importInput)
+    const result = await importOpenApi(importInput)
 
     const filteredResult = result.map((r) => r.stub)
     stubsYaml.value = yaml.dump(filteredResult)
@@ -112,7 +112,7 @@ const onUploaded = (file: FileUploadedModel) => {
 const saveStubs = async () => {
   try {
     const importInput = buildInputModel(false)
-    await importStore.importOpenApi(importInput)
+    await importOpenApi(importInput)
     success(translate('importStubs.stubsAddedSuccessfully'))
     await router.push({ name: 'Stubs' })
   } catch (e) {
@@ -133,7 +133,7 @@ const reset = () => {
 const { registerSaveFunction } = useSaveMagicKeys()
 registerSaveFunction(async () => {
   if (!stubsYaml.value) {
-    await importOpenApi()
+    await doImportOpenApi()
   } else {
     await saveStubs()
   }
