@@ -58,9 +58,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { escapePressed } from '@/utils/event'
 import { useStubFormStore } from '@/store/stubForm'
 import {
   type StubFormHelper,
@@ -68,6 +67,7 @@ import {
   stubFormHelpers,
 } from '@/domain/stubForm/stub-form-helpers'
 import { translate } from '@/utils/translate'
+import { onKeyStroke } from '@vueuse/core'
 
 export default defineComponent({
   name: 'FormHelperSelector',
@@ -176,14 +176,7 @@ export default defineComponent({
     })
 
     // Lifecycle
-    const escapeListener = (e: KeyboardEvent) => {
-      if (escapePressed(e)) {
-        e.preventDefault()
-        closeFormHelperAndList()
-      }
-    }
-    onMounted(() => document.addEventListener('keydown', escapeListener))
-    onUnmounted(() => document.removeEventListener('keydown', escapeListener))
+    onKeyStroke('Escape', () => closeFormHelperAndList())
 
     return {
       currentSelectedFormHelper,
