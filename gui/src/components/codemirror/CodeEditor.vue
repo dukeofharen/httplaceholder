@@ -12,7 +12,7 @@ import { oneDark } from '@/plugins/codemirror/material-one-dark'
 import { html } from '@codemirror/lang-html'
 import { xml } from '@codemirror/lang-xml'
 import { json } from '@codemirror/lang-json'
-import { EditorState, Compartment } from '@codemirror/state'
+import { Compartment, EditorState } from '@codemirror/state'
 import { EditorView, keymap } from '@codemirror/view'
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands'
 import { markdownLanguage } from '@codemirror/lang-markdown'
@@ -176,6 +176,8 @@ watch(
     }
   },
 )
+
+defineExpose({ replaceSelection })
 </script>
 
 <style lang="scss" scoped>
