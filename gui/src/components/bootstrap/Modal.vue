@@ -34,19 +34,14 @@ import { getOrCreateInstance } from '@/utils/bootstrap'
 import { translate } from '@/utils/translate'
 import { onMounted, ref, watch } from 'vue'
 
-const props = defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-  bodyText: String,
-  yesText: String,
-  noText: String,
-  showModal: {
-    type: Boolean,
-    default: false,
-  },
-})
+export type ModalProps = {
+  title: string
+  bodyText?: string
+  yesText?: string
+  noText?: string
+  showModal: boolean
+}
+const props = withDefaults(defineProps<ModalProps>(), { showModal: false })
 const emit = defineEmits(['close', 'yes-click', 'no-click'])
 
 // Data
