@@ -6,16 +6,12 @@
 import hljs from 'highlight.js'
 import { computed, onMounted, ref, watch } from 'vue'
 
-const props = defineProps({
-  language: {
-    type: String,
-    default: 'plaintext',
-  },
-  code: {
-    type: String,
-    required: true,
-  },
-})
+export type CodeHighlightProps = {
+  language?: string
+  code: string
+}
+
+const props = withDefaults(defineProps<CodeHighlightProps>(), { language: 'plaintext' })
 
 // Data
 const codeBlock = ref<HTMLElement>()
