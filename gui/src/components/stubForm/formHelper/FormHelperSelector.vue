@@ -11,7 +11,7 @@
       </button>
     </div>
   </div>
-  <slide-up-down v-model="showFormHelperItems" :duration="300">
+  <Vue3SlideUpDown v-model="showFormHelperItems" :duration="300">
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="mb-3">
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-  </slide-up-down>
+  </Vue3SlideUpDown>
   <div v-if="currentSelectedFormHelper" class="row mt-3">
     <div class="col-md-12">
       <div class="card">
@@ -69,10 +69,11 @@ import {
 } from '@/domain/stubForm/stub-form-helpers'
 import RenderedFormHelper from '@/components/stubForm/formHelper/RenderedFormHelper.vue'
 import { translate } from '@/utils/translate'
+import { Vue3SlideUpDown } from 'vue3-slide-up-down'
 
 export default defineComponent({
   name: 'FormHelperSelector',
-  components: { RenderedFormHelper },
+  components: { Vue3SlideUpDown, RenderedFormHelper },
   setup() {
     const stubFormStore = useStubFormStore()
     const route = useRoute()

@@ -10,18 +10,19 @@
         <slot name="button-text"></slot>
       </button>
     </h2>
-    <slide-up-down v-model="openedValue" :duration="300">
+    <Vue3SlideUpDown v-model="openedValue" :duration="300">
       <div class="accordion-collapse collapse show">
         <div class="accordion-body">
           <slot name="accordion-body"></slot>
         </div>
       </div>
-    </slide-up-down>
+    </Vue3SlideUpDown>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { Vue3SlideUpDown } from 'vue3-slide-up-down'
 
 const props = defineProps({
   opened: {
