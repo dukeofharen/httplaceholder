@@ -18,19 +18,14 @@ import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirro
 import { markdownLanguage } from '@codemirror/lang-markdown'
 import { copyTextToClipboard } from '@/utils/clipboard'
 
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: '',
-  },
-  language: {
-    type: String,
-    default: '',
-  },
-  theme: {
-    type: String,
-    default: 'default',
-  },
+export type CodeEditorProps = {
+  modelValue: string
+  language: string
+}
+
+const props = withDefaults(defineProps<CodeEditorProps>(), {
+  modelValue: '',
+  language: '',
 })
 const emit = defineEmits(['update:modelValue'])
 
