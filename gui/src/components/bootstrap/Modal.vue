@@ -46,10 +46,8 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  yesClickFunction: Function,
-  noClickFunction: Function,
 })
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'yes-click', 'no-click'])
 
 // Data
 const modal = ref<HTMLElement>()
@@ -70,18 +68,12 @@ const performHideModal = () => {
 }
 
 const onYesClick = () => {
-  if (props.yesClickFunction) {
-    props.yesClickFunction()
-  }
-
+  emit('yes-click')
   performHideModal()
 }
 
 const onNoClick = () => {
-  if (props.noClickFunction) {
-    props.noClickFunction()
-  }
-
+  emit('no-click')
   performHideModal()
 }
 

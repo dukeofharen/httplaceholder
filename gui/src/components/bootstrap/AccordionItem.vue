@@ -23,12 +23,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 
-const props = defineProps({
-  opened: {
-    type: Boolean,
-    default: null
-  },
-})
+export type AccordionItemProps = {
+  opened?: boolean;
+}
+
+const props = defineProps<AccordionItemProps>();
 
 const emit = defineEmits(['buttonClicked', 'opened', 'closed'])
 

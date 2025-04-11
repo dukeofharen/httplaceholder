@@ -68,9 +68,9 @@
               v-if="!isReadOnly"
               :title="$vsprintf($translate('stubs.deleteStubWithId'), [id])"
               :bodyText="$translate('stubs.stubsCantBeRecovered')"
-              :yes-click-function="deleteStub"
               :show-modal="showDeleteModal"
               @close="showDeleteModal = false"
+              @yes-click="deleteStub"
             />
           </div>
         </div>

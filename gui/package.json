@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "npm run parse-stub-examples && vite --host 0.0.0.0 --port 10001",
-    "build": "npm run parse-stub-examples && npm run lint && run-p type-check \"build-only {@}\" --",
+    "build": "npm run parse-stub-examples && npm run lint && npm run build-with-typecheck",
     "preview": "vite preview",
+    "build-with-typecheck": "run-p type-check \"build-only {@}\" --",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",

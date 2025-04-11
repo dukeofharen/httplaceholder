@@ -29,9 +29,9 @@
       <modal
         :title="$translate('stubs.deleteAllStubsQuestion')"
         :bodyText="$translate('stubs.stubsCantBeRecovered')"
-        :yes-click-function="deleteAllStubs"
         :show-modal="showDeleteAllStubsModal"
         @close="showDeleteAllStubsModal = false"
+        @yes-click="deleteAllStubs"
       />
     </div>
 
@@ -47,9 +47,9 @@
       <modal
         :title="$translate('stubs.disableStubsQuestion')"
         :bodyText="$translate('stubs.disableStubsModalBody')"
-        :yes-click-function="disableStubs"
         :show-modal="showDisableStubsModal"
         @close="showDisableStubsModal = false"
+        @yes-click="disableStubs"
       />
 
       <button
@@ -63,9 +63,9 @@
       <modal
         :title="$translate('stubs.enableStubsQuestion')"
         :bodyText="$translate('stubs.enableStubsModalBody')"
-        :yes-click-function="enableStubs"
         :show-modal="showEnableStubsModal"
         @close="showEnableStubsModal = false"
+        @yes-click="enableStubs"
       />
 
       <button
@@ -79,9 +79,9 @@
       <modal
         :title="$translate('stubs.deleteSelectedStubsQuestion')"
         :bodyText="$translate('stubs.deleteSelectedStubsModalBody')"
-        :yes-click-function="deleteStubs"
         :show-modal="showDeleteStubsModal"
         @close="showDeleteStubsModal = false"
+        @yes-click="deleteStubs"
       />
     </div>
 
@@ -145,7 +145,7 @@
       />
     </accordion>
     <div v-else>
-      <router-link :to="{ name: 'StubForm' }">{{ $translate('stubs.addStubs') }} </router-link>
+      <router-link :to="{ name: 'StubForm' }">{{ $translate('stubs.addStubs') }}</router-link>
       <span>&nbsp;</span>
       <router-link :to="{ name: 'ImportStubs' }"
         >{{ $translate('stubs.importStubs') }}

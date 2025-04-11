@@ -23,9 +23,9 @@
       <modal
         :title="$translate('requests.deleteAllRequestsQuestion')"
         :bodyText="$translate('requests.requestsCantBeRecovered')"
-        :yes-click-function="deleteAllRequests"
         :show-modal="showDeleteAllRequestsModal"
         @close="showDeleteAllRequestsModal = false"
+        @yes-click="deleteAllRequests"
       />
     </div>
     <div class="col-md-12 mb-3">

@@ -10,9 +10,9 @@
   </button>
   <modal
     :title="$translate('stubForm.resetToDefaults')"
-    :yes-click-function="reset"
     :show-modal="showResetModal"
     @close="showResetModal = false"
+    @yes-click="reset"
   />
 </template>
 
