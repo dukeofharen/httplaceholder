@@ -67,12 +67,10 @@ import {
   StubFormHelperCategory,
   stubFormHelpers,
 } from '@/domain/stubForm/stub-form-helpers'
-import RenderedFormHelper from '@/components/stubForm/formHelper/RenderedFormHelper.vue'
 import { translate } from '@/utils/translate'
 
 export default defineComponent({
   name: 'FormHelperSelector',
-  components: { RenderedFormHelper },
   setup() {
     const stubFormStore = useStubFormStore()
     const route = useRoute()

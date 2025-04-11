@@ -55,8 +55,6 @@ import { computed, ref, onMounted, onUnmounted, type PropType } from 'vue'
 import { formatDateTime, formatFromNow } from '@/utils/datetime'
 import { handleHttpError } from '@/utils/error'
 import { setIntermediateStub } from '@/utils/session'
-import Method from '@/components/request/Method.vue'
-import RequestDetails from '@/components/request/RequestDetails.vue'
 import yaml from 'js-yaml'
 import { useRouter } from 'vue-router'
 import { success } from '@/utils/toast'
@@ -66,13 +64,11 @@ import { defineComponent } from 'vue'
 import type { RequestOverviewModel } from '@/domain/request/request-overview-model'
 import type { RequestResultModel } from '@/domain/request/request-result-model'
 import { getDefaultRequestResultModel } from '@/domain/request/request-result-model'
-import RequestExport from '@/components/request/RequestExport.vue'
 import { refreshRequestTimesInterval } from '@/constants'
 import { translate } from '@/utils/translate'
 
 export default defineComponent({
   name: 'Request',
-  components: { Method, RequestDetails, RequestExport },
   props: {
     overviewRequest: {
       type: Object as PropType<RequestOverviewModel>,

@@ -61,26 +61,12 @@
 <script lang="ts">
 import { computed, type PropType } from 'vue'
 import { formatDateTime, getDuration } from '@/utils/datetime'
-import RequestHeaders from '@/components/request/RequestHeaders.vue'
-import QueryParams from '@/components/request/QueryParams.vue'
-import RequestResponse from '@/components/request/RequestResponse.vue'
-import StubExecutionResults from '@/components/request/StubExecutionResults.vue'
-import ResponseWriterResults from '@/components/request/ResponseWriterResults.vue'
 import { defineComponent } from 'vue'
 import type { RequestResultModel } from '@/domain/request/request-result-model'
-import RequestResponseBody from '@/components/request/body/RequestResponseBody.vue'
 import type { RequestResponseBodyRenderModel } from '@/domain/request/request-response-body-render-model'
 
 export default defineComponent({
   name: 'RequestDetails',
-  components: {
-    RequestResponseBody,
-    StubExecutionResults,
-    RequestHeaders,
-    QueryParams,
-    ResponseWriterResults,
-    RequestResponse,
-  },
   props: {
     request: {
       type: Object as PropType<RequestResultModel>,

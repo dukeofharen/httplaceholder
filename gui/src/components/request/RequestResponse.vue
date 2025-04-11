@@ -36,13 +36,11 @@ import type { RequestResultModel } from '@/domain/request/request-result-model'
 import type { ResponseModel } from '@/domain/request/response-model'
 import { useRequestsStore } from '@/store/requests'
 import type { HashMap } from '@/domain/hash-map'
-import RequestResponseBody from '@/components/request/body/RequestResponseBody.vue'
 import { type RequestResponseBodyRenderModel } from '@/domain/request/request-response-body-render-model'
 import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'RequestResponse',
-  components: { RequestResponseBody },
   props: {
     request: {
       type: Object as PropType<RequestResultModel>,

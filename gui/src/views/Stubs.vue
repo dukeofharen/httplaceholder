@@ -158,7 +158,6 @@
 <script lang="ts">
 import { useRoute } from 'vue-router'
 import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
-import Stub from '@/components/stub/Stub.vue'
 import yaml from 'js-yaml'
 import { handleHttpError } from '@/utils/error'
 import { downloadBlob } from '@/utils/download'
@@ -177,7 +176,6 @@ import { translate } from '@/utils/translate'
 
 export default defineComponent({
   name: 'Stubs',
-  components: { Stub },
   setup() {
     const tenantStore = useTenantsStore()
     const stubStore = useStubsStore()
