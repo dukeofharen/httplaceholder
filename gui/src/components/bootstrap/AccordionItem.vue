@@ -27,7 +27,7 @@ export type AccordionItemProps = {
   opened?: boolean;
 }
 
-const props = defineProps<AccordionItemProps>();
+const props = withDefaults(defineProps<AccordionItemProps>(), {opened: undefined});
 
 const emit = defineEmits(['buttonClicked', 'opened', 'closed'])
 
@@ -36,7 +36,7 @@ const openedValue = ref(props.opened)
 
 // Methods
 const toggle = () => {
-  if (props.opened !== null) {
+  if (props.opened !== undefined) {
     emit('buttonClicked')
   } else {
     if (openedValue.value === null) {
