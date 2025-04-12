@@ -56,10 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, type PropType, ref } from 'vue'
-import xmlFormatter from 'xml-formatter'
-import { formFormat } from '@/utils/form'
-import { copyTextToClipboard } from '@/utils/clipboard'
+import { computed, onMounted, ref } from 'vue'
 import { success } from '@/utils/toast'
 import { countNewlineCharacters, fromBase64 } from '@/utils/text'
 import { requestBodyLineLimit } from '@/constants'
@@ -67,6 +64,8 @@ import mime from 'mime-types'
 import { downloadBlob } from '@/utils/download'
 import type { RequestResponseBodyRenderModel } from '@/domain/request/request-response-body-render-model'
 import { translate } from '@/utils/translate'
+import { useTextFormatting } from '@/composables/useTextFormatting.ts'
+import { useClipboard } from '@vueuse/core'
 
 const bodyTypes = {
   xml: translate('request.xml'),
@@ -74,12 +73,11 @@ const bodyTypes = {
   form: translate('request.form'),
 }
 
-const props = defineProps({
-  renderModel: {
-    type: Object as PropType<RequestResponseBodyRenderModel>,
-    required: true,
-  },
-})
+export type TextBodyProps = {
+  renderModel: RequestResponseBodyRenderModel
+}
+
+const props = defineProps<TextBodyProps>()
 
 // Data
 const showRenderedBody = ref(false)
@@ -114,16 +112,13 @@ const bodyType = computed(() => {
       return ''
   }
 })
+
+const { xmlFormat, formFormat, jsonFormat } = useTextFormatting()
 const renderedBody = computed(() => {
   if (bodyType.value === bodyTypes.xml) {
-    return xmlFormatter(body.value)
+    return xmlFormat(body.value)
   } else if (bodyType.value === bodyTypes.json) {
-    try {
-      const json = JSON.parse(body.value)
-      return JSON.stringify(json, null, 2)
-    } catch {
-      return ''
-    }
+    return jsonFormat(body.value)
   } else if (bodyType.value === bodyTypes.form) {
     return formFormat(body.value)
   }
@@ -157,9 +152,8 @@ const viewRenderedBody = () => {
 const viewRawBody = () => (showRenderedBody.value = false)
 const copy = () => {
   const valueToCopy = showRenderedBody.value ? renderedBody.value : body.value
-  copyTextToClipboard(valueToCopy).then(() =>
-    success(translate('request.requestBodyCopiedToClipboard')),
-  )
+  const { copy } = useClipboard()
+  copy(valueToCopy).then(() => success(translate('request.requestBodyCopiedToClipboard')))
 }
 const showMoreClick = () => {
   showMoreClicked.value = true

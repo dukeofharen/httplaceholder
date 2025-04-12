@@ -55,5 +55,6 @@ declare module 'vue' {
     UploadStubs: typeof import('./src/components/import/UploadStubs.vue')['default']
     VariableHandlerSelector: typeof import('./src/components/stubForm/formHelper/VariableHandlerSelector.vue')['default']
     Vue3SlideUpDown: typeof import('vue3-slide-up-down')['Vue3SlideUpDown']
+    VuePdfEmbed: typeof import('vue-pdf-embed')['default']
   }
 }

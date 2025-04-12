@@ -4,17 +4,13 @@
 </template>
 
 <script setup lang="ts">
-import { type PropType } from 'vue'
-import BinaryBody from '@/components/request/body/BinaryBody.vue'
-import TextBody from '@/components/request/body/TextBody.vue'
 import type { RequestResponseBodyRenderModel } from '@/domain/request/request-response-body-render-model'
 
-defineProps({
-  renderModel: {
-    type: Object as PropType<RequestResponseBodyRenderModel>,
-    required: true,
-  },
-})
+export type RequestResponseBodyProps = {
+  renderModel: RequestResponseBodyRenderModel
+}
+
+defineProps<RequestResponseBodyProps>()
 </script>
 
 <style scoped></style>

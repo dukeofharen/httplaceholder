@@ -40,9 +40,11 @@ import { computed, defineComponent, type PropType, ref, watch } from 'vue'
 import { RequestExportType } from '@/domain/request/enums/request-export-type'
 import { useExportStore } from '@/store/export'
 import { handleHttpError } from '@/utils/error'
-import { copyTextToClipboard } from '@/utils/clipboard'
 import { type RequestResultModel } from '@/domain/request/request-result-model'
 import { downloadBlob } from '@/utils/download'
+import { useClipboard } from '@vueuse/core'
+import { success } from '@/utils/toast.ts'
+import { translate } from '@/utils/translate.ts'
 
 export default defineComponent({
   props: {
@@ -101,7 +103,10 @@ export default defineComponent({
     }
     const copy = async () => {
       if (exportResult.value) {
-        await copyTextToClipboard(exportResult.value)
+        const { copy } = useClipboard()
+        await copy(exportResult.value).then(() =>
+          success(translate('request.requestBodyCopiedToClipboard')),
+        )
       }
     }
     const download = async () => {

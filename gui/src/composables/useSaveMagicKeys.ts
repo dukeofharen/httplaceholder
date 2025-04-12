@@ -12,8 +12,8 @@ export function useSaveMagicKeys() {
     })
     whenever(ctrl_s, () => func())
     whenever(ctrl_enter, () => func())
-    whenever(meta_enter, () => func())
     whenever(meta_s, () => func())
+    whenever(meta_enter, () => func())
   }
 
   return { registerSaveFunction }

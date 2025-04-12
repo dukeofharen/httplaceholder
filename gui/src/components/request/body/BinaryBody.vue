@@ -11,7 +11,7 @@
               <img :src="dataUrl" />
             </div>
             <div v-if="bodyType === bodyTypes.pdf">
-              <vue-pdf-embed :source="dataUrl" class="pdf-viewer" />
+              <VuePdfEmbed :source="dataUrl" class="pdf-viewer" />
             </div>
           </div>
         </div>
@@ -21,13 +21,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { computed } from 'vue'
 import { downloadBlob } from '@/utils/download'
 import { base64ToBlob } from '@/utils/text'
 import { imageMimeTypes, pdfMimeType } from '@/constants'
 import mime from 'mime-types'
 import type { RequestResponseBodyRenderModel } from '@/domain/request/request-response-body-render-model'
-import VuePdfEmbed from 'vue-pdf-embed'
 
 const bodyTypes = {
   image: 'image',
@@ -35,12 +34,10 @@ const bodyTypes = {
   other: 'other',
 }
 
-const props = defineProps({
-  renderModel: {
-    type: Object as PropType<RequestResponseBodyRenderModel>,
-    required: true,
-  },
-})
+export type BinaryBodyProps = {
+  renderModel: RequestResponseBodyRenderModel
+}
+const props = defineProps<BinaryBodyProps>()
 
 // Computed
 const body = computed(() => {
@@ -87,6 +84,7 @@ const download = () => {
 
 <style scoped lang="scss">
 @import '@/style/bootstrap';
+
 img {
   max-width: 100%;
 }

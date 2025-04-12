@@ -17,6 +17,12 @@ function CustomComponentResolver(): ComponentResolver {
           name: 'Vue3SlideUpDown',
           from: 'vue3-slide-up-down',
         }
+      } else if(name === 'VuePdfEmbed') {
+        return {
+          name: 'default',
+          from: 'vue-pdf-embed',
+          as: 'VuePdfEmbed'
+        }
       }
     },
   }

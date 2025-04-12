@@ -16,7 +16,7 @@ import { Compartment, EditorState } from '@codemirror/state'
 import { EditorView, keymap } from '@codemirror/view'
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands'
 import { markdownLanguage } from '@codemirror/lang-markdown'
-import { copyTextToClipboard } from '@/utils/clipboard'
+import { useClipboard } from '@vueuse/core'
 
 export type CodeEditorProps = {
   modelValue: string
@@ -124,7 +124,8 @@ const lineDeletion = (target: EditorView) => {
 
   // Move line to clipboard.
   const lineText = state.doc.toString().slice(from, to)
-  copyTextToClipboard(lineText).then()
+  const { copy } = useClipboard()
+  copy(lineText).then()
 
   return true
 }
