@@ -87,7 +87,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import yaml from 'js-yaml'
 import { setIntermediateStub } from '@/utils/session'
-import { exampleCurlInput } from '@/strings/exmaples'
+import { exampleCurlInput } from '@/strings/examples'
 import type { FileUploadedModel } from '@/domain/file-uploaded-model'
 import { useSaveMagicKeys } from '@/composables/useSaveMagicKeys.ts'
 

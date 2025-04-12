@@ -87,7 +87,7 @@ import { setIntermediateStub } from '@/utils/session'
 import { success } from '@/utils/toast'
 import { type ImportInputModel, useImportStore } from '@/store/import'
 import type { FileUploadedModel } from '@/domain/file-uploaded-model'
-import { exampleHarInput } from '@/strings/exmaples'
+import { exampleHarInput } from '@/strings/examples'
 import { translate } from '@/utils/translate'
 import { useSaveMagicKeys } from '@/composables/useSaveMagicKeys.ts'
 
