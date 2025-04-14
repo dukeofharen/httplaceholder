@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Accordion: typeof import('./src/components/bootstrap/Accordion.vue')['default']
+    AccordionButton: typeof import('./src/components/bootstrap/AccordionButton.vue')['default']
     AccordionItem: typeof import('./src/components/bootstrap/AccordionItem.vue')['default']
     BasicAuthHelper: typeof import('./src/components/stubForm/formHelper/BasicAuthHelper.vue')['default']
     BasicInput: typeof import('./src/components/stubForm/formHelper/BasicInput.vue')['default']

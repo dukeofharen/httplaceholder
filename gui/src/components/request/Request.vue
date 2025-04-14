@@ -1,5 +1,5 @@
 <template>
-  <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
+  <accordion-item @opened="showDetails">
     <template v-slot:button-text>
       <span
         class="request-header"
@@ -94,7 +94,6 @@ export default defineComponent({
     const timeFromNow = ref(getTimeFromNow())
     let refreshTimeFromNowInterval: any
     const request = ref<RequestResultModel>(getDefaultRequestResultModel())
-    const accordionOpened = ref(false)
     const exportRequestOpened = ref(false)
 
     // Lifecycle
@@ -114,12 +113,9 @@ export default defineComponent({
       if (!request.value.correlationId) {
         try {
           request.value = await requestStore.getRequest(correlationId())
-          accordionOpened.value = true
         } catch (e) {
           handleHttpError(e)
         }
-      } else {
-        accordionOpened.value = !accordionOpened.value
       }
     }
     const createStub = async () => {
@@ -155,7 +151,6 @@ export default defineComponent({
       refreshTimeFromNowInterval,
       request,
       showDetails,
-      accordionOpened,
       createStub,
       deleteRequest,
       executingStubId,

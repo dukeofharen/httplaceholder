@@ -85,13 +85,12 @@
         :overview-request="request"
         @deleted="requestDeleted"
       />
-      <accordion-item
+      <accordion-button
         v-if="shouldShowLoadMoreButton"
-        :opened="false"
-        @buttonClicked="loadMoreRequests"
+        @click="loadMoreRequests"
       >
         <template v-slot:button-text>{{ $translate('requests.loadMoreRequests') }}</template>
-      </accordion-item>
+      </accordion-button>
     </accordion>
     <div v-else>
       {{ $translate('requests.noRequestsYet') }}

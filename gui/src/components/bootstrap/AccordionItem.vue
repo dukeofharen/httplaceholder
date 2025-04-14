@@ -24,32 +24,23 @@
 import { ref, watch } from 'vue'
 
 export type AccordionItemProps = {
-  opened?: boolean;
+  opened: boolean
 }
 
-const props = withDefaults(defineProps<AccordionItemProps>(), {opened: undefined});
+const props = withDefaults(defineProps<AccordionItemProps>(), {opened: false})
 
-const emit = defineEmits(['buttonClicked', 'opened', 'closed'])
+const emit = defineEmits(['opened', 'closed'])
 
 // Data
 const openedValue = ref(props.opened)
 
 // Methods
 const toggle = () => {
-  if (props.opened !== undefined) {
-    emit('buttonClicked')
+  openedValue.value = !openedValue.value
+  if (openedValue.value) {
+    emit('opened')
   } else {
-    if (openedValue.value === null) {
-      openedValue.value = true
-      emit('opened')
-    } else {
-      openedValue.value = !openedValue.value
-      if (openedValue.value) {
-        emit('opened')
-      } else {
-        emit('closed')
-      }
-    }
+    emit('closed')
   }
 }
 
