@@ -18,10 +18,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary no-button" @click="onNoClick">
-            {{ getNoText() }}
+            {{ noText ?? $translate('general.no') }}
           </button>
           <button type="button" class="btn btn-primary yes-button" @click="onYesClick">
-            {{ getYesText() }}
+            {{ yesText ?? $translate('general.yes') }}
           </button>
         </div>
       </div>
@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
 import { getOrCreateInstance } from '@/utils/bootstrap'
-import { translate } from '@/utils/translate'
 import { onMounted, ref, watch } from 'vue'
 
 export type ModalProps = {
@@ -70,14 +69,6 @@ const onYesClick = () => {
 const onNoClick = () => {
   emit('no-click')
   performHideModal()
-}
-
-function getYesText() {
-  return props.yesText ?? translate('general.yes')
-}
-
-function getNoText() {
-  return props.noText ?? translate('general.no')
 }
 
 // Lifecycle
