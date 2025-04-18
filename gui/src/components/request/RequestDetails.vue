@@ -58,62 +58,42 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, type PropType } from 'vue'
+<script setup lang="ts">
+import { computed } from 'vue'
 import { formatDateTime, getDuration } from '@/utils/datetime'
-import { defineComponent } from 'vue'
 import type { RequestResultModel } from '@/domain/request/request-result-model'
 import type { RequestResponseBodyRenderModel } from '@/domain/request/request-response-body-render-model'
 
-export default defineComponent({
-  name: 'RequestDetails',
-  props: {
-    request: {
-      type: Object as PropType<RequestResultModel>,
-      required: true,
-    },
-  },
-  setup(props) {
-    // Computed
-    const requestParams = computed(() => props.request?.requestParameters)
-    const requestTime = computed(() => formatDateTime(props.request?.requestEndTime))
-    const duration = computed(() => {
-      const req = props.request
-      return getDuration(req?.requestBeginTime, req?.requestEndTime)
-    })
-    const showQueryParameters = computed(() => requestParams.value?.url?.includes('?') || false)
-    const showRequestBody = computed(() => !!requestParams.value?.body || false)
-    const showStubExecutionResults = computed(
-      () => props.request?.stubExecutionResults && props.request?.stubExecutionResults.length,
-    )
-    const showStubResponseWriterResults = computed(
-      () =>
-        props.request?.stubResponseWriterResults && props.request?.stubResponseWriterResults.length,
-    )
-    const showResults = computed(
-      () => showStubExecutionResults.value || showStubResponseWriterResults.value,
-    )
-    const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
-      return {
-        body: props.request.requestParameters.body,
-        bodyIsBinary: props.request.requestParameters.bodyIsBinary,
-        headers: props.request.requestParameters.headers,
-        base64DecodeNotBinary: false,
-      }
-    })
+export type RequestDetailsProps = {
+  request: RequestResultModel
+}
+const props = defineProps<RequestDetailsProps>()
 
-    return {
-      requestParams,
-      requestTime,
-      duration,
-      showQueryParameters,
-      showStubExecutionResults,
-      showStubResponseWriterResults,
-      showResults,
-      showRequestBody,
-      bodyRenderModel,
-    }
-  },
+// Computed
+const requestParams = computed(() => props.request?.requestParameters)
+const requestTime = computed(() => formatDateTime(props.request?.requestEndTime))
+const duration = computed(() => {
+  const req = props.request
+  return getDuration(req?.requestBeginTime, req?.requestEndTime)
+})
+const showQueryParameters = computed(() => requestParams.value?.url?.includes('?') || false)
+const showRequestBody = computed(() => !!requestParams.value?.body || false)
+const showStubExecutionResults = computed(
+  () => props.request?.stubExecutionResults && props.request?.stubExecutionResults.length,
+)
+const showStubResponseWriterResults = computed(
+  () => props.request?.stubResponseWriterResults && props.request?.stubResponseWriterResults.length,
+)
+const showResults = computed(
+  () => showStubExecutionResults.value || showStubResponseWriterResults.value,
+)
+const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
+  return {
+    body: props.request.requestParameters.body,
+    bodyIsBinary: props.request.requestParameters.bodyIsBinary,
+    headers: props.request.requestParameters.headers,
+    base64DecodeNotBinary: false,
+  }
 })
 </script>
 
