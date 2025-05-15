@@ -30,8 +30,8 @@
   </accordion-item>
 </template>
 
-<script lang="ts">
-import { type PropType, defineComponent, ref, computed } from 'vue'
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 import type { RequestResultModel } from '@/domain/request/request-result-model'
 import type { ResponseModel } from '@/domain/request/response-model'
 import { useRequestsStore } from '@/store/requests'
@@ -39,60 +39,44 @@ import type { HashMap } from '@/domain/hash-map'
 import { type RequestResponseBodyRenderModel } from '@/domain/request/request-response-body-render-model'
 import { useRouter } from 'vue-router'
 
-export default defineComponent({
-  name: 'RequestResponse',
-  props: {
-    request: {
-      type: Object as PropType<RequestResultModel>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const requestStore = useRequestsStore()
-    const router = useRouter()
+export type RequestResponseProps = {
+  request: RequestResultModel
+}
 
-    // Data
-    const response = ref<ResponseModel>({
-      body: '',
-      headers: {} as HashMap,
-      statusCode: 0,
-      bodyIsBinary: false,
-    })
+const props = defineProps<RequestResponseProps>()
 
-    // Computed
-    const headers = computed(() => (response.value ? response.value?.headers : ({} as HashMap)))
-    const hasHeaders = computed(() => Object.keys(headers.value).length > 0)
-    const statusCode = computed(() => (response.value ? response.value?.statusCode : null))
-    const hasResponse = computed(() => props.request.hasResponse)
-    const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
-      return {
-        body: response.value.body,
-        base64DecodeNotBinary: true,
-        bodyIsBinary: response.value.bodyIsBinary,
-        headers: response.value.headers,
-      }
-    })
-    const settingsUrl = computed(() => router.resolve({ name: 'Settings' }).href)
+const { getResponse } = useRequestsStore()
+const { resolve } = useRouter()
 
-    // Methods
-    const loadResponse = async () => {
-      if (hasResponse.value && !response.value.statusCode) {
-        response.value = await requestStore.getResponse(props.request.correlationId)
-      }
-    }
-
-    return {
-      loadResponse,
-      response,
-      headers,
-      hasHeaders,
-      statusCode,
-      hasResponse,
-      bodyRenderModel,
-      settingsUrl,
-    }
-  },
+// Data
+const response = ref<ResponseModel>({
+  body: '',
+  headers: {} as HashMap,
+  statusCode: 0,
+  bodyIsBinary: false,
 })
+
+// Computed
+const headers = computed(() => (response.value ? response.value?.headers : ({} as HashMap)))
+const hasHeaders = computed(() => Object.keys(headers.value).length > 0)
+const statusCode = computed(() => (response.value ? response.value?.statusCode : null))
+const hasResponse = computed(() => props.request.hasResponse)
+const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
+  return {
+    body: response.value.body,
+    base64DecodeNotBinary: true,
+    bodyIsBinary: response.value.bodyIsBinary,
+    headers: response.value.headers,
+  }
+})
+const settingsUrl = computed(() => resolve({ name: 'Settings' }).href)
+
+// Methods
+const loadResponse = async () => {
+  if (hasResponse.value && !response.value.statusCode) {
+    response.value = await getResponse(props.request.correlationId)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
