@@ -50,10 +50,10 @@ internal class FileWatcherYamlFileStubSource(
         CancellationToken cancellationToken = default) =>
         (from kv
                 in Stubs
-            from stub
-                in kv.Value
-            select (stub,
-                new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } })).AsTask();
+         from stub
+             in kv.Value
+         select (stub,
+             new Dictionary<string, string> { { StubMetadataKeys.Filename, kv.Key } })).AsTask();
 
     /// <inheritdoc />
     public override async Task<IEnumerable<(StubOverviewModel Stub, Dictionary<string, string> Metadata)>>

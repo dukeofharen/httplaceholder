@@ -35,98 +35,84 @@
   </div>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, type PropType, ref, watch } from 'vue'
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
 import { RequestExportType } from '@/domain/request/enums/request-export-type'
 import { useExportStore } from '@/store/export'
 import { handleHttpError } from '@/utils/error'
-import { copyTextToClipboard } from '@/utils/clipboard'
 import { type RequestResultModel } from '@/domain/request/request-result-model'
 import { downloadBlob } from '@/utils/download'
+import { useClipboard } from '@vueuse/core'
+import { success } from '@/utils/toast.ts'
+import { translate } from '@/utils/translate.ts'
 
-export default defineComponent({
-  props: {
-    request: {
-      type: Object as PropType<RequestResultModel>,
-      required: true,
-    },
-  },
-  setup(props) {
-    const exportStore = useExportStore()
+export type RequestExportProps = {
+  request: RequestResultModel
+}
+const props = defineProps<RequestExportProps>()
 
-    // Data
-    const exportType = ref(RequestExportType.NotSet)
-    const exportResult = ref('')
+const { exportRequest } = useExportStore()
 
-    // Computed
-    const language = computed(() => {
-      switch (exportType.value) {
-        case RequestExportType.Curl:
-          return 'bash'
-        default:
-          return 'plaintext'
-      }
-    })
-    const showExportResult = computed(() => {
-      return exportType.value !== RequestExportType.NotSet && !!exportResult.value
-    })
-    const showExportResultText = computed(() => {
-      switch (exportType.value) {
-        case RequestExportType.Curl:
-          return true
-        default:
-          return false
-      }
-    })
-    const exportFilename = computed(() => {
-      switch (exportType.value) {
-        case RequestExportType.Har:
-          return `har-${props.request.correlationId}.json`
-        default:
-          return 'file.bin'
-      }
-    })
+// Data
+const exportType = ref(RequestExportType.NotSet)
+const exportResult = ref('')
 
-    // Methods
-    const exportRequest = async () => {
-      try {
-        const result = await exportStore.exportRequest(
-          props.request.correlationId,
-          exportType.value,
-        )
-        exportResult.value = result.result
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-    const copy = async () => {
-      if (exportResult.value) {
-        await copyTextToClipboard(exportResult.value)
-      }
-    }
-    const download = async () => {
-      downloadBlob(exportFilename.value, exportResult.value)
-    }
+// Computed
+const language = computed(() => {
+  switch (exportType.value) {
+    case RequestExportType.Curl:
+      return 'bash'
+    default:
+      return 'plaintext'
+  }
+})
+const showExportResult = computed(() => {
+  return exportType.value !== RequestExportType.NotSet && !!exportResult.value
+})
+const showExportResultText = computed(() => {
+  switch (exportType.value) {
+    case RequestExportType.Curl:
+      return true
+    default:
+      return false
+  }
+})
+const exportFilename = computed(() => {
+  switch (exportType.value) {
+    case RequestExportType.Har:
+      return `har-${props.request.correlationId}.json`
+    default:
+      return 'file.bin'
+  }
+})
 
-    // Watches
-    watch(exportType, async (newType) => {
-      if (newType !== RequestExportType.NotSet) {
-        exportResult.value = ''
-        await exportRequest()
-      }
-    })
+// Methods
+const doExportRequest = async () => {
+  try {
+    const result = await exportRequest(props.request.correlationId, exportType.value)
+    exportResult.value = result.result
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+const copy = async () => {
+  if (exportResult.value) {
+    const { copy } = useClipboard()
+    await copy(exportResult.value).then(() =>
+      success(translate('request.requestBodyCopiedToClipboard')),
+    )
+  }
+}
+const download = async () => {
+  downloadBlob(exportFilename.value, exportResult.value)
+}
 
-    return {
-      RequestExportType,
-      exportType,
-      language,
-      exportResult,
-      showExportResult,
-      copy,
-      showExportResultText,
-      download,
-    }
-  },
+// Watches
+watch(exportType, async (newType) => {
+  if (newType !== RequestExportType.NotSet) {
+    exportResult.value = ''
+    await doExportRequest()
+  }
 })
 </script>
 

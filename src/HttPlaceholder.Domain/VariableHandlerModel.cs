@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Domain;
+﻿namespace HttPlaceholder.Domain;
 
 /// <summary>
 ///     A model that is used for displaying what types of variable handlers are available.

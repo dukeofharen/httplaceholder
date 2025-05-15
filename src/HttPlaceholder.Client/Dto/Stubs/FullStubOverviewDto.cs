@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Client.Dto.Stubs;
+﻿namespace HttPlaceholder.Client.Dto.Stubs;
 
 /// <summary>
 ///     A class for storing a stripped down version of a stub with metadata.

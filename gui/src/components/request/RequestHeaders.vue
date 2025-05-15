@@ -2,9 +2,9 @@
   <accordion-item>
     <template v-slot:button-text>{{ $translate('request.requestHeaders') }}</template>
     <template v-slot:accordion-body>
-      <table class="table" v-if="requestParams.headers">
+      <table class="table" v-if="request.requestParameters.headers">
         <tbody>
-          <tr v-for="(value, key) in requestParams.headers" :key="key">
+          <tr v-for="(value, key) in request.requestParameters.headers" :key="key">
             <td class="p-1">{{ key }}</td>
             <td class="p-1">{{ value }}</td>
           </tr>
@@ -14,26 +14,13 @@
   </accordion-item>
 </template>
 
-<script lang="ts">
-import { computed } from 'vue'
-import { defineComponent, type PropType } from 'vue'
+<script setup lang="ts">
 import type { RequestResultModel } from '@/domain/request/request-result-model'
 
-export default defineComponent({
-  name: 'RequestHeaders',
-  props: {
-    request: {
-      type: Object as PropType<RequestResultModel>,
-      required: true,
-    },
-  },
-  setup(props) {
-    // Computed
-    const requestParams = computed(() => props.request?.requestParameters)
-
-    return { requestParams }
-  },
-})
+export type RequestHeadersProps = {
+  request: RequestResultModel
+}
+defineProps<RequestHeadersProps>()
 </script>
 
 <style scoped></style>

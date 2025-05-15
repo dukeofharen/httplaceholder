@@ -31,7 +31,9 @@ public class HttpClientExtensionsFacts
         // Arrange
         var config = new HttPlaceholderClientConfiguration
         {
-            RootUrl = "http://localhost:5000", Username = "username", Password = "password"
+            RootUrl = "http://localhost:5000",
+            Username = "username",
+            Password = "password"
         };
         var httpClient = new HttpClient();
 

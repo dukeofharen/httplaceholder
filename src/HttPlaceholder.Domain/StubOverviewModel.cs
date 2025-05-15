@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Domain;
+﻿namespace HttPlaceholder.Domain;
 
 /// <summary>
 ///     A class for storing a stripped down version of a stub.

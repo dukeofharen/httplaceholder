@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using HttPlaceholder.Web.Shared.Dto.v1.Requests;
 using Newtonsoft.Json;

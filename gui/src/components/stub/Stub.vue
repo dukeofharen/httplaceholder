@@ -1,5 +1,5 @@
 <template>
-  <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
+  <accordion-item @opened="showDetails">
     <template v-slot:button-text>
       <span :class="{ disabled: !isEnabled }">
         {{ id }}
@@ -68,9 +68,9 @@
               v-if="!isReadOnly"
               :title="$vsprintf($translate('stubs.deleteStubWithId'), [id])"
               :bodyText="$translate('stubs.stubsCantBeRecovered')"
-              :yes-click-function="deleteStub"
               :show-modal="showDeleteModal"
               @close="showDeleteModal = false"
+              @yes-click="deleteStub"
             />
           </div>
         </div>
@@ -116,7 +116,6 @@ export default defineComponent({
     const overviewStubValue = ref(props.overviewStub)
     const fullStub = ref<FullStubModel>()
     const showDeleteModal = ref(false)
-    const accordionOpened = ref(false)
 
     // Computed
     const stubYaml = computed(() => {
@@ -145,14 +144,9 @@ export default defineComponent({
       if (!fullStub.value) {
         try {
           fullStub.value = await stubStore.getStub(id.value)
-
-          // Sadly, when doing this without the timeout, it does the slide down incorrect.
-          setTimeout(() => (accordionOpened.value = true), 1)
         } catch (e) {
           handleHttpError(e)
         }
-      } else {
-        accordionOpened.value = !accordionOpened.value
       }
     }
     const duplicate = async () => {
@@ -214,7 +208,6 @@ export default defineComponent({
       deleteStub,
       showDeleteModal,
       id,
-      accordionOpened,
       hasScenario,
       scenario,
       downloadStub,

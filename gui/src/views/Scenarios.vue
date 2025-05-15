@@ -24,9 +24,9 @@
       <modal
         :title="$translate('scenarios.clearAllScenariosQuestion')"
         :bodyText="$translate('scenarios.scenariosCantBeRecovered')"
-        :yes-click-function="clearAllScenarios"
         :show-modal="clearAllScenariosModal"
         @close="clearAllScenariosModal = false"
+        @yes-click="clearAllScenarios"
       />
     </div>
 

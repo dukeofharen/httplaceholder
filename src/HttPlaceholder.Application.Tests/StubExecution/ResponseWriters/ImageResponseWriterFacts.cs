@@ -102,7 +102,7 @@ public class ImageResponseWriterFacts
             .Returns(AssemblyHelper.GetExecutingAssemblyRootPath);
 
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
-            var fileServiceMock = _mocker.GetMock<IFileService>();
+        var fileServiceMock = _mocker.GetMock<IFileService>();
         fileServiceMock
             .Setup(m => m.FileExistsAsync(expectedCachePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);

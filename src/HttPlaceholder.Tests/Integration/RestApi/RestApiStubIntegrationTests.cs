@@ -224,7 +224,9 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
@@ -249,7 +251,9 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
@@ -272,7 +276,9 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         var url = $"{TestServer.BaseAddress}ph-api/stubs/overview";
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
@@ -295,7 +301,9 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
@@ -319,7 +327,9 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
@@ -340,7 +350,9 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         // arrange
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-124", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-124",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         // Act
@@ -356,7 +368,9 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         // Act
@@ -372,7 +386,9 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-124", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-124",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         // Act
@@ -549,11 +565,15 @@ public class RestApiStubIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
         StubSource.GetCollection(null).StubModels.Add(new StubModel
         {
-            Id = "test-456", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            Id = "test-456",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel()
         });
 
         var url = $"{TestServer.BaseAddress}ph-api/stubs";

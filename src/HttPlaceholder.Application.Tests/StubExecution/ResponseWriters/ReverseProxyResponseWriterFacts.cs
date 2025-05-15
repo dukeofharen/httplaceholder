@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -128,7 +128,9 @@ public class ReverseProxyResponseWriterFacts
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = appendPath, AppendQueryString = appendQueryString, Url = proxyUrl
+                    AppendPath = appendPath,
+                    AppendQueryString = appendQueryString,
+                    Url = proxyUrl
                 }
             }
         };
@@ -180,7 +182,9 @@ public class ReverseProxyResponseWriterFacts
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = false, AppendQueryString = false, Url = proxyUrl
+                    AppendPath = false,
+                    AppendQueryString = false,
+                    Url = proxyUrl
                 }
             }
         };
@@ -245,7 +249,9 @@ public class ReverseProxyResponseWriterFacts
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = false, AppendQueryString = false, Url = proxyUrl
+                    AppendPath = false,
+                    AppendQueryString = false,
+                    Url = proxyUrl
                 }
             }
         };
@@ -317,7 +323,9 @@ public class ReverseProxyResponseWriterFacts
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = false, AppendQueryString = false, Url = proxyUrl
+                    AppendPath = false,
+                    AppendQueryString = false,
+                    Url = proxyUrl
                 }
             }
         };
@@ -374,7 +382,9 @@ public class ReverseProxyResponseWriterFacts
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = false, AppendQueryString = false, Url = proxyUrl
+                    AppendPath = false,
+                    AppendQueryString = false,
+                    Url = proxyUrl
                 }
             }
         };
@@ -515,7 +525,10 @@ public class ReverseProxyResponseWriterFacts
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = true, AppendQueryString = false, Url = proxyUrl, ReplaceRootUrl = true
+                    AppendPath = true,
+                    AppendQueryString = false,
+                    Url = proxyUrl,
+                    ReplaceRootUrl = true
                 }
             }
         };

@@ -298,7 +298,8 @@ public class StubModelValidatorFacts
             {
                 Scenario = new StubResponseScenarioModel
                 {
-                    ClearState = clearState, SetScenarioState = setScenarioState
+                    ClearState = clearState,
+                    SetScenarioState = setScenarioState
                 }
             }
         };
@@ -374,7 +375,8 @@ public class StubModelValidatorFacts
         var validator = _mocker.CreateInstance<StubModelValidator>();
         var model = new StubModel
         {
-            Id = "stub", Response = new StubResponseModel { StatusCode = statusCode, Text = "Some response" }
+            Id = "stub",
+            Response = new StubResponseModel { StatusCode = statusCode, Text = "Some response" }
         };
 
         // Act
@@ -411,7 +413,8 @@ public class StubModelValidatorFacts
             Id = "stub",
             Response = new StubResponseModel
             {
-                Text = "Some response", Headers = headers.Split(',').ToDictionary(h => h, _ => "headerValue")
+                Text = "Some response",
+                Headers = headers.Split(',').ToDictionary(h => h, _ => "headerValue")
             }
         };
 

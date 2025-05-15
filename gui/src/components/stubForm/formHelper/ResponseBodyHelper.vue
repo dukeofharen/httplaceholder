@@ -94,13 +94,11 @@ import type { FileUploadedModel } from '@/domain/file-uploaded-model'
 import { UploadButtonType } from '@/domain/upload-button-type'
 import { warning } from '@/utils/toast'
 import xmlFormatter from 'xml-formatter'
-import VariableHandlerSelector from '@/components/stubForm/formHelper/VariableHandlerSelector.vue'
 import { vsprintf } from 'sprintf-js'
 import { translate } from '@/utils/translate'
 
 export default defineComponent({
   name: 'ResponseBodyHelper',
-  components: { VariableHandlerSelector },
   props: {
     presetResponseBodyType: {
       type: String as PropType<ResponseBodyType>,

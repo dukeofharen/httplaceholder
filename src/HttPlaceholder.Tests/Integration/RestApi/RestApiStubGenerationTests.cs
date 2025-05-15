@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -128,7 +128,9 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
             RequestParameters =
                 new RequestParametersModel
                 {
-                    Url = "/the-url", Headers = new Dictionary<string, string>(), Method = "GET"
+                    Url = "/the-url",
+                    Headers = new Dictionary<string, string>(),
+                    Method = "GET"
                 },
             HasResponse = true,
             ExecutingStubId = "x"

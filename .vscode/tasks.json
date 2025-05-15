@@ -30,23 +30,54 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Run and watch",
+      "label": "Run and watch API",
       "type": "shell",
       "command": "cd ${workspaceFolder}/src/HttPlaceholder && export DOTNET_ENVIRONMENT=Development && dotnet watch -V --dev"
     },
     {
+      "label": "Format API",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/src && dotnet format",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run UI",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/gui && npm run dev"
+    },
+    {
+      "label": "Build UI",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/gui && npm run build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Format UI",
+      "type": "shell",
+      "command": "cd ${workspaceFolder}/gui && npm run format",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run UI and API",
+      "dependsOn": [
+        "Run and watch API",
+        "Run UI"
+      ],
+      "problemMatcher": []
+    },
+    {
       "label": "Run devenv",
-      "type":"shell",
+      "type": "shell",
       "command": "cd ${workspaceFolder}/scripts/dev && docker compose up"
     },
     {
       "label": "Serve mkdocs",
-      "type":"shell",
+      "type": "shell",
       "command": "cd ${workspaceFolder}/docs/httpl-docs && ./serve.sh"
     },
     {
       "label": "Run integration tests",
-      "type":"shell",
+      "type": "shell",
       "command": "cd ${workspaceFolder}/test && ./exec-tests.sh"
     }
   ]

@@ -2,9 +2,9 @@
   <modal
     :title="$translate('stubForm.insertThisExample')"
     :bodyText="$translate('stubForm.youHaveUnsavedChanges')"
-    :yes-click-function="insert"
     :show-modal="showWarningModal"
     @close="showWarningModal = false"
+    @yes-click="insert"
   />
   <div>
     <select class="form-select" v-model="selectedExample">

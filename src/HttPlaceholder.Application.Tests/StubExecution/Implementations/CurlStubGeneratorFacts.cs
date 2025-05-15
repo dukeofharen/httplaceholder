@@ -87,7 +87,9 @@ public class CurlStubGeneratorFacts
 
         var conditions1 = new StubConditionsModel
         {
-            Host = "host1", Method = "GET", Url = new StubUrlConditionModel { Path = "/path1" }
+            Host = "host1",
+            Method = "GET",
+            Url = new StubUrlConditionModel { Path = "/path1" }
         };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[0], It.IsAny<CancellationToken>()))
@@ -95,7 +97,9 @@ public class CurlStubGeneratorFacts
 
         var conditions2 = new StubConditionsModel
         {
-            Host = "host2", Method = "POST", Url = new StubUrlConditionModel { Path = "/path2" }
+            Host = "host2",
+            Method = "POST",
+            Url = new StubUrlConditionModel { Path = "/path2" }
         };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[1], It.IsAny<CancellationToken>()))

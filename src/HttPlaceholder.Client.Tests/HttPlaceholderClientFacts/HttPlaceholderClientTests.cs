@@ -18,7 +18,9 @@ public class HttPlaceholderClientTests
         // Arrange
         var model = new ImportStubsModel
         {
-            Tenant = tenant, DoNotCreateStub = doNotCreateStub, StubIdPrefix = stubIdPrefix
+            Tenant = tenant,
+            DoNotCreateStub = doNotCreateStub,
+            StubIdPrefix = stubIdPrefix
         };
 
         // Act

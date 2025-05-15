@@ -62,16 +62,13 @@ import { simpleEditorThreshold } from '@/constants'
 import { handleHttpError } from '@/utils/error'
 import yaml from 'js-yaml'
 import { clearIntermediateStub, getIntermediateStub } from '@/utils/session'
-import FormHelperSelector from '@/components/stubForm/formHelper/FormHelperSelector.vue'
-import StubFormButtons from '@/components/stubForm/StubFormButtons.vue'
-import SimpleEditor from '@/components/simpleEditor/SimpleEditor.vue'
 import { error } from '@/utils/toast'
 import { useStubsStore } from '@/store/stubs'
 import { useStubFormStore } from '@/store/stubForm'
 import { vsprintf } from 'sprintf-js'
 import { translate } from '@/utils/translate'
 import { renderDocLink } from '@/utils/doc'
-import { defaultStub } from '@/strings/exmaples'
+import { defaultStub } from '@/strings/examples'
 
 const editorTypes = {
   none: 'none',
@@ -81,7 +78,6 @@ const editorTypes = {
 
 export default defineComponent({
   name: 'StubForm',
-  components: { SimpleEditor, FormHelperSelector, StubFormButtons },
   setup() {
     const route = useRoute()
     const router = useRouter()

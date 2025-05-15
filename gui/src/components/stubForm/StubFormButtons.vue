@@ -10,24 +10,24 @@
   </button>
   <modal
     :title="$translate('stubForm.resetToDefaults')"
-    :yes-click-function="reset"
     :show-modal="showResetModal"
     @close="showResetModal = false"
+    @yes-click="reset"
   />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { handleHttpError } from '@/utils/error'
 import { useRoute, useRouter } from 'vue-router'
-import { shouldSave } from '@/utils/event'
 import { error, success } from '@/utils/toast'
 import { useStubsStore } from '@/store/stubs'
 import { useStubFormStore } from '@/store/stubForm'
 import { FormHelperKey } from '@/domain/stubForm/form-helper-key'
 import { vsprintf } from 'sprintf-js'
-import { defaultStub } from '@/strings/exmaples'
+import { defaultStub } from '@/strings/examples'
 import { translate } from '@/utils/translate'
+import { useSaveMagicKeys } from '@/composables/useSaveMagicKeys.ts'
 
 export default defineComponent({
   name: 'StubFormButtons',
@@ -110,18 +110,15 @@ export default defineComponent({
         await updateStub()
       }
     }
-    const checkSave = async (e: KeyboardEvent) => {
-      const currentSelectedFormHelper = stubFormStore.getCurrentSelectedFormHelper
-      if (shouldSave(e) && currentSelectedFormHelper !== FormHelperKey.ResponseBody) {
-        e.preventDefault()
-        await save()
-      }
-    }
 
     // Lifecycle
-    const keydownEventListener = async (e: KeyboardEvent) => await checkSave(e)
-    onMounted(() => document.addEventListener('keydown', keydownEventListener))
-    onUnmounted(() => document.removeEventListener('keydown', keydownEventListener))
+    const { registerSaveFunction } = useSaveMagicKeys()
+    registerSaveFunction(async () => {
+      const currentSelectedFormHelper = stubFormStore.getCurrentSelectedFormHelper
+      if (currentSelectedFormHelper !== FormHelperKey.ResponseBody) {
+        await save()
+      }
+    })
 
     return {
       showResetModal,

@@ -1,4 +1,4 @@
-using HttPlaceholder.Common.Utilities;
+﻿using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.TestUtilities.Http;
 
