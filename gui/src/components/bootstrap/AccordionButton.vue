@@ -2,7 +2,7 @@
   <div class="accordion-item">
     <h2 class="accordion-header">
       <button
-        class="accordion-button"
+        class="accordion-button collapsed"
         type="button"
       >
         <slot name="button-text"></slot>
