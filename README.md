@@ -1,3 +1,7 @@
+<h1>Note!</h1>
+
+For many years, I had been working on HttPlaceholder with much joy, but recent changes in my life prevent me from working on this project any further unfortunately. I will leave the project up and you can still use it, but I will not release any new features. If there is anyone who likes to maintain this project, send me a mail (see my bio).
+
 <h1 align="center">
   <a href="https://github.com/dukeofharen/httplaceholder">
     <img src="docs/img/logo_single_small.png" alt="Logo" width="150">
