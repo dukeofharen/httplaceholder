@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -93,7 +93,8 @@ public class FormHandlerFacts
         const string form = "form1=val1&form2=val2";
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, contentType } }, Body = form
+            Headers = new Dictionary<string, string> { { HeaderKeys.ContentType, contentType } },
+            Body = form
         };
         var conditions = new StubConditionsModel();
 

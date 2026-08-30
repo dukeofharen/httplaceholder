@@ -2,51 +2,40 @@
   <pre ref="codeBlock" :class="languageClass">{{ code }}</pre>
 </template>
 
-<script lang="ts">
-import hljs from 'highlight.js/lib/core'
+<script setup lang="ts">
+import hljs from 'highlight.js'
 import { computed, onMounted, ref, watch } from 'vue'
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  name: 'CodeHighlight',
-  props: {
-    language: {
-      type: String,
-      default: 'plaintext',
-    },
-    code: {
-      type: String,
-      required: true,
-    },
-  },
-  setup(props) {
-    // Refs
-    const codeBlock = ref<HTMLElement>()
+export type CodeHighlightProps = {
+  language?: string
+  code: string
+}
 
-    // Computed
-    const languageClass = computed(() => props.language)
+const props = withDefaults(defineProps<CodeHighlightProps>(), { language: 'plaintext' })
 
-    // Functions
-    const reloadCode = () => {
-      setTimeout(() => {
-        if (codeBlock.value) {
-          hljs.highlightElement(codeBlock.value)
-        }
-      }, 10)
+// Data
+const codeBlock = ref<HTMLElement>()
+
+// Computed
+const languageClass = computed(() => props.language)
+
+// Functions
+const reloadCode = () => {
+  setTimeout(() => {
+    if (codeBlock.value) {
+      hljs.highlightElement(codeBlock.value)
     }
+  }, 10)
+}
 
-    // Lifecycle
-    onMounted(() => reloadCode())
+// Lifecycle
+onMounted(() => reloadCode())
 
-    // Watch
-    watch(
-      () => props.code,
-      () => reloadCode(),
-    )
-
-    return { codeBlock, languageClass }
-  },
-})
+// Watch
+watch(
+  () => props.code,
+  () => reloadCode(),
+)
 </script>
 
 <style scoped></style>

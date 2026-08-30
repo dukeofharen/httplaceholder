@@ -47,7 +47,9 @@ internal class RequestLogger : IRequestLogger
         conditions = conditions.Where(m => m.ConditionValidation != ConditionValidationType.NotExecuted);
         _result.StubExecutionResults.Add(new StubExecutionResultModel
         {
-            Passed = passed, StubId = stubId, Conditions = conditions
+            Passed = passed,
+            StubId = stubId,
+            Conditions = conditions
         });
     }
 

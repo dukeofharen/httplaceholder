@@ -11,7 +11,7 @@
       </button>
     </div>
   </div>
-  <slide-up-down v-model="showFormHelperItems" :duration="300">
+  <Vue3SlideUpDown v-model="showFormHelperItems" :duration="300">
     <div class="row mt-3">
       <div class="col-md-12">
         <div class="mb-3">
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-  </slide-up-down>
+  </Vue3SlideUpDown>
   <div v-if="currentSelectedFormHelper" class="row mt-3">
     <div class="col-md-12">
       <div class="card">
@@ -58,21 +58,19 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { escapePressed } from '@/utils/event'
 import { useStubFormStore } from '@/store/stubForm'
 import {
   type StubFormHelper,
   StubFormHelperCategory,
   stubFormHelpers,
 } from '@/domain/stubForm/stub-form-helpers'
-import RenderedFormHelper from '@/components/stubForm/formHelper/RenderedFormHelper.vue'
 import { translate } from '@/utils/translate'
+import { onKeyStroke } from '@vueuse/core'
 
 export default defineComponent({
   name: 'FormHelperSelector',
-  components: { RenderedFormHelper },
   setup() {
     const stubFormStore = useStubFormStore()
     const route = useRoute()
@@ -178,14 +176,7 @@ export default defineComponent({
     })
 
     // Lifecycle
-    const escapeListener = (e: KeyboardEvent) => {
-      if (escapePressed(e)) {
-        e.preventDefault()
-        closeFormHelperAndList()
-      }
-    }
-    onMounted(() => document.addEventListener('keydown', escapeListener))
-    onUnmounted(() => document.removeEventListener('keydown', escapeListener))
+    onKeyStroke('Escape', () => closeFormHelperAndList())
 
     return {
       currentSelectedFormHelper,

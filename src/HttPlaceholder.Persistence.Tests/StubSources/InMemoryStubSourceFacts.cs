@@ -538,7 +538,9 @@ public class InMemoryStubSourceFacts
         var item = source.GetCollection(key);
         var scenarioStateModel = new ScenarioStateModel(scenario)
         {
-            State = Guid.NewGuid().ToString(), Scenario = scenario, HitCount = 11
+            State = Guid.NewGuid().ToString(),
+            Scenario = scenario,
+            HitCount = 11
         };
         Assert.IsTrue(item.Scenarios.TryAdd(scenario, scenarioStateModel));
 
@@ -601,7 +603,9 @@ public class InMemoryStubSourceFacts
         var key = withDistributionKey ? Guid.NewGuid().ToString() : null;
         var input = new ScenarioStateModel(scenario)
         {
-            Scenario = scenario, HitCount = 11, State = Guid.NewGuid().ToString()
+            Scenario = scenario,
+            HitCount = 11,
+            State = Guid.NewGuid().ToString()
         };
 
         // Act
@@ -777,7 +781,9 @@ public class InMemoryStubSourceFacts
 
     private static StubModel CreateStubModel() => new()
     {
-        Id = _faker.Random.Word(), Tenant = _faker.Random.Word(), Enabled = _faker.Random.Bool()
+        Id = _faker.Random.Word(),
+        Tenant = _faker.Random.Word(),
+        Enabled = _faker.Random.Bool()
     };
 
     private static ResponseModel CreateResponseModel() => new()

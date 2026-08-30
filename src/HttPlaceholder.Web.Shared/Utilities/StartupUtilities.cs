@@ -108,7 +108,9 @@ public static class StartupUtilities
             app.UseMiddleware<IndexHtmlMiddleware>(guiPath);
             app.UseFileServer(new FileServerOptions
             {
-                EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(guiPath), RequestPath = "/ph-ui"
+                EnableDefaultFiles = true,
+                FileProvider = new PhysicalFileProvider(guiPath),
+                RequestPath = "/ph-ui"
             });
         }
 

@@ -32,10 +32,6 @@
 </template>
 
 <script lang="ts">
-import UploadStubs from '@/components/import/UploadStubs.vue'
-import ImportCurl from '@/components/import/ImportCurl.vue'
-import ImportHar from '@/components/import/ImportHar.vue'
-import ImportOpenApi from '@/components/import/ImportOpenApi.vue'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { defineComponent } from 'vue'
@@ -69,7 +65,6 @@ const tabDetails: any = {
 
 export default defineComponent({
   name: 'ImportStubs',
-  components: { ImportOpenApi, UploadStubs, ImportCurl, ImportHar },
   setup() {
     const router = useRouter()
     const route = useRoute()

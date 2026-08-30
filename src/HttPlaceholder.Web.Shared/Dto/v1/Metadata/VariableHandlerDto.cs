@@ -1,4 +1,4 @@
-using HttPlaceholder.Application.Infrastructure.AutoMapper;
+﻿using HttPlaceholder.Application.Infrastructure.AutoMapper;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Web.Shared.Dto.v1.Metadata;

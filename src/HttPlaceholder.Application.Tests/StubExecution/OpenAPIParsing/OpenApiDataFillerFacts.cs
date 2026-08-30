@@ -17,7 +17,8 @@ public class OpenApiDataFillerFacts
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
         var server = new OpenApiServer
         {
-            Url = "http://localhost", Variables = new Dictionary<string, OpenApiServerVariable>()
+            Url = "http://localhost",
+            Variables = new Dictionary<string, OpenApiServerVariable>()
         };
 
         // Act

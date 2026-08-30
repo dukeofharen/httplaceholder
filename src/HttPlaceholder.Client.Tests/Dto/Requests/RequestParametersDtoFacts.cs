@@ -12,7 +12,8 @@ public class RequestParametersDtoFacts
         // Arrange
         var dto = new RequestParametersDto
         {
-            BodyIsBinary = true, Body = Convert.ToBase64String(new byte[] { 254, 255 })
+            BodyIsBinary = true,
+            Body = Convert.ToBase64String(new byte[] { 254, 255 })
         };
 
         // Act

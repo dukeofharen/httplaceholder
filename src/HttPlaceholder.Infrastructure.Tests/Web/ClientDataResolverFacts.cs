@@ -1,4 +1,4 @@
-using HttPlaceholder.Application.Configuration.Models;
+﻿using HttPlaceholder.Application.Configuration.Models;
 using HttPlaceholder.Infrastructure.Web;
 using HttPlaceholder.TestUtilities;
 using HttPlaceholder.TestUtilities.Http;

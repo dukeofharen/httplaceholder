@@ -20,21 +20,21 @@ public class ValidateObjectAttribute : ValidationAttribute
             case null:
                 return ValidationResult.Success;
             case IEnumerable enumerable:
-            {
-                foreach (var subObject in enumerable)
                 {
-                    var context = new ValidationContext(subObject, null, null);
-                    Validator.TryValidateObject(subObject, context, results, true);
-                }
+                    foreach (var subObject in enumerable)
+                    {
+                        var context = new ValidationContext(subObject, null, null);
+                        Validator.TryValidateObject(subObject, context, results, true);
+                    }
 
-                break;
-            }
+                    break;
+                }
             default:
-            {
-                var context = new ValidationContext(value, null, null);
-                Validator.TryValidateObject(value, context, results, true);
-                break;
-            }
+                {
+                    var context = new ValidationContext(value, null, null);
+                    Validator.TryValidateObject(value, context, results, true);
+                    break;
+                }
         }
 
         if (results.Count == 0)

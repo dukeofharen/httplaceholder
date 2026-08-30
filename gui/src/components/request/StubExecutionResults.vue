@@ -16,13 +16,11 @@
 
 <script lang="ts">
 import { computed, type PropType } from 'vue'
-import StubExecutionResult from '@/components/request/StubExecutionResult.vue'
 import { defineComponent } from 'vue'
 import type { StubExecutionResultModel } from '@/domain/request/stub-execution-result-model'
 
 export default defineComponent({
   name: 'StubExecutionResults',
-  components: { StubExecutionResult },
   props: {
     correlationId: {
       type: String,

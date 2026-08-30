@@ -78,7 +78,9 @@ public class CreateOpenApiStubsFacts : BaseClientTest
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
                 client.CreateOpenApiStubsAsync(new ImportStubsModel(openApi)
                 {
-                    DoNotCreateStub = false, Tenant = "tenant1", StubIdPrefix = "prefix-"
+                    DoNotCreateStub = false,
+                    Tenant = "tenant1",
+                    StubIdPrefix = "prefix-"
                 }));
 
         // Assert
@@ -104,7 +106,9 @@ public class CreateOpenApiStubsFacts : BaseClientTest
         // Act
         var result = (await client.CreateOpenApiStubsAsync(new ImportStubsModel(openApi)
         {
-            DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"
+            DoNotCreateStub = doNotCreateStub,
+            Tenant = "tenant1",
+            StubIdPrefix = "prefix-"
         })).ToArray();
 
         // Assert

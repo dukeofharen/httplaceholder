@@ -148,35 +148,9 @@ import { computed, defineComponent } from 'vue'
 import { useStubFormStore } from '@/store/stubForm'
 import { FormHelperKey } from '@/domain/stubForm/form-helper-key'
 import { ResponseBodyType } from '@/domain/stubForm/response-body-type'
-import HttpMethodSelector from '@/components/stubForm/formHelper/HttpMethodSelector.vue'
-import HttpStatusCodeSelector from '@/components/stubForm/formHelper/HttpStatusCodeSelector.vue'
-import RedirectSelector from '@/components/stubForm/formHelper/RedirectSelector.vue'
-import BasicInput from '@/components/stubForm/formHelper/BasicInput.vue'
-import ScenarioSelector from '@/components/stubForm/formHelper/ScenarioSelector.vue'
-import LineEndingSelector from '@/components/stubForm/formHelper/LineEndingSelector.vue'
-import TenantSelector from '@/components/stubForm/formHelper/TenantSelector.vue'
-import ResponseBodyHelper from '@/components/stubForm/formHelper/ResponseBodyHelper.vue'
-import SetDynamicMode from '@/components/stubForm/formHelper/SetDynamicMode.vue'
-import ExampleSelector from '@/components/stubForm/formHelper/ExampleSelector.vue'
-import StringCheckerInput from '@/components/stubForm/formHelper/StringCheckerInput.vue'
-import BasicAuthHelper from '@/components/stubForm/formHelper/BasicAuthHelper.vue'
 
 export default defineComponent({
   name: 'RenderedFormHelper',
-  components: {
-    StringCheckerInput,
-    ExampleSelector,
-    SetDynamicMode,
-    ResponseBodyHelper,
-    TenantSelector,
-    LineEndingSelector,
-    ScenarioSelector,
-    BasicInput,
-    RedirectSelector,
-    HttpStatusCodeSelector,
-    HttpMethodSelector,
-    BasicAuthHelper,
-  },
   setup() {
     const stubFormStore = useStubFormStore()
 

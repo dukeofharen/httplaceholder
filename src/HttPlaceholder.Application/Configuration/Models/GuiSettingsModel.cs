@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Application.Configuration.Models;
+﻿namespace HttPlaceholder.Application.Configuration.Models;
 
 /// <summary>
 ///     A model for storing GUI related settings.

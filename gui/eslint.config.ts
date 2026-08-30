@@ -15,10 +15,16 @@ export default defineConfigWithVueTs(
 
   {
     name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**', "scripts/**"],
   },
 
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
   skipFormatting,
+  {
+    rules: {
+      "vue/multi-word-component-names": "off",
+      "@typescript-eslint/no-explicit-any": "off"
+    },
+  }
 )

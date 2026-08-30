@@ -114,7 +114,9 @@ public class RequestLoggerFacts
         // arrange
         var resultModel = new StubResponseWriterResultModel
         {
-            Executed = true, Log = string.Empty, ResponseWriterName = "Writer"
+            Executed = true,
+            Log = string.Empty,
+            ResponseWriterName = "Writer"
         };
 
         // act

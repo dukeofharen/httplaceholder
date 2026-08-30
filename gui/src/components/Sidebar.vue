@@ -21,7 +21,6 @@
 </template>
 
 <script lang="ts">
-import SidebarMenuItem from '@/components/SidebarMenuItem.vue'
 import { computed, defineComponent } from 'vue'
 import router from '@/router'
 import { useUsersStore } from '@/store/users'
@@ -31,7 +30,6 @@ import { translate } from '@/utils/translate'
 
 export default defineComponent({
   name: 'Sidebar',
-  components: { SidebarMenuItem },
   setup() {
     const userStore = useUsersStore()
     const metadataStore = useMetadataStore()

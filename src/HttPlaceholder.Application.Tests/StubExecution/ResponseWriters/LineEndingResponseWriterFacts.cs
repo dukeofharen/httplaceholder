@@ -83,7 +83,8 @@ public class LineEndingResponseWriterFacts
         {
             Response = new StubResponseModel
             {
-                LineEndings = LineEndingType.Windows, Base64 = Convert.ToBase64String(new byte[] { 1, 2, 3 })
+                LineEndings = LineEndingType.Windows,
+                Base64 = Convert.ToBase64String(new byte[] { 1, 2, 3 })
             }
         };
         var response = new ResponseModel { BodyIsBinary = true };

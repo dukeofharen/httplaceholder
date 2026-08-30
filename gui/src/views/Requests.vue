@@ -23,9 +23,9 @@
       <modal
         :title="$translate('requests.deleteAllRequestsQuestion')"
         :bodyText="$translate('requests.requestsCantBeRecovered')"
-        :yes-click-function="deleteAllRequests"
         :show-modal="showDeleteAllRequestsModal"
         @close="showDeleteAllRequestsModal = false"
+        @yes-click="deleteAllRequests"
       />
     </div>
     <div class="col-md-12 mb-3">
@@ -85,13 +85,12 @@
         :overview-request="request"
         @deleted="requestDeleted"
       />
-      <accordion-item
+      <accordion-button
         v-if="shouldShowLoadMoreButton"
-        :opened="false"
-        @buttonClicked="loadMoreRequests"
+        @click="loadMoreRequests"
       >
         <template v-slot:button-text>{{ $translate('requests.loadMoreRequests') }}</template>
-      </accordion-item>
+      </accordion-button>
     </accordion>
     <div v-else>
       {{ $translate('requests.noRequestsYet') }}
@@ -102,7 +101,6 @@
 <script lang="ts">
 import { useRoute } from 'vue-router'
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-import Request from '@/components/request/Request.vue'
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
 import { handleHttpError } from '@/utils/error'
 import { getRequestFilterForm, setRequestFilterForm } from '@/utils/session'
@@ -120,7 +118,6 @@ import { translate } from '@/utils/translate'
 
 export default defineComponent({
   name: 'Requests',
-  components: { Request },
   setup() {
     const tenantStore = useTenantsStore()
     const requestStore = useRequestsStore()

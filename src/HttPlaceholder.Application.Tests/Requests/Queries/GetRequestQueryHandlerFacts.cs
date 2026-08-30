@@ -1,4 +1,4 @@
-using HttPlaceholder.Application.Exceptions;
+﻿using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Requests.Queries;
 using HttPlaceholder.Application.StubExecution;
 

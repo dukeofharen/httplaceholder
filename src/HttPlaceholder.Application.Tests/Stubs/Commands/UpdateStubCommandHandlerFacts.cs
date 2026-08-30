@@ -152,7 +152,8 @@ public class UpdateStubCommandHandlerFacts
 
         var previousStub = new FullStubModel
         {
-            Stub = new StubModel(), Metadata = new StubMetadataModel { ReadOnly = false }
+            Stub = new StubModel(),
+            Metadata = new StubMetadataModel { ReadOnly = false }
         };
         mockStubContext
             .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
@@ -160,7 +161,8 @@ public class UpdateStubCommandHandlerFacts
 
         var existingStub = new FullStubModel
         {
-            Stub = new StubModel(), Metadata = new StubMetadataModel { ReadOnly = false }
+            Stub = new StubModel(),
+            Metadata = new StubMetadataModel { ReadOnly = false }
         };
         mockStubContext
             .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))

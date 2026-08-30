@@ -52,7 +52,8 @@ public class UpdateStubFacts : BaseClientTest
                 Method = "GET",
                 Url = new StubUrlConditionDto
                 {
-                    Path = "/testtesttest", Query = new Dictionary<string, object> { { "id", "13" } }
+                    Path = "/testtesttest",
+                    Query = new Dictionary<string, object> { { "id", "13" } }
                 }
             },
             Response = new StubResponseDto { StatusCode = 200, Text = "OK my dude!" }

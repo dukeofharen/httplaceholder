@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Application.Interfaces.Http;
+﻿namespace HttPlaceholder.Application.Interfaces.Http;
 
 /// <summary>
 ///     Describes a class that is used to retrieve data about the calling client.

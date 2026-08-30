@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,7 +39,8 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
         conditions.Body = [];
         conditions.Form = form.Select(f => new StubFormModel
         {
-            Key = f.Key, Value = new StubConditionStringCheckingModel { StringEquals = f.Value }
+            Key = f.Key,
+            Value = new StubConditionStringCheckingModel { StringEquals = f.Value }
         });
 
         return true.AsTask();

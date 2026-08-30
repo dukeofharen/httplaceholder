@@ -2,41 +2,34 @@
   <span class="method" :class="className">{{ method }}</span>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { computed } from 'vue'
-import { defineComponent } from 'vue'
 
-export default defineComponent({
-  name: 'Method',
-  props: {
-    method: {
-      type: String,
-      required: true,
-    },
+const props = defineProps({
+  method: {
+    type: String,
+    required: true,
   },
-  setup(props) {
-    // Computed
-    const className = computed(() => {
-      switch (props.method) {
-        case 'GET':
-          return 'method-get'
-        case 'POST':
-          return 'method-post'
-        case 'PUT':
-          return 'method-put'
-        case 'DELETE':
-          return 'method-delete'
-        case 'OPTIONS':
-          return 'method-options'
-        case 'PATCH':
-          return 'method-patch'
-      }
+})
 
-      return ''
-    })
+// Computed
+const className = computed(() => {
+  switch (props.method) {
+    case 'GET':
+      return 'method-get'
+    case 'POST':
+      return 'method-post'
+    case 'PUT':
+      return 'method-put'
+    case 'DELETE':
+      return 'method-delete'
+    case 'OPTIONS':
+      return 'method-options'
+    case 'PATCH':
+      return 'method-patch'
+  }
 
-    return { className }
-  },
+  return ''
 })
 </script>
 

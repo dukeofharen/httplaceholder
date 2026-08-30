@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -222,13 +222,13 @@ internal class ReverseProxyResponseWriter(
             case string path:
                 return path;
             default:
-            {
-                var checkingModel = ConversionUtilities.Convert<StubConditionStringCheckingModel>(pathModel);
-                return checkingModel.StringEquals ??
-                       checkingModel.StringEqualsCi ??
-                       checkingModel.StartsWith ??
-                       checkingModel.StartsWithCi;
-            }
+                {
+                    var checkingModel = ConversionUtilities.Convert<StubConditionStringCheckingModel>(pathModel);
+                    return checkingModel.StringEquals ??
+                           checkingModel.StringEqualsCi ??
+                           checkingModel.StartsWith ??
+                           checkingModel.StartsWithCi;
+                }
         }
     }
 }

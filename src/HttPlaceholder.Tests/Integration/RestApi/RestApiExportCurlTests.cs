@@ -23,7 +23,8 @@ public class RestApiExportCurlTests : RestApiIntegrationTestBase
             CorrelationId = correlation,
             RequestParameters = new RequestParametersModel
             {
-                Method = "DELETE", Url = "http://localhost:5000/some-url"
+                Method = "DELETE",
+                Url = "http://localhost:5000/some-url"
             }
         });
         var url = $"{BaseAddress}ph-api/export/requests/{correlation}?type={RequestExportType.Curl}";

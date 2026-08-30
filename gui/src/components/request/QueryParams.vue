@@ -14,29 +14,23 @@
   </accordion-item>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { parseUrl } from '@/utils/url'
-import { defineComponent, computed, type PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 import type { RequestResultModel } from '@/domain/request/request-result-model'
 
-export default defineComponent({
-  name: 'QueryParams',
-  props: {
-    request: {
-      type: Object as PropType<RequestResultModel>,
-      required: true,
-    },
+const props = defineProps({
+  request: {
+    type: Object as PropType<RequestResultModel>,
+    required: true,
   },
-  setup(props) {
-    // Computed
-    const requestParams = computed(() => props.request?.requestParameters)
-    const queryParameters = computed(() => {
-      const req = requestParams.value
-      return req.url ? parseUrl(req.url) : {}
-    })
+})
 
-    return { requestParams, queryParameters }
-  },
+// Computed
+const requestParams = computed(() => props.request?.requestParameters)
+const queryParameters = computed(() => {
+  const req = requestParams.value
+  return req.url ? parseUrl(req.url) : {}
 })
 </script>
 

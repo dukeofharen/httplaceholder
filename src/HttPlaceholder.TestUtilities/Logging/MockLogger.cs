@@ -25,7 +25,10 @@ public class MockLogger<TCategoryName> : ILogger<TCategoryName>
     {
         var entry = new LogEntry
         {
-            Exception = exception, State = state.ToString(), EventId = eventId, LogLevel = logLevel
+            Exception = exception,
+            State = state.ToString(),
+            EventId = eventId,
+            LogLevel = logLevel
         };
         Entries.Add(entry);
         Debug.WriteLine(entry);

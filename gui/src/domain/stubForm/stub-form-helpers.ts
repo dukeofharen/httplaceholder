@@ -1,4 +1,5 @@
 import { FormHelperKey } from '@/domain/stubForm/form-helper-key'
+import type { useStubFormStore } from '@/store/stubForm'
 import { translate } from '@/utils/translate'
 
 export enum StubFormHelperCategory {
@@ -13,7 +14,7 @@ export interface StubFormHelper {
   title: string
   isHeading?: boolean
   subTitle?: string
-  defaultValueMutation?: (store: any) => void
+  defaultValueMutation?: (store: ReturnType<typeof useStubFormStore>) => void
   formHelperToOpen?: FormHelperKey
   stubFormHelperCategory: StubFormHelperCategory
 }
@@ -41,7 +42,7 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.disableStub'),
     subTitle: translate('stubFormHelperDescriptions.disable'),
     stubFormHelperCategory: StubFormHelperCategory.GeneralInfo,
-    defaultValueMutation: (store: any) => store.setStubDisabled(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) => store.setStubDisabled(),
   },
   {
     title: translate('stubFormHelperTitles.tenant'),
@@ -88,7 +89,7 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.https'),
     subTitle: translate('stubFormHelperDescriptions.isHttps'),
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultIsHttps(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) => store.setDefaultIsHttps(),
   },
   {
     title: translate('stubFormHelperTitles.headers'),
@@ -150,19 +151,22 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.jsonPath'),
     subTitle: translate('stubFormHelperDescriptions.jsonPath'),
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultJsonPath(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultJsonPath(),
   },
   {
     title: translate('stubFormHelperTitles.jsonObject'),
     subTitle: translate('stubFormHelperDescriptions.jsonObject'),
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultJsonObject(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultJsonObject(),
   },
   {
     title: translate('stubFormHelperTitles.jsonArray'),
     subTitle: translate('stubFormHelperDescriptions.jsonArray'),
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultJsonArray(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultJsonArray(),
   },
   {
     title: translate('stubFormHelperTitles.xml'),
@@ -173,7 +177,7 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.xpath'),
     subTitle: translate('stubFormHelperDescriptions.xpath'),
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
-    defaultValueMutation: (store: any) => store.setDefaultXPath(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) => store.setDefaultXPath(),
   },
   {
     title: translate('stubFormHelperTitles.scenario'),
@@ -261,19 +265,22 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.stringReplace'),
     subTitle: translate('stubFormHelperDescriptions.stringReplace'),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultStringReplace(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultStringReplace(),
   },
   {
     title: translate('stubFormHelperTitles.regexReplace'),
     subTitle: translate('stubFormHelperDescriptions.regexReplace'),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultRegexReplace(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultRegexReplace(),
   },
   {
     title: translate('stubFormHelperTitles.jsonPathReplace'),
     subTitle: translate('stubFormHelperDescriptions.jsonPathReplace'),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultJsonPathReplace(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultJsonPathReplace(),
   },
   {
     title: translate('stubFormHelperTitles.lineEndings'),
@@ -285,7 +292,7 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.image'),
     subTitle: translate('stubFormHelperDescriptions.image'),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultImage(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) => store.setDefaultImage(),
   },
   {
     title: translate('stubFormHelperTitles.headers'),
@@ -296,7 +303,8 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.responseHeaders'),
     subTitle: translate('stubFormHelperDescriptions.responseHeaders'),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultResponseHeaders(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultResponseHeaders(),
   },
   {
     title: translate('stubFormHelperTitles.responseContentType'),
@@ -319,13 +327,14 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.clearState'),
     subTitle: translate('stubFormHelperDescriptions.clearState'),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setClearState(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) => store.setClearState(),
   },
   {
     title: translate('stubFormHelperTitles.newScenarioState'),
     subTitle: translate('stubFormHelperDescriptions.newScenarioState'),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultNewScenarioState(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultNewScenarioState(),
   },
   {
     title: translate('stubFormHelperTitles.other'),
@@ -336,7 +345,8 @@ export const stubFormHelpers = [
     title: translate('stubFormHelperTitles.reverseProxy'),
     subTitle: translate('stubFormHelperDescriptions.reverseProxy'),
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultReverseProxy(),
+    defaultValueMutation: (store: ReturnType<typeof useStubFormStore>) =>
+      store.setDefaultReverseProxy(),
   },
   {
     title: translate('stubFormHelperTitles.abortConnection'),

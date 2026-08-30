@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Common;
+﻿namespace HttPlaceholder.Common;
 
 /// <summary>
 ///     Describes a class that is used for working with assemblies.

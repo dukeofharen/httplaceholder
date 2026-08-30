@@ -472,15 +472,18 @@ public class StubContextFacts
         // arrange
         var request1 = new RequestResultModel
         {
-            ExecutingStubId = "stub1", RequestBeginTime = DateTime.Now.AddSeconds(-2)
+            ExecutingStubId = "stub1",
+            RequestBeginTime = DateTime.Now.AddSeconds(-2)
         };
         var request2 = new RequestResultModel
         {
-            ExecutingStubId = "stub2", RequestBeginTime = DateTime.Now.AddSeconds(-2)
+            ExecutingStubId = "stub2",
+            RequestBeginTime = DateTime.Now.AddSeconds(-2)
         };
         var request3 = new RequestResultModel
         {
-            ExecutingStubId = "stub1", RequestBeginTime = DateTime.Now.AddSeconds(-1)
+            ExecutingStubId = "stub1",
+            RequestBeginTime = DateTime.Now.AddSeconds(-1)
         };
         var requests = new[] { request1, request2, request3 };
         var stubSource = new Mock<IWritableStubSource>();

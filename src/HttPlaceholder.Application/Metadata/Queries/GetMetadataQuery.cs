@@ -27,11 +27,11 @@ public class GetMetadataQueryHandler(
     /// <inheritdoc />
     public Task<MetadataModel> Handle(GetMetadataQuery request, CancellationToken cancellationToken) =>
         new MetadataModel
-            {
-                Version = assemblyService.GetAssemblyVersion(),
-                VariableHandlers = serviceProvider.GetServices<IResponseVariableParsingHandler>().Select(h =>
-                    new VariableHandlerModel(h.Name, h.FullName, h.Examples, h.GetDescription())),
-                RuntimeVersion = envService.GetRuntime()
-            }
+        {
+            Version = assemblyService.GetAssemblyVersion(),
+            VariableHandlers = serviceProvider.GetServices<IResponseVariableParsingHandler>().Select(h =>
+                new VariableHandlerModel(h.Name, h.FullName, h.Examples, h.GetDescription())),
+            RuntimeVersion = envService.GetRuntime()
+        }
             .AsTask();
 }

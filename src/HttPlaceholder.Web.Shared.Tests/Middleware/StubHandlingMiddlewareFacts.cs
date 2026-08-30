@@ -22,7 +22,9 @@ public class StubHandlingMiddlewareFacts
 
     private readonly SettingsModel _settings = new()
     {
-        Stub = new StubSettingsModel(), Storage = new StorageSettingsModel(), Gui = new GuiSettingsModel()
+        Stub = new StubSettingsModel(),
+        Storage = new StorageSettingsModel(),
+        Gui = new GuiSettingsModel()
     };
 
     private bool _nextCalled;

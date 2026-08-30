@@ -18,10 +18,10 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary no-button" @click="onNoClick">
-            {{ getNoText() }}
+            {{ noText ?? $translate('general.no') }}
           </button>
           <button type="button" class="btn btn-primary yes-button" @click="onYesClick">
-            {{ getYesText() }}
+            {{ yesText ?? $translate('general.yes') }}
           </button>
         </div>
       </div>
@@ -29,105 +29,70 @@
   </div>
 </template>
 
-<script lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import { defineComponent } from 'vue'
+<script setup lang="ts">
 import { getOrCreateInstance } from '@/utils/bootstrap'
-import { translate } from '@/utils/translate'
+import { onMounted, ref, watch } from 'vue'
 
-export default defineComponent({
-  name: 'Modal',
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    bodyText: {
-      type: String,
-    },
-    yesText: {
-      type: String,
-    },
-    noText: {
-      type: String,
-    },
-    showModal: {
-      type: Boolean,
-      default: false,
-    },
-    yesClickFunction: {
-      type: Function,
-    },
-    noClickFunction: {
-      type: Function,
-    },
-  },
-  setup(props, { emit }) {
-    // Template refs
-    const modal = ref<HTMLElement>()
+export type ModalProps = {
+  title: string
+  bodyText?: string
+  yesText?: string
+  noText?: string
+  showModal: boolean
+}
+const props = withDefaults(defineProps<ModalProps>(), { showModal: false })
+const emit = defineEmits(['close', 'yes-click', 'no-click'])
 
-    // Functions
-    const showModal = () => {
-      if (modal.value) {
-        const currentModal = getOrCreateInstance(modal.value)
-        currentModal.show()
-      }
-    }
-    const hideModal = () => {
-      if (modal.value) {
-        const currentModal = getOrCreateInstance(modal.value)
-        currentModal.hide()
-      }
-    }
-    function getYesText() {
-      return props.yesText ?? translate('general.yes')
-    }
-    function getNoText() {
-      return props.noText ?? translate('general.no')
-    }
+// Data
+const modal = ref<HTMLElement>()
 
-    // Methods
-    const onYesClick = () => {
-      if (props.yesClickFunction) {
-        props.yesClickFunction()
-      }
+// Functions
+const performShowModal = () => {
+  if (modal.value) {
+    const currentModal = getOrCreateInstance(modal.value)
+    currentModal.show()
+  }
+}
 
-      hideModal()
-    }
-    const onNoClick = () => {
-      if (props.noClickFunction) {
-        props.noClickFunction()
-      }
+const performHideModal = () => {
+  if (modal.value) {
+    const currentModal = getOrCreateInstance(modal.value)
+    currentModal.hide()
+  }
+}
 
-      hideModal()
-    }
+const onYesClick = () => {
+  emit('yes-click')
+  performHideModal()
+}
 
-    // Lifecycle
-    onMounted(() => {
-      if (props.showModal) {
-        showModal()
-      } else {
-        hideModal()
-      }
+const onNoClick = () => {
+  emit('no-click')
+  performHideModal()
+}
 
-      if (modal.value) {
-        modal.value.addEventListener('hidden.bs.modal', () => {
-          emit('close')
-        })
-      }
+// Lifecycle
+onMounted(() => {
+  if (props.showModal) {
+    performShowModal()
+  } else {
+    performHideModal()
+  }
+
+  if (modal.value) {
+    modal.value.addEventListener('hidden.bs.modal', () => {
+      emit('close')
     })
+  }
+})
 
-    // Watch
-    watch(props, (newProps) => {
-      if (newProps.showModal) {
-        showModal()
-      } else {
-        hideModal()
-      }
-    })
-
-    return { onYesClick, onNoClick, modal, getYesText, getNoText }
-  },
+// Watch
+watch(props, (newProps) => {
+  if (newProps.showModal) {
+    performShowModal()
+  } else {
+    performHideModal()
+  }
 })
 </script>
 

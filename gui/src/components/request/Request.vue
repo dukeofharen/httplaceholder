@@ -1,5 +1,5 @@
 <template>
-  <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
+  <accordion-item @opened="showDetails">
     <template v-slot:button-text>
       <span
         class="request-header"
@@ -37,7 +37,7 @@
           </button>
           <button
             class="btn btn-danger btn-sm"
-            @click="deleteRequest"
+            @click="doDeleteRequest"
             :title="$translate('request.deleteRequestTitle')"
           >
             {{ $translate('request.deleteRequest') }}
@@ -50,124 +50,96 @@
   </accordion-item>
 </template>
 
-<script lang="ts">
-import { computed, ref, onMounted, onUnmounted, type PropType } from 'vue'
+<script setup lang="ts">
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { formatDateTime, formatFromNow } from '@/utils/datetime'
 import { handleHttpError } from '@/utils/error'
 import { setIntermediateStub } from '@/utils/session'
-import Method from '@/components/request/Method.vue'
-import RequestDetails from '@/components/request/RequestDetails.vue'
 import yaml from 'js-yaml'
 import { useRouter } from 'vue-router'
 import { success } from '@/utils/toast'
 import { useStubsStore } from '@/store/stubs'
 import { useRequestsStore } from '@/store/requests'
-import { defineComponent } from 'vue'
 import type { RequestOverviewModel } from '@/domain/request/request-overview-model'
 import type { RequestResultModel } from '@/domain/request/request-result-model'
 import { getDefaultRequestResultModel } from '@/domain/request/request-result-model'
-import RequestExport from '@/components/request/RequestExport.vue'
 import { refreshRequestTimesInterval } from '@/constants'
 import { translate } from '@/utils/translate'
 
-export default defineComponent({
-  name: 'Request',
-  components: { Method, RequestDetails, RequestExport },
-  props: {
-    overviewRequest: {
-      type: Object as PropType<RequestOverviewModel>,
-      required: true,
-    },
-  },
-  setup(props, { emit }) {
-    const stubStore = useStubsStore()
-    const requestStore = useRequestsStore()
-    const router = useRouter()
+export type RequestProps = {
+  overviewRequest: RequestOverviewModel
+}
+const props = defineProps<RequestProps>()
+const emit = defineEmits<{ deleted: [correlationId: string] }>()
 
-    // Functions
-    const getRequestTime = () => props.overviewRequest.requestEndTime
-    const correlationId = () => props.overviewRequest.correlationId
-    const getTimeFromNow = () => formatFromNow(getRequestTime())
+const { createStubBasedOnRequest } = useStubsStore()
+const { getRequest, deleteRequest } = useRequestsStore()
+const router = useRouter()
 
-    // Computed
-    const requestDateTime = computed(() => formatDateTime(getRequestTime()))
-    const executed = computed(() => !!props.overviewRequest.executingStubId)
-    const executingStubId = computed(() => props.overviewRequest.executingStubId)
+// Functions
+const getRequestTime = () => props.overviewRequest.requestEndTime
+const correlationId = () => props.overviewRequest.correlationId
+const getTimeFromNow = () => formatFromNow(getRequestTime())
 
-    // Data
-    const timeFromNow = ref(getTimeFromNow())
-    let refreshTimeFromNowInterval: any
-    const request = ref<RequestResultModel>(getDefaultRequestResultModel())
-    const accordionOpened = ref(false)
-    const exportRequestOpened = ref(false)
+// Computed
+const requestDateTime = computed(() => formatDateTime(getRequestTime()))
+const executed = computed(() => !!props.overviewRequest.executingStubId)
+const executingStubId = computed(() => props.overviewRequest.executingStubId)
 
-    // Lifecycle
-    onMounted(() => {
-      refreshTimeFromNowInterval = setInterval(() => {
-        timeFromNow.value = getTimeFromNow()
-      }, refreshRequestTimesInterval)
-    })
-    onUnmounted(() => {
-      if (refreshTimeFromNowInterval) {
-        clearInterval(refreshTimeFromNowInterval)
-      }
-    })
+// Data
+const timeFromNow = ref(getTimeFromNow())
+let refreshTimeFromNowInterval: any
+const request = ref<RequestResultModel>(getDefaultRequestResultModel())
+const exportRequestOpened = ref(false)
 
-    // Methods
-    const showDetails = async () => {
-      if (!request.value.correlationId) {
-        try {
-          request.value = await requestStore.getRequest(correlationId())
-          accordionOpened.value = true
-        } catch (e) {
-          handleHttpError(e)
-        }
-      } else {
-        accordionOpened.value = !accordionOpened.value
-      }
-    }
-    const createStub = async () => {
-      try {
-        const fullStub = await stubStore.createStubBasedOnRequest({
-          correlationId: correlationId(),
-          doNotCreateStub: true,
-        })
-        setIntermediateStub(yaml.dump(fullStub.stub))
-        await router.push({ name: 'StubForm' })
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-    const deleteRequest = async () => {
-      try {
-        await requestStore.deleteRequest(correlationId())
-        success(translate('request.requestDeletedSuccessfully'))
-        emit('deleted', correlationId())
-      } catch (e) {
-        handleHttpError(e)
-      }
-    }
-
-    const exportRequest = async () => {
-      exportRequestOpened.value = !exportRequestOpened.value
-    }
-
-    return {
-      executed,
-      requestDateTime,
-      timeFromNow,
-      refreshTimeFromNowInterval,
-      request,
-      showDetails,
-      accordionOpened,
-      createStub,
-      deleteRequest,
-      executingStubId,
-      exportRequest,
-      exportRequestOpened,
-    }
-  },
+// Lifecycle
+onMounted(() => {
+  refreshTimeFromNowInterval = setInterval(() => {
+    timeFromNow.value = getTimeFromNow()
+  }, refreshRequestTimesInterval)
 })
+onUnmounted(() => {
+  if (refreshTimeFromNowInterval) {
+    clearInterval(refreshTimeFromNowInterval)
+  }
+})
+
+// Methods
+async function showDetails(){
+  if (!request.value.correlationId) {
+    try {
+      request.value = await getRequest(correlationId())
+    } catch (e) {
+      handleHttpError(e)
+    }
+  }
+}
+async function createStub() {
+  try {
+    const fullStub = await createStubBasedOnRequest({
+      correlationId: correlationId(),
+      doNotCreateStub: true,
+    })
+    setIntermediateStub(yaml.dump(fullStub.stub))
+    await router.push({ name: 'StubForm' })
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+
+async function doDeleteRequest() {
+  try {
+    await deleteRequest(correlationId())
+    success(translate('request.requestDeletedSuccessfully'))
+    emit('deleted', correlationId())
+  } catch (e) {
+    handleHttpError(e)
+  }
+}
+
+const exportRequest = async () => {
+  exportRequestOpened.value = !exportRequestOpened.value
+}
 </script>
 
 <style scoped>

@@ -8,8 +8,8 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
-using Cookie = HttPlaceholder.Application.StubExecution.Models.HAR.Cookie;
 using ConvertUtil = System.Convert;
+using Cookie = HttPlaceholder.Application.StubExecution.Models.HAR.Cookie;
 
 namespace HttPlaceholder.Application.Export.Implementations;
 

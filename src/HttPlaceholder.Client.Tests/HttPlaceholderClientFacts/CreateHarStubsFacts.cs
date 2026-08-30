@@ -78,7 +78,9 @@ public class CreateHarStubsFacts : BaseClientTest
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
                 client.CreateHarStubsAsync(new ImportStubsModel(har)
                 {
-                    DoNotCreateStub = false, Tenant = "tenant1", StubIdPrefix = "prefix-"
+                    DoNotCreateStub = false,
+                    Tenant = "tenant1",
+                    StubIdPrefix = "prefix-"
                 }));
 
         // Assert
@@ -104,7 +106,9 @@ public class CreateHarStubsFacts : BaseClientTest
         // Act
         var result = (await client.CreateHarStubsAsync(new ImportStubsModel(har)
         {
-            DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"
+            DoNotCreateStub = doNotCreateStub,
+            Tenant = "tenant1",
+            StubIdPrefix = "prefix-"
         })).ToArray();
 
         // Assert

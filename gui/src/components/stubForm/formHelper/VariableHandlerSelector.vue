@@ -2,7 +2,7 @@
   <button class="btn btn-primary mt-2 mb-2" @click="switchHandlers">
     {{ $translate('stubForm.insertVariableHandler') }}
   </button>
-  <slide-up-down v-model="showHandlersList" :duration="300" class="list-group mt-2">
+  <Vue3SlideUpDown v-model="showHandlersList" :duration="300" class="list-group mt-2">
     <span class="list-group-item list-group-item-action fw-bold">{{
       $translate('stubForm.selectVariableHandler')
     }}</span>
@@ -25,7 +25,7 @@
       ><br />
       <small v-if="item.description" v-html="parseMarkdown(item.description)" />
     </button>
-  </slide-up-down>
+  </Vue3SlideUpDown>
   <div class="list-group mt-2" v-if="showExamplesList">
     <small v-if="selectedHandler" v-html="parseMarkdown(selectedHandler.description)" />
     <span class="list-group-item list-group-item-action fw-bold">{{

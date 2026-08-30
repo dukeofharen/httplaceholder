@@ -34,7 +34,8 @@ internal class StubRequestExecutor(
 
         var beforeCheckingNotification = new BeforeCheckingStubConditionsNotification
         {
-            ConditionCheckers = orderedConditionCheckers, Stubs = stubs
+            ConditionCheckers = orderedConditionCheckers,
+            Stubs = stubs
         };
         await mediator.Publish(beforeCheckingNotification, cancellationToken);
         if (beforeCheckingNotification.Response != null)
