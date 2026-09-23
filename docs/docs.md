@@ -196,6 +196,16 @@ path `/var/httplaceholder`. Also, by default, stubs that are made through the UI
 home directory under `/root/.httplaceholder`. Mounting these folders as Docker volumes allows you to save the stub data
 on your host machine.
 
+### Easypanel
+
+[Easypanel](https://easypanel.io) is a self-hosted Docker deployment platform, and HttPlaceholder has a one-click deployment template there: https://easypanel.io/templates/httplaceholder
+
+[![Deploy on Easypanel](https://easypanel.io/img/deploy-on-easypanel-40.svg)](https://easypanel.io/templates/httplaceholder)
+
+The template sets up the required PostgreSQL database for you automatically.
+
+![HttPlaceholder running in the Easypanel panel](img/easypanel-panel.png)
+
 ### Docker Compose examples
 
 [Here](https://github.com/dukeofharen/httplaceholder/tree/master/docker) you can find a few Docker Compose examples how
